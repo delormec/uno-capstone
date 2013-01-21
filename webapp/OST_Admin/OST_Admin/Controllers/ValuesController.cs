@@ -5,23 +5,24 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using OST_Admin.Models.Repository;
+using OST_Admin.Models;
 
 namespace OST_Admin.Controllers
 {
     public class ValuesController : ApiController
     {
-        private readonly IFormRepository formRepository;
+        private readonly IFormRepository _formRepository;
 
-        public ValuesController()
+        public ValuesController(IFormRepository formRepository)
         {
-            formRepository = new FormRepository();
+            _formRepository = formRepository;
         }
 
         // GET api/values
         [Queryable]
         public IQueryable<Form> Get()
         {
-            return formRepository.GetAll();
+            return _formRepository.GetAll();
         }
 
         // GET api/values/5

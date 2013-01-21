@@ -9,23 +9,23 @@ namespace OST_Admin.Models.Repository
 {
     public class FormRepository : IFormRepository
     {
-        OSTDBEntities databaseContext;
+        OSTDataContext _databaseContext;
 
-        public FormRepository()
+        public FormRepository(IOSTDataContext databaseContext)
         {
-            databaseContext = new OSTDBEntities();
+            _databaseContext = new OSTDataContext();
         }
 
        
         public System.Linq.IQueryable<Form> GetAll()
         {
-            return databaseContext.Forms;
+            return _databaseContext.Forms;
         }
 
 
         public Form getForm(int id)
         {
-            return databaseContext.Forms.Where(p => p.FormId == id).Single();
+            return _databaseContext.Forms.Where(p => p.FormId == id).Single();
         }
     }
 }

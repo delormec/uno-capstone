@@ -24,7 +24,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="OSTModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
-        <EntityContainer Name="OSTDBEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="OSTDataContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Forms" EntityType="OSTModel.Form" />
         </EntityContainer>
         <EntityType Name="Form">
@@ -44,7 +44,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="OSTDBEntities">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="OSTDataContext">
     <EntitySetMapping Name="Forms">
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Form)">
         <MappingFragment StoreEntitySet="Forms">
@@ -72,6 +72,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\OST_Admin.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-01-21" time="01:30:34">
+  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin" machine-name="CAPSTONE" user="delormec" user-domain="CAPSTONE" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\OST_Admin.dll" executed="True" result="Success" success="True" time="0.268" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="OST_Admin" executed="True" result="Success" success="True" time="0.164" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.164" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="0.160" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="0.147" asserts="0">
+                    <results>
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.getForm" executed="True" result="Success" success="True" time="0.045" asserts="0" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Test_Get" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
