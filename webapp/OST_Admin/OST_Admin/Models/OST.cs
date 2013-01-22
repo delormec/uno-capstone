@@ -16,6 +16,13 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("OSTModel", "ChoiceQuestionChoice", "ChoiceQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.ChoiceQuestion), "Choice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Option), true)]
+[assembly: EdmRelationshipAttribute("OSTModel", "FormQuestion", "Form", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.Form), "Question", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Question), true)]
+[assembly: EdmRelationshipAttribute("OSTModel", "LabelLikertScaleQuestion", "Label", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Label), "LikertScaleQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.LikertScaleQuestion))]
+
+#endregion
 
 namespace OST_Admin.Models
 {
@@ -23,6 +30,10 @@ namespace OST_Admin.Models
     public partial interface IOSTDataContext
     {
                 IObjectSet<Form> Forms { get; }
+                IObjectSet<User> Users { get; }
+                IObjectSet<Question> Questions { get; }
+                IObjectSet<Option> Options { get; }
+                IObjectSet<Label> Labels { get; }
                 int SaveChanges();
     }
     /// <summary>
@@ -84,6 +95,70 @@ namespace OST_Admin.Models
             }
         }
         private IObjectSet<Form> _Forms;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<User> Users
+        {
+            get
+            {
+                if ((_Users == null))
+                {
+                    _Users = base.CreateObjectSet<User>("Users");
+                }
+                return _Users;
+            }
+        }
+        private IObjectSet<User> _Users;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<Question> Questions
+        {
+            get
+            {
+                if ((_Questions == null))
+                {
+                    _Questions = base.CreateObjectSet<Question>("Questions");
+                }
+                return _Questions;
+            }
+        }
+        private IObjectSet<Question> _Questions;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<Option> Options
+        {
+            get
+            {
+                if ((_Options == null))
+                {
+                    _Options = base.CreateObjectSet<Option>("Options");
+                }
+                return _Options;
+            }
+        }
+        private IObjectSet<Option> _Options;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<Label> Labels
+        {
+            get
+            {
+                if ((_Labels == null))
+                {
+                    _Labels = base.CreateObjectSet<Label>("Labels");
+                }
+                return _Labels;
+            }
+        }
+        private IObjectSet<Label> _Labels;
 
         #endregion
         #region AddTo Methods
@@ -95,6 +170,38 @@ namespace OST_Admin.Models
         {
             base.AddObject("Forms", form);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Users EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUsers(User user)
+        {
+            base.AddObject("Users", user);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Questions EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToQuestions(Question question)
+        {
+            base.AddObject("Questions", question);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Options EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToOptions(Option option)
+        {
+            base.AddObject("Options", option);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Labels EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLabels(Label label)
+        {
+            base.AddObject("Labels", label);
+        }
 
         #endregion
     }
@@ -103,6 +210,89 @@ namespace OST_Admin.Models
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="ChoiceQuestion")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ChoiceQuestion : Question
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ChoiceQuestion object.
+        /// </summary>
+        /// <param name="questionId">Initial value of the QuestionId property.</param>
+        /// <param name="formFormId">Initial value of the FormFormId property.</param>
+        /// <param name="text">Initial value of the Text property.</param>
+        /// <param name="helpText">Initial value of the HelpText property.</param>
+        public static ChoiceQuestion CreateChoiceQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText)
+        {
+            ChoiceQuestion choiceQuestion = new ChoiceQuestion();
+            choiceQuestion.QuestionId = questionId;
+            choiceQuestion.FormFormId = formFormId;
+            choiceQuestion.Text = text;
+            choiceQuestion.HelpText = helpText;
+            return choiceQuestion;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Other
+        {
+            get
+            {
+                return _Other;
+            }
+            set
+            {
+                OnOtherChanging(value);
+                ReportPropertyChanging("Other");
+                _Other = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Other");
+                OnOtherChanged();
+            }
+        }
+        private global::System.Boolean _Other = false;
+        partial void OnOtherChanging(global::System.Boolean value);
+        partial void OnOtherChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "ChoiceQuestionChoice", "Choice")]
+        public EntityCollection<Option> Choices
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Option>("OSTModel.ChoiceQuestionChoice", "Choice");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Option>("OSTModel.ChoiceQuestionChoice", "Choice", value);
+                }
+            }
+        }
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -298,6 +488,699 @@ namespace OST_Admin.Models
         private Nullable<global::System.DateTime> _DateCreated;
         partial void OnDateCreatedChanging(Nullable<global::System.DateTime> value);
         partial void OnDateCreatedChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "FormQuestion", "Question")]
+        public EntityCollection<Question> Questions
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Question>("OSTModel.FormQuestion", "Question");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Question>("OSTModel.FormQuestion", "Question", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="Label")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Label : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Label object.
+        /// </summary>
+        /// <param name="labelId">Initial value of the LabelId property.</param>
+        public static Label CreateLabel(global::System.Int32 labelId)
+        {
+            Label label = new Label();
+            label.LabelId = labelId;
+            return label;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 LabelId
+        {
+            get
+            {
+                return _LabelId;
+            }
+            set
+            {
+                if (_LabelId != value)
+                {
+                    OnLabelIdChanging(value);
+                    ReportPropertyChanging("LabelId");
+                    _LabelId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("LabelId");
+                    OnLabelIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _LabelId;
+        partial void OnLabelIdChanging(global::System.Int32 value);
+        partial void OnLabelIdChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "LabelLikertScaleQuestion", "LikertScaleQuestion")]
+        public LikertScaleQuestion LikertScaleQuestion
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<LikertScaleQuestion> LikertScaleQuestionReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="LikertScaleQuestion")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class LikertScaleQuestion : Question
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new LikertScaleQuestion object.
+        /// </summary>
+        /// <param name="questionId">Initial value of the QuestionId property.</param>
+        /// <param name="formFormId">Initial value of the FormFormId property.</param>
+        /// <param name="text">Initial value of the Text property.</param>
+        /// <param name="helpText">Initial value of the HelpText property.</param>
+        /// <param name="steps">Initial value of the Steps property.</param>
+        public static LikertScaleQuestion CreateLikertScaleQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText, global::System.Int32 steps)
+        {
+            LikertScaleQuestion likertScaleQuestion = new LikertScaleQuestion();
+            likertScaleQuestion.QuestionId = questionId;
+            likertScaleQuestion.FormFormId = formFormId;
+            likertScaleQuestion.Text = text;
+            likertScaleQuestion.HelpText = helpText;
+            likertScaleQuestion.Steps = steps;
+            return likertScaleQuestion;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Steps
+        {
+            get
+            {
+                return _Steps;
+            }
+            set
+            {
+                OnStepsChanging(value);
+                ReportPropertyChanging("Steps");
+                _Steps = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Steps");
+                OnStepsChanged();
+            }
+        }
+        private global::System.Int32 _Steps;
+        partial void OnStepsChanging(global::System.Int32 value);
+        partial void OnStepsChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "LabelLikertScaleQuestion", "Label")]
+        public EntityCollection<Label> Labels
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Label>("OSTModel.LabelLikertScaleQuestion", "Label");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Label>("OSTModel.LabelLikertScaleQuestion", "Label", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="Option")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Option : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Option object.
+        /// </summary>
+        /// <param name="optionId">Initial value of the OptionId property.</param>
+        /// <param name="choiceQuestionQuestionId">Initial value of the ChoiceQuestionQuestionId property.</param>
+        /// <param name="text">Initial value of the Text property.</param>
+        public static Option CreateOption(global::System.Int32 optionId, global::System.Int32 choiceQuestionQuestionId, global::System.String text)
+        {
+            Option option = new Option();
+            option.OptionId = optionId;
+            option.ChoiceQuestionQuestionId = choiceQuestionQuestionId;
+            option.Text = text;
+            return option;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OptionId
+        {
+            get
+            {
+                return _OptionId;
+            }
+            set
+            {
+                if (_OptionId != value)
+                {
+                    OnOptionIdChanging(value);
+                    ReportPropertyChanging("OptionId");
+                    _OptionId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("OptionId");
+                    OnOptionIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _OptionId;
+        partial void OnOptionIdChanging(global::System.Int32 value);
+        partial void OnOptionIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ChoiceQuestionQuestionId
+        {
+            get
+            {
+                return _ChoiceQuestionQuestionId;
+            }
+            set
+            {
+                OnChoiceQuestionQuestionIdChanging(value);
+                ReportPropertyChanging("ChoiceQuestionQuestionId");
+                _ChoiceQuestionQuestionId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ChoiceQuestionQuestionId");
+                OnChoiceQuestionQuestionIdChanged();
+            }
+        }
+        private global::System.Int32 _ChoiceQuestionQuestionId;
+        partial void OnChoiceQuestionQuestionIdChanging(global::System.Int32 value);
+        partial void OnChoiceQuestionQuestionIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Text
+        {
+            get
+            {
+                return _Text;
+            }
+            set
+            {
+                OnTextChanging(value);
+                ReportPropertyChanging("Text");
+                _Text = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Text");
+                OnTextChanged();
+            }
+        }
+        private global::System.String _Text;
+        partial void OnTextChanging(global::System.String value);
+        partial void OnTextChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "ChoiceQuestionChoice", "ChoiceQuestion")]
+        public ChoiceQuestion ChoiceQuestion
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ChoiceQuestion> ChoiceQuestionReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="Question")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    [KnownTypeAttribute(typeof(ChoiceQuestion))]
+    [KnownTypeAttribute(typeof(LikertScaleQuestion))]
+    [KnownTypeAttribute(typeof(TextQuestion))]
+    public partial class Question : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Question object.
+        /// </summary>
+        /// <param name="questionId">Initial value of the QuestionId property.</param>
+        /// <param name="formFormId">Initial value of the FormFormId property.</param>
+        /// <param name="text">Initial value of the Text property.</param>
+        /// <param name="helpText">Initial value of the HelpText property.</param>
+        public static Question CreateQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText)
+        {
+            Question question = new Question();
+            question.QuestionId = questionId;
+            question.FormFormId = formFormId;
+            question.Text = text;
+            question.HelpText = helpText;
+            return question;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 QuestionId
+        {
+            get
+            {
+                return _QuestionId;
+            }
+            set
+            {
+                if (_QuestionId != value)
+                {
+                    OnQuestionIdChanging(value);
+                    ReportPropertyChanging("QuestionId");
+                    _QuestionId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("QuestionId");
+                    OnQuestionIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _QuestionId;
+        partial void OnQuestionIdChanging(global::System.Int32 value);
+        partial void OnQuestionIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FormFormId
+        {
+            get
+            {
+                return _FormFormId;
+            }
+            set
+            {
+                OnFormFormIdChanging(value);
+                ReportPropertyChanging("FormFormId");
+                _FormFormId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FormFormId");
+                OnFormFormIdChanged();
+            }
+        }
+        private global::System.Int32 _FormFormId;
+        partial void OnFormFormIdChanging(global::System.Int32 value);
+        partial void OnFormFormIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Text
+        {
+            get
+            {
+                return _Text;
+            }
+            set
+            {
+                OnTextChanging(value);
+                ReportPropertyChanging("Text");
+                _Text = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Text");
+                OnTextChanged();
+            }
+        }
+        private global::System.String _Text;
+        partial void OnTextChanging(global::System.String value);
+        partial void OnTextChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String HelpText
+        {
+            get
+            {
+                return _HelpText;
+            }
+            set
+            {
+                OnHelpTextChanging(value);
+                ReportPropertyChanging("HelpText");
+                _HelpText = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("HelpText");
+                OnHelpTextChanged();
+            }
+        }
+        private global::System.String _HelpText;
+        partial void OnHelpTextChanging(global::System.String value);
+        partial void OnHelpTextChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "FormQuestion", "Form")]
+        public Form Form
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Form>("OSTModel.FormQuestion", "Form").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Form>("OSTModel.FormQuestion", "Form").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Form> FormReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Form>("OSTModel.FormQuestion", "Form");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Form>("OSTModel.FormQuestion", "Form", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="TextQuestion")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class TextQuestion : Question
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new TextQuestion object.
+        /// </summary>
+        /// <param name="questionId">Initial value of the QuestionId property.</param>
+        /// <param name="formFormId">Initial value of the FormFormId property.</param>
+        /// <param name="text">Initial value of the Text property.</param>
+        /// <param name="helpText">Initial value of the HelpText property.</param>
+        public static TextQuestion CreateTextQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText)
+        {
+            TextQuestion textQuestion = new TextQuestion();
+            textQuestion.QuestionId = questionId;
+            textQuestion.FormFormId = formFormId;
+            textQuestion.Text = text;
+            textQuestion.HelpText = helpText;
+            return textQuestion;
+        }
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="User")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class User : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new User object.
+        /// </summary>
+        /// <param name="userId">Initial value of the UserId property.</param>
+        /// <param name="userName">Initial value of the UserName property.</param>
+        /// <param name="password">Initial value of the Password property.</param>
+        public static User CreateUser(global::System.Int32 userId, global::System.String userName, global::System.String password)
+        {
+            User user = new User();
+            user.UserId = userId;
+            user.UserName = userName;
+            user.Password = password;
+            return user;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserId
+        {
+            get
+            {
+                return _UserId;
+            }
+            set
+            {
+                if (_UserId != value)
+                {
+                    OnUserIdChanging(value);
+                    ReportPropertyChanging("UserId");
+                    _UserId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("UserId");
+                    OnUserIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _UserId;
+        partial void OnUserIdChanging(global::System.Int32 value);
+        partial void OnUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String UserName
+        {
+            get
+            {
+                return _UserName;
+            }
+            set
+            {
+                OnUserNameChanging(value);
+                ReportPropertyChanging("UserName");
+                _UserName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("UserName");
+                OnUserNameChanged();
+            }
+        }
+        private global::System.String _UserName;
+        partial void OnUserNameChanging(global::System.String value);
+        partial void OnUserNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Deleted
+        {
+            get
+            {
+                return _Deleted;
+            }
+            set
+            {
+                OnDeletedChanging(value);
+                ReportPropertyChanging("Deleted");
+                _Deleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Deleted");
+                OnDeletedChanged();
+            }
+        }
+        private global::System.Boolean _Deleted = false;
+        partial void OnDeletedChanging(global::System.Boolean value);
+        partial void OnDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Password
+        {
+            get
+            {
+                return _Password;
+            }
+            set
+            {
+                OnPasswordChanging(value);
+                ReportPropertyChanging("Password");
+                _Password = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Password");
+                OnPasswordChanged();
+            }
+        }
+        private global::System.String _Password;
+        partial void OnPasswordChanging(global::System.String value);
+        partial void OnPasswordChanged();
 
         #endregion
     

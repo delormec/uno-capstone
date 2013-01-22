@@ -1,7 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-  <EntityContainer Name="Model1StoreContainer">
-    <EntitySet Name="Forms" EntityType="Model1.Store.Forms" store:Type="Tables" Schema="dbo" />
+<Schema Namespace="OSTModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="OSTModelStoreContainer">
+    <EntitySet Name="Forms" EntityType="OSTModel.Store.Forms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="OSTModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Questions" EntityType="OSTModel.Store.Questions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Options" EntityType="OSTModel.Store.Options" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Labels" EntityType="OSTModel.Store.Labels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Questions_ChoiceQuestion" EntityType="OSTModel.Store.Questions_ChoiceQuestion" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Questions_LikertScaleQuestion" EntityType="OSTModel.Store.Questions_LikertScaleQuestion" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Questions_TextQuestion" EntityType="OSTModel.Store.Questions_TextQuestion" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ChoiceQuestionChoice" Association="OSTModel.Store.ChoiceQuestionChoice">
+      <End Role="ChoiceQuestion" EntitySet="Questions_ChoiceQuestion" />
+      <End Role="Choice" EntitySet="Options" />
+    </AssociationSet>
+    <AssociationSet Name="FormQuestion" Association="OSTModel.Store.FormQuestion">
+      <End Role="Form" EntitySet="Forms" />
+      <End Role="Question" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="LabelLikertScaleQuestion" Association="OSTModel.Store.LabelLikertScaleQuestion">
+      <End Role="Label" EntitySet="Labels" />
+      <End Role="LikertScaleQuestion" EntitySet="Questions_LikertScaleQuestion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChoiceQuestion_inherits_Question" Association="OSTModel.Store.FK_ChoiceQuestion_inherits_Question">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="ChoiceQuestion" EntitySet="Questions_ChoiceQuestion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LikertScaleQuestion_inherits_Question" Association="OSTModel.Store.FK_LikertScaleQuestion_inherits_Question">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="LikertScaleQuestion" EntitySet="Questions_LikertScaleQuestion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TextQuestion_inherits_Question" Association="OSTModel.Store.FK_TextQuestion_inherits_Question">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="TextQuestion" EntitySet="Questions_TextQuestion" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Forms">
     <Key>
@@ -15,4 +46,129 @@
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="DateCreated" Type="datetime" Nullable="true" />
   </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questions">
+    <Key>
+      <PropertyRef Name="QuestionId" />
+    </Key>
+    <Property Name="QuestionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FormFormId" Type="int" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HelpText" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Options">
+    <Key>
+      <PropertyRef Name="OptionId" />
+    </Key>
+    <Property Name="OptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChoiceQuestionQuestionId" Type="int" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Labels">
+    <Key>
+      <PropertyRef Name="LabelId" />
+    </Key>
+    <Property Name="LabelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LikertScaleQuestion_QuestionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questions_ChoiceQuestion">
+    <Key>
+      <PropertyRef Name="QuestionId" />
+    </Key>
+    <Property Name="Other" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="QuestionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questions_LikertScaleQuestion">
+    <Key>
+      <PropertyRef Name="QuestionId" />
+    </Key>
+    <Property Name="Steps" Type="int" Nullable="false" />
+    <Property Name="QuestionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questions_TextQuestion">
+    <Key>
+      <PropertyRef Name="QuestionId" />
+    </Key>
+    <Property Name="QuestionId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="ChoiceQuestionChoice">
+    <End Role="ChoiceQuestion" Type="OSTModel.Store.Questions_ChoiceQuestion" Multiplicity="1" />
+    <End Role="Choice" Type="OSTModel.Store.Options" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChoiceQuestion">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="Choice">
+        <PropertyRef Name="ChoiceQuestionQuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FormQuestion">
+    <End Role="Form" Type="OSTModel.Store.Forms" Multiplicity="1" />
+    <End Role="Question" Type="OSTModel.Store.Questions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Form">
+        <PropertyRef Name="FormId" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="FormFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="LabelLikertScaleQuestion">
+    <End Role="Label" Type="OSTModel.Store.Labels" Multiplicity="*" />
+    <End Role="LikertScaleQuestion" Type="OSTModel.Store.Questions_LikertScaleQuestion" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="LikertScaleQuestion">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="Label">
+        <PropertyRef Name="LikertScaleQuestion_QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChoiceQuestion_inherits_Question">
+    <End Role="Question" Type="OSTModel.Store.Questions" Multiplicity="1" />
+    <End Role="ChoiceQuestion" Type="OSTModel.Store.Questions_ChoiceQuestion" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="ChoiceQuestion">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LikertScaleQuestion_inherits_Question">
+    <End Role="Question" Type="OSTModel.Store.Questions" Multiplicity="1" />
+    <End Role="LikertScaleQuestion" Type="OSTModel.Store.Questions_LikertScaleQuestion" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="LikertScaleQuestion">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TextQuestion_inherits_Question">
+    <End Role="Question" Type="OSTModel.Store.Questions" Multiplicity="1" />
+    <End Role="TextQuestion" Type="OSTModel.Store.Questions_TextQuestion" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="TextQuestion">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

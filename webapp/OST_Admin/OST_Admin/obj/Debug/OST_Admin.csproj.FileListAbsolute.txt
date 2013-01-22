@@ -208,14 +208,9 @@ C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\zh-Ha
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\obj\Debug\OST_Admin.dll
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\obj\Debug\OST_Admin.pdb
-C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\nunit.framework.dll
-C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\nunit.framework.xml
-C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\NSubstitute.dll
-C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\NSubstitute.xml
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\StructureMap.dll
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\WebActivator.dll
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\StructureMap.pdb
-C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\StructureMap.xml
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.ServiceLocation.dll
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.Unity.Configuration.dll
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.Unity.dll
@@ -223,5 +218,4 @@ C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Unity
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Unity.WebApi.dll
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.ServiceLocation.pdb
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.ServiceLocation.xml
-C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.Unity.xml
 C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\Microsoft.Practices.Unity.Configuration.xml

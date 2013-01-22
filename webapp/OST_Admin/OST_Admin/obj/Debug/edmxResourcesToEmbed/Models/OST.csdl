@@ -2,6 +2,22 @@
 <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="OSTModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
   <EntityContainer Name="OSTDataContext" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Forms" EntityType="OSTModel.Form" />
+    <EntitySet Name="Users" EntityType="OSTModel.User" />
+    <EntitySet Name="Questions" EntityType="OSTModel.Question" />
+    <EntitySet Name="Options" EntityType="OSTModel.Option" />
+    <AssociationSet Name="ChoiceQuestionChoice" Association="OSTModel.ChoiceQuestionChoice">
+      <End Role="ChoiceQuestion" EntitySet="Questions" />
+      <End Role="Choice" EntitySet="Options" />
+    </AssociationSet>
+    <AssociationSet Name="FormQuestion" Association="OSTModel.FormQuestion">
+      <End Role="Form" EntitySet="Forms" />
+      <End Role="Question" EntitySet="Questions" />
+    </AssociationSet>
+    <EntitySet Name="Labels" EntityType="OSTModel.Label" />
+    <AssociationSet Name="LabelLikertScaleQuestion" Association="OSTModel.LabelLikertScaleQuestion">
+      <End Role="Label" EntitySet="Labels" />
+      <End Role="LikertScaleQuestion" EntitySet="Questions" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Form">
     <Key>
@@ -14,5 +30,78 @@
     <Property Type="String" Name="Name" Nullable="true" />
     <Property Type="String" Name="Description" Nullable="true" />
     <Property Type="DateTime" Name="DateCreated" Nullable="true" />
+    <NavigationProperty Name="Questions" Relationship="OSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
   </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="UserName" Nullable="false" />
+    <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
+    <Property Type="String" Name="Password" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="QuestionId" />
+    </Key>
+    <Property Type="Int32" Name="QuestionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Form" Relationship="OSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
+    <Property Type="Int32" Name="FormFormId" Nullable="false" />
+    <Property Type="String" Name="Text" Nullable="false" />
+    <Property Type="String" Name="HelpText" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ChoiceQuestion" BaseType="OSTModel.Question">
+    <NavigationProperty Name="Choices" Relationship="OSTModel.ChoiceQuestionChoice" FromRole="ChoiceQuestion" ToRole="Choice" />
+    <Property Type="Boolean" Name="Other" Nullable="false" DefaultValue="false" />
+  </EntityType>
+  <EntityType Name="LikertScaleQuestion" BaseType="OSTModel.Question">
+    <Property Type="Int32" Name="Steps" Nullable="false" />
+    <NavigationProperty Name="Labels" Relationship="OSTModel.LabelLikertScaleQuestion" FromRole="LikertScaleQuestion" ToRole="Label" />
+  </EntityType>
+  <EntityType Name="TextQuestion" BaseType="OSTModel.Question" />
+  <EntityType Name="Option">
+    <Key>
+      <PropertyRef Name="OptionId" />
+    </Key>
+    <Property Type="Int32" Name="OptionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="ChoiceQuestion" Relationship="OSTModel.ChoiceQuestionChoice" FromRole="Choice" ToRole="ChoiceQuestion" />
+    <Property Type="Int32" Name="ChoiceQuestionQuestionId" Nullable="false" />
+    <Property Type="String" Name="Text" Nullable="false" />
+  </EntityType>
+  <Association Name="ChoiceQuestionChoice">
+    <End Type="OSTModel.ChoiceQuestion" Role="ChoiceQuestion" Multiplicity="1" />
+    <End Type="OSTModel.Option" Role="Choice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChoiceQuestion">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="Choice">
+        <PropertyRef Name="ChoiceQuestionQuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FormQuestion">
+    <End Type="OSTModel.Form" Role="Form" Multiplicity="1" />
+    <End Type="OSTModel.Question" Role="Question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Form">
+        <PropertyRef Name="FormId" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="FormFormId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Label">
+    <Key>
+      <PropertyRef Name="LabelId" />
+    </Key>
+    <Property Type="Int32" Name="LabelId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="LikertScaleQuestion" Relationship="OSTModel.LabelLikertScaleQuestion" FromRole="Label" ToRole="LikertScaleQuestion" />
+  </EntityType>
+  <Association Name="LabelLikertScaleQuestion">
+    <End Type="OSTModel.Label" Role="Label" Multiplicity="*" />
+    <End Type="OSTModel.LikertScaleQuestion" Role="LikertScaleQuestion" Multiplicity="1" />
+  </Association>
 </Schema>

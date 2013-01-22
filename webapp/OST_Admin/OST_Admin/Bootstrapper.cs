@@ -4,6 +4,7 @@ using OST_Admin.Models.Repository;
 using OST_Admin.Models;
 
 using System.Data.EntityClient;
+using System.Web.Mvc;
 
 namespace OST_Admin
 {
@@ -12,7 +13,7 @@ namespace OST_Admin
         public static void Initialise()
         {
             var container = BuildUnityContainer();
-
+            DependencyResolver.SetResolver(new Unity.Mvc3.UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
         }
 

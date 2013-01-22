@@ -1,20 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\OST_Admin.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-01-21" time="01:30:34">
+<test-results name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\OST_Admin.dll" total="1" errors="1" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-01-21" time="09:44:58">
   <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin" machine-name="CAPSTONE" user="delormec" user-domain="CAPSTONE" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\OST_Admin.dll" executed="True" result="Success" success="True" time="0.268" asserts="0">
+  <test-suite type="Assembly" name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\OST_Admin.dll" executed="True" result="Failure" success="False" time="1.253" asserts="0">
     <results>
-      <test-suite type="Namespace" name="OST_Admin" executed="True" result="Success" success="True" time="0.164" asserts="0">
+      <test-suite type="Namespace" name="OST_Admin" executed="True" result="Failure" success="False" time="1.214" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.164" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Failure" success="False" time="1.211" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="0.160" asserts="0">
+              <test-suite type="Namespace" name="Controllers" executed="True" result="Failure" success="False" time="1.209" asserts="0">
                 <results>
-                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="0.147" asserts="0">
+                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Failure" success="False" time="1.193" asserts="0">
                     <results>
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.getForm" executed="True" result="Success" success="True" time="0.045" asserts="0" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Test_Get" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_All_Forms" executed="True" result="Error" success="False" time="1.097" asserts="0">
+                        <failure>
+                          <message><![CDATA[SetUp : System.ArgumentException : The specified named connection is either not found in the configuration, not intended to be used with the EntityClient provider, or not valid.]]></message>
+                          <stack-trace><![CDATA[at System.Data.EntityClient.EntityConnection.ChangeConnectionString(String newConnectionString)
+at System.Data.Objects.ObjectContext..ctor(String connectionString, String defaultContainerName)
+at OST_Admin.Models.OSTDataContext..ctor() in C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\OST.cs:line 38
+at OST_Admin.Models.Repository.FormRepository..ctor(IOSTDataContext databaseContext) in C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\Repository\FormRepository.cs:line 16
+at OST_Admin.Tests.Controllers.FormRepositoryTest.SetUp() in C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Tests\Controllers\FormRepositoryTest.cs:line 24
+]]></stack-trace>
+                        </failure>
+                      </test-case>
                     </results>
                   </test-suite>
                 </results>

@@ -9,6 +9,10 @@ namespace OST_Admin.Models.Repository
     {
 
         IQueryable<Form> GetAll();
-        Form getForm(int id);
+        Form getFormById(int id);
+        void updateForm(Form form);
+        void deleteFormById(int id);
+        void testy();
+
     }
 }

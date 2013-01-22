@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="OSTDataContext">
+  <EntityContainerMapping StorageEntityContainer="OSTModelStoreContainer" CdmEntityContainer="OSTDataContext">
     <EntitySetMapping Name="Forms">
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Form)">
         <MappingFragment StoreEntitySet="Forms">
@@ -14,5 +14,66 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Questions">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Question)">
+        <MappingFragment StoreEntitySet="Questions">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="FormFormId" ColumnName="FormFormId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="HelpText" ColumnName="HelpText" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.ChoiceQuestion)">
+        <MappingFragment StoreEntitySet="Questions_ChoiceQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.LikertScaleQuestion)">
+        <MappingFragment StoreEntitySet="Questions_LikertScaleQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="Steps" ColumnName="Steps" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.TextQuestion)">
+        <MappingFragment StoreEntitySet="Questions_TextQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Options">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Option)">
+        <MappingFragment StoreEntitySet="Options">
+          <ScalarProperty Name="OptionId" ColumnName="OptionId" />
+          <ScalarProperty Name="ChoiceQuestionQuestionId" ColumnName="ChoiceQuestionQuestionId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Labels">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Label)">
+        <MappingFragment StoreEntitySet="Labels">
+          <ScalarProperty Name="LabelId" ColumnName="LabelId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="LabelLikertScaleQuestion" TypeName="OSTModel.LabelLikertScaleQuestion" StoreEntitySet="Labels">
+      <EndProperty Name="LikertScaleQuestion">
+        <ScalarProperty Name="QuestionId" ColumnName="LikertScaleQuestion_QuestionId" />
+      </EndProperty>
+      <EndProperty Name="Label">
+        <ScalarProperty Name="LabelId" ColumnName="LabelId" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>
