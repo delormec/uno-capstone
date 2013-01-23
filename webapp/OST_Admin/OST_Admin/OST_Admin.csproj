@@ -158,11 +158,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\QuestionModelBinder.cs" />
     <Compile Include="Models\OST.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -298,6 +300,13 @@
       <LastGenOutput>OST.cs</LastGenOutput>
     </None>
     <None Include="Properties\PublishProfiles\Profile.pubxml" />
+    <Content Include="Views\Form\Index.cshtml" />
+    <Content Include="Views\Form\Create.cshtml" />
+    <Content Include="Views\Form\Delete.cshtml" />
+    <Content Include="Views\Form\_TextQuestionRow.cshtml" />
+    <Content Include="Views\Form\_ChoiceQuestionRow.cshtml" />
+    <Content Include="Views\Form\_PartialQuestionList.cshtml" />
+    <Content Include="Views\Form\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

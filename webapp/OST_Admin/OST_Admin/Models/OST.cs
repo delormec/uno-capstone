@@ -18,9 +18,9 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("OSTModel", "ChoiceQuestionChoice", "ChoiceQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.ChoiceQuestion), "Choice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Option), true)]
-[assembly: EdmRelationshipAttribute("OSTModel", "FormQuestion", "Form", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.Form), "Question", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Question), true)]
-[assembly: EdmRelationshipAttribute("OSTModel", "LabelLikertScaleQuestion", "Label", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Label), "LikertScaleQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.LikertScaleQuestion))]
+[assembly: EdmRelationshipAttribute("OSTModel", "FormQuestion", "Form", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.Form), "Question", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Question))]
+[assembly: EdmRelationshipAttribute("OSTModel", "LikertScaleQuestionLabel", "LikertScaleQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.LikertScaleQuestion), "Label", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Label))]
+[assembly: EdmRelationshipAttribute("OSTModel", "ChoiceQuestionOption", "ChoiceQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.ChoiceQuestion), "Option", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Option))]
 
 #endregion
 
@@ -225,16 +225,12 @@ namespace OST_Admin.Models
         /// Create a new ChoiceQuestion object.
         /// </summary>
         /// <param name="questionId">Initial value of the QuestionId property.</param>
-        /// <param name="formFormId">Initial value of the FormFormId property.</param>
-        /// <param name="text">Initial value of the Text property.</param>
-        /// <param name="helpText">Initial value of the HelpText property.</param>
-        public static ChoiceQuestion CreateChoiceQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText)
+        /// <param name="sortOrder">Initial value of the SortOrder property.</param>
+        public static ChoiceQuestion CreateChoiceQuestion(global::System.Int32 questionId, global::System.Int32 sortOrder)
         {
             ChoiceQuestion choiceQuestion = new ChoiceQuestion();
             choiceQuestion.QuestionId = questionId;
-            choiceQuestion.FormFormId = formFormId;
-            choiceQuestion.Text = text;
-            choiceQuestion.HelpText = helpText;
+            choiceQuestion.SortOrder = sortOrder;
             return choiceQuestion;
         }
 
@@ -244,9 +240,9 @@ namespace OST_Admin.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Boolean Other
+        public Nullable<global::System.Boolean> Other
         {
             get
             {
@@ -261,8 +257,8 @@ namespace OST_Admin.Models
                 OnOtherChanged();
             }
         }
-        private global::System.Boolean _Other = false;
-        partial void OnOtherChanging(global::System.Boolean value);
+        private Nullable<global::System.Boolean> _Other = false;
+        partial void OnOtherChanging(Nullable<global::System.Boolean> value);
         partial void OnOtherChanged();
 
         #endregion
@@ -275,18 +271,18 @@ namespace OST_Admin.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "ChoiceQuestionChoice", "Choice")]
-        public EntityCollection<Option> Choices
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "ChoiceQuestionOption", "Option")]
+        public EntityCollection<Option> Options
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Option>("OSTModel.ChoiceQuestionChoice", "Choice");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Option>("OSTModel.ChoiceQuestionOption", "Option");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Option>("OSTModel.ChoiceQuestionChoice", "Choice", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Option>("OSTModel.ChoiceQuestionOption", "Option", value);
                 }
             }
         }
@@ -488,6 +484,30 @@ namespace OST_Admin.Models
         private Nullable<global::System.DateTime> _DateCreated;
         partial void OnDateCreatedChanging(Nullable<global::System.DateTime> value);
         partial void OnDateCreatedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String URL
+        {
+            get
+            {
+                return _URL;
+            }
+            set
+            {
+                OnURLChanging(value);
+                ReportPropertyChanging("URL");
+                _URL = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("URL");
+                OnURLChanged();
+            }
+        }
+        private global::System.String _URL;
+        partial void OnURLChanging(global::System.String value);
+        partial void OnURLChanged();
 
         #endregion
     
@@ -568,6 +588,54 @@ namespace OST_Admin.Models
         private global::System.Int32 _LabelId;
         partial void OnLabelIdChanging(global::System.Int32 value);
         partial void OnLabelIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Text
+        {
+            get
+            {
+                return _Text;
+            }
+            set
+            {
+                OnTextChanging(value);
+                ReportPropertyChanging("Text");
+                _Text = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Text");
+                OnTextChanged();
+            }
+        }
+        private global::System.String _Text;
+        partial void OnTextChanging(global::System.String value);
+        partial void OnTextChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Range
+        {
+            get
+            {
+                return _Range;
+            }
+            set
+            {
+                OnRangeChanging(value);
+                ReportPropertyChanging("Range");
+                _Range = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Range");
+                OnRangeChanged();
+            }
+        }
+        private global::System.String _Range;
+        partial void OnRangeChanging(global::System.String value);
+        partial void OnRangeChanged();
 
         #endregion
     
@@ -579,16 +647,16 @@ namespace OST_Admin.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "LabelLikertScaleQuestion", "LikertScaleQuestion")]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "LikertScaleQuestionLabel", "LikertScaleQuestion")]
         public LikertScaleQuestion LikertScaleQuestion
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LikertScaleQuestionLabel", "LikertScaleQuestion").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LikertScaleQuestionLabel", "LikertScaleQuestion").Value = value;
             }
         }
         /// <summary>
@@ -600,13 +668,13 @@ namespace OST_Admin.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<LikertScaleQuestion>("OSTModel.LikertScaleQuestionLabel", "LikertScaleQuestion");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<LikertScaleQuestion>("OSTModel.LabelLikertScaleQuestion", "LikertScaleQuestion", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<LikertScaleQuestion>("OSTModel.LikertScaleQuestionLabel", "LikertScaleQuestion", value);
                 }
             }
         }
@@ -628,17 +696,13 @@ namespace OST_Admin.Models
         /// Create a new LikertScaleQuestion object.
         /// </summary>
         /// <param name="questionId">Initial value of the QuestionId property.</param>
-        /// <param name="formFormId">Initial value of the FormFormId property.</param>
-        /// <param name="text">Initial value of the Text property.</param>
-        /// <param name="helpText">Initial value of the HelpText property.</param>
+        /// <param name="sortOrder">Initial value of the SortOrder property.</param>
         /// <param name="steps">Initial value of the Steps property.</param>
-        public static LikertScaleQuestion CreateLikertScaleQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText, global::System.Int32 steps)
+        public static LikertScaleQuestion CreateLikertScaleQuestion(global::System.Int32 questionId, global::System.Int32 sortOrder, global::System.Int32 steps)
         {
             LikertScaleQuestion likertScaleQuestion = new LikertScaleQuestion();
             likertScaleQuestion.QuestionId = questionId;
-            likertScaleQuestion.FormFormId = formFormId;
-            likertScaleQuestion.Text = text;
-            likertScaleQuestion.HelpText = helpText;
+            likertScaleQuestion.SortOrder = sortOrder;
             likertScaleQuestion.Steps = steps;
             return likertScaleQuestion;
         }
@@ -680,18 +744,18 @@ namespace OST_Admin.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "LabelLikertScaleQuestion", "Label")]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "LikertScaleQuestionLabel", "Label")]
         public EntityCollection<Label> Labels
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Label>("OSTModel.LabelLikertScaleQuestion", "Label");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Label>("OSTModel.LikertScaleQuestionLabel", "Label");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Label>("OSTModel.LabelLikertScaleQuestion", "Label", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Label>("OSTModel.LikertScaleQuestionLabel", "Label", value);
                 }
             }
         }
@@ -713,14 +777,12 @@ namespace OST_Admin.Models
         /// Create a new Option object.
         /// </summary>
         /// <param name="optionId">Initial value of the OptionId property.</param>
-        /// <param name="choiceQuestionQuestionId">Initial value of the ChoiceQuestionQuestionId property.</param>
-        /// <param name="text">Initial value of the Text property.</param>
-        public static Option CreateOption(global::System.Int32 optionId, global::System.Int32 choiceQuestionQuestionId, global::System.String text)
+        /// <param name="sortOrder">Initial value of the SortOrder property.</param>
+        public static Option CreateOption(global::System.Int32 optionId, global::System.Int32 sortOrder)
         {
             Option option = new Option();
             option.OptionId = optionId;
-            option.ChoiceQuestionQuestionId = choiceQuestionQuestionId;
-            option.Text = text;
+            option.SortOrder = sortOrder;
             return option;
         }
 
@@ -757,31 +819,7 @@ namespace OST_Admin.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 ChoiceQuestionQuestionId
-        {
-            get
-            {
-                return _ChoiceQuestionQuestionId;
-            }
-            set
-            {
-                OnChoiceQuestionQuestionIdChanging(value);
-                ReportPropertyChanging("ChoiceQuestionQuestionId");
-                _ChoiceQuestionQuestionId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ChoiceQuestionQuestionId");
-                OnChoiceQuestionQuestionIdChanged();
-            }
-        }
-        private global::System.Int32 _ChoiceQuestionQuestionId;
-        partial void OnChoiceQuestionQuestionIdChanging(global::System.Int32 value);
-        partial void OnChoiceQuestionQuestionIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String Text
         {
@@ -793,7 +831,7 @@ namespace OST_Admin.Models
             {
                 OnTextChanging(value);
                 ReportPropertyChanging("Text");
-                _Text = StructuralObject.SetValidValue(value, false);
+                _Text = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Text");
                 OnTextChanged();
             }
@@ -801,6 +839,30 @@ namespace OST_Admin.Models
         private global::System.String _Text;
         partial void OnTextChanging(global::System.String value);
         partial void OnTextChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SortOrder
+        {
+            get
+            {
+                return _SortOrder;
+            }
+            set
+            {
+                OnSortOrderChanging(value);
+                ReportPropertyChanging("SortOrder");
+                _SortOrder = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SortOrder");
+                OnSortOrderChanged();
+            }
+        }
+        private global::System.Int32 _SortOrder;
+        partial void OnSortOrderChanging(global::System.Int32 value);
+        partial void OnSortOrderChanged();
 
         #endregion
     
@@ -812,16 +874,16 @@ namespace OST_Admin.Models
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "ChoiceQuestionChoice", "ChoiceQuestion")]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "ChoiceQuestionOption", "ChoiceQuestion")]
         public ChoiceQuestion ChoiceQuestion
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionOption", "ChoiceQuestion").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionOption", "ChoiceQuestion").Value = value;
             }
         }
         /// <summary>
@@ -833,13 +895,13 @@ namespace OST_Admin.Models
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionOption", "ChoiceQuestion");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionChoice", "ChoiceQuestion", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ChoiceQuestion>("OSTModel.ChoiceQuestionOption", "ChoiceQuestion", value);
                 }
             }
         }
@@ -853,8 +915,8 @@ namespace OST_Admin.Models
     [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="Question")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(ChoiceQuestion))]
     [KnownTypeAttribute(typeof(LikertScaleQuestion))]
+    [KnownTypeAttribute(typeof(ChoiceQuestion))]
     [KnownTypeAttribute(typeof(TextQuestion))]
     public partial class Question : EntityObject
     {
@@ -864,16 +926,12 @@ namespace OST_Admin.Models
         /// Create a new Question object.
         /// </summary>
         /// <param name="questionId">Initial value of the QuestionId property.</param>
-        /// <param name="formFormId">Initial value of the FormFormId property.</param>
-        /// <param name="text">Initial value of the Text property.</param>
-        /// <param name="helpText">Initial value of the HelpText property.</param>
-        public static Question CreateQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText)
+        /// <param name="sortOrder">Initial value of the SortOrder property.</param>
+        public static Question CreateQuestion(global::System.Int32 questionId, global::System.Int32 sortOrder)
         {
             Question question = new Question();
             question.QuestionId = questionId;
-            question.FormFormId = formFormId;
-            question.Text = text;
-            question.HelpText = helpText;
+            question.SortOrder = sortOrder;
             return question;
         }
 
@@ -910,31 +968,7 @@ namespace OST_Admin.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 FormFormId
-        {
-            get
-            {
-                return _FormFormId;
-            }
-            set
-            {
-                OnFormFormIdChanging(value);
-                ReportPropertyChanging("FormFormId");
-                _FormFormId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("FormFormId");
-                OnFormFormIdChanged();
-            }
-        }
-        private global::System.Int32 _FormFormId;
-        partial void OnFormFormIdChanging(global::System.Int32 value);
-        partial void OnFormFormIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String Text
         {
@@ -946,7 +980,7 @@ namespace OST_Admin.Models
             {
                 OnTextChanging(value);
                 ReportPropertyChanging("Text");
-                _Text = StructuralObject.SetValidValue(value, false);
+                _Text = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Text");
                 OnTextChanged();
             }
@@ -958,7 +992,7 @@ namespace OST_Admin.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String HelpText
         {
@@ -970,7 +1004,7 @@ namespace OST_Admin.Models
             {
                 OnHelpTextChanging(value);
                 ReportPropertyChanging("HelpText");
-                _HelpText = StructuralObject.SetValidValue(value, false);
+                _HelpText = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("HelpText");
                 OnHelpTextChanged();
             }
@@ -978,6 +1012,78 @@ namespace OST_Admin.Models
         private global::System.String _HelpText;
         partial void OnHelpTextChanging(global::System.String value);
         partial void OnHelpTextChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FieldName
+        {
+            get
+            {
+                return _FieldName;
+            }
+            set
+            {
+                OnFieldNameChanging(value);
+                ReportPropertyChanging("FieldName");
+                _FieldName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FieldName");
+                OnFieldNameChanged();
+            }
+        }
+        private global::System.String _FieldName;
+        partial void OnFieldNameChanging(global::System.String value);
+        partial void OnFieldNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FieldType
+        {
+            get
+            {
+                return _FieldType;
+            }
+            set
+            {
+                OnFieldTypeChanging(value);
+                ReportPropertyChanging("FieldType");
+                _FieldType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FieldType");
+                OnFieldTypeChanged();
+            }
+        }
+        private global::System.String _FieldType;
+        partial void OnFieldTypeChanging(global::System.String value);
+        partial void OnFieldTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SortOrder
+        {
+            get
+            {
+                return _SortOrder;
+            }
+            set
+            {
+                OnSortOrderChanging(value);
+                ReportPropertyChanging("SortOrder");
+                _SortOrder = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SortOrder");
+                OnSortOrderChanged();
+            }
+        }
+        private global::System.Int32 _SortOrder;
+        partial void OnSortOrderChanging(global::System.Int32 value);
+        partial void OnSortOrderChanged();
 
         #endregion
     
@@ -1038,16 +1144,12 @@ namespace OST_Admin.Models
         /// Create a new TextQuestion object.
         /// </summary>
         /// <param name="questionId">Initial value of the QuestionId property.</param>
-        /// <param name="formFormId">Initial value of the FormFormId property.</param>
-        /// <param name="text">Initial value of the Text property.</param>
-        /// <param name="helpText">Initial value of the HelpText property.</param>
-        public static TextQuestion CreateTextQuestion(global::System.Int32 questionId, global::System.Int32 formFormId, global::System.String text, global::System.String helpText)
+        /// <param name="sortOrder">Initial value of the SortOrder property.</param>
+        public static TextQuestion CreateTextQuestion(global::System.Int32 questionId, global::System.Int32 sortOrder)
         {
             TextQuestion textQuestion = new TextQuestion();
             textQuestion.QuestionId = questionId;
-            textQuestion.FormFormId = formFormId;
-            textQuestion.Text = text;
-            textQuestion.HelpText = helpText;
+            textQuestion.SortOrder = sortOrder;
             return textQuestion;
         }
 

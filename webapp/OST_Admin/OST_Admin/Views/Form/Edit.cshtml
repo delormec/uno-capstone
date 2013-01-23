@@ -1,0 +1,71 @@
+﻿@model OST_Admin.Models.Form
+
+@{
+    ViewBag.Title = "Edit";
+    int fid = ViewBag.formId;
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Form</legend>
+
+        @Html.HiddenFor(model => model.FormId)
+        @Html.HiddenFor(model => model.Deleted)
+        @Html.HiddenFor(model => model.Content)
+        @Html.HiddenFor(model => model.DateCreated)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.URL)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.URL)
+            @Html.ValidationMessageFor(model => model.URL)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AutoUpdate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AutoUpdate)
+            @Html.ValidationMessageFor(model => model.AutoUpdate)
+        </div>
+
+        <div id="Questions">
+        @Html.Partial("_PartialQuestionList", Model.Questions)
+        </div>
+       
+       @Ajax.ActionLink("Add a Text Question", "_PartialQuestionList", new { formId = fid, action1="Add", type = "Text" }, new AjaxOptions { UpdateTargetId = "Questions", InsertionMode = InsertionMode.Replace })
+       @Ajax.ActionLink("Add a Choice Question", "_PartialQuestionList", new { formId = fid, action1="Add", type = "Choice" }, new AjaxOptions { UpdateTargetId = "Questions", InsertionMode = InsertionMode.Replace,  })
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

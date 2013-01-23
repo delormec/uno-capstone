@@ -11,6 +11,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -28,21 +29,23 @@
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Question)">
         <MappingFragment StoreEntitySet="Questions">
           <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
-          <ScalarProperty Name="FormFormId" ColumnName="FormFormId" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="HelpText" ColumnName="HelpText" />
-        </MappingFragment>
-      </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.ChoiceQuestion)">
-        <MappingFragment StoreEntitySet="Questions_ChoiceQuestion">
-          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
-          <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+          <ScalarProperty Name="FieldType" ColumnName="FieldType" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.LikertScaleQuestion)">
         <MappingFragment StoreEntitySet="Questions_LikertScaleQuestion">
           <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
           <ScalarProperty Name="Steps" ColumnName="Steps" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.ChoiceQuestion)">
+        <MappingFragment StoreEntitySet="Questions_ChoiceQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.TextQuestion)">
@@ -55,8 +58,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Option)">
         <MappingFragment StoreEntitySet="Options">
           <ScalarProperty Name="OptionId" ColumnName="OptionId" />
-          <ScalarProperty Name="ChoiceQuestionQuestionId" ColumnName="ChoiceQuestionQuestionId" />
           <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -64,15 +67,33 @@
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Label)">
         <MappingFragment StoreEntitySet="Labels">
           <ScalarProperty Name="LabelId" ColumnName="LabelId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Range" ColumnName="Range" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="LabelLikertScaleQuestion" TypeName="OSTModel.LabelLikertScaleQuestion" StoreEntitySet="Labels">
+    <AssociationSetMapping Name="FormQuestion" TypeName="OSTModel.FormQuestion" StoreEntitySet="Questions">
+      <EndProperty Name="Form">
+        <ScalarProperty Name="FormId" ColumnName="Form_FormId" />
+      </EndProperty>
+      <EndProperty Name="Question">
+        <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="LikertScaleQuestionLabel" TypeName="OSTModel.LikertScaleQuestionLabel" StoreEntitySet="Labels">
       <EndProperty Name="LikertScaleQuestion">
         <ScalarProperty Name="QuestionId" ColumnName="LikertScaleQuestion_QuestionId" />
       </EndProperty>
       <EndProperty Name="Label">
         <ScalarProperty Name="LabelId" ColumnName="LabelId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ChoiceQuestionOption" TypeName="OSTModel.ChoiceQuestionOption" StoreEntitySet="Options">
+      <EndProperty Name="ChoiceQuestion">
+        <ScalarProperty Name="QuestionId" ColumnName="ChoiceQuestion_QuestionId" />
+      </EndProperty>
+      <EndProperty Name="Option">
+        <ScalarProperty Name="OptionId" ColumnName="OptionId" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

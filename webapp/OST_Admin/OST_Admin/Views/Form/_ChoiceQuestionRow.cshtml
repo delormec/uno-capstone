@@ -1,0 +1,98 @@
+﻿@model OST_Admin.Models.ChoiceQuestion
+@{
+    ViewBag.Title = "ChoiceQuestionRow";
+    
+    //pulls viewbag from renderer
+    var vb = ((dynamic)ViewData["vb"]);
+
+    //which allows me to pass in what prefix my html elements should have (and question #)
+    int id = vb.questionid;
+
+    //appends a prefix to all my element names in this case [id]. this allows it to fit into a List<Question>
+    ViewData.TemplateInfo.HtmlFieldPrefix = "[" + id + "]";
+}
+
+    <fieldset>
+        <legend>ChoiceQuestion</legend>
+        <h2>Question: @id</h2>
+
+        @Html.HiddenFor(model => model.QuestionId)
+        @Html.HiddenFor(model => model.SortOrder)
+        @Html.Hidden("ModelType", Model.GetType())
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Text)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Text)
+            @Html.ValidationMessageFor(model => model.Text)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HelpText)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HelpText)
+            @Html.ValidationMessageFor(model => model.HelpText)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Other)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Other)
+            @Html.ValidationMessageFor(model => model.Other)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FieldName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FieldName)
+            @Html.ValidationMessageFor(model => model.FieldName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FieldType)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FieldType)
+            @Html.ValidationMessageFor(model => model.FieldType)
+        </div>
+
+    </fieldset>
+
+@{/*
+    <fieldset>
+        <legend>Choice Question</legend>
+        <h2>Question: @id</h2>
+        <div class="editor-label">
+            <label for="Text">Text</label>
+        </div>
+        <div class="editor-field">
+            <input class="text-box single-line" id="Text" name="[@id].Text" type="text" value="" />
+            <span class="field-validation-valid" data-valmsg-for="Text" data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="editor-label">
+            <label for="HelpText">HelpText</label>
+        </div>
+        <div class="editor-field">
+            <input class="text-box single-line" id="HelpText" name="[@id].HelpText" type="text" value="" />
+            <span class="field-validation-valid" data-valmsg-for="HelpText" data-valmsg-replace="true"></span>
+        </div>
+        <div class="editor-label">
+            <label for="Other">Other</label>
+        </div>
+        <div class="editor-field">
+            <input class="check-box" data-val="true" data-val-required="The Other field is required." id="Other" name="[@id].Other" type="checkbox" value="true" /><input name="Other" type="hidden" value="false" />
+            <span class="field-validation-valid" data-valmsg-for="Other" data-valmsg-replace="true"></span>
+        </div>
+
+
+
+    </fieldset>
+   * 
+   */}
+  
+  

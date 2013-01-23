@@ -5,6 +5,7 @@ using OST_Admin.Models;
 
 using System.Data.EntityClient;
 using System.Web.Mvc;
+using OST_Admin.Helper;
 
 namespace OST_Admin
 {
@@ -15,6 +16,9 @@ namespace OST_Admin
             var container = BuildUnityContainer();
             DependencyResolver.SetResolver(new Unity.Mvc3.UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
+
+            //used to pass list of non-base types into a List<Question>
+            ModelBinders.Binders.Add(typeof(Question), new QuestionModelBinder());
         }
 
         private static IUnityContainer BuildUnityContainer()
