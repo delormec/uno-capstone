@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 01/22/2013 18:20:24
--- Generated from EDMX file: C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\OST.edmx
+-- Date Created: 01/26/2013 12:33:03
+-- Generated from EDMX file: C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\OST.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,17 +17,20 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_ChoiceQuestionChoice]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_ChoiceQuestionChoice];
-GO
 IF OBJECT_ID(N'[dbo].[FK_FormQuestion]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Questions] DROP CONSTRAINT [FK_FormQuestion];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ChoiceQuestion_inherits_Question]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Questions_ChoiceQuestion] DROP CONSTRAINT [FK_ChoiceQuestion_inherits_Question];
+IF OBJECT_ID(N'[dbo].[FK_LikertScaleQuestionLabel]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Labels] DROP CONSTRAINT [FK_LikertScaleQuestionLabel];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ChoiceQuestionOption]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_ChoiceQuestionOption];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LikertScaleQuestion_inherits_Question]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Questions_LikertScaleQuestion] DROP CONSTRAINT [FK_LikertScaleQuestion_inherits_Question];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ChoiceQuestion_inherits_Question]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Questions_ChoiceQuestion] DROP CONSTRAINT [FK_ChoiceQuestion_inherits_Question];
 GO
 IF OBJECT_ID(N'[dbo].[FK_TextQuestion_inherits_Question]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Questions_TextQuestion] DROP CONSTRAINT [FK_TextQuestion_inherits_Question];
@@ -49,11 +52,14 @@ GO
 IF OBJECT_ID(N'[dbo].[Options]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Options];
 GO
-IF OBJECT_ID(N'[dbo].[Questions_ChoiceQuestion]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Questions_ChoiceQuestion];
+IF OBJECT_ID(N'[dbo].[Labels]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Labels];
 GO
 IF OBJECT_ID(N'[dbo].[Questions_LikertScaleQuestion]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Questions_LikertScaleQuestion];
+GO
+IF OBJECT_ID(N'[dbo].[Questions_ChoiceQuestion]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Questions_ChoiceQuestion];
 GO
 IF OBJECT_ID(N'[dbo].[Questions_TextQuestion]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Questions_TextQuestion];

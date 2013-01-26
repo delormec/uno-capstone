@@ -1,23 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" total="5" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-01-21" time="23:05:33">
-  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin" machine-name="CAPSTONE" user="delormec" user-domain="CAPSTONE" />
+<test-results name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" total="1" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-01-26" time="11:26:10">
+  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.4984" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="WIN-3124RGJKI5J" user="unouser" user-domain="WIN-3124RGJKI5J" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Users\delormec\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" executed="True" result="Success" success="True" time="15.449" asserts="0">
+  <test-suite type="Assembly" name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" executed="True" result="Failure" success="False" time="0.414" asserts="0">
     <results>
-      <test-suite type="Namespace" name="OST_Admin" executed="True" result="Success" success="True" time="15.407" asserts="0">
+      <test-suite type="Namespace" name="OSTTests" executed="True" result="Failure" success="False" time="0.390" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="15.403" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Failure" success="False" time="0.390" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="15.398" asserts="0">
+              <test-suite type="Namespace" name="Controllers" executed="True" result="Failure" success="False" time="0.390" asserts="0">
                 <results>
-                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="15.391" asserts="0">
+                  <test-suite type="TestFixture" name="test1" executed="True" result="Failure" success="False" time="0.387" asserts="0">
                     <results>
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Delete_Form" executed="True" result="Success" success="True" time="14.700" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_All_Forms" executed="True" result="Success" success="True" time="0.502" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_Form_By_ID" executed="True" result="Success" success="True" time="0.021" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Update_Form_From_Existing_Form" executed="True" result="Success" success="True" time="0.063" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Update_Form_With_New_Form" executed="True" result="Success" success="True" time="0.052" asserts="1" />
+                      <test-case name="OSTTests.Tests.Controllers.test1.add_two_numbers" executed="True" result="Failure" success="False" time="0.360" asserts="1">
+                        <failure>
+                          <message><![CDATA[  Expected: 11
+  But was:  12
+]]></message>
+                          <stack-trace><![CDATA[at OSTTests.Tests.Controllers.test1.add_two_numbers() in C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\Tests\Controllers\test1.cs:line 20
+]]></stack-trace>
+                        </failure>
+                      </test-case>
                     </results>
                   </test-suite>
                 </results>
