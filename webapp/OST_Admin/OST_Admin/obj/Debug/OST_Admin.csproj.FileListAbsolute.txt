@@ -302,3 +302,5 @@ C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\obj\Debug\
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\obj\Debug\OST_Admin.pdb
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\nunit.framework.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\nunit.framework.xml
+C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\JQueryUIHelpers.dll
+C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\bin\JQueryUIHelpers.xml

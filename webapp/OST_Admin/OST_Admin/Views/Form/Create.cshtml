@@ -6,26 +6,11 @@
     questionList.Add(new OST_Admin.Models.TextQuestion() { Text = "sup", HelpText = "what help" });
 }
 
-@section QuestionsAJAX {
-<script type="text/javascript">
-/*
-    $(document).ready(function () {
-    int x = 0;
-        $("#addItem").live('click', function () {
-            $.ajax({
-                url: this.href,
-                cache: true,
-                success: function (html) { $("#editorRows").append(html);}
-            });
-            return false;
-        });
-    });
-
-    */
-</script>
-}
-
-<h2>Create</h2>
+<br />
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<h2>Create Form</h2>
 
 @using (Html.BeginForm())
 {
@@ -61,9 +46,9 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.AutoUpdate)
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.AutoUpdate)
-            @Html.ValidationMessageFor(model => model.AutoUpdate)
+        <div id="AutoUpdateButtonSet">
+             <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" /><label for="AutoUpdate1">True</label>
+             <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" checked="checked"/><label for="AutoUpdate2">False</label>
         </div>
 
         </fieldset>
@@ -77,11 +62,16 @@
     
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+            $(function () {
+
+            $("#AutoUpdateButtonSet").livequery(function(){
+                $(this).buttonset(); });
+            $("input[type=submit], a, button").button();
+        });
+</script>
 }
 

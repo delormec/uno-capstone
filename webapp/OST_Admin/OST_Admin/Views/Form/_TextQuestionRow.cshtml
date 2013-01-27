@@ -11,12 +11,9 @@
     //appends a prefix to all my element names in this case [id]. this allows it to fit into a List<Question>
     ViewData.TemplateInfo.HtmlFieldPrefix = "[" + id + "]";
 }
-    <fieldset>
-        <legend>Text Question</legend>
-        <h2>Question: @id</h2>
-       
+
         @Html.HiddenFor(model => model.QuestionId)
-        @Html.HiddenFor(model => model.SortOrder)
+        <input type="hidden" value="@Model.SortOrder" name="[@id].SortOrder" id="QSortOrder" />
         @Html.Hidden("ModelType", Model.GetType())
 
         <div class="editor-label">
@@ -50,4 +47,3 @@
             @Html.EditorFor(model => model.FieldType)
             @Html.ValidationMessageFor(model => model.FieldType)
         </div>
-    </fieldset>
