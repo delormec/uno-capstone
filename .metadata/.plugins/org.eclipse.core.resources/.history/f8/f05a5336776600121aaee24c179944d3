@@ -1,0 +1,30 @@
+package com.example.habitathumanityapp;
+
+import java.io.File;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+
+public class parseForm {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Serializer serializer = new Persister();
+		
+		File formFile = new File("NewFile.xml");
+		
+		try{
+			Form f = serializer.read(Form.class, formFile);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+
+}

@@ -1,0 +1,14 @@
+package com.example.habitathumanityapp;
+
+public class ThreadManager {
+	static{
+		
+		//Create a single static instance of ThreadManager
+		sInstance = new ThreadManager();
+	}
+	
+	private ThreadManager(){
+		
+	}
+
+}

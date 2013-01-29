@@ -1,0 +1,36 @@
+/**
+ * 
+ */
+package com.example.helloworld.test;
+
+import android.test.ActivityInstrumentationTestCase2;
+
+/**
+ * @author BigSam
+ *
+ */
+public class HelloWorldActivityTests extends
+		ActivityInstrumentationTestCase2<T> {
+
+	/**
+	 * @param name
+	 */
+	public HelloWorldActivityTests(String name) {
+		super(name);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.test.ActivityInstrumentationTestCase2#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+	}
+
+	/* (non-Javadoc)
+	 * @see android.test.ActivityInstrumentationTestCase2#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+}

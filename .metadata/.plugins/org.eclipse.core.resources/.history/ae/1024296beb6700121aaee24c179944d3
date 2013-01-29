@@ -1,0 +1,32 @@
+
+
+import java.io.File;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+
+public class parseForm {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Serializer serializer = new Persister();
+		
+		File formFile = new File("Form.xml");
+		
+		try{
+			Form f = serializer.read(Form.class, formFile);
+			
+			for( Question q: f.questions){
+				System.out.println(q.Text);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+
+}
