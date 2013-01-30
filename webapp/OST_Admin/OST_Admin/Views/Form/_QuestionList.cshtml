@@ -45,6 +45,7 @@
         Html.RenderPartial("_LikertScaleQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
     }
     </p>
+    @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId}, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" })
     </div>
    
 }

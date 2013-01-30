@@ -1,0 +1,77 @@
+﻿@model OST_Admin.Models.ChoiceQuestion
+@{
+    ViewBag.Title = "ChoiceQuestionRow";
+    
+    //pulls viewbag from renderer
+    var vb = ((dynamic)ViewData["vb"]);
+
+    //which allows me to pass in what prefix my html elements should have (and question #)
+    int id = vb.questionid;
+
+    //need this in option area to add/remove them
+    ViewBag.formid = Model.Form.FormId;
+    ViewBag.questionid = Model.QuestionId;
+    ViewBag.sortorder = Model.SortOrder;
+
+    //appends a prefix to all my element names in this case [id]. this allows it to fit into a List<Question>
+    ViewData.TemplateInfo.HtmlFieldPrefix = "[" + id + "]";
+}
+        @Html.HiddenFor(model => model.QuestionId)
+        <input type="hidden" value="@Model.SortOrder" name="[@id].SortOrder" id="QSortOrder"/>
+        @Html.Hidden("ModelType", Model.GetType())
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Text)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Text)
+            @Html.ValidationMessageFor(model => model.Text)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HelpText)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.HelpText)
+            @Html.ValidationMessageFor(model => model.HelpText)
+        </div>
+        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Other)
+        </div>
+
+        @{
+            //true/false button set
+            <div class="OtherSet@(id)">
+             @if (Model.Other == true)
+             {
+                <input type="radio" id="[@id]Other1" name="[@id].Other" value="true" checked="checked"/><label for="[@id]Other1">True</label>
+                <input type="radio" id="[@id]Other2" name="[@id].Other" value="false" /><label for="[@id]Other2">False</label>
+             }
+             else
+             {
+                <input type="radio" id="[@id]Other1" name="[@id].Other" value="true" /><label for="[@id]Other1">True</label>
+                <input type="radio" id="[@id]Other2" name="[@id].Other" value="false" checked="checked"/><label for="[@id]Other2">False</label>
+             }
+             </div>
+        }
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FieldName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FieldName)
+            @Html.ValidationMessageFor(model => model.FieldName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FieldType)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FieldType)
+            @Html.ValidationMessageFor(model => model.FieldType)
+        </div>
+
+        @Html.Partial("_OptionList", Model.Options, new ViewDataDictionary { {"vb", ViewBag}})
+  

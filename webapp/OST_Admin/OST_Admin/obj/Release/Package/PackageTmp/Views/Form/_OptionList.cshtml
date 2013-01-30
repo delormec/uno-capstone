@@ -1,0 +1,42 @@
+﻿@model System.Data.Objects.DataClasses.EntityCollection<OST_Admin.Models.Option>
+
+@{
+    // Uses old prefix settings if I don't overwrite it
+    ViewData.TemplateInfo.HtmlFieldPrefix = "";
+
+    //pulls viewbag from renderer
+    var vb = ((dynamic)ViewData["vb"]);
+
+    //need this to add/remove options on the fly
+    int questionid = vb.questionid;
+    int formid = vb.formid;
+    int questionsortorder = vb.sortorder;
+}
+
+
+<h2>Options</h2>
+
+
+@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();"})
+@foreach (OST_Admin.Models.Option option in Model)
+{     
+    //Have to do this so that the model binder knows that these are part of the Options List
+    @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].OptionId", option.OptionId);
+    @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].SortOrder", option.SortOrder);                                                                          
+
+                                                                                     
+    <div class="editor-label">
+        @Html.LabelFor(o => option.Text)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(o => option.Text, "", "["+questionsortorder+"].Options[" + option.SortOrder + "].Text")
+        @{
+            //Hide the delete button on the first option
+            if (option.SortOrder != 0)
+            {
+                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();"})
+            }
+        }
+        @Html.ValidationMessageFor(o => option.Text)
+    </div>
+}

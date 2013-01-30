@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+            @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui") 
+
+        @Styles.Render("~/Content/themes/ui-darkness/css")
+
+        <script src="/Scripts/jquery.livequery.min.js"></script>
+        
+    
+
 </head>
-<body>
+<body >
     @RenderBody()
 
-    @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
 </body>
 </html>

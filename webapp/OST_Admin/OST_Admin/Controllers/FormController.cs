@@ -129,6 +129,73 @@ namespace OST_Admin.Controllers
             return View(form);
         }
 
+        public PartialViewResult DeleteOption(int formId, int questionId, int optionId)
+        {
+            Form form;// = db.Forms.Single(f => f.FormId == formId);
+
+            //ChoiceQuestion q = form.Questions.Where(q => q.QuestionId == questionId);
+
+            Option option = db.Options.Where(o => o.OptionId == optionId).Single();
+
+            //return to the tab where I deleted an item
+            ViewBag.tabopen = option.ChoiceQuestion.SortOrder;
+
+            // don't let them delete the last option
+            if (option.ChoiceQuestion.Options.Count == 1)
+            {
+                return PartialView("_QuestionList", option.ChoiceQuestion.Form.Questions);
+            }
+
+            db.DeleteObject(option);
+            db.SaveChanges();
+
+            ChoiceQuestion cq = (ChoiceQuestion)db.Questions.Where(q => q.QuestionId == questionId).Single();
+
+            int neworder = 0;
+            cq.Options.ToList().ForEach(x => x.SortOrder = neworder++);
+
+            db.SaveChanges();
+
+            //foreach (cq.Options.ToList() 
+
+            //reorder the list now that we've removed one
+            form = db.Forms.Single(f => f.FormId == formId);
+
+
+            //Option = q.Options.Where(o => o.OptionId)
+
+
+            return PartialView("_QuestionList", form.Questions);
+        }
+
+        public PartialViewResult DeleteQuestion(int questionId)
+        {
+            Form form;// = db.Forms.Single(f => f.FormId == formId);
+            Question question = db.Questions.Where(q => q.QuestionId == questionId).Single();
+            form = question.Form;
+
+            // don't let them delete the last question (actually let them)
+            //if (question.Form.Questions.Count == 1)
+            //{
+            //    return PartialView("_QuestionList", question.Form.Questions);
+            //}
+
+            db.DeleteObject(question);
+            db.SaveChanges();
+
+            //reorder the remaining questions
+            int neworder = 0;
+            form.Questions.ToList().ForEach(x => x.SortOrder = neworder++);
+
+            db.SaveChanges();
+
+            //return to the tab where I deleted an item (in this case just goto start)
+            ViewBag.tabopen = 0;
+
+
+            return PartialView("_QuestionList", form.Questions);
+        }
+
         public ActionResult Edit(int id)
         {
             Form form;
@@ -284,49 +351,6 @@ namespace OST_Admin.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
-        }
-
-
-        public PartialViewResult DeleteOption(int formId, int questionId, int optionId)
-        {
-            Form form;// = db.Forms.Single(f => f.FormId == formId);
-
-
-            
-
-            //ChoiceQuestion q = form.Questions.Where(q => q.QuestionId == questionId);
-
-            Option option = db.Options.Where(o => o.OptionId == optionId).Single();
-
-            //return to the tab where I deleted an item
-            ViewBag.tabopen = option.ChoiceQuestion.SortOrder;
-
-            // don't let them delete the last option
-            if (option.ChoiceQuestion.Options.Count == 1)
-            {
-                return PartialView("_QuestionList", option.ChoiceQuestion.Form.Questions);
-            }
-
-            db.DeleteObject(option);
-            db.SaveChanges();
-
-            ChoiceQuestion cq = (ChoiceQuestion)db.Questions.Where(q => q.QuestionId == questionId).Single();
-            
-            int neworder = 0;
-            cq.Options.ToList().ForEach(x => x.SortOrder = neworder++);
-
-            db.SaveChanges();
-
-            //foreach (cq.Options.ToList() 
-
-            //reorder the list now that we've removed one
-            form = db.Forms.Single(f => f.FormId == formId);
-
-
-                //Option = q.Options.Where(o => o.OptionId)
-
-
-            return PartialView("_QuestionList", form.Questions);
         }
 
         public PartialViewResult AddOption(int questionId)

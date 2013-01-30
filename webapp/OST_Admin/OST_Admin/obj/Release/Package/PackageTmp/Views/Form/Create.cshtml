@@ -1,0 +1,77 @@
+﻿@model OST_Admin.Models.Form
+
+@{
+    ViewBag.Title = "Create";
+    List<OST_Admin.Models.Question> questionList = new List<OST_Admin.Models.Question>();
+    questionList.Add(new OST_Admin.Models.TextQuestion() { Text = "sup", HelpText = "what help" });
+}
+
+<br />
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<h2>Create Form</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Form</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.URL)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.URL)
+            @Html.ValidationMessageFor(model => model.URL)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AutoUpdate)
+        </div>
+        <div id="AutoUpdateButtonSet">
+             <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" /><label for="AutoUpdate1">True</label>
+             <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" checked="checked"/><label for="AutoUpdate2">False</label>
+        </div>
+
+        </fieldset>
+
+        <div id="Questions">
+        </div>
+       
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    
+}
+
+
+
+@section Scripts {
+<script type="text/javascript">
+            $(function () {
+
+            $("#AutoUpdateButtonSet").livequery(function(){
+                $(this).buttonset(); });
+            $("input[type=submit], a, button").button();
+        });
+</script>
+}
+

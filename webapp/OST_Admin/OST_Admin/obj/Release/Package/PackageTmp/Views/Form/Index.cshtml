@@ -1,0 +1,63 @@
+﻿@model IEnumerable<OST_Admin.Models.Form>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AutoUpdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Deleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AutoUpdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Deleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.FormId}) |
+            @Html.ActionLink("Details", "Details", new { id=item.FormId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.FormId })
+        </td>
+    </tr>
+}
+
+</table>

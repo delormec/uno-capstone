@@ -1,0 +1,171 @@
+﻿@model OST_Admin.Models.Form
+
+@{
+    ViewBag.Title = "Edit Form";
+    int fid = ViewBag.formId;
+}
+
+<br />
+<div>
+    @Html.ActionLink("Back to List", "Index", null, new { id = "Back" })
+</div>
+
+<h2 class="ui-widget">Edit Form</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Form</legend>
+
+        @Html.HiddenFor(model => model.FormId)
+        @Html.HiddenFor(model => model.Deleted)
+        @Html.HiddenFor(model => model.Content)
+        @Html.HiddenFor(model => model.DateCreated)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.URL)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.URL)
+            @Html.ValidationMessageFor(model => model.URL)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AutoUpdate)
+        </div>
+       
+        @{
+            //true/false button set
+            <div id="AutoUpdateButtonSet">
+             @if (Model.AutoUpdate == true)
+             {
+                <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" checked="checked"/><label for="AutoUpdate1">True</label>
+                <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" /><label for="AutoUpdate2">False</label>
+             }
+             else
+             {
+                <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" /><label for="AutoUpdate1">True</label>
+                <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" checked="checked"/><label for="AutoUpdate2">False</label>
+             }
+             </div>
+        }
+        
+        </fieldset>
+<br />
+       <input type="submit" id="Save" value="Save Form" />
+
+       @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { formId = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" })
+       @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { formId = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace , OnBegin = "$('#QuestionTabInner').hide();"})
+       @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { formId = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();"})
+<br />
+<br />
+       
+            <div id="QuestionTabOuter">
+
+                @Html.Partial("_QuestionList", Model.Questions)
+
+            </div>
+        
+<br />
+
+
+}
+
+
+@section Scripts {
+
+<script>
+
+
+    $(function () {
+        $("#QuestionTabInner").livequery(function () {
+            SetUpTabs();
+            $('#QuestionTabInner').tabs({ active: $('#TabOpen').attr('value') });
+            $("input[type=submit], a[data-ajax=true], button").button();
+            $("#Back").button();
+            $('#QuestionTabInner').show();
+        });
+
+        $("#AutoUpdateButtonSet").livequery(function () {
+            $(this).buttonset();
+        });
+        $("div[class*=OtherSet]").livequery(function (event) {
+            $(this).buttonset();
+        });
+
+        $("#QuestionTabInner").show();
+        $(document).ajaxComplete(function () {
+            //$('#QuestionTabInner').show();
+            //alert('test');
+        });
+    });
+
+
+
+        function SetUpTabs()
+        {
+
+        var $tabs = $('#QuestionTabInner').tabs();
+
+        $(".ui-tabs-panel").each(function (i) {
+
+            var totalSize = $(".ui-tabs-panel").size() - 1;
+
+            if (i != totalSize) {
+                next = i + 1;
+                $(this).append("<a href='#' class='next-tab mover' rel='" + next + "'>Next Question &#187;</a>");
+            }
+
+            if (i != 0) {
+                prev = i - 1;
+                $(this).append("<a href='#' class='prev-tab mover' rel='" + prev + "'>&#171; Prev Question</a>");
+            }
+
+        });
+
+        $('.next-tab, .prev-tab').click(function () {
+            $tabs.tabs({ active: $(this).attr("rel") });
+            return false;
+        });
+
+             
+        }
+
+</script>
+
+<style>
+
+
+.ui-tabs .ui-tabs-panel 			{ padding: 20px; display: block; border-width: 0; background: none; 
+									  border: 1px solid #ccc; position: relative; min-height: 200px; }
+.ui-tabs .ui-tabs-hide 				{ display: none !important; }
+
+
+
+
+a.mover 							{ padding: 6px 12px; position: absolute;
+								      color: white; font-weight: bold; text-decoration: none; }
+.next-tab 							{ top: 0; right: 0; -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
+.prev-tab 							{ top: 0; left: 0; -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
+
+</style>
+
+}
