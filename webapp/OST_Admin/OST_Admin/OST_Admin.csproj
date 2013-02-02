@@ -171,6 +171,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\QuestionModelBinder.cs" />
+    <Compile Include="Helper\XML.cs" />
     <Compile Include="Models\ViewModel\FormViewModel.cs" />
     <Compile Include="Models\ViewModel\QuestionViewModel.cs" />
     <Compile Include="Models\OST.cs">
@@ -265,6 +266,7 @@
     <Content Include="Content\themes\ui-darkness\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\themes\ui-darkness\jquery-ui-1.10.0.custom.css" />
     <Content Include="Content\themes\ui-darkness\jquery-ui-1.10.0.custom.min.css" />
+    <Content Include="Content\themes\ui-notdarkness\jquery-ui-1.10.0.custom.css" />
     <Content Include="Scripts\jquery-1.7.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
@@ -349,6 +351,7 @@
     <Content Include="Views\Form\Copy of Edit.cshtml" />
     <Content Include="Views\Form\Copy %282%29 of Edit.cshtml" />
     <Content Include="Views\Form\Copy of _QuestionList.cshtml" />
+    <Content Include="Views\Form\XML.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

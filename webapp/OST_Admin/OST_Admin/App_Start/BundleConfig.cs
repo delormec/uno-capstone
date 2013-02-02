@@ -27,8 +27,8 @@ namespace OST_Admin
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
 
-            bundles.Add(new StyleBundle("~/Content/themes/ui-darkness/css").Include(
-                        "~/Content/themes/ui-darkness/jquery-ui-1.10.0.custom.css"));
+            bundles.Add(new StyleBundle("~/Content/themes/ui-notdarkness/css").Include(
+                        "~/Content/themes/ui-notdarkness/jquery-ui-1.10.0.custom.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

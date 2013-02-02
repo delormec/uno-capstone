@@ -41,6 +41,17 @@ namespace OST_Admin.Controllers
             return View(form);
         }
 
+        /// <summary>
+        /// Returns the XML view of the form
+        /// </summary>
+        /// <param name="id">The id of the form</param>
+        /// <returns>XML view of the form</returns>
+        public ActionResult XML(int id)
+        {
+            ViewBag.id = id;
+            return View(id);
+        }
+
 
         public PartialViewResult AddQuestion(int formId, string type)
         {
