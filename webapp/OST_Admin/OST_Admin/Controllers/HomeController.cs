@@ -21,9 +21,6 @@ namespace OST_Admin.Controllers
 
         public ActionResult Index()
         {
-
-            _formRepository.testy();
-
             return View();
         }
     }

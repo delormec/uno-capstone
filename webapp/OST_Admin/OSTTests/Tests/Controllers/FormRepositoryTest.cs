@@ -83,7 +83,7 @@ namespace OST_Admin.Tests.Controllers
         [Test]
         public void Can_Get_All_Forms()
         {
-            int count = 5;
+            int count = 6;
 
             Assert.AreEqual(count, formRepository.GetAll().Count());
         }
@@ -91,7 +91,7 @@ namespace OST_Admin.Tests.Controllers
         [Test]
         public void Can_Get_Form_By_ID()
         {
-            int id = 4;
+            int id = 1;
 
             Assert.AreEqual(id, formRepository.getFormById(id).FormId);
         }
@@ -100,7 +100,7 @@ namespace OST_Admin.Tests.Controllers
         public void Can_Update_Form_From_Existing_Form()
         {
             Form form;
-            int id = 4;
+            int id = 26;
             string name = "Test Form";
 
             form = formRepository.getFormById(id);
@@ -117,11 +117,12 @@ namespace OST_Admin.Tests.Controllers
         public void Can_Update_Form_With_New_Form()
         {
             string content = "New Content";
-            Form form = new Form() { AutoUpdate = false, Content = content, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = 4, Name = "This is my name" };
+            int id = 25;
+            Form form = new Form() { AutoUpdate = false, Content = content, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = id, Name = "This is my name" };
 
             formRepository.updateForm(form);
 
-            Form form2 = formRepository.getFormById(4);
+            Form form2 = formRepository.getFormById(id);
 
             Assert.AreEqual(content, form2.Content);
         }
@@ -130,13 +131,60 @@ namespace OST_Admin.Tests.Controllers
         public void Can_Delete_Form()
         {
             Form form;
-            int id = 3;
+            int id = 1;
 
             formRepository.deleteFormById(id);
             form = formRepository.getFormById(id);
 
 
             Assert.AreEqual(true, form.Deleted);
+        }
+
+        [Test]
+        public void Can_Add_Question()
+        {
+            int id = 1;
+
+            //find out how many questions are on my form
+            int question_count = formRepository.getFormById(id).Questions.Count();
+
+            //add each type of question and verify theres a new question in the form
+            formRepository.addQuestion(id, "Likert");
+            Assert.AreEqual(question_count+1, formRepository.getFormById(id).Questions.Count());
+            formRepository.addQuestion(id, "Text");
+            Assert.AreEqual(question_count + 2, formRepository.getFormById(id).Questions.Count());
+            formRepository.addQuestion(id, "Choice");
+            Assert.AreEqual(question_count + 3, formRepository.getFormById(id).Questions.Count());
+
+            //two types of errors that can occur -- bad question ID and bad question type
+            Assert.Throws<InvalidOperationException>( delegate{ formRepository.addQuestion(1251, "Text");});
+            Assert.Throws<ArgumentException>(delegate { formRepository.addQuestion(id, "SUP BRO"); });
+
+            //verify that the above didn't actually save any questions
+            Assert.AreEqual(question_count + 3, formRepository.getFormById(id).Questions.Count());
+        }
+
+        [Test]
+        public void Can_Delete_Question()
+        {
+            int id = 1;
+
+            //get a question id
+            Form form = formRepository.getFormById(id);
+
+            //Count how many questions I have
+            int question_count = form.Questions.Count();
+
+            //get a question
+            Question question = form.Questions.First();
+
+            //delete a question
+            formRepository.deleteQuestion(question.QuestionId);
+
+            //verify its gone
+            Assert.AreEqual(question_count - 1, form.Questions.Count());
+            //Assert.IsNull(question);
+            //Assert.Throws<InvalidOperationException>(delegate { formRepository.addQuestion(1251, "Text"); });
         }
 
         [TearDown]

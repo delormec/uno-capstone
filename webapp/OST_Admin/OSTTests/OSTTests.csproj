@@ -48,9 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\Controllers\FormHelper.cs" />
     <Compile Include="Tests\Controllers\FormRepositoryTest.cs" />
-    <Compile Include="Tests\Controllers\test1.cs" />
     <Compile Include="Tests\Controllers\UserRepository.cs" />
     <Compile Include="Tests\Controllers\UserRepositoryTest.cs" />
   </ItemGroup>

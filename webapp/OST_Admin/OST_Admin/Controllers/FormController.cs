@@ -11,12 +11,19 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using OST_Admin.Helper;
 using OST_Admin.Models.ViewModel;
+using OST_Admin.Models.Repository;
 
 namespace OST_Admin.Controllers
 {
     public class FormController : Controller
     {
         private OSTDataContext db = new OSTDataContext();
+        private readonly IFormRepository _formRepository;
+
+        public FormController(IFormRepository formRepository)
+        {
+            _formRepository = formRepository;
+        }
 
         //
         // GET: /Form/
@@ -52,66 +59,17 @@ namespace OST_Admin.Controllers
             return View(id);
         }
 
-
+        //TODO -change name of formId parameter
         public PartialViewResult AddQuestion(int formId, string type)
         {
-            Form form;
-            form = db.Forms.Where(p => p.FormId == formId).Single();
+            _formRepository.addQuestion(formId, type);
 
-            if (type == "Text")
-            {
-                TextQuestion tq = new TextQuestion();
+            Form form = _formRepository.getFormById(formId);
 
-                //this will put the item at the bottom of the list.
-                tq.SortOrder = form.Questions.Count;
-
-                //open the new tab after we create it
-                ViewBag.tabopen = form.Questions.Count;
-
-                form.Questions.Add(tq);
-                db.SaveChanges();
-            }
-            else if (type == "Choice")
-            {
-                ChoiceQuestion cq = new ChoiceQuestion();
-
-                //this will put the item at the bottom of the list.
-                cq.SortOrder = form.Questions.Count;
-
-                //open the new tab after we create it
-                ViewBag.tabopen = form.Questions.Count;
-
-                Option o = new Option();
-
-                //this will put the item at the bottom of the list.
-                o.SortOrder = 0;
-                cq.Options.Add(o);
-
-                form.Questions.Add(cq);
-                db.SaveChanges();
-            }
-            else if (type == "Likert")
-            {
-                LikertScaleQuestion lsq = new LikertScaleQuestion();
-
-                //this will put the item at the bottom of the list.
-                lsq.SortOrder = form.Questions.Count;
-
-                //open the new tab after we create it
-                ViewBag.tabopen = form.Questions.Count;
-
-                List<Label> ll = new List<Label>() { new Label() { Range = "low" }, new Label() { Range = "medium" }, new Label() { Range = "high" } };
-                    
-                //add them all to the likert scale question
-                ll.ForEach(l => lsq.Labels.Add(l));
-
-                form.Questions.Add(lsq);
-                db.SaveChanges();
-            }
-      
+            //open the new tab after we create it
+            ViewBag.tabopen = form.Questions.Count - 1;
 
             return PartialView("_QuestionList", form.Questions);
-
         }
 
         //
@@ -140,81 +98,39 @@ namespace OST_Admin.Controllers
             return View(form);
         }
 
+        //TODO - remove extra parameters, only need optionId and rename it
         public PartialViewResult DeleteOption(int formId, int questionId, int optionId)
         {
-            Form form;// = db.Forms.Single(f => f.FormId == formId);
+            int question_id = _formRepository.deleteOption(optionId);
 
-            //ChoiceQuestion q = form.Questions.Where(q => q.QuestionId == questionId);
-
-            Option option = db.Options.Where(o => o.OptionId == optionId).Single();
+            //ned the question to know which tab to open, and to get the question list
+            Question question = _formRepository.getQuestionById(question_id);
 
             //return to the tab where I deleted an item
-            ViewBag.tabopen = option.ChoiceQuestion.SortOrder;
+            ViewBag.tabopen = question.SortOrder;
 
-            // don't let them delete the last option
-            if (option.ChoiceQuestion.Options.Count == 1)
-            {
-                return PartialView("_QuestionList", option.ChoiceQuestion.Form.Questions);
-            }
-
-            db.DeleteObject(option);
-            db.SaveChanges();
-
-            ChoiceQuestion cq = (ChoiceQuestion)db.Questions.Where(q => q.QuestionId == questionId).Single();
-
-            int neworder = 0;
-            cq.Options.ToList().ForEach(x => x.SortOrder = neworder++);
-
-            db.SaveChanges();
-
-            //foreach (cq.Options.ToList() 
-
-            //reorder the list now that we've removed one
-            form = db.Forms.Single(f => f.FormId == formId);
-
-
-            //Option = q.Options.Where(o => o.OptionId)
-
-
-            return PartialView("_QuestionList", form.Questions);
+            return PartialView("_QuestionList", question.Form.Questions);
         }
-
+        
+        //TODO rename questionId parameter
         public PartialViewResult DeleteQuestion(int questionId)
         {
-            Form form;// = db.Forms.Single(f => f.FormId == formId);
-            Question question = db.Questions.Where(q => q.QuestionId == questionId).Single();
-            form = question.Form;
+            int form_id = _formRepository.deleteQuestion(questionId);
 
-            // don't let them delete the last question (actually let them)
-            //if (question.Form.Questions.Count == 1)
-            //{
-            //    return PartialView("_QuestionList", question.Form.Questions);
-            //}
-
-            db.DeleteObject(question);
-            db.SaveChanges();
-
-            //reorder the remaining questions
-            int neworder = 0;
-            form.Questions.ToList().ForEach(x => x.SortOrder = neworder++);
-
-            db.SaveChanges();
+            Form form = _formRepository.getFormById(form_id);
 
             //return to the tab where I deleted an item (in this case just goto start)
             ViewBag.tabopen = 0;
-
 
             return PartialView("_QuestionList", form.Questions);
         }
 
         public ActionResult Edit(int id)
         {
-            Form form;
-            form = db.Forms.Where(p => p.FormId == id).Single();
-            
+            Form form = _formRepository.getFormById(id);            
 
+            //pass in form id
             ViewBag.formId = id;
-
             //open the first tab
             ViewBag.tabopen = 0;
            
@@ -226,7 +142,24 @@ namespace OST_Admin.Controllers
         public ActionResult Edit(Form form, List<Question> qlist)
         {
 
-            qlist.ToList().ForEach(qitem => TryUpdateModel(qitem));
+            //foreach (var q in qlist)
+            //{
+            //    if (q is TextQuestion)
+            //    {
+            //        TryUpdateModel(q);
+            //    }
+            //    if (q is ChoiceQuestion)
+            //    {
+            //        ((ChoiceQuestion)q).Options.ToList().ForEach(oitem => TryUpdateModel(oitem));
+            //        TryUpdateModel(q);
+            //    }
+            //    if (q is LikertScaleQuestion)
+            //    {
+            //        ((LikertScaleQuestion)q).Labels.ToList().ForEach(litem => TryUpdateModel(litem));
+            //        TryUpdateModel(q);
+            //    }
+            //}
+            //TryUpdateModel(qlist);
             //db.SaveChanges();
             
 
@@ -247,7 +180,7 @@ namespace OST_Admin.Controllers
 
                 //List<Question> qlist = new List<Question>();
 
-                if (qlist !=null)
+                if (qlist !=null && qlist.Count() > 0)
                 foreach (var q in qlist)
                 {
                     Question question = old_form.Questions.Where(p => p.QuestionId == q.QuestionId).Single();

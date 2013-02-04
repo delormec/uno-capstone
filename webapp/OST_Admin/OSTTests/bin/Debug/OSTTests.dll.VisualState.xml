@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="true">
   <TopNode>[0-1009]C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll</TopNode>
-  <SelectedNode>[0-1009]C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll</SelectedNode>
+  <SelectedNode>[0-1008]OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Delete_Question</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1009]C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" Expanded="true" />
     <Node UniqueName="[0-1013]OST_Admin" Expanded="true" />
     <Node UniqueName="[0-1014]OST_Admin.Tests" Expanded="true" />
     <Node UniqueName="[0-1015]OST_Admin.Tests.Controllers" Expanded="true" />
-    <Node UniqueName="[0-1001]OST_Admin.Tests.Controllers.FormRepositoryTest" Expanded="true" />
+    <Node UniqueName="[0-1001]OST_Admin.Tests.Controllers.FormRepositoryTest" Expanded="true" Checked="true" />
+    <Node UniqueName="[0-1007]OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Add_Question" Checked="true" />
     <Node UniqueName="[0-1010]OSTTests" Expanded="true" />
     <Node UniqueName="[0-1011]OSTTests.Tests" Expanded="true" />
     <Node UniqueName="[0-1012]OSTTests.Tests.Controllers" Expanded="true" />
-    <Node UniqueName="[0-1007]OSTTests.Tests.Controllers.test1" Expanded="true" />
-    <Node UniqueName="[0-1008]OSTTests.Tests.Controllers.test1.add_two_numbers" Checked="true" />
   </Nodes>
 </VisualState>
