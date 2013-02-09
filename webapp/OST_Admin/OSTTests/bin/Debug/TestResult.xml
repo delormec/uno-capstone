@@ -1,25 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" total="7" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-02-03" time="22:31:54">
-  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="WIN-3124RGJKI5J" user="unouser" user-domain="WIN-3124RGJKI5J" />
+<test-results name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" total="8" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-02-09" time="15:43:40">
+  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Windows\system32" machine-name="WIN-3124RGJKI5J" user="unouser" user-domain="WIN-3124RGJKI5J" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" executed="True" result="Success" success="True" time="27.752" asserts="0">
+  <test-suite type="Assembly" name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll" executed="True" result="Success" success="True" time="17.292" asserts="0">
     <results>
-      <test-suite type="Namespace" name="OST_Admin" executed="True" result="Success" success="True" time="27.714" asserts="0">
+      <test-suite type="Namespace" name="OST_Admin" executed="True" result="Success" success="True" time="17.244" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="27.714" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="17.243" asserts="0">
             <results>
-              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="27.713" asserts="0">
+              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="17.243" asserts="0">
                 <results>
-                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="27.708" asserts="0">
+                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="17.238" asserts="0">
                     <results>
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Add_Question" executed="True" result="Success" success="True" time="26.629" asserts="6" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Delete_Form" executed="True" result="Success" success="True" time="0.077" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Delete_Question" executed="True" result="Success" success="True" time="0.231" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_All_Forms" executed="True" result="Success" success="True" time="0.485" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_Form_By_ID" executed="True" result="Success" success="True" time="0.011" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Update_Form_From_Existing_Form" executed="True" result="Success" success="True" time="0.067" asserts="1" />
-                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Update_Form_With_New_Form" executed="True" result="Success" success="True" time="0.023" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Add_Form" executed="True" result="Success" success="True" time="13.916" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Add_Question" executed="True" result="Success" success="True" time="2.667" asserts="6" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Delete_Form" executed="True" result="Success" success="True" time="0.120" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Delete_Question" executed="True" result="Success" success="True" time="0.375" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_All_Forms" executed="True" result="Success" success="True" time="0.004" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Get_Form_By_ID" executed="True" result="Success" success="True" time="0.005" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Update_Form_From_Existing_Form" executed="True" result="Success" success="True" time="0.026" asserts="1" />
+                      <test-case name="OST_Admin.Tests.Controllers.FormRepositoryTest.Can_Update_Form_With_New_Form" executed="True" result="Success" success="True" time="0.013" asserts="1" />
                     </results>
                   </test-suite>
                 </results>

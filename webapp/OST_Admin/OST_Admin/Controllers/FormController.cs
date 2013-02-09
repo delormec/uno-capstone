@@ -88,9 +88,7 @@ namespace OST_Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                form.DateCreated = DateTime.Now;
-                db.Forms.AddObject(form);
-                db.SaveChanges();
+                _formRepository.addForm(form);
 
                 return RedirectToAction("Edit", new { id = form.FormId });
             }
@@ -139,7 +137,7 @@ namespace OST_Admin.Controllers
 
         [HttpPost]
         //public ActionResult Edit(Form form, List<QuestionViewModel> QuestionViewModel)
-        public ActionResult Edit(Form form, List<Question> qlist)
+        public ActionResult Edit(Form form, List<Question> question_list)
         {
 
             //foreach (var q in qlist)
@@ -165,91 +163,15 @@ namespace OST_Admin.Controllers
 
             ViewBag.formId = form.FormId;
             //this used to be if ModelState.Valid, but its causing errors so im blowing it off.
-            if (true)
-            {
-                Form old_form = db.Forms.Where(p => p.FormId == form.FormId).Single();
-
-                old_form.AutoUpdate = form.AutoUpdate;
-                old_form.Deleted = form.Deleted;
-                old_form.Description = form.Description;
-                old_form.Name = form.Name;
-                old_form.URL = form.URL;
-                old_form.Deleted = form.Deleted;
-                old_form.Content = form.Content;
-                old_form.DateCreated = form.DateCreated;
-
-                //List<Question> qlist = new List<Question>();
-
-                if (qlist !=null && qlist.Count() > 0)
-                foreach (var q in qlist)
-                {
-                    Question question = old_form.Questions.Where(p => p.QuestionId == q.QuestionId).Single();
-
-                    if (question is TextQuestion)
-                    {
-                        question.Text = q.Text;
-                        question.HelpText = q.HelpText;
-                        question.SortOrder = q.SortOrder;
-                        question.FieldName = q.FieldName;
-                        question.FieldType = q.FieldType;
-
-                        old_form.Questions.Attach(question);
-                        //do nothing yet
-                    }
-                    else if (question is ChoiceQuestion)
-                    {
-                        ChoiceQuestion cq = (ChoiceQuestion)old_form.Questions.Where(p => p.QuestionId == q.QuestionId).Single();
-                        ChoiceQuestion q2 = (ChoiceQuestion)q;
-
-                        cq.Other = q2.Other;
-
-                        cq.Text = q2.Text;
-                        cq.HelpText = q2.HelpText;
-                        cq.SortOrder = q2.SortOrder;
-                        cq.FieldName = q2.FieldName;
-                        cq.FieldType = q2.FieldType;
-                        //cq.Options.ToList().ForEach(qoption => db.DeleteObject(qoption));
-                        //cq.Options.ToList().ForEach(qoption => db.Detach(qoption));
-                        //cq.Options.ToList().ForEach(qoption => ));
-
-                        q2.Options.ToList().ForEach(qoption => cq.Options.Where(cqoption => cqoption.OptionId == qoption.OptionId).Single().Text = qoption.Text);
-                        //q2.Options.ToList().ForEach(qoption => cq.Options.Attach(qoption));
-                        //cq.Options.Attach = q2.Options;
-                        old_form.Questions.Attach(cq);
-
-                        //((ChoiceQuestion)question).Other = ((ChoiceQuestion)q).Other;
-                    }
-                    else if (question is LikertScaleQuestion)
-                    {
-                        LikertScaleQuestion lq = (LikertScaleQuestion)old_form.Questions.Where(p => p.QuestionId == q.QuestionId).Single();
-                        LikertScaleQuestion q2 = (LikertScaleQuestion)q;
-
-                        lq.Steps = q2.Steps;
-
-                        lq.Text = q2.Text;
-                        lq.HelpText = q2.HelpText;
-                        lq.SortOrder = q2.SortOrder;
-                        lq.FieldName = q2.FieldName;
-                        lq.FieldType = q2.FieldType;
-
-                        lq.Labels.ToList().Count();
-
-                        q2.Labels.ToList().ForEach(qlabel => lq.Labels.Where(cqlabel => cqlabel.LabelId == qlabel.LabelId).Single().Text = qlabel.Text);
-
-                        old_form.Questions.Attach(lq);
-                    }
-
-
-                }
-
-                
-
-                //db.Forms.Attach(form);
-                db.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
+            //if (ModelState.Valid)
+            //{
+            //}
             
+            _formRepository.updateForm(form, question_list);
+            return RedirectToAction("Index");
+            
+            
+
 
             
             /*
@@ -258,7 +180,6 @@ namespace OST_Admin.Controllers
             ViewBag.formId = form.FormId;
 
             return View(form2);*/
-            return View(form);
         }
 
         //

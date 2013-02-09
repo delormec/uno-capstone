@@ -187,6 +187,21 @@ namespace OST_Admin.Tests.Controllers
             //Assert.Throws<InvalidOperationException>(delegate { formRepository.addQuestion(1251, "Text"); });
         }
 
+
+        [Test]
+        public void Can_Add_Form()
+        {
+            Form form = new Form();
+
+            int form_count = formRepository.GetAll().Count();
+
+            formRepository.addForm(form);
+
+
+            Assert.AreEqual(form_count + 1, formRepository.GetAll().Count());
+        }
+
+
         [TearDown]
         public void TearDown()
         {

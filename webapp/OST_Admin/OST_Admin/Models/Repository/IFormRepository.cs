@@ -10,12 +10,14 @@ namespace OST_Admin.Models.Repository
 
         IQueryable<Form> GetAll();
         Form getFormById(int form_id);
-        void updateForm(Form form);
+        //void updateForm(Form form);
+        void updateForm(Form form, List<Question> question_list);
         void deleteFormById(int form_id);
         void addQuestion(int form_id, string question_type);
         int deleteQuestion(int question_id);
         void addOption(int question_id);
         int deleteOption(int option_id);
         Question getQuestionById(int question_id);
+        void addForm(Form form);
     }
 }
