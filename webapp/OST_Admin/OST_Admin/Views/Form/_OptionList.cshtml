@@ -11,32 +11,37 @@
     int questionid = vb.questionid;
     int formid = vb.formid;
     int questionsortorder = vb.sortorder;
+    int count = 0;
 }
 
 
-<h2>Options</h2>
+<div id="option-editor" class="ui-corner-all ui-widget-content ui-widget">
+<div id="option-editor-title">Options</div>
 
 
-@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();"})
+
 @foreach (OST_Admin.Models.Option option in Model)
 {     
     //Have to do this so that the model binder knows that these are part of the Options List
     @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].OptionId", option.OptionId);
     @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].SortOrder", option.SortOrder);                                                                          
 
-                                                                                     
-    <div class="editor-label">
-        @Html.LabelFor(o => option.Text)
-    </div>
-    <div class="editor-field">
-        @Html.EditorFor(o => option.Text, "", "["+questionsortorder+"].Options[" + option.SortOrder + "].Text")
-        @{
+
+        count = count +1;
+
+        
+        <input type="radio" checked=checked/>
+            <input type="text" id="option-input" name="[@questionsortorder].Options[@option.SortOrder].Text" value="@option.Text" />
+    
             //Hide the delete button on the first option
             if (option.SortOrder != 0)
             {
-                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();"})
+                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();",}, new {id = "option-delete-button"})
             }
-        }
-        @Html.ValidationMessageFor(o => option.Text)
-    </div>
+
+
+        
+        <br />
 }
+@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
+</div>

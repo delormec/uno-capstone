@@ -4,80 +4,65 @@
     ViewBag.Title = "Edit Form";
     int fid = ViewBag.formId;
 }
-
 <br />
-<div>
-    @Html.ActionLink("Back to List", "Index", null, new { id = "Back" })
-</div>
-
-<h2 class="ui-widget">Edit Form</h2>
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Form</legend>
-
+    <div id ="form-editor-outer">
+        <div>
+            @Html.ActionLink("Back to List", "Index", null, new { id = "Back" })
+        </div>
+    <div id="form-editor" class="ui-corner-all ui-widget-content ui-widget">
         @Html.HiddenFor(model => model.FormId)
         @Html.HiddenFor(model => model.Deleted)
         @Html.HiddenFor(model => model.Content)
         @Html.HiddenFor(model => model.DateCreated)
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+
+        <div id="form-title">
+            <input id="Name" class="text-box single-line" type="text" value="@Model.Name" name="Name"/>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+        <div id="form-descrip">
+            <input id="Description" class="text-box single-line" type="text" value="@Model.Description" name="Description"/>
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Description)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
+         <table id="form-editor-meta-table">
+            <tr>
+                <td> SharePoint URL </td>
+                <td>
+                    <div id="form-url">
+                        <input id="URL" class="text-box single-line" type="text" value="@Model.URL" name="URL"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Auto Update</td>
+                <td>
+                    @{
+                        <div id="AutoUpdateButtonSet">
+                        @if (Model.AutoUpdate == true)
+                        {
+                            <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" checked="checked"/><label for="AutoUpdate1">True</label>
+                            <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" /><label for="AutoUpdate2">False</label>
+                        }
+                        else
+                        {
+                            <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" /><label for="AutoUpdate1">True</label>
+                            <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" checked="checked"/><label for="AutoUpdate2">False</label>
+                        }
+                        </div>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.URL)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.URL)
-            @Html.ValidationMessageFor(model => model.URL)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.AutoUpdate)
-        </div>
-       
-        @{
-            //true/false button set
-            <div id="AutoUpdateButtonSet">
-             @if (Model.AutoUpdate == true)
-             {
-                <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" checked="checked"/><label for="AutoUpdate1">True</label>
-                <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" /><label for="AutoUpdate2">False</label>
-             }
-             else
-             {
-                <input type="radio" id="AutoUpdate1" name="AutoUpdate" value="true" /><label for="AutoUpdate1">True</label>
-                <input type="radio" id="AutoUpdate2" name="AutoUpdate" value="false" checked="checked"/><label for="AutoUpdate2">False</label>
-             }
-             </div>
-        }
-        
-        </fieldset>
-<br />
        <input type="submit" id="Save" value="Save Form" />
 
        @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { formId = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" })
        @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { formId = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace , OnBegin = "$('#QuestionTabInner').hide();"})
        @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { formId = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();"})
-<br />
-<br />
-       
+<br />      
             <div id="QuestionTabOuter">
 
                 @Html.Partial("_QuestionList", Model.Questions)
@@ -85,7 +70,7 @@
             </div>
         
 <br />
-
+</div>
 
 }
 
@@ -99,7 +84,9 @@
         $("#QuestionTabInner").livequery(function () {
             SetUpTabs();
             $('#QuestionTabInner').tabs({ active: $('#TabOpen').attr('value') });
-            $("input[type=submit], a[data-ajax=true], button").button();
+            $("input[type=submit],  a[data-ajax=true][id!='option-delete-button'][id!='option-add-button'], button").button();
+            //$("input[type=submit], a[id!='option-delete-button'], button").button();
+            //$('#option-delete-button').button({ icons: { primary: "ui-icon-minusthick"} });
             $("#Back").button();
             $('#QuestionTabInner').show();
         });
@@ -150,22 +137,4 @@
         }
 
 </script>
-
-<style>
-
-
-.ui-tabs .ui-tabs-panel 			{ padding: 20px; display: block; border-width: 0; background: none; 
-									  border: 1px solid #ccc; position: relative; min-height: 200px; }
-.ui-tabs .ui-tabs-hide 				{ display: none !important; }
-
-
-
-
-a.mover 							{ padding: 6px 12px; position: absolute;
-								      color: white; font-weight: bold; text-decoration: none; }
-.next-tab 							{ top: 0; right: 0; -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
-.prev-tab 							{ top: 0; left: 0; -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
-
-</style>
-
 }

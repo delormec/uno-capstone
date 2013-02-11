@@ -22,60 +22,93 @@
         <input type="hidden" value="@Model.SortOrder" name="[@id].SortOrder" id="QSortOrder"/>
         @Html.Hidden("ModelType", Model.GetType())
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Text)
+        <div id="question-type">Likert Scale Question</div>
+        <div id="question-text">
+            <input class="text-box single-line" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Text)
-            @Html.ValidationMessageFor(model => model.Text)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.HelpText)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.HelpText)
-            @Html.ValidationMessageFor(model => model.HelpText)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Steps)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Steps)
-            @Html.ValidationMessageFor(model => model.Steps)
+        <div id="question-help-text">
+            <input class="text-box single-line" type="text" value="@Model.HelpText" name="[@Model.SortOrder].HelpText"/>
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FieldName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FieldName)
-            @Html.ValidationMessageFor(model => model.FieldName)
-        </div>
+        <table id="question-table">
+            <tr>
+                <td>Field Name</td>
+                <td>
+                    <div id="question-field-name">
+                        <input class="text-box single-line" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Field Type</td>
+                <td>
+                    <div id="question-field-type">
+                        <input class="text-box single-line" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Steps (1-?)</td>
+                <td>
+                    <div id="question-steps">
+                        <input class="text-box single-line" type="text" value="@Model.Steps" name="[@Model.SortOrder].Steps"/>
+                    </div>
+                </td>
+            </tr>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FieldType)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FieldType)
-            @Html.ValidationMessageFor(model => model.FieldType)
-        </div>
+            <tr>
+                <td>low label</td>
+                <td>
+                    <div id="question-label-low">
+                        @Html.Hidden("Labels[0].LabelId", Model.Labels.ToList()[0].LabelId) 
+                        @Html.Hidden("Labels[0].Range", Model.Labels.ToList()[0].Range)
+                        <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[0].Text" name="[@Model.SortOrder].Labels[0].Text"/>
+                    </div>
+                </td>
+            </tr>
 
-        @foreach (OST_Admin.Models.Label label in Model.Labels.OrderBy(l => l.LabelId))
-        {
-            @Html.Hidden("Labels[" + labelcount + "].LabelId", label.LabelId) 
-            @Html.Hidden("Labels[" + labelcount + "].Range", label.Range)
+            <tr>
+                <td>medium label</td>
+                <td>
+                    <div id="question-label-medium">
+                        @Html.Hidden("Labels[1].LabelId", Model.Labels.ToList()[1].LabelId) 
+                        @Html.Hidden("Labels[1].Range", Model.Labels.ToList()[1].Range)
+                        <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[1].Text" name="[@Model.SortOrder].Labels[1].Text"/>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>high label</td>
+                <td>
+                    <div id="question-label-high">
+                        @Html.Hidden("Labels[2].LabelId", Model.Labels.ToList()[2].LabelId) 
+                        @Html.Hidden("Labels[2].Range", Model.Labels.ToList()[2].Range)
+                        <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[2].Text" name="[@Model.SortOrder].Labels[2].Text"/>
+                    </div>
+                </td>
+            </tr>
+
+             @foreach (OST_Admin.Models.Label label in Model.Labels.OrderBy(l => l.LabelId))
+              {
+                 /*
+                 @Html.Hidden("Labels[" + labelcount + "].LabelId", label.LabelId) 
+                 @Html.Hidden("Labels[" + labelcount + "].Range", label.Range)
                                                                                                                                                                               
-        <div class="editor-label">
-            @Html.LabelFor(l => label.Text)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(l => label.Text, "", "Labels[" + labelcount + "].Text")
-            @Html.ValidationMessageFor(l => label.Text)
-        </div>
+             <div class="editor-label">
+                    @Html.LabelFor(l => label.Text)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(l => label.Text, "", "Labels[" + labelcount + "].Text")
+                    @Html.ValidationMessageFor(l => label.Text)
+             </div>
             
-            labelcount++;
-        }
+                    labelcount++;
+                  * 
+                  */
+             }
+
+        </table>
+
 
   

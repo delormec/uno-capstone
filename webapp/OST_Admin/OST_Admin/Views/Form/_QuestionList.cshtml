@@ -10,7 +10,6 @@
 
 <input type="hidden" id="TabOpen" value="@tabopen" />
 
-
 <div id="QuestionTabInner" style="display:none;">
 <ul>
 @foreach (OST_Admin.Models.Question item in Model.OrderBy(ql => ql.SortOrder))
@@ -28,8 +27,6 @@
     
     
     <div id="tabs-@questionid">
-    <h2>Question @questionid</h2>
-    <p>
     @{//Based on what type of question it is create the form, and pass in the viewbag so it can know what # it needs to be.
     }
     @if (item is OST_Admin.Models.TextQuestion)
@@ -44,9 +41,7 @@
     {
         Html.RenderPartial("_LikertScaleQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
     }
-    </p>
     @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId}, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" })
     </div>
-   
 }
  </div>

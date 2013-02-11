@@ -1,14 +1,15 @@
 ﻿html {
-    background-color: #000000;
+    background-color: #DDDDDD;
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: #000;
-    color: #FFF;
-    font-size: .85em;
-    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    background-color: #DDDDDD;
+    color: #000000;
+
+    
+    font-family: Verdana,Arial,sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -18,5 +19,202 @@ body {
 {
     
     font-size: 75%;
+}
+ 
+a 
+{
+    color:Blue;
+}
+
+#form-editor-outer
+{
+ width:100%;
+ width:800px;
+ margin:0 auto;
+}
+
+#form-editor
+{
+ 
+ margin: 5px 0px 5px 0px;
+ padding: 5px 15px 0px 5px;
+}
+
+#form-editor #form-title
+{
+    padding-bottom:5px;
+}
+
+#form-editor #form-title input
+{
+    font-size: 20.4px; 
+    border: 1px solid rgb(0,0,0);
+    font-weight: bold;
+    padding:3px 3px 3px 3px;
+    width:100%;
+}
+
+#form-editor #form-descrip
+{
+   padding-bottom:5px;
+}
+
+#form-editor #form-descrip input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:100%;
+}
+
+#form-editor #form-editor-meta-table td
+{
+    padding-bottom:5px;   
+    width:125px
+}
+
+#form-editor #form-url
 {
     
+}
+
+#form-editor #form-url input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:300px;
+}
+
+#QuestionTabOuter
+{
+   padding:5px 0px 5px 0px;  
+}
+
+
+/*overwriting jqueryui*/
+.ui-widget-content {border: 1px solid rgb(150,150,150);
+                    background: #DDD;}
+
+                    
+                    
+#QuestionTabOuter .ui-tabs .ui-tabs-panel 			{display: block; border-width: 0; background: #DDD; 
+									  position: relative; min-height: 200px; 
+									   margin: 0px 0px 5px 0px;
+                                        padding: 5px 15px 0px 5px;}
+#QuestionTabOuter .ui-tabs .ui-tabs-hide 				{ display: none !important; }
+
+
+
+
+#QuestionTabOuter a.mover 							{ padding: 5px 5px; position: absolute;
+								      color: black; font-weight: bold; text-decoration: none; }
+#QuestionTabOuter .next-tab 							{ top: 0; right: 0; -moz-border-radius-topleft: 10px; -webkit-border-top-left-radius: 10px; }
+#QuestionTabOuter .prev-tab 							{ top: 0; left: 0; -moz-border-radius-topright: 10px; -webkit-border-top-right-radius: 10px; }
+
+
+#QuestionTabOuter #question-type
+{
+    padding-top:20px;
+}
+
+#QuestionTabOuter #question-text
+{
+   padding-bottom:5px;
+}
+
+#QuestionTabOuter #question-text input
+{
+    font-size: 20.4px; 
+    border: 1px solid rgb(0,0,0);
+    font-weight: bold;
+    padding:3px 3px 3px 3px;
+    width:100%;
+}
+
+#QuestionTabOuter #question-help-text
+{
+   padding-bottom:5px;
+}
+
+#QuestionTabOuter #question-help-text input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:100%;
+}
+
+#QuestionTabOuter #question-table td
+{
+    padding-bottom:5px;   
+    width:125px
+}
+
+#QuestionTabOuter #question-field-name input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:300px;
+}
+
+#QuestionTabOuter #question-field-type input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:300px;
+}
+
+
+#QuestionTabOuter #option-editor
+{
+    margin: 5px 0px 5px 0px;
+    padding: 5px 15px 0px 5px;
+}
+
+#QuestionTabOuter #option-editor-title
+{
+    padding-bottom:5px;
+    font-weight:bold;
+    font-size:20.4px;
+}
+
+#QuestionTabOuter #option-input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    margin:2px 2px 2px 2px;
+    width:300px;
+}
+
+#option-add-button
+{
+    padding-bottom:15px;
+}
+
+#QuestionTabOuter #question-steps input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:20px;
+}
+
+#QuestionTabOuter #question-label-low input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:125px;
+}
+
+#QuestionTabOuter #question-label-medium input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:125px;
+}
+
+#QuestionTabOuter #question-label-high input
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:125px;
+}
+
+

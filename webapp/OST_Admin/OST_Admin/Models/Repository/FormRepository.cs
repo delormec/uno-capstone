@@ -96,6 +96,9 @@ namespace OST_Admin.Models.Repository
                 throw new System.ArgumentException("Invalid Question Type");
             }
 
+            question.Text = "Question Title";
+            question.HelpText = "Help text";
+
             form.Questions.Add(question);
             _databaseContext.SaveChanges();
         }

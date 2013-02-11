@@ -16,6 +16,36 @@
         <input type="hidden" value="@Model.SortOrder" name="[@id].SortOrder" id="QSortOrder" />
         @Html.Hidden("ModelType", Model.GetType())
 
+        <div id="question-type">Text Question</div>
+        <div id="question-text">
+            <input class="text-box single-line" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
+        </div>
+        <div id="question-help-text">
+            <input class="text-box single-line" type="text" value="@Model.HelpText" name="[@Model.SortOrder].HelpText"/>
+        </div>
+
+        <table id="question-table">
+            <tr>
+                <td>Field Name</td>
+                <td>
+                    <div id="question-field-name">
+                        <input class="text-box single-line" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Field Type</td>
+                <td>
+                    <div id="question-field-type">
+                        <input class="text-box single-line" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        @{
+        /*
+
         <div class="editor-label">
             @Html.LabelFor(model => model.Text)
         </div>
@@ -47,3 +77,5 @@
             @Html.EditorFor(model => model.FieldType)
             @Html.ValidationMessageFor(model => model.FieldType)
         </div>
+        */
+        }

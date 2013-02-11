@@ -12,6 +12,7 @@ using System.Data.Objects;
 using OST_Admin.Helper;
 using OST_Admin.Models.ViewModel;
 using OST_Admin.Models.Repository;
+using System.Web.Security;
 
 namespace OST_Admin.Controllers
 {
@@ -28,10 +29,10 @@ namespace OST_Admin.Controllers
         //
         // GET: /Form/
 
+        
         public ActionResult Index()
         {
-            System.Console.Write("test");
-            return View(db.Forms.ToList());
+            return View(_formRepository.GetAll().ToList());
         }
 
         //
@@ -168,7 +169,7 @@ namespace OST_Admin.Controllers
             //}
             
             _formRepository.updateForm(form, question_list);
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { id = form.FormId });
             
             
 
