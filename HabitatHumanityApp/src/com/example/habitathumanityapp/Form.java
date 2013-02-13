@@ -15,4 +15,11 @@ public class Form {
 	@ElementList
 	public List<Question> questions;
 	
+	public String getFormName(){
+		return meta.getFormName();
+	}
+	
+	public int getFormId(){
+		return meta.getFormID();
+	}
 }

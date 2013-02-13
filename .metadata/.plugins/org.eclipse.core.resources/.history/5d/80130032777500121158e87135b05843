@@ -1,0 +1,59 @@
+<form>
+        <meta>
+                <formid>351</formid>
+                <name>Survey</name>
+                <url>86.52.51.12/service.scv</url>
+                <autoupload>false</autoupload>
+                <datecreated>04/25/2014</datecreated>
+        </meta>
+        <questions>
+                <question class="TextQuestion">
+                        <id>0</id>
+                        <text>Where are you from?</text>
+                        <helptext></helptext>   
+                        <fieldname>Name</fieldname>
+                        <fieldtype> String</fieldtype>
+                        <id>#</id>
+                </question>
+                <question class="TextQuestion">
+                        <id>1</id>
+                        <text>Where did you go to school?</text>
+                        <helptext></helptext>   
+                        <fieldname>School</fieldname>
+                        <fieldtype>String</fieldtype>
+                </question>
+                <question class="TextQuestion">
+                        <id>2</id>
+                        <text>When were you born?</text>
+                        <helptext>Please enter in mm/dd/yyyy</helptext>   
+                        <fieldname>DOB </fieldname>
+                        <fieldtype>Date</fieldtype>
+                </question>
+                <question class="ChoiceQuestion">
+                        <id>3</questionid>
+                        <text>How old are you?</text>
+                        <helptext></helptext>
+                        <fieldname>Age</fieldname>
+                        <fieldtype>Number</fieldtype>
+                        <options>
+                                <option>5</option>
+                                <option>10</option>
+                                <option>15</option>
+                                <other>true</other>
+                        </options>
+                </question>
+                <question class="LikertScaleQuestion">
+                        <questionid>4</questionid>            
+                        <text>On a scale of 1-10 how awesome am I?</text>
+                        <helptext> this is where i put the help text</helptext>
+                        <fieldname>AwesomeFactor </fieldname>
+                        <fieldtype>String</fieldtype>
+                        <steps>10</steps>
+                        <labels>
+                                <label>Really awesome</label>
+                                <label>Awesome awesome</label>
+                                <label>Awesome X INFINITE</label>       
+                        </labels>
+                </question>
+        </questions>
+</form>

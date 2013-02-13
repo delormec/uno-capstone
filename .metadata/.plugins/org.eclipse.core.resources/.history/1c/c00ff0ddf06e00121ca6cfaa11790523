@@ -1,0 +1,45 @@
+package com.example.habitathumanityapp;
+
+import java.io.File;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import android.os.Message;
+
+public class ParseThread extends Thread {
+
+
+	@Override
+	public void run(){
+
+		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+		Form f = null;
+		
+		Serializer serializer = new Persister();
+		
+		File formFile = new File("Form.xml");
+		
+		//Scanner in = new Scanner(System.in);
+		
+		//String test = in.next();
+		
+		//System.out.println(test);
+		
+		try{
+			f = serializer.read(Form.class, formFile);
+			
+			for( Question q: f.questions){
+				System.out.println(q.getClass());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		/*
+		Message msg = Message.obtain();
+		msg.obj = f;
+		mHandler.sendMessage(msg);
+		*/
+		
+	}
+}

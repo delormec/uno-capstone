@@ -1,6 +1,5 @@
 package com.example.habitathumanityapp;
 
-
 import org.simpleframework.xml.Element;
 
 public class Meta {
@@ -19,5 +18,11 @@ public class Meta {
 	@Element (name="datecreated")
 	public String dateCreated;
 	
-
+	public int getFormID(){
+		return formid;
+	}
+	
+	public String getFormName(){
+		return name;
+	}
 }

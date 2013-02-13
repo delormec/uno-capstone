@@ -7,22 +7,36 @@ import org.simpleframework.xml.core.Persister;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
+@SuppressLint({ "HandlerLeak", "ShowToast" })
 public class DisplayFormActivity extends Activity {
 
-	final Handler mHandler = new Handler();
-	
-	//This will post results from form back to UI thread
-	final Runnable mParseForm = new Runnable(){
-		public void run(){
-			postToUI();
+	public Handler mHandler = new Handler(){
+		public void handleMessage(Message msg){
+			Bundle b = msg.getData();
+			Boolean isEmpty = b.isEmpty();
+			TextView testTextView = (TextView)findViewById(R.id.testText);
+			if(isEmpty){
+				testTextView.setText("No Form.");
+			}
+			else{
+				testTextView.setText("Form Received");
+			}
 		}
 	};
+	
+	private static final String TAG = "DisplayFormActivity";
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,57 +45,74 @@ public class DisplayFormActivity extends Activity {
 		// Show the Up button in the action bar.
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}	
+		}
+	}
+
+	/*protected void onStart(){
+	}*/
+	public void onButtonClick(View view){
+		parseForm(this);
 		
-		startParse();
-		//parseForm.run();
+		Toast.makeText(this, "Testing...", Toast.LENGTH_SHORT);
 	}
 	
-	protected void postToUI() {
-		// TODO Auto-generated method stub
+	public void parseForm(Activity activity) {
+		final Activity act = activity;
 		
-	}
-
-	protected void startParse(){
+		/*
+		final Resources res = activity.getResources();
+		final Activity act = activity;
+		AssetManager assetManager = getAssets();
+		InputStream inStream = null;
 		
-		Thread t = new Thread() {
-			public void run(){
-				Form mResults = parseForm();
-				mHandler.post(mParseForm);	
-			}
-		};
+		final InputStream formInput = activity.getResources().openRawResource(R.raw.form);
+		*/
 		
-		t.start();
-	}
-
-
-	protected Form parseForm() {
-		// TODO Auto-generated method stub
-		
-		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-		Form f = null;
-		
-		Serializer serializer = new Persister();
-		
-		File formFile = new File("Form.xml");
-		
-		//Scanner in = new Scanner(System.in);
-		
-		//String test = in.next();
-		
-		//System.out.println(test);
-		
-		try{
-			f = serializer.read(Form.class, formFile);
+		Runnable runnable = new Runnable(){
+			public void run(){	
+				//android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+				Form f = null;
+				
+				Serializer serializer = new Persister();
+				String filename = "form.xml";
+				
+				File file = new File( act.getFilesDir(), filename);;
+				 
+				Log.v(TAG,"Filename=" + file.toString());
+				
+				//Look into serialization/deserialization of objects
+				try{
+					f = serializer.read(Form.class, file);
+					
+					int formID = f.getFormId();
+					String formName = f.getFormName();
+					
+					assert f.getFormId() == 351;
+					assert f.getFormName() == "Survey";
+					
+					Log.v(TAG,"Form id is " + formID);
+					Log.v(TAG,"Form name is " + formName);
+					
+						
+					
+					for( Question q: f.questions){
+						System.out.println(q.getClass());
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				Message msg = Message.obtain();
+				msg.obj = f;
+				mHandler.sendMessage(msg);
+				}
+			};
 			
-			for( Question q: f.questions){
-				System.out.println(q.getClass());
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return f;
+			Thread myThread = new Thread(runnable);
+			myThread.start();
+			
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
