@@ -10,7 +10,8 @@ namespace OST_Admin
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.livequery.min.js"));
+                        "~/Scripts/jquery.livequery.min.js",
+                        "~/Scripts/jquery.dataTables.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-1.10.0.custom.js"));
@@ -24,7 +25,7 @@ namespace OST_Admin
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css", "~/Content/jquery.dataTables.css", "~/Content/jquery.dataTables_themeroller.css"));
 
 
             bundles.Add(new StyleBundle("~/Content/themes/ui-notdarkness/css").Include(

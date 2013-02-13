@@ -188,6 +188,20 @@
     <Compile Include="Models\Repository\IFormRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\Copy of Site.css" />
+    <Content Include="Content\images\back_disabled.png" />
+    <Content Include="Content\images\back_enabled.png" />
+    <Content Include="Content\images\back_enabled_hover.png" />
+    <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\images\forward_disabled.png" />
+    <Content Include="Content\images\forward_enabled.png" />
+    <Content Include="Content\images\forward_enabled_hover.png" />
+    <Content Include="Content\images\sort_asc.png" />
+    <Content Include="Content\images\sort_asc_disabled.png" />
+    <Content Include="Content\images\sort_both.png" />
+    <Content Include="Content\images\sort_desc.png" />
+    <Content Include="Content\images\sort_desc_disabled.png" />
+    <Content Include="Content\jquery.dataTables.css" />
+    <Content Include="Content\jquery.dataTables_themeroller.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -267,6 +281,18 @@
     <Content Include="Content\themes\ui-darkness\jquery-ui-1.10.0.custom.css" />
     <Content Include="Content\themes\ui-darkness\jquery-ui-1.10.0.custom.min.css" />
     <Content Include="Content\themes\ui-notdarkness\jquery-ui-1.10.0.custom.css" />
+    <Content Include="Images\back_disabled.png" />
+    <Content Include="Images\back_enabled.png" />
+    <Content Include="Images\back_enabled_hover.png" />
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\forward_disabled.png" />
+    <Content Include="Images\forward_enabled.png" />
+    <Content Include="Images\forward_enabled_hover.png" />
+    <Content Include="Images\sort_asc.png" />
+    <Content Include="Images\sort_asc_disabled.png" />
+    <Content Include="Images\sort_both.png" />
+    <Content Include="Images\sort_desc.png" />
+    <Content Include="Images\sort_desc_disabled.png" />
     <Content Include="Scripts\jquery-1.7.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
@@ -275,6 +301,7 @@
     <Content Include="Scripts\jquery-ui-1.10.0.min.js" />
     <Content Include="Scripts\jquery-ui.unobtrusive-2.0.0.js" />
     <Content Include="Scripts\jquery-ui.unobtrusive-2.0.0.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.livequery.min.js" />
     <Content Include="Views\Form\_OptionList.cshtml" />
   </ItemGroup>
@@ -335,6 +362,8 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\images\Sorting icons.psd" />
+    <None Include="Images\Sorting icons.psd" />
     <None Include="Models\OST.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>OST.cs</LastGenOutput>

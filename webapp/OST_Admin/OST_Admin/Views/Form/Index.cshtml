@@ -3,23 +3,16 @@
 @{
     ViewBag.Title = "Index";
 }
+<div id = "form-index-outer">
+<h2>Form Templates</h2>
+    <br />
+@Html.ActionLink("Create New", "Create", new { name = "btn-create" })
+<div id ="form-index" class="ui-corner-all ui-widget-content ui-widget">
+    
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
+<table id="form-index-table">
+    <thead>
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AutoUpdate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Deleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -31,18 +24,11 @@
         </th>
         <th></th>
     </tr>
+    </thead>
+        <tbody>
+@foreach (var item in Model.OrderBy(p => p.DateCreated)) {
 
-@foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AutoUpdate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Deleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
@@ -54,11 +40,32 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.FormId}) |
-            @Html.ActionLink("Details", "Details", new { id=item.FormId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.FormId }) |
-            @Html.ActionLink("XML", "XML", new { id=item.FormId })
+            @Html.ActionLink("Delete", "Delete", new { id = item.FormId }) |
+            @Html.ActionLink("XML", "XML", new { id = item.FormId })
+
+            @{
+            //@Html.ActionLink("Edit", "Edit", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only", role = "button" })
+           // @Html.ActionLink("Delete", "Delete", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" }) |
+            //@Html.ActionLink("XML", "XML", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" })
+            }
+            
         </td>
     </tr>
-}
 
+}
+    </tbody>
 </table>
+</div>
+
+</div>
+@section Scripts {
+
+<script>
+
+
+    $(function () {
+        $("a[id=btn-create]").button();
+        $("#form-index-table").dataTable();
+    });
+</script>
+}

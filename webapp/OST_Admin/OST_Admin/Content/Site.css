@@ -217,4 +217,16 @@ a
     width:125px;
 }
 
+#form-index-outer
+{
+ width:100%;
+ width:800px;
+ margin:0 auto;
+}
 
+#form-index
+{
+ 
+ margin: 5px 0px 5px 0px;
+ padding: 5px 15px 0px 5px;
+}
