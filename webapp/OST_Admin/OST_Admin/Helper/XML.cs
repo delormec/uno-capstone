@@ -45,9 +45,9 @@ public class XML
         // Add the meta data to the XML string
         xml += string.Format("\t\t<id>{0}</id>\n", form.FormId);
         xml += string.Format("\t\t<name>{0}</name>\n", form.Name);
-        //xml += string.Format("<listname>{0}</listname>\n", form.ListName);
         xml += string.Format("\t\t<url>{0}</url>\n", form.URL);
 
+        
         // Autoupdate
         if (form.AutoUpdate == null || form.AutoUpdate == false)
         {
@@ -62,9 +62,13 @@ public class XML
         xml += string.Format("\t\t<description>{0}</description>\n", form.Description);
 
 
+        // These two are filled in on the phone app
+        xml += "\t\t<user></user>\n";
+        xml += "\t\t<pass></pass>\n";
+
+
         // Close the meta tag
         xml += "\t</meta>\n\n";
-
 
 
 
@@ -160,8 +164,13 @@ public class XML
                 xml += "\t\t\t</labels>\n";
             }
 
+
+            // Filled in on the phone app
+            xml += "\n\t\t\t<answer></answer>\n\n";  
+
             // Close question tag
-            xml += "\t\t</question>\n\n";
+            
+            xml += "\t\t</question>\n\n\n";
         }
 
         // Close questions tag and form tag

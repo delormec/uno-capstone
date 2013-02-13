@@ -1,8 +1,0 @@
-package com.example.habitathumanityapp;
-
-import org.simpleframework.xml.Element;
-
-public class Question {
-	@Element ( name= "text")
-	public String Text;
-}
