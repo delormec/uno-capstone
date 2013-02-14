@@ -84,10 +84,11 @@ namespace OST_Admin.Models.Repository
                 //this will put the item at the bottom of the list.
                 lsq.SortOrder = form.Questions.Count;
 
-                List<Label> ll = new List<Label>() { new Label() { Range = "low" }, new Label() { Range = "medium" }, new Label() { Range = "high" } };
+                List<Label> ll = new List<Label>() { new Label() { Range = "low" }, new Label() { Range = "high" } };
 
                 //add them all to the likert scale question
                 ll.ForEach(l => lsq.Labels.Add(l));
+                lsq.Steps = 10;
 
                 question = lsq;
             }
@@ -96,8 +97,8 @@ namespace OST_Admin.Models.Repository
                 throw new System.ArgumentException("Invalid Question Type");
             }
 
-            question.Text = "Question Title";
-            question.HelpText = "Help text";
+            question.Text = "enter question here";
+            question.HelpText = "enter help text here";
 
             form.Questions.Add(question);
             _databaseContext.SaveChanges();
@@ -178,7 +179,9 @@ namespace OST_Admin.Models.Repository
             old_form = _databaseContext.Forms.Where(p => p.FormId == form.FormId).Single();
 
             old_form.AutoUpdate = form.AutoUpdate;
-            old_form.Content = form.Content;
+            old_form.KeyField = form.KeyField;
+            old_form.ListName = form.ListName;
+            old_form.Group = form.Group;
             old_form.DateCreated = form.DateCreated;
             old_form.Deleted = form.Deleted;
             old_form.Description = form.Description;
@@ -199,7 +202,9 @@ namespace OST_Admin.Models.Repository
             old_form.Name = form.Name;
             old_form.URL = form.URL;
             old_form.Deleted = form.Deleted;
-            old_form.Content = form.Content;
+            old_form.KeyField = form.KeyField;
+            old_form.Group = form.Group;
+            old_form.ListName = form.ListName;
             old_form.DateCreated = form.DateCreated;
 
             //List<Question> qlist = new List<Question>();
@@ -232,6 +237,7 @@ namespace OST_Admin.Models.Repository
                         cq.SortOrder = q2.SortOrder;
                         cq.FieldName = q2.FieldName;
                         cq.FieldType = q2.FieldType;
+                        cq.Multiple = q2.Multiple;
                         //cq.Options.ToList().ForEach(qoption => db.DeleteObject(qoption));
                         //cq.Options.ToList().ForEach(qoption => db.Detach(qoption));
                         //cq.Options.ToList().ForEach(qoption => ));

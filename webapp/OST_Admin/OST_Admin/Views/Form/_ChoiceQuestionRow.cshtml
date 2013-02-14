@@ -47,6 +47,26 @@
                 </td>
             </tr>
             <tr>
+                <td>Allow Multiple</td>
+                <td>
+                    @{
+                        //true/false button set
+                        <div class="MultipleSet@(id)">
+                        @if (Model.Multiple == true)
+                        {
+                            <input type="radio" id="[@id]Multiple1" name="[@id].Multiple" value="true" checked="checked"/><label for="[@id]Multiple1">Yes</label>
+                            <input type="radio" id="[@id]Multiple2" name="[@id].Multiple" value="false" /><label for="[@id]Multiple2">No</label>
+                        }
+                        else
+                        {
+                            <input type="radio" id="[@id]Multiple1" name="[@id].Multiple" value="true" /><label for="[@id]Multiple1">Yes</label>
+                            <input type="radio" id="[@id]Multiple2" name="[@id].Multiple" value="false" checked="checked"/><label for="[@id]Multiple2">No</label>
+                        }
+                        </div>
+                    }
+                </td>
+            </tr>
+            <tr>
                 <td>Add "Other"</td>
                 <td>
                     @{

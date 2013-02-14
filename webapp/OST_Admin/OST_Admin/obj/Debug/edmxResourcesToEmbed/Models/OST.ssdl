@@ -6,6 +6,9 @@
     <EntitySet Name="Questions" EntityType="OSTModel.Store.Questions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Options" EntityType="OSTModel.Store.Options" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Labels" EntityType="OSTModel.Store.Labels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="OSTModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Configurations" EntityType="OSTModel.Store.Configurations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HelpImages" EntityType="OSTModel.Store.HelpImages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_LikertScaleQuestion" EntityType="OSTModel.Store.Questions_LikertScaleQuestion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_ChoiceQuestion" EntityType="OSTModel.Store.Questions_ChoiceQuestion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_TextQuestion" EntityType="OSTModel.Store.Questions_TextQuestion" store:Type="Tables" Schema="dbo" />
@@ -20,6 +23,14 @@
     <AssociationSet Name="ChoiceQuestionOption" Association="OSTModel.Store.ChoiceQuestionOption">
       <End Role="ChoiceQuestion" EntitySet="Questions_ChoiceQuestion" />
       <End Role="Option" EntitySet="Options" />
+    </AssociationSet>
+    <AssociationSet Name="RoleUser" Association="OSTModel.Store.RoleUser">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="QuestionHelpImage" Association="OSTModel.Store.QuestionHelpImage">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="HelpImage" EntitySet="HelpImages" />
     </AssociationSet>
     <AssociationSet Name="FK_LikertScaleQuestion_inherits_Question" Association="OSTModel.Store.FK_LikertScaleQuestion_inherits_Question">
       <End Role="Question" EntitySet="Questions" />
@@ -41,11 +52,13 @@
     <Property Name="FormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AutoUpdate" Type="bit" Nullable="true" />
     <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
-    <Property Name="Content" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ListName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="DateCreated" Type="datetime" Nullable="true" />
     <Property Name="URL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="KeyField" Type="int" Nullable="true" />
+    <Property Name="Group" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -55,6 +68,7 @@
     <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Role_RoleId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Questions">
     <Key>
@@ -86,6 +100,31 @@
     <Property Name="Range" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LikertScaleQuestion_QuestionId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Configurations">
+    <Key>
+      <PropertyRef Name="ConfigurationId" />
+    </Key>
+    <Property Name="SharePointUserName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SharePointPassword" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SharePointURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ConfigurationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HelpImages">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Data" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Question_QuestionId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Questions_LikertScaleQuestion">
     <Key>
       <PropertyRef Name="QuestionId" />
@@ -98,6 +137,7 @@
       <PropertyRef Name="QuestionId" />
     </Key>
     <Property Name="Other" Type="bit" Nullable="true" DefaultValue="false" />
+    <Property Name="Multiple" Type="bit" Nullable="true" />
     <Property Name="QuestionId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Questions_TextQuestion">
@@ -143,6 +183,30 @@
       </Principal>
       <Dependent Role="Option">
         <PropertyRef Name="ChoiceQuestion_QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleUser">
+    <End Role="Role" Type="OSTModel.Store.Roles" Multiplicity="1" />
+    <End Role="User" Type="OSTModel.Store.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Role_RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="QuestionHelpImage">
+    <End Role="Question" Type="OSTModel.Store.Questions" Multiplicity="1" />
+    <End Role="HelpImage" Type="OSTModel.Store.HelpImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="HelpImage">
+        <PropertyRef Name="Question_QuestionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

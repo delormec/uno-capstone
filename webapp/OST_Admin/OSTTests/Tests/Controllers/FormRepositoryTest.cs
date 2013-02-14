@@ -116,15 +116,15 @@ namespace OST_Admin.Tests.Controllers
         [Test]
         public void Can_Update_Form_With_New_Form()
         {
-            string content = "New Content";
+            string name = "New Content";
             int id = 25;
-            Form form = new Form() { AutoUpdate = false, Content = content, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = id, Name = "This is my name" };
+            Form form = new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = id, Name = name };
 
             formRepository.updateForm(form);
 
             Form form2 = formRepository.getFormById(id);
 
-            Assert.AreEqual(content, form2.Content);
+            Assert.AreEqual(name, form2.Name);
         }
 
         [Test]

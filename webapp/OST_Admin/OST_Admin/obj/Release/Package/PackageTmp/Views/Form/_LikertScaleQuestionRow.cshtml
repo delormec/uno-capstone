@@ -68,7 +68,7 @@
             </tr>
 
             <tr>
-                <td>medium label</td>
+                <td>high label</td>
                 <td>
                     <div id="question-label-medium">
                         @Html.Hidden("Labels[1].LabelId", Model.Labels.ToList()[1].LabelId) 
@@ -77,37 +77,6 @@
                     </div>
                 </td>
             </tr>
-
-            <tr>
-                <td>high label</td>
-                <td>
-                    <div id="question-label-high">
-                        @Html.Hidden("Labels[2].LabelId", Model.Labels.ToList()[2].LabelId) 
-                        @Html.Hidden("Labels[2].Range", Model.Labels.ToList()[2].Range)
-                        <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[2].Text" name="[@Model.SortOrder].Labels[2].Text"/>
-                    </div>
-                </td>
-            </tr>
-
-             @foreach (OST_Admin.Models.Label label in Model.Labels.OrderBy(l => l.LabelId))
-              {
-                 /*
-                 @Html.Hidden("Labels[" + labelcount + "].LabelId", label.LabelId) 
-                 @Html.Hidden("Labels[" + labelcount + "].Range", label.Range)
-                                                                                                                                                                              
-             <div class="editor-label">
-                    @Html.LabelFor(l => label.Text)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(l => label.Text, "", "Labels[" + labelcount + "].Text")
-                    @Html.ValidationMessageFor(l => label.Text)
-             </div>
-            
-                    labelcount++;
-                  * 
-                  */
-             }
-
         </table>
 
 

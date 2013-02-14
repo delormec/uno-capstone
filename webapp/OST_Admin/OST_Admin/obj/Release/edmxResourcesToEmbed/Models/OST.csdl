@@ -18,6 +18,17 @@
       <End Role="ChoiceQuestion" EntitySet="Questions" />
       <End Role="Option" EntitySet="Options" />
     </AssociationSet>
+    <EntitySet Name="Roles" EntityType="OSTModel.Role" />
+    <AssociationSet Name="RoleUser" Association="OSTModel.RoleUser">
+      <End EntitySet="Roles" Role="Role" />
+      <End EntitySet="Users" Role="User" />
+    </AssociationSet>
+    <EntitySet Name="Configurations" EntityType="OSTModel.Configuration" />
+    <EntitySet Name="HelpImages" EntityType="OSTModel.HelpImage" />
+    <AssociationSet Name="QuestionHelpImage" Association="OSTModel.QuestionHelpImage">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="HelpImage" EntitySet="HelpImages" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Form">
     <Key>
@@ -26,12 +37,14 @@
     <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
     <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="False" />
-    <Property Type="String" Name="Content" Nullable="true" />
+    <Property Type="String" Name="ListName" Nullable="true" />
     <Property Type="String" Name="Name" Nullable="true" />
     <Property Type="String" Name="Description" Nullable="true" />
     <Property Type="DateTime" Name="DateCreated" Nullable="true" />
     <Property Type="String" Name="URL" Nullable="true" />
     <NavigationProperty Name="Questions" Relationship="OSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
+    <Property Type="Int32" Name="KeyField" Nullable="true" />
+    <Property Type="String" Name="Group" Nullable="true" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -41,6 +54,7 @@
     <Property Type="String" Name="UserName" Nullable="false" />
     <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
     <Property Type="String" Name="Password" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="OSTModel.RoleUser" FromRole="User" ToRole="Role" />
   </EntityType>
   <EntityType Name="Question">
     <Key>
@@ -53,10 +67,12 @@
     <Property Type="String" Name="FieldType" Nullable="true" />
     <Property Type="Int32" Name="SortOrder" Nullable="false" />
     <NavigationProperty Name="Form" Relationship="OSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
+    <NavigationProperty Name="HelpImages" Relationship="OSTModel.QuestionHelpImage" FromRole="Question" ToRole="HelpImage" />
   </EntityType>
   <EntityType Name="ChoiceQuestion" BaseType="OSTModel.Question">
     <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false" />
     <NavigationProperty Name="Options" Relationship="OSTModel.ChoiceQuestionOption" FromRole="ChoiceQuestion" ToRole="Option" />
+    <Property Type="Boolean" Name="Multiple" Nullable="true" />
   </EntityType>
   <EntityType Name="LikertScaleQuestion" BaseType="OSTModel.Question">
     <Property Type="Int32" Name="Steps" Nullable="false" />
@@ -96,5 +112,39 @@
       <OnDelete Action="Cascade" />
     </End>
     <End Type="OSTModel.Option" Role="Option" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="OSTModel.RoleUser" FromRole="Role" ToRole="User" />
+  </EntityType>
+  <Association Name="RoleUser">
+    <End Type="OSTModel.Role" Multiplicity="1" Role="Role" />
+    <End Type="OSTModel.User" Multiplicity="*" Role="User" />
+  </Association>
+  <EntityType Name="Configuration">
+    <Key>
+      <PropertyRef Name="ConfigurationId" />
+    </Key>
+    <Property Type="String" Name="SharePointUserName" Nullable="true" />
+    <Property Type="String" Name="SharePointPassword" Nullable="true" />
+    <Property Type="String" Name="SharePointURL" Nullable="true" />
+    <Property Type="Int32" Name="ConfigurationId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="HelpImage">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Type="Int32" Name="ImageId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="Binary" Name="Data" Nullable="true" />
+    <NavigationProperty Name="Question" Relationship="OSTModel.QuestionHelpImage" FromRole="HelpImage" ToRole="Question" />
+  </EntityType>
+  <Association Name="QuestionHelpImage">
+    <End Type="OSTModel.Question" Role="Question" Multiplicity="1" />
+    <End Type="OSTModel.HelpImage" Role="HelpImage" Multiplicity="*" />
   </Association>
 </Schema>

@@ -21,6 +21,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("OSTModel", "FormQuestion", "Form", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.Form), "Question", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Question))]
 [assembly: EdmRelationshipAttribute("OSTModel", "LikertScaleQuestionLabel", "LikertScaleQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.LikertScaleQuestion), "Label", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Label))]
 [assembly: EdmRelationshipAttribute("OSTModel", "ChoiceQuestionOption", "ChoiceQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.ChoiceQuestion), "Option", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.Option))]
+[assembly: EdmRelationshipAttribute("OSTModel", "RoleUser", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.Role), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.User))]
+[assembly: EdmRelationshipAttribute("OSTModel", "QuestionHelpImage", "Question", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(OST_Admin.Models.Question), "HelpImage", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(OST_Admin.Models.HelpImage))]
 
 #endregion
 
@@ -34,6 +36,9 @@ namespace OST_Admin.Models
                 IObjectSet<Question> Questions { get; }
                 IObjectSet<Option> Options { get; }
                 IObjectSet<Label> Labels { get; }
+                IObjectSet<Role> Roles { get; }
+                IObjectSet<Configuration> Configurations { get; }
+                IObjectSet<HelpImage> HelpImages { get; }
                 int SaveChanges();
     }
     /// <summary>
@@ -159,6 +164,54 @@ namespace OST_Admin.Models
             }
         }
         private IObjectSet<Label> _Labels;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<Role> Roles
+        {
+            get
+            {
+                if ((_Roles == null))
+                {
+                    _Roles = base.CreateObjectSet<Role>("Roles");
+                }
+                return _Roles;
+            }
+        }
+        private IObjectSet<Role> _Roles;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<Configuration> Configurations
+        {
+            get
+            {
+                if ((_Configurations == null))
+                {
+                    _Configurations = base.CreateObjectSet<Configuration>("Configurations");
+                }
+                return _Configurations;
+            }
+        }
+        private IObjectSet<Configuration> _Configurations;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public IObjectSet<HelpImage> HelpImages
+        {
+            get
+            {
+                if ((_HelpImages == null))
+                {
+                    _HelpImages = base.CreateObjectSet<HelpImage>("HelpImages");
+                }
+                return _HelpImages;
+            }
+        }
+        private IObjectSet<HelpImage> _HelpImages;
 
         #endregion
         #region AddTo Methods
@@ -201,6 +254,30 @@ namespace OST_Admin.Models
         public void AddToLabels(Label label)
         {
             base.AddObject("Labels", label);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Roles EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRoles(Role role)
+        {
+            base.AddObject("Roles", role);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Configurations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToConfigurations(Configuration configuration)
+        {
+            base.AddObject("Configurations", configuration);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the HelpImages EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToHelpImages(HelpImage helpImage)
+        {
+            base.AddObject("HelpImages", helpImage);
         }
 
         #endregion
@@ -260,6 +337,30 @@ namespace OST_Admin.Models
         private Nullable<global::System.Boolean> _Other = false;
         partial void OnOtherChanging(Nullable<global::System.Boolean> value);
         partial void OnOtherChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> Multiple
+        {
+            get
+            {
+                return _Multiple;
+            }
+            set
+            {
+                OnMultipleChanging(value);
+                ReportPropertyChanging("Multiple");
+                _Multiple = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Multiple");
+                OnMultipleChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _Multiple;
+        partial void OnMultipleChanging(Nullable<global::System.Boolean> value);
+        partial void OnMultipleChanged();
 
         #endregion
     
@@ -288,6 +389,133 @@ namespace OST_Admin.Models
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="Configuration")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Configuration : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Configuration object.
+        /// </summary>
+        /// <param name="configurationId">Initial value of the ConfigurationId property.</param>
+        public static Configuration CreateConfiguration(global::System.Int32 configurationId)
+        {
+            Configuration configuration = new Configuration();
+            configuration.ConfigurationId = configurationId;
+            return configuration;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SharePointUserName
+        {
+            get
+            {
+                return _SharePointUserName;
+            }
+            set
+            {
+                OnSharePointUserNameChanging(value);
+                ReportPropertyChanging("SharePointUserName");
+                _SharePointUserName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SharePointUserName");
+                OnSharePointUserNameChanged();
+            }
+        }
+        private global::System.String _SharePointUserName;
+        partial void OnSharePointUserNameChanging(global::System.String value);
+        partial void OnSharePointUserNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SharePointPassword
+        {
+            get
+            {
+                return _SharePointPassword;
+            }
+            set
+            {
+                OnSharePointPasswordChanging(value);
+                ReportPropertyChanging("SharePointPassword");
+                _SharePointPassword = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SharePointPassword");
+                OnSharePointPasswordChanged();
+            }
+        }
+        private global::System.String _SharePointPassword;
+        partial void OnSharePointPasswordChanging(global::System.String value);
+        partial void OnSharePointPasswordChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SharePointURL
+        {
+            get
+            {
+                return _SharePointURL;
+            }
+            set
+            {
+                OnSharePointURLChanging(value);
+                ReportPropertyChanging("SharePointURL");
+                _SharePointURL = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SharePointURL");
+                OnSharePointURLChanged();
+            }
+        }
+        private global::System.String _SharePointURL;
+        partial void OnSharePointURLChanging(global::System.String value);
+        partial void OnSharePointURLChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ConfigurationId
+        {
+            get
+            {
+                return _ConfigurationId;
+            }
+            set
+            {
+                if (_ConfigurationId != value)
+                {
+                    OnConfigurationIdChanging(value);
+                    ReportPropertyChanging("ConfigurationId");
+                    _ConfigurationId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ConfigurationId");
+                    OnConfigurationIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ConfigurationId;
+        partial void OnConfigurationIdChanging(global::System.Int32 value);
+        partial void OnConfigurationIdChanged();
+
+        #endregion
+    
     }
     
     /// <summary>
@@ -394,24 +622,24 @@ namespace OST_Admin.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String Content
+        public global::System.String ListName
         {
             get
             {
-                return _Content;
+                return _ListName;
             }
             set
             {
-                OnContentChanging(value);
-                ReportPropertyChanging("Content");
-                _Content = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Content");
-                OnContentChanged();
+                OnListNameChanging(value);
+                ReportPropertyChanging("ListName");
+                _ListName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ListName");
+                OnListNameChanged();
             }
         }
-        private global::System.String _Content;
-        partial void OnContentChanging(global::System.String value);
-        partial void OnContentChanged();
+        private global::System.String _ListName;
+        partial void OnListNameChanging(global::System.String value);
+        partial void OnListNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -508,6 +736,54 @@ namespace OST_Admin.Models
         private global::System.String _URL;
         partial void OnURLChanging(global::System.String value);
         partial void OnURLChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> KeyField
+        {
+            get
+            {
+                return _KeyField;
+            }
+            set
+            {
+                OnKeyFieldChanging(value);
+                ReportPropertyChanging("KeyField");
+                _KeyField = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("KeyField");
+                OnKeyFieldChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _KeyField;
+        partial void OnKeyFieldChanging(Nullable<global::System.Int32> value);
+        partial void OnKeyFieldChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Group
+        {
+            get
+            {
+                return _Group;
+            }
+            set
+            {
+                OnGroupChanging(value);
+                ReportPropertyChanging("Group");
+                _Group = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Group");
+                OnGroupChanged();
+            }
+        }
+        private global::System.String _Group;
+        partial void OnGroupChanging(global::System.String value);
+        partial void OnGroupChanged();
 
         #endregion
     
@@ -531,6 +807,150 @@ namespace OST_Admin.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Question>("OSTModel.FormQuestion", "Question", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="HelpImage")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class HelpImage : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new HelpImage object.
+        /// </summary>
+        /// <param name="imageId">Initial value of the ImageId property.</param>
+        public static HelpImage CreateHelpImage(global::System.Int32 imageId)
+        {
+            HelpImage helpImage = new HelpImage();
+            helpImage.ImageId = imageId;
+            return helpImage;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ImageId
+        {
+            get
+            {
+                return _ImageId;
+            }
+            set
+            {
+                if (_ImageId != value)
+                {
+                    OnImageIdChanging(value);
+                    ReportPropertyChanging("ImageId");
+                    _ImageId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ImageId");
+                    OnImageIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ImageId;
+        partial void OnImageIdChanging(global::System.Int32 value);
+        partial void OnImageIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] Data
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_Data);
+            }
+            set
+            {
+                OnDataChanging(value);
+                ReportPropertyChanging("Data");
+                _Data = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Data");
+                OnDataChanged();
+            }
+        }
+        private global::System.Byte[] _Data;
+        partial void OnDataChanging(global::System.Byte[] value);
+        partial void OnDataChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "QuestionHelpImage", "Question")]
+        public Question Question
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Question>("OSTModel.QuestionHelpImage", "Question").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Question>("OSTModel.QuestionHelpImage", "Question").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Question> QuestionReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Question>("OSTModel.QuestionHelpImage", "Question");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Question>("OSTModel.QuestionHelpImage", "Question", value);
                 }
             }
         }
@@ -1126,6 +1546,134 @@ namespace OST_Admin.Models
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "QuestionHelpImage", "HelpImage")]
+        public EntityCollection<HelpImage> HelpImages
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<HelpImage>("OSTModel.QuestionHelpImage", "HelpImage");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<HelpImage>("OSTModel.QuestionHelpImage", "HelpImage", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="OSTModel", Name="Role")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Role : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Role object.
+        /// </summary>
+        /// <param name="roleId">Initial value of the RoleId property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static Role CreateRole(global::System.Int32 roleId, global::System.String name)
+        {
+            Role role = new Role();
+            role.RoleId = roleId;
+            role.Name = name;
+            return role;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RoleId
+        {
+            get
+            {
+                return _RoleId;
+            }
+            set
+            {
+                if (_RoleId != value)
+                {
+                    OnRoleIdChanging(value);
+                    ReportPropertyChanging("RoleId");
+                    _RoleId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("RoleId");
+                    OnRoleIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _RoleId;
+        partial void OnRoleIdChanging(global::System.Int32 value);
+        partial void OnRoleIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "RoleUser", "User")]
+        public EntityCollection<User> Users
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("OSTModel.RoleUser", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("OSTModel.RoleUser", "User", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -1286,6 +1834,47 @@ namespace OST_Admin.Models
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("OSTModel", "RoleUser", "Role")]
+        public Role Role
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Role>("OSTModel.RoleUser", "Role").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Role>("OSTModel.RoleUser", "Role").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Role> RoleReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Role>("OSTModel.RoleUser", "Role");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Role>("OSTModel.RoleUser", "Role", value);
+                }
+            }
+        }
+
+        #endregion
     }
 
     #endregion

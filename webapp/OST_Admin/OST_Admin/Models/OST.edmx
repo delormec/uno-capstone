@@ -11,6 +11,9 @@
     <EntitySet Name="Questions" EntityType="OSTModel.Store.Questions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Options" EntityType="OSTModel.Store.Options" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Labels" EntityType="OSTModel.Store.Labels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="OSTModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Configurations" EntityType="OSTModel.Store.Configurations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="HelpImages" EntityType="OSTModel.Store.HelpImages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_LikertScaleQuestion" EntityType="OSTModel.Store.Questions_LikertScaleQuestion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_ChoiceQuestion" EntityType="OSTModel.Store.Questions_ChoiceQuestion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_TextQuestion" EntityType="OSTModel.Store.Questions_TextQuestion" store:Type="Tables" Schema="dbo" />
@@ -25,6 +28,14 @@
     <AssociationSet Name="ChoiceQuestionOption" Association="OSTModel.Store.ChoiceQuestionOption">
       <End Role="ChoiceQuestion" EntitySet="Questions_ChoiceQuestion" />
       <End Role="Option" EntitySet="Options" />
+    </AssociationSet>
+    <AssociationSet Name="RoleUser" Association="OSTModel.Store.RoleUser">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="QuestionHelpImage" Association="OSTModel.Store.QuestionHelpImage">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="HelpImage" EntitySet="HelpImages" />
     </AssociationSet>
     <AssociationSet Name="FK_LikertScaleQuestion_inherits_Question" Association="OSTModel.Store.FK_LikertScaleQuestion_inherits_Question">
       <End Role="Question" EntitySet="Questions" />
@@ -46,11 +57,13 @@
     <Property Name="FormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AutoUpdate" Type="bit" Nullable="true" />
     <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
-    <Property Name="Content" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ListName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="DateCreated" Type="datetime" Nullable="true" />
     <Property Name="URL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="KeyField" Type="int" Nullable="true" />
+    <Property Name="Group" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -60,6 +73,7 @@
     <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Role_RoleId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Questions">
     <Key>
@@ -91,6 +105,31 @@
     <Property Name="Range" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LikertScaleQuestion_QuestionId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Configurations">
+    <Key>
+      <PropertyRef Name="ConfigurationId" />
+    </Key>
+    <Property Name="SharePointUserName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SharePointPassword" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SharePointURL" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ConfigurationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HelpImages">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Data" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Question_QuestionId" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Questions_LikertScaleQuestion">
     <Key>
       <PropertyRef Name="QuestionId" />
@@ -103,6 +142,7 @@
       <PropertyRef Name="QuestionId" />
     </Key>
     <Property Name="Other" Type="bit" Nullable="true" DefaultValue="false" />
+    <Property Name="Multiple" Type="bit" Nullable="true" />
     <Property Name="QuestionId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Questions_TextQuestion">
@@ -148,6 +188,30 @@
       </Principal>
       <Dependent Role="Option">
         <PropertyRef Name="ChoiceQuestion_QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleUser">
+    <End Role="Role" Type="OSTModel.Store.Roles" Multiplicity="1" />
+    <End Role="User" Type="OSTModel.Store.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Role_RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="QuestionHelpImage">
+    <End Role="Question" Type="OSTModel.Store.Questions" Multiplicity="1" />
+    <End Role="HelpImage" Type="OSTModel.Store.HelpImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="QuestionId" />
+      </Principal>
+      <Dependent Role="HelpImage">
+        <PropertyRef Name="Question_QuestionId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -209,6 +273,17 @@
             <End Role="ChoiceQuestion" EntitySet="Questions" />
             <End Role="Option" EntitySet="Options" />
           </AssociationSet>
+          <EntitySet Name="Roles" EntityType="OSTModel.Role" />
+          <AssociationSet Name="RoleUser" Association="OSTModel.RoleUser">
+            <End EntitySet="Roles" Role="Role" />
+            <End EntitySet="Users" Role="User" />
+          </AssociationSet>
+          <EntitySet Name="Configurations" EntityType="OSTModel.Configuration" />
+          <EntitySet Name="HelpImages" EntityType="OSTModel.HelpImage" />
+          <AssociationSet Name="QuestionHelpImage" Association="OSTModel.QuestionHelpImage">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="HelpImage" EntitySet="HelpImages" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Form">
           <Key>
@@ -217,12 +292,14 @@
           <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
           <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="False" />
-          <Property Type="String" Name="Content" Nullable="true" />
+          <Property Type="String" Name="ListName" Nullable="true" />
           <Property Type="String" Name="Name" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
           <Property Type="DateTime" Name="DateCreated" Nullable="true" />
           <Property Type="String" Name="URL" Nullable="true" />
           <NavigationProperty Name="Questions" Relationship="OSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
+          <Property Type="Int32" Name="KeyField" Nullable="true" />
+          <Property Type="String" Name="Group" Nullable="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -232,6 +309,7 @@
           <Property Type="String" Name="UserName" Nullable="false" />
           <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
           <Property Type="String" Name="Password" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="OSTModel.RoleUser" FromRole="User" ToRole="Role" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -244,10 +322,12 @@
           <Property Type="String" Name="FieldType" Nullable="true" />
           <Property Type="Int32" Name="SortOrder" Nullable="false" />
           <NavigationProperty Name="Form" Relationship="OSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
+          <NavigationProperty Name="HelpImages" Relationship="OSTModel.QuestionHelpImage" FromRole="Question" ToRole="HelpImage" />
         </EntityType>
         <EntityType Name="ChoiceQuestion" BaseType="OSTModel.Question" >
           <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false" />
           <NavigationProperty Name="Options" Relationship="OSTModel.ChoiceQuestionOption" FromRole="ChoiceQuestion" ToRole="Option" />
+          <Property Type="Boolean" Name="Multiple" Nullable="true" />
         </EntityType>
         <EntityType Name="LikertScaleQuestion" BaseType="OSTModel.Question" >
           <Property Type="Int32" Name="Steps" Nullable="false" />
@@ -290,6 +370,40 @@
           <End Type="OSTModel.Option" Role="Option" Multiplicity="*" >
           </End>
         </Association>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="OSTModel.RoleUser" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <Association Name="RoleUser">
+          <End Type="OSTModel.Role" Multiplicity="1" Role="Role" />
+          <End Type="OSTModel.User" Multiplicity="*" Role="User" />
+        </Association>
+        <EntityType Name="Configuration" >
+          <Key>
+            <PropertyRef Name="ConfigurationId" />
+          </Key>
+          <Property Type="String" Name="SharePointUserName" Nullable="true" />
+          <Property Type="String" Name="SharePointPassword" Nullable="true" />
+          <Property Type="String" Name="SharePointURL" Nullable="true" />
+          <Property Type="Int32" Name="ConfigurationId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="HelpImage">
+          <Key>
+            <PropertyRef Name="ImageId" />
+          </Key>
+          <Property Type="Int32" Name="ImageId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="true" />
+          <Property Type="Binary" Name="Data" Nullable="true" />
+          <NavigationProperty Name="Question" Relationship="OSTModel.QuestionHelpImage" FromRole="HelpImage" ToRole="Question" />
+        </EntityType>
+        <Association Name="QuestionHelpImage">
+          <End Type="OSTModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="OSTModel.HelpImage" Role="HelpImage" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -302,11 +416,13 @@
           <ScalarProperty Name="FormId" ColumnName="FormId" />
           <ScalarProperty Name="AutoUpdate" ColumnName="AutoUpdate" />
           <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="ListName" ColumnName="ListName" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="KeyField" ColumnName="KeyField" />
+          <ScalarProperty Name="Group" ColumnName="Group" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -341,6 +457,7 @@
         <MappingFragment StoreEntitySet="Questions_ChoiceQuestion">
           <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
           <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="Multiple" ColumnName="Multiple" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(OSTModel.TextQuestion)">
@@ -364,6 +481,33 @@
           <ScalarProperty Name="LabelId" ColumnName="LabelId" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="Range" ColumnName="Range" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Role)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Configurations">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.Configuration)">
+        <MappingFragment StoreEntitySet="Configurations">
+          <ScalarProperty Name="ConfigurationId" ColumnName="ConfigurationId" />
+          <ScalarProperty Name="SharePointUserName" ColumnName="SharePointUserName" />
+          <ScalarProperty Name="SharePointPassword" ColumnName="SharePointPassword" />
+          <ScalarProperty Name="SharePointURL" ColumnName="SharePointURL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HelpImages">
+      <EntityTypeMapping TypeName="IsTypeOf(OSTModel.HelpImage)">
+        <MappingFragment StoreEntitySet="HelpImages">
+          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -391,6 +535,22 @@
         <ScalarProperty Name="OptionId" ColumnName="OptionId" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="RoleUser" TypeName="OSTModel.RoleUser" StoreEntitySet="Users">
+      <EndProperty Name="Role">
+        <ScalarProperty Name="RoleId" ColumnName="Role_RoleId" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserId" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="QuestionHelpImage" TypeName="OSTModel.QuestionHelpImage" StoreEntitySet="HelpImages">
+      <EndProperty Name="Question">
+        <ScalarProperty Name="QuestionId" ColumnName="Question_QuestionId" />
+      </EndProperty>
+      <EndProperty Name="HelpImage">
+        <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -412,10 +572,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="OSTModel.Form" Width="1.5" PointX="5.75" PointY="0.5" Height="2.41404296875" />
-        <EntityTypeShape EntityType="OSTModel.User" Width="1.5" PointX="7.875" PointY="0.625" Height="1.592306315104167" />
+        <EntityTypeShape EntityType="OSTModel.Form" Width="1.5" PointX="6.5" PointY="0.5" Height="2.7427376302083331" />
+        <EntityTypeShape EntityType="OSTModel.User" Width="1.5" PointX="8.5" PointY="0.5" Height="1.5923063151041665" />
         <EntityTypeShape EntityType="OSTModel.Question" Width="1.5" PointX="3.5" PointY="0.625" Height="2.085348307291667" />
-        <EntityTypeShape EntityType="OSTModel.ChoiceQuestion" Width="1.5" PointX="2" PointY="3.375" Height="1.2636116536458335" />
+        <EntityTypeShape EntityType="OSTModel.ChoiceQuestion" Width="1.5" PointX="2" PointY="3.375" Height="1.4279589843749996" />
         <EntityTypeShape EntityType="OSTModel.LikertScaleQuestion" Width="1.5" PointX="3.625" PointY="3.375" Height="1.0992643229166665" />
         <InheritanceConnector EntityType="OSTModel.LikertScaleQuestion" ManuallyRouted="false" >
           <ConnectorPoint PointX="4.25" PointY="2.710348307291667" />
@@ -435,10 +595,10 @@
         <EntityTypeShape EntityType="OSTModel.Option" Width="1.5" PointX="2" PointY="5.125" Height="1.5923063151041665" />
         <EntityTypeShape EntityType="OSTModel.Label" Width="1.5" PointX="4.25" PointY="5.125" Height="1.5923063151041665" />
         <AssociationConnector Association="OSTModel.FormQuestion">
-          <ConnectorPoint PointX="5.75" PointY="1.6676741536458335" />
-          <ConnectorPoint PointX="5" PointY="1.6676741536458335" />
+          <ConnectorPoint PointX="6.5" PointY="1.7498478190104168" />
+          <ConnectorPoint PointX="5" PointY="1.7498478190104168" />
         </AssociationConnector>
-        <InheritanceConnector EntityType="OSTModel.ChoiceQuestion">
+        <InheritanceConnector EntityType="OSTModel.ChoiceQuestion" ManuallyRouted="false">
           <ConnectorPoint PointX="4.25" PointY="2.710348307291667" />
           <ConnectorPoint PointX="4.25" PointY="3" />
           <ConnectorPoint PointX="2.75" PointY="3" />
@@ -449,8 +609,19 @@
           <ConnectorPoint PointX="4.6875" PointY="5.125" />
         </AssociationConnector>
         <AssociationConnector Association="OSTModel.ChoiceQuestionOption">
-          <ConnectorPoint PointX="2.75" PointY="4.6386116536458335" />
+          <ConnectorPoint PointX="2.75" PointY="4.802958984375" />
           <ConnectorPoint PointX="2.75" PointY="5.125" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="OSTModel.Role" Width="1.5" PointX="8.875" PointY="3.625" Height="1.4279589843749996" />
+        <AssociationConnector Association="OSTModel.RoleUser">
+          <ConnectorPoint PointX="9.4375" PointY="3.625" />
+          <ConnectorPoint PointX="9.4375" PointY="2.2566536458333335" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="OSTModel.Configuration" Width="1.875" PointX="9.25" PointY="5.375" Height="1.5923063151041665" />
+        <EntityTypeShape EntityType="OSTModel.HelpImage" Width="1.5" PointX="0.875" PointY="0.875" Height="1.427958984375" />
+        <AssociationConnector Association="OSTModel.QuestionHelpImage">
+          <ConnectorPoint PointX="3.5" PointY="1.6711531575520835" />
+          <ConnectorPoint PointX="2.375" PointY="1.6711531575520835" />
         </AssociationConnector>
         </Diagram>
     </edmx:Diagrams>

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 01/26/2013 12:33:03
+-- Date Created: 02/13/2013 21:25:45
 -- Generated from EDMX file: C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\OST.edmx
 -- --------------------------------------------------
 
@@ -25,6 +25,12 @@ IF OBJECT_ID(N'[dbo].[FK_LikertScaleQuestionLabel]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ChoiceQuestionOption]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_ChoiceQuestionOption];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoleUser]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Users] DROP CONSTRAINT [FK_RoleUser];
+GO
+IF OBJECT_ID(N'[dbo].[FK_QuestionHelpImage]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[HelpImages] DROP CONSTRAINT [FK_QuestionHelpImage];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LikertScaleQuestion_inherits_Question]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Questions_LikertScaleQuestion] DROP CONSTRAINT [FK_LikertScaleQuestion_inherits_Question];
@@ -55,6 +61,15 @@ GO
 IF OBJECT_ID(N'[dbo].[Labels]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Labels];
 GO
+IF OBJECT_ID(N'[dbo].[Roles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Roles];
+GO
+IF OBJECT_ID(N'[dbo].[Configurations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Configurations];
+GO
+IF OBJECT_ID(N'[dbo].[HelpImages]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[HelpImages];
+GO
 IF OBJECT_ID(N'[dbo].[Questions_LikertScaleQuestion]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Questions_LikertScaleQuestion];
 GO
@@ -74,11 +89,13 @@ CREATE TABLE [dbo].[Forms] (
     [FormId] int IDENTITY(1,1) NOT NULL,
     [AutoUpdate] bit  NULL,
     [Deleted] bit  NOT NULL,
-    [Content] nvarchar(max)  NULL,
+    [ListName] nvarchar(max)  NULL,
     [Name] nvarchar(max)  NULL,
     [Description] nvarchar(max)  NULL,
     [DateCreated] datetime  NULL,
-    [URL] nvarchar(max)  NULL
+    [URL] nvarchar(max)  NULL,
+    [KeyField] int  NULL,
+    [Group] nvarchar(max)  NULL
 );
 GO
 
@@ -87,7 +104,8 @@ CREATE TABLE [dbo].[Users] (
     [UserId] int IDENTITY(1,1) NOT NULL,
     [UserName] nvarchar(max)  NOT NULL,
     [Deleted] bit  NOT NULL,
-    [Password] nvarchar(max)  NOT NULL
+    [Password] nvarchar(max)  NOT NULL,
+    [Role_RoleId] int  NOT NULL
 );
 GO
 
@@ -121,6 +139,31 @@ CREATE TABLE [dbo].[Labels] (
 );
 GO
 
+-- Creating table 'Roles'
+CREATE TABLE [dbo].[Roles] (
+    [RoleId] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'Configurations'
+CREATE TABLE [dbo].[Configurations] (
+    [SharePointUserName] nvarchar(max)  NULL,
+    [SharePointPassword] nvarchar(max)  NULL,
+    [SharePointURL] nvarchar(max)  NULL,
+    [ConfigurationId] int IDENTITY(1,1) NOT NULL
+);
+GO
+
+-- Creating table 'HelpImages'
+CREATE TABLE [dbo].[HelpImages] (
+    [ImageId] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NULL,
+    [Data] varbinary(max)  NULL,
+    [Question_QuestionId] int  NOT NULL
+);
+GO
+
 -- Creating table 'Questions_LikertScaleQuestion'
 CREATE TABLE [dbo].[Questions_LikertScaleQuestion] (
     [Steps] int  NOT NULL,
@@ -131,6 +174,7 @@ GO
 -- Creating table 'Questions_ChoiceQuestion'
 CREATE TABLE [dbo].[Questions_ChoiceQuestion] (
     [Other] bit  NULL,
+    [Multiple] bit  NULL,
     [QuestionId] int  NOT NULL
 );
 GO
@@ -173,6 +217,24 @@ GO
 ALTER TABLE [dbo].[Labels]
 ADD CONSTRAINT [PK_Labels]
     PRIMARY KEY CLUSTERED ([LabelId] ASC);
+GO
+
+-- Creating primary key on [RoleId] in table 'Roles'
+ALTER TABLE [dbo].[Roles]
+ADD CONSTRAINT [PK_Roles]
+    PRIMARY KEY CLUSTERED ([RoleId] ASC);
+GO
+
+-- Creating primary key on [ConfigurationId] in table 'Configurations'
+ALTER TABLE [dbo].[Configurations]
+ADD CONSTRAINT [PK_Configurations]
+    PRIMARY KEY CLUSTERED ([ConfigurationId] ASC);
+GO
+
+-- Creating primary key on [ImageId] in table 'HelpImages'
+ALTER TABLE [dbo].[HelpImages]
+ADD CONSTRAINT [PK_HelpImages]
+    PRIMARY KEY CLUSTERED ([ImageId] ASC);
 GO
 
 -- Creating primary key on [QuestionId] in table 'Questions_LikertScaleQuestion'
@@ -237,6 +299,34 @@ ADD CONSTRAINT [FK_ChoiceQuestionOption]
 CREATE INDEX [IX_FK_ChoiceQuestionOption]
 ON [dbo].[Options]
     ([ChoiceQuestion_QuestionId]);
+GO
+
+-- Creating foreign key on [Role_RoleId] in table 'Users'
+ALTER TABLE [dbo].[Users]
+ADD CONSTRAINT [FK_RoleUser]
+    FOREIGN KEY ([Role_RoleId])
+    REFERENCES [dbo].[Roles]
+        ([RoleId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoleUser'
+CREATE INDEX [IX_FK_RoleUser]
+ON [dbo].[Users]
+    ([Role_RoleId]);
+GO
+
+-- Creating foreign key on [Question_QuestionId] in table 'HelpImages'
+ALTER TABLE [dbo].[HelpImages]
+ADD CONSTRAINT [FK_QuestionHelpImage]
+    FOREIGN KEY ([Question_QuestionId])
+    REFERENCES [dbo].[Questions]
+        ([QuestionId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_QuestionHelpImage'
+CREATE INDEX [IX_FK_QuestionHelpImage]
+ON [dbo].[HelpImages]
+    ([Question_QuestionId]);
 GO
 
 -- Creating foreign key on [QuestionId] in table 'Questions_LikertScaleQuestion'

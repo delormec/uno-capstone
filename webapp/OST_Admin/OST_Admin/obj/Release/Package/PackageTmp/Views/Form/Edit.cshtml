@@ -15,7 +15,6 @@
     <div id="form-editor" class="ui-corner-all ui-widget-content ui-widget">
         @Html.HiddenFor(model => model.FormId)
         @Html.HiddenFor(model => model.Deleted)
-        @Html.HiddenFor(model => model.Content)
         @Html.HiddenFor(model => model.DateCreated)
 
 
@@ -32,6 +31,22 @@
                 <td>
                     <div id="form-url">
                         <input id="URL" class="text-box single-line" type="text" value="@Model.URL" name="URL"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> SharePoint ListName </td>
+                <td>
+                    <div id="form-list-name">
+                        <input id="ListName" class="text-box single-line" type="text" value="@Model.ListName" name="ListName"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> Form Group </td>
+                <td>
+                    <div id="form-group">
+                        <input id="Group" class="text-box single-line" type="text" value="@Model.Group" name="Group"/>
                     </div>
                 </td>
             </tr>
@@ -54,7 +69,16 @@
                     }
                 </td>
             </tr>
+            <tr>
+                <td> Key Field</td>
+                <td>
+                    <div id="form-key-field">
+                        <input id="KeyField" class="text-box single-line" type="text" value="@Model.KeyField" name="KeyField"/>
+                    </div>
+                </td>
+            </tr>
         </table>
+
     </div>
 
        <input type="submit" id="Save" value="Save Form" />
@@ -95,6 +119,9 @@
             $(this).buttonset();
         });
         $("div[class*=OtherSet]").livequery(function (event) {
+            $(this).buttonset();
+        });
+        $("div[class*=MultipleSet]").livequery(function (event) {
             $(this).buttonset();
         });
 
