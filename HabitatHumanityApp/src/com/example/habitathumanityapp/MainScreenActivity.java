@@ -1,9 +1,9 @@
 package com.example.habitathumanityapp;
 
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
@@ -13,7 +13,11 @@ public class MainScreenActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_screen);		
+		setContentView(R.layout.activity_main_screen);
+		
+		//OSTDataSource OSTDS = new OSTDataSource(this);
+		
+		//OSTDS.getAllFormIds();
 	}
 
 	@Override
@@ -29,6 +33,14 @@ public class MainScreenActivity extends Activity {
 	 */
 	public void createForm(View view){
 		Intent intent = new Intent(this, DisplayFormActivity.class);
+		startActivity(intent);
+	}
+	/**
+	 * Handles the button click to open the DataStoreTestActivity.
+	 * @param view 
+	 */
+	public void dataStoreTest(View view){
+		Intent intent = new Intent(this, DataStoreTestActivity.class);
 		startActivity(intent);
 	}
 

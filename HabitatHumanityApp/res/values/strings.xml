@@ -8,5 +8,7 @@
     <string name="title_activity_display_form">DisplayFormActivity</string>
     <string name="testTextString">Empty</string>
     <string name="getFormButton">Get Form</string>
+    <string name="dataStoreTest">Data Store Test</string>
+    <string name="title_activity_data_store_test">DataStoreTest</string>
 
 </resources>

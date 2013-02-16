@@ -1,8 +1,15 @@
 package com.example.habitathumanityapp;
 
+import java.io.Serializable;
+
 import org.simpleframework.xml.Element;
 
-public class Meta {
+public class Meta implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3503635432336091621L;
+
 	@Element (name="formid")
 	public int formid;
 	
@@ -21,8 +28,9 @@ public class Meta {
 	public int getFormID(){
 		return formid;
 	}
-	
+
 	public String getFormName(){
 		return name;
 	}
+	
 }

@@ -15,4 +15,16 @@
         android:onClick="createForm"
         android:text="@string/newFormButton" />
 
+    <Button
+        android:id="@+id/dataStoreTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:onClick="dataStoreTest"
+        android:text="@string/dataStoreTest" />
+    
+
 </RelativeLayout>
