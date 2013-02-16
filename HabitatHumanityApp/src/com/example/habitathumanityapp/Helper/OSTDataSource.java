@@ -124,7 +124,8 @@ public class OSTDataSource {
 	  public List<String[]> getAllFormInfoByTemplateId(int template_id)
 	  {
 		  List<String[]> form_info = new ArrayList<String[]>();
-		  Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "_id ==" + String.valueOf(template_id),null,null,null,null);
+		  Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template_id),null,null,null,null);
+		  
 		  
 		  cursor.moveToFirst();
 		  while (!cursor.isAfterLast()) 
@@ -195,6 +196,11 @@ public class OSTDataSource {
 	  public void removeAllTemplates()
 	  {
 		  database.execSQL("DELETE FROM Templates");
+	  }
+	  
+	  public void removeFormById(int form_id)
+	  {
+		  database.delete("Forms", "_id =" + String.valueOf(form_id), null);
 	  }
 	  
 	  public void updateFormById(Form form, int form_id)

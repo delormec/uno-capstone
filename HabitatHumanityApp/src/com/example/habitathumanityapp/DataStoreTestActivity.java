@@ -96,12 +96,17 @@ public class DataStoreTestActivity extends Activity {
 		
 		//add my form to the db
 		ostDS.addForm(form1);
+		ostDS.addForm(form1);
+		ostDS.addForm(form1);
+		ostDS.addForm(form1);
 		
 		//get a list of all my forms (i know there's only one)
 		List<String[]> forms = ostDS.getAllFormInfoByTemplateId(1);
 		
 		//get the form_id of the first form
 		String form_id = forms.get(0)[0];
+		
+		//DSTest3.setText(String.valueOf(forms.size()));
 		
 		//get the first form by id
 		Form form3 = ostDS.getFormById(Integer.parseInt(form_id));
@@ -112,14 +117,19 @@ public class DataStoreTestActivity extends Activity {
 		//update the existing form in db with new one
 		ostDS.updateFormById(form3, Integer.parseInt(form_id));
 		
+		//this will cause next line to fail
+		//ostDS.removeFormById(Integer.parseInt(form_id));
+		
+		
 		Form form4 = ostDS.getFormById(Integer.parseInt(form_id));
 		
 		//display my new name
 		DSTest3.setText(form4.meta.name);
-		
+
 		//remove any templates in db
 		ostDS.removeAllTemplates();
 		ostDS.removeAllForms();
+		ostDS.close();
 	}
 	
 	@Override

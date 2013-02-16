@@ -10,10 +10,10 @@ import android.util.Log;
 public class OSTDatabaseHelper extends SQLiteOpenHelper
 {
 	private static final String DATABASE_NAME = "OST";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 1;
 	
 	private static final String template_table = "CREATE TABLE Templates (_id INTEGER PRIMARY KEY, template_name TEXT, template_description TEXT, template BLOB);";
-	private static final String form_table = "CREATE TABLE Forms (_id INTEGER PRIMARY KEY autoincrement, template_id NUMERIC, key_field TEXT, form BLOB);";
+	private static final String form_table = "CREATE TABLE Forms (_id INTEGER PRIMARY KEY autoincrement, template_id INTEGER, key_field TEXT, form BLOB);";
 	
 
 	public OSTDatabaseHelper(Context context, String name,
@@ -32,9 +32,7 @@ public class OSTDatabaseHelper extends SQLiteOpenHelper
 		// TODO Auto-generated method stub
 		
 		database.execSQL(template_table);
-		database.execSQL(form_table);
-		database.execSQL("INSERT INTO Templates VALUES (1,'Test Name', 'Test Descrip', null)");
-		
+		database.execSQL(form_table);	
 	}
 
 	@Override
