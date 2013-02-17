@@ -2,7 +2,10 @@ package com.example.habitathumanityapp;
 
 import java.util.List;
 
-import com.example.habitathumanityapp.Helper.OSTDataSource;
+import com.example.habitathumanityapp.datasource.OSTDataSource;
+import com.example.habitathumanityapp.datasource.SharePointDataSource;
+import com.example.habitathumanityapp.tasks.connectToSharePoint;
+import com.example.habitathumanityapp.tasks.createSharePointListTest;
 import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
 import android.annotation.SuppressLint;
@@ -130,6 +133,14 @@ public class DataStoreTestActivity extends Activity {
 		ostDS.removeAllTemplates();
 		ostDS.removeAllForms();
 		ostDS.close();
+		
+		
+		SharePointDataSource spDS = new SharePointDataSource();
+		
+		//create threads that do shit
+		new connectToSharePoint().execute(spDS);
+		new createSharePointListTest().execute(spDS);
+		
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package com.example.habitathumanityapp.Helper;
+package com.example.habitathumanityapp.datasource;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
