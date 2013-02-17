@@ -54,6 +54,7 @@ public class DisplayFormActivity extends Activity {
 		
 		parseForm(this);
 		
+		
 		Toast.makeText(this, "Testing...", Toast.LENGTH_SHORT);
 	}
 	

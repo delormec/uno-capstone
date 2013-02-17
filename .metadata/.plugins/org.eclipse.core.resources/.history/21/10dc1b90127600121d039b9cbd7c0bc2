@@ -51,8 +51,9 @@ public class DisplayFormActivity extends Activity {
 	/*protected void onStart(){
 	}*/
 	public void onButtonClick(View view){
-		
+		/*
 		parseForm(this);
+		*/
 		
 		Toast.makeText(this, "Testing...", Toast.LENGTH_SHORT);
 	}
