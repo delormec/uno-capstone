@@ -3,21 +3,16 @@
 @{
     ViewBag.Title = "Create";
  }
-<br />
-
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-
-    <input type="hidden" name="CreatedBy" value="@ViewBag.CreatedBy" />
-
+   <input type="hidden" name="CreatedBy" value="@ViewBag.CreatedBy" />
    <div id="form-editor-outer">
+   <div>@Html.ActionLink("Back to List", "Index",null, new { id = "Back" })</div> 
+   <div class="header ui-widget-header ui-corner-top">Create Form</div>
    
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>    
-    <div id="form-editor" class="ui-corner-all ui-widget-content ui-widget">
+    <div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">
         <div id="form-title">
            <input id="Name" class="text-box single-line" type="text" value="Form Name" name="Name"/>
         </div>
@@ -83,12 +78,14 @@
 
 @section Scripts {
 <script type="text/javascript">
-            $(function () {
+    $(function () {
 
-            $("#AutoUpdateButtonSet").livequery(function(){
-                $(this).buttonset(); });
-            $("input[type=submit], a, button").button();
+        $("#AutoUpdateButtonSet").livequery(function () {
+            $(this).buttonset();
         });
+        $("input[type=submit], button").button();
+        $("#Back").button();
+    });
 </script>
 }
 

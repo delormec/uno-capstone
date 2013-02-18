@@ -4,15 +4,13 @@
     ViewBag.Title = "Edit Form";
     int fid = ViewBag.formId;
 }
-<br />
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
     <div id ="form-editor-outer">
-        <div>
-            @Html.ActionLink("Back to List", "Index", null, new { id = "Back" })
-        </div>
-    <div id="form-editor" class="ui-corner-all ui-widget-content ui-widget">
+    <div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
+    <div class="header ui-widget-header ui-corner-top">Edit Form</div>
+    <div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">
         @Html.HiddenFor(model => model.FormId)
         @Html.HiddenFor(model => model.Deleted)
         @Html.HiddenFor(model => model.DateCreated)
