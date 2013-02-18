@@ -45,6 +45,7 @@
     <NavigationProperty Name="Questions" Relationship="OSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
     <Property Type="Int32" Name="KeyField" Nullable="true" />
     <Property Type="String" Name="Group" Nullable="true" />
+    <Property Type="Int32" Name="CreatedBy" Nullable="true" />
   </EntityType>
   <EntityType Name="User">
     <Key>

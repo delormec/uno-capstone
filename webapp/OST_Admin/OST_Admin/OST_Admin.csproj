@@ -164,14 +164,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FormController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\QuestionModelBinder.cs" />
     <Compile Include="Helper\XML.cs" />
+    <Compile Include="Models\Repository\UserRepository.cs" />
+    <Compile Include="Models\Repository\IUserRepository.cs" />
     <Compile Include="Models\ViewModel\FormViewModel.cs" />
     <Compile Include="Models\ViewModel\QuestionViewModel.cs" />
     <Compile Include="Models\OST.cs">
@@ -303,6 +304,7 @@
     <Content Include="Scripts\jquery-ui.unobtrusive-2.0.0.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.livequery.min.js" />
+    <Content Include="SQL\setup db.sql" />
     <Content Include="Views\Form\_OptionList.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -378,6 +380,7 @@
     <Content Include="Views\Form\Edit.cshtml" />
     <Content Include="Views\Form\_LikertScaleQuestionRow.cshtml" />
     <Content Include="Views\Form\XML.cshtml" />
+    <Content Include="Views\Account\LogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

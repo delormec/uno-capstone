@@ -14,6 +14,7 @@
           <ScalarProperty Name="URL" ColumnName="URL" />
           <ScalarProperty Name="KeyField" ColumnName="KeyField" />
           <ScalarProperty Name="Group" ColumnName="Group" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

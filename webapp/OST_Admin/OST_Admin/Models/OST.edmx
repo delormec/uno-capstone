@@ -64,6 +64,7 @@
     <Property Name="URL" Type="nvarchar(max)" Nullable="true" />
     <Property Name="KeyField" Type="int" Nullable="true" />
     <Property Name="Group" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreatedBy" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -300,6 +301,7 @@
           <NavigationProperty Name="Questions" Relationship="OSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
           <Property Type="Int32" Name="KeyField" Nullable="true" />
           <Property Type="String" Name="Group" Nullable="true" />
+          <Property Type="Int32" Name="CreatedBy" Nullable="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -423,6 +425,7 @@
           <ScalarProperty Name="URL" ColumnName="URL" />
           <ScalarProperty Name="KeyField" ColumnName="KeyField" />
           <ScalarProperty Name="Group" ColumnName="Group" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -572,8 +575,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="OSTModel.Form" Width="1.5" PointX="6.5" PointY="0.5" Height="2.7427376302083331" />
-        <EntityTypeShape EntityType="OSTModel.User" Width="1.5" PointX="8.5" PointY="0.5" Height="1.5923063151041665" />
+        <EntityTypeShape EntityType="OSTModel.Form" Width="1.5" PointX="6.875" PointY="0.5" Height="2.9070849609374996" />
+        <EntityTypeShape EntityType="OSTModel.User" Width="1.5" PointX="9.5" PointY="0.5" Height="1.7566536458333335" />
         <EntityTypeShape EntityType="OSTModel.Question" Width="1.5" PointX="3.5" PointY="0.625" Height="2.085348307291667" />
         <EntityTypeShape EntityType="OSTModel.ChoiceQuestion" Width="1.5" PointX="2" PointY="3.375" Height="1.4279589843749996" />
         <EntityTypeShape EntityType="OSTModel.LikertScaleQuestion" Width="1.5" PointX="3.625" PointY="3.375" Height="1.0992643229166665" />
@@ -595,7 +598,7 @@
         <EntityTypeShape EntityType="OSTModel.Option" Width="1.5" PointX="2" PointY="5.125" Height="1.5923063151041665" />
         <EntityTypeShape EntityType="OSTModel.Label" Width="1.5" PointX="4.25" PointY="5.125" Height="1.5923063151041665" />
         <AssociationConnector Association="OSTModel.FormQuestion">
-          <ConnectorPoint PointX="6.5" PointY="1.7498478190104168" />
+          <ConnectorPoint PointX="6.875" PointY="1.7498478190104168" />
           <ConnectorPoint PointX="5" PointY="1.7498478190104168" />
         </AssociationConnector>
         <InheritanceConnector EntityType="OSTModel.ChoiceQuestion" ManuallyRouted="false">
@@ -614,8 +617,8 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="OSTModel.Role" Width="1.5" PointX="8.875" PointY="3.625" Height="1.4279589843749996" />
         <AssociationConnector Association="OSTModel.RoleUser">
-          <ConnectorPoint PointX="9.4375" PointY="3.625" />
-          <ConnectorPoint PointX="9.4375" PointY="2.2566536458333335" />
+          <ConnectorPoint PointX="9.9375" PointY="3.625" />
+          <ConnectorPoint PointX="9.9375" PointY="2.2566536458333335" />
         </AssociationConnector>
         <EntityTypeShape EntityType="OSTModel.Configuration" Width="1.875" PointX="9.25" PointY="5.375" Height="1.5923063151041665" />
         <EntityTypeShape EntityType="OSTModel.HelpImage" Width="1.5" PointX="0.875" PointY="0.875" Height="1.427958984375" />

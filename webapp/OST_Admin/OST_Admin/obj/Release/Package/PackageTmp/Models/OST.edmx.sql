@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 02/13/2013 21:25:45
+-- Date Created: 02/17/2013 22:17:20
 -- Generated from EDMX file: C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\OST.edmx
 -- --------------------------------------------------
 
@@ -95,7 +95,8 @@ CREATE TABLE [dbo].[Forms] (
     [DateCreated] datetime  NULL,
     [URL] nvarchar(max)  NULL,
     [KeyField] int  NULL,
-    [Group] nvarchar(max)  NULL
+    [Group] nvarchar(max)  NULL,
+    [CreatedBy] int  NULL
 );
 GO
 

@@ -30,6 +30,7 @@ namespace OST_Admin
             // e.g. container.RegisterType<ITestService, TestService>();            
 
             container.RegisterType<IFormRepository, FormRepository>();
+            container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IOSTDataContext, OSTDataContext>(new InjectionConstructor());
 
             return container;

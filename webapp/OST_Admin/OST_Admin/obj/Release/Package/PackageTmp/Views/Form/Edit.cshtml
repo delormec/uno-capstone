@@ -16,7 +16,7 @@
         @Html.HiddenFor(model => model.FormId)
         @Html.HiddenFor(model => model.Deleted)
         @Html.HiddenFor(model => model.DateCreated)
-
+        @Html.HiddenFor(model => model.CreatedBy)
 
         <div id="form-title">
             <input id="Name" class="text-box single-line" type="text" value="@Model.Name" name="Name"/>

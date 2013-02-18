@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "LogIn";
+}
+
+<h2>LogIn</h2>
+@using (Html.BeginForm())
+{
+    if (ViewBag.failed == true)
+    {
+        <font color="red">Failed Login</font>
+        <br />
+    }  
+
+
+<input type="text" name="user_name" value="@ViewBag.user_name"/>
+<input type="password" name="password" />
+
+<input type="submit" value="Login" />
+<br />    
+<text>login = admin</text>
+<br />
+<text>password = (leave it blank)</text>
+}

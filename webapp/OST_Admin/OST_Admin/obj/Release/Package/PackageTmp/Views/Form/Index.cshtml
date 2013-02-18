@@ -7,6 +7,7 @@
 <h2>Form Templates</h2>
     <br />
 @Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
+@Html.ActionLink("Log Out", "LogOut", "Account", null, new { id = "btn-log-out"})
 <div id ="form-index" class="ui-corner-all ui-widget-content ui-widget">
     
 
@@ -65,6 +66,7 @@
 
     $(function () {
         $("a[id=btn-create]").button();
+        $("a[id=btn-log-out]").button();
         $("#form-index-table").dataTable();
     });
 </script>

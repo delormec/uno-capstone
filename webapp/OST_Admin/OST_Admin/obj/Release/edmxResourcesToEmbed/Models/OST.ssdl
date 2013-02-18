@@ -59,6 +59,7 @@
     <Property Name="URL" Type="nvarchar(max)" Nullable="true" />
     <Property Name="KeyField" Type="int" Nullable="true" />
     <Property Name="Group" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreatedBy" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>

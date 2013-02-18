@@ -186,6 +186,7 @@ namespace OST_Admin.Models.Repository
             old_form.Deleted = form.Deleted;
             old_form.Description = form.Description;
             old_form.Name = form.Name;
+            old_form.CreatedBy = form.CreatedBy;
 
             _databaseContext.SaveChanges();
         }
@@ -206,6 +207,7 @@ namespace OST_Admin.Models.Repository
             old_form.Group = form.Group;
             old_form.ListName = form.ListName;
             old_form.DateCreated = form.DateCreated;
+            old_form.CreatedBy = form.CreatedBy;
 
             //List<Question> qlist = new List<Question>();
 

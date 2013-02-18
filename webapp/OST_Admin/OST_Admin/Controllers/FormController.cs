@@ -16,14 +16,17 @@ using System.Web.Security;
 
 namespace OST_Admin.Controllers
 {
+    [Authorize]
     public class FormController : Controller
     {
         private OSTDataContext db = new OSTDataContext();
         private readonly IFormRepository _formRepository;
+        private readonly IUserRepository _userRepository;
 
-        public FormController(IFormRepository formRepository)
+        public FormController(IFormRepository formRepository, IUserRepository userRepository)
         {
             _formRepository = formRepository;
+            _userRepository = userRepository;
         }
 
         //
@@ -78,7 +81,8 @@ namespace OST_Admin.Controllers
 
         public ActionResult Create()
         {
-           return View();
+            ViewBag.CreatedBy = _userRepository.getLoggedInUserId();
+            return View();
         }
 
         //

@@ -784,6 +784,30 @@ namespace OST_Admin.Models
         private global::System.String _Group;
         partial void OnGroupChanging(global::System.String value);
         partial void OnGroupChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CreatedBy
+        {
+            get
+            {
+                return _CreatedBy;
+            }
+            set
+            {
+                OnCreatedByChanging(value);
+                ReportPropertyChanging("CreatedBy");
+                _CreatedBy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreatedBy");
+                OnCreatedByChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CreatedBy;
+        partial void OnCreatedByChanging(Nullable<global::System.Int32> value);
+        partial void OnCreatedByChanged();
 
         #endregion
     
