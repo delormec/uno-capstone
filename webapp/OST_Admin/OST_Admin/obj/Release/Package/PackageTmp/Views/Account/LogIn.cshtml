@@ -1,23 +1,62 @@
 ﻿@{
     ViewBag.Title = "LogIn";
+    Layout = "";
 }
 
-<h2>LogIn</h2>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="/Scripts/modernizr-2.5.3.js"></script>
+    <script src="/Scripts/jquery-1.7.2.js"></script>
+    <script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="/Scripts/jquery.validate.js"></script>
+    <script src="/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="/Scripts/jquery-ui-1.10.0.custom.js"></script>
+    <link href="/Content/themes/ui-notdarkness/jquery-ui-1.10.0.custom.css" rel="stylesheet"/>
+    <script src="/Scripts/jquery.livequery.min.js"></script>
+    <script src="/Scripts/jquery.dataTables.min.js"></script>
+        
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables_themeroller.css" rel="stylesheet"/>
+</head>
+<body >
+<br />
+<br />
+<br />
 @using (Html.BeginForm())
-{
-    if (ViewBag.failed == true)
-    {
-        <font color="red">Failed Login</font>
-        <br />
-    }  
-
-
-<input type="text" name="user_name" value="@ViewBag.user_name"/>
-<input type="password" name="password" />
-
-<input type="submit" value="Login" />
+{ 
+<div id="login" class="ui-widget">
+    <div class="ui-widget-header ui-corner-top" id="login-header">Log In</div>
+    <div class="ui-widget-content" id="login-content">
+    <table>
+    <tr>
+    <td><label for="user_name">Username</label></td>
+    <td><input type="text" name="user_name" id="login-user-name" value="@ViewBag.user_name"/></td>
+    </tr>
+    <td><label for="password">Password</label></td>
+    <td><input type="password" name="password" id="login-password" /></td>
+    </table>       
+    <input id="btn-login" type="submit" value="Login" />
+        @if (ViewBag.failed == true)
+        {
+            <font color="red">Failed Login</font>
+            <br />
+        } 
+    </div>
+</div>
+}
 <br />    
 <text>login = admin</text>
 <br />
 <text>password = (leave it blank)</text>
-}
+</body>
+</html>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#btn-login").button();
+    });
+</script>

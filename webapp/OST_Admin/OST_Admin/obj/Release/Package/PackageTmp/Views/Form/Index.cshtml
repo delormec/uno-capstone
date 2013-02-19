@@ -4,13 +4,8 @@
     ViewBag.Title = "Index";
 }
 <div id = "form-index-outer">
-<h2>Form Templates</h2>
-    <br />
-@Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
-@Html.ActionLink("Log Out", "LogOut", "Account", null, new { id = "btn-log-out"})
-<div id ="form-index" class="ui-corner-all ui-widget-content ui-widget">
-    
-
+<div class="header ui-widget-header ui-corner-top">Form Management</div>
+<div id ="form-index" class="ui-corner-bottom ui-widget-content ui-widget">
 <table id="form-index-table">
     <thead>
     <tr>
@@ -56,8 +51,10 @@
 }
     </tbody>
 </table>
-</div>
 
+</div>
+<br />
+@Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
 </div>
 @section Scripts {
 

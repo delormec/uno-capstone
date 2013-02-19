@@ -1,0 +1,80 @@
+﻿@model IQueryable<OST_Admin.Models.User>
+@{
+    ViewBag.Title = "Index";
+}
+<div id = "form-index-outer">
+<div class="header ui-widget-header ui-corner-top">User Management</div>
+<div id ="form-index" class="ui-corner-bottom ui-widget-content ui-widget">
+<table id="form-index-table">
+    <thead>
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            User Name
+        </th>
+        <th>
+            Role
+        </th>
+        <th>
+            Deleted
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+        <tbody>
+@foreach (var item in Model.OrderBy(p => p.Deleted).ThenBy(x => x.Role.RoleId).ThenBy(n => n.UserId))
+{
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Role.Name)
+        </td>
+        <td>
+            @if (item.Deleted == true)
+            {
+                <text>deleted</text>
+            }
+            else
+            {
+                <text>active</text>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserId})
+
+            @{
+            //@Html.ActionLink("Edit", "Edit", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only", role = "button" })
+           // @Html.ActionLink("Delete", "Delete", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" }) |
+            //@Html.ActionLink("XML", "XML", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" })
+            }
+            
+        </td>
+    </tr>
+
+}
+    </tbody>
+</table>
+
+</div>
+<br />
+@Html.ActionLink("Add New User", "Add", null,  new { id = "btn-add" })
+</div>
+@section Scripts {
+
+<script>
+
+
+    $(function () {
+        $("a[id=btn-add]").button();
+        $("#form-index-table").dataTable();
+    });
+</script>
+}

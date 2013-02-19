@@ -9,7 +9,9 @@
     @Html.ValidationSummary(true)
    <input type="hidden" name="CreatedBy" value="@ViewBag.CreatedBy" />
    <div id="form-editor-outer">
-   <div>@Html.ActionLink("Back to List", "Index",null, new { id = "Back" })</div> 
+   @{   //commented out for now, don't think we need it now that main menu exists
+        //<div>@Html.ActionLink("Back to List", "Index",null, new { id = "Back" })</div>
+    }
    <div class="header ui-widget-header ui-corner-top">Create Form</div>
    
     <div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">

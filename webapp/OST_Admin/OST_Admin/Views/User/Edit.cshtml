@@ -1,0 +1,74 @@
+﻿@model OST_Admin.Models.User
+@{
+    ViewBag.Title = "Edit";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div id ="form-editor-outer">
+    @{  //commented out for now, don't think we need it now that main menu exists
+        //<div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
+    }
+    <div class="header ui-widget-header ui-corner-top">Edit User</div>
+    <div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">
+        @Html.HiddenFor(model => model.UserId)
+        <table id="form-editor-meta-table">
+            <tr>
+                <td> User Name </td>
+                <td>
+                    <div id="form-url">
+                        <input id="UserName" class="text-box single-line" type="text" value="@Model.UserName" name="UserName"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> Password </td>
+                <td>
+                    <div id="form-list-name">
+                        <input id="Password" class="text-box single-line" type="text" value="@Model.Password" name="Password"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td> Role </td>
+                <td>
+                    <div id="form-list-name">
+                        @Html.DropDownList("role_id", (SelectList)ViewBag.RoleSelect)
+                        TODO - changing role does not work at this time
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Deleted</td>
+                <td>
+                    @{
+                        <div id="AutoUpdateButtonSet">
+                        @if (Model.Deleted == true)
+                        {
+                            <input type="radio" id="AutoUpdate1" name="Deleted" value="true" checked="checked"/><label for="AutoUpdate1">True</label>
+                            <input type="radio" id="AutoUpdate2" name="Deleted" value="false" /><label for="AutoUpdate2">False</label>
+                        }
+                        else
+                        {
+                            <input type="radio" id="AutoUpdate1" name="Deleted" value="true" /><label for="AutoUpdate1">True</label>
+                            <input type="radio" id="AutoUpdate2" name="Deleted" value="false" checked="checked"/><label for="AutoUpdate2">False</label>
+                        }
+                        </div>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+    <input type="submit" id="btn-save" value="Save" />
+</div>
+}
+@section Scripts {
+
+<script>
+    $(function () {
+        $("input[id=btn-save]").button();
+        $("#form-index-table").dataTable();
+        $("#AutoUpdateButtonSet").buttonset();
+    });
+</script>
+}

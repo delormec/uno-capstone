@@ -18,16 +18,16 @@ namespace OST_Admin.Models.Repository
         public int authenticateUser(string user_name, string password)
         {
             //if no match, return -1 (failed)
-            if (_databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password).Count() == 0)
+            if (_databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Deleted == false).Count() == 0)
                 return -1;
             else
-                return _databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password).Single().UserId;
+                return _databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Deleted == false).Single().UserId;
         }
 
         //return their role by user id
-        public String getRoleByUserId(int user_id)
+        public Role getRoleByUserId(int user_id)
         {
-            return _databaseContext.Users.Where(u => u.UserId == user_id).Single().Role.Name;
+            return _databaseContext.Users.Where(u => u.UserId == user_id).Single().Role;
         }
 
         public int getLoggedInUserId()
@@ -41,8 +41,8 @@ namespace OST_Admin.Models.Repository
         }
 
         public void logOutUser()
-        {
-            HttpContext.Current.Session.Remove("__UserId");
+        {   
+            HttpContext.Current.Session.RemoveAll();
         }
 
         public IQueryable<User> getAllUsers()
@@ -65,16 +65,58 @@ namespace OST_Admin.Models.Repository
             return _databaseContext.Roles.Where(r => r.RoleId == role_id).Single();
         }
 
-        public void deleteUser(int user_id, int logged_in_user_id)
+        public void addUser(User user, int role_id)
         {
-            //TODO
-            throw new NotImplementedException();
+            //get a role, then add user to it
+            Role existing_role = _databaseContext.Roles.Where(r => r.RoleId == role_id).Single();
+
+            user.Role = existing_role;
+
+            _databaseContext.SaveChanges();
         }
 
-        public void addUser(User user)
+        public String getLoggedInRole()
         {
-            //TODO
-            throw new NotImplementedException();
+            return (String)HttpContext.Current.Session["__UserRole"];
+        }
+
+        public void setLoggedInRole(string role)
+        {
+            HttpContext.Current.Session.Add("__UserRole", role);
+        }
+
+        public void updateUser(User user, int role_id)
+        {
+            //get the user in database, then set all its fields to new values
+            User old_user;
+            old_user = getUserById(user.UserId);
+
+            if (user.Password == null)
+                user.Password = "";
+
+            old_user.Password = user.Password;
+            old_user.UserName = user.UserName;
+            old_user.Deleted = user.Deleted;
+
+
+            //temp remove the user from the database so it can be assigned to the correct role
+            //turns out we don't need to do this
+            //_databaseContext.Detach(old_user);
+
+            //get a role, then add user to it
+            Role existing_role = _databaseContext.Roles.Where(r => r.RoleId == role_id).Single();
+
+            //attach the user to it's new role (may have not changed)
+            old_user.Role = existing_role;
+
+            //if were deleting a user, we need to make sure their forms are not orphened
+            //well maybe it doesn't matter, the admin will always be able to see it
+            //if (old_user.Deleted == false && user.Deleted == true)
+            //{
+            //   //do something    
+            //}
+
+            _databaseContext.SaveChanges();
         }
     }
 }

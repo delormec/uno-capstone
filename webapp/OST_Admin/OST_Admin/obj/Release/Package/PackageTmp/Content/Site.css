@@ -1,4 +1,5 @@
-﻿html {
+﻿/* every page */
+html {
     background-color: #DDDDDD;
     margin: 0;
     padding: 0;
@@ -13,19 +14,102 @@ body {
     margin: 0;
     padding: 0;
 }
-
-
-.ui-tabs-anchor 
-{
-    
-    font-size: 75%;
-}
- 
 a 
 {
     color:Blue;
 }
 
+/* /Account/LogIn/ */
+#login
+{
+ width:100%;
+ width:350px; 
+ margin:0 auto;
+ padding:5px 5px 5px 5px;
+}
+
+#login #login-header
+{
+    font-size:1.3em;
+     padding:3px 3px 3px 3px;
+}
+#login #login-content
+{
+  padding:5px 5px 5px 5px;  
+}
+#login #login-content label
+{
+
+}
+#login #login-content #login-password
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+}
+#login #login-content #login-user-name
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+}
+
+
+/* Layout Page (every page) */
+#main-menu 
+{
+ width:100%;
+ width:800px;
+ margin:0 auto;
+ padding:0px 10px 0px 10px; 
+ font-size:1.1em;
+ height:30px;
+}
+#main-menu a
+{
+    height:26px;
+    width:100px;
+    float:left;
+    padding-top:2px;
+    padding-bottom:2px;
+    text-align:center;
+}
+#main-menu a:link 
+{
+    text-decoration:none;
+}
+#main-menu a:hover
+{
+    background-color:#6eac2c;
+}
+#main-menu #main-menu-logout
+{
+   float:right;
+}
+
+/* h2 headers */
+.header
+{
+    font-size:1.3em;
+    margin: 10px 0px 0px 0px;
+    padding: 3px 3px 3px 3px;
+}
+
+/*back to list buttons */
+#Back
+{
+    margin: 10px 0px 0px 0px;
+}
+
+/*overwriting jqueryui*/
+.ui-tabs-anchor 
+{
+    
+    font-size: 75%;
+}
+
+.ui-widget-content {border: 1px solid rgb(150,150,150);
+                    background: #DDD;}
+
+/* /Form/Edit + /Form/Create */
 #form-editor-outer
 {
  width:100%;
@@ -33,10 +117,12 @@ a
  margin:0 auto;
 }
 
+
+
 #form-editor
 {
  
- margin: 5px 0px 5px 0px;
+ margin: 0px 0px 5px 0px;
  padding: 5px 15px 0px 5px;
 }
 
@@ -123,14 +209,7 @@ a
 #QuestionTabOuter
 {
    padding:5px 0px 5px 0px;  
-}
-
-
-/*overwriting jqueryui*/
-.ui-widget-content {border: 1px solid rgb(150,150,150);
-                    background: #DDD;}
-
-                    
+}                  
                     
 #QuestionTabOuter .ui-tabs .ui-tabs-panel 			{display: block; border-width: 0; background: #DDD; 
 									  position: relative; min-height: 200px; 
@@ -253,6 +332,8 @@ a
     width:125px;
 }
 
+/* /Form/Index */
+
 #form-index-outer
 {
  width:100%;
@@ -263,6 +344,7 @@ a
 #form-index
 {
  
- margin: 5px 0px 5px 0px;
+ margin: 0px 0px 5px 0px;
  padding: 5px 15px 0px 5px;
 }
+
