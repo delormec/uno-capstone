@@ -1,0 +1,71 @@
+package com.example.habitathumanityapp;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import org.apache.commons.io.FileUtils;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import android.content.Context;
+
+public class XMLParser {
+	public XMLParser(){
+		
+	}
+	
+	public static Form parseForm(String xml){
+		Form f = null;
+		
+		Serializer serializer = new Persister();
+		
+		//Look into serialization/deserialization of objects
+		try{
+			f = serializer.read(Form.class, xml);
+			
+			int formID = f.getFormId();
+			String formName = f.getFormName();
+			
+			assert formID == 351;
+			assert formName == "Survey";
+			
+			//Log.v(TAG,"Form id is " + formID);
+			//Log.v(TAG,"Form name is " + formName);
+			
+			for( Question q: f.questions){
+				System.out.println(q.getClass());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return f;
+	}
+	
+	public static String getXML(Form f, Context ctx){
+		File xmlFile = new File("form_xml");
+		FileOutputStream fos = null;
+		String FILENAME = "testForm";
+		//FileOutputStream fos = ctx.openFileOutput(xmlFile, Context.MODE_PRIVATE);
+		try{
+			fos = new FileOutputStream();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Serializer serializer = new Persister();
+		String xmlChunk = "String coming from the form.";
+		try
+		{
+			serializer.write(f, fos);	
+			//xmlChunk = FileUtils.readFileToString(xmlFile);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return xmlChunk;
+	}
+	
+}

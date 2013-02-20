@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainScreenActivity" >
+
+    <Button
+        android:id="@+id/newForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="46dp"
+        android:onClick="createForm"
+        android:text="@string/newFormButton" />
+
+    <Button
+        android:id="@+id/dataStoreTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:onClick="dataStoreTest"
+        android:text="@string/dataStoreTest" />
+
+    <Button
+        android:id="@+id/parseFormButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dataStoreTest"
+        android:layout_below="@+id/newForm"
+        android:layout_marginLeft="22dp"
+        android:text="@string/parseFormTest" />
+
+</RelativeLayout>

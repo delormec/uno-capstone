@@ -43,5 +43,10 @@ public class MainScreenActivity extends Activity {
 		Intent intent = new Intent(this, DataStoreTestActivity.class);
 		startActivity(intent);
 	}
+	
+	public void parseFormTest(View view){
+		Intent intent = new Intent(this, ParseFormTestActivity.class);
+		startActivity(intent);
+	}
 
 }

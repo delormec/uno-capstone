@@ -1,0 +1,53 @@
+package com.example.habitathumanityapp;
+
+import java.io.OutputStream;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+public class XMLParser {
+	public XMLParser(){
+		
+	}
+	
+	public static Form parseForm(String xml){
+		Form f = null;
+		
+		Serializer serializer = new Persister();
+		
+		//Look into serialization/deserialization of objects
+		try{
+			f = serializer.read(Form.class, xml);
+			
+			int formID = f.getFormId();
+			String formName = f.getFormName();
+			
+			assert formID == 351;
+			assert formName == "Survey";
+			
+			//Log.v(TAG,"Form id is " + formID);
+			//Log.v(TAG,"Form name is " + formName);
+			
+			for( Question q: f.questions){
+				System.out.println(q.getClass());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return f;
+	}
+	
+	public static String getXML(Form f){
+		OutputStream xmlStream;
+		Serializer serializer = new Persister();
+		try
+		{
+			serializer.write(f, xmlStream);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+}

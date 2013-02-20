@@ -4,16 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import com.example.habitathumanityapp.ChoiceQuestion;
 import com.example.habitathumanityapp.Form;
 
 import android.content.ContentValues;
@@ -22,7 +17,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
-import android.util.Log;
 
 
 public class OSTDataSource {

@@ -1,0 +1,98 @@
+package com.example.habitathumanityapp;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import android.content.Context;
+import android.util.Log;
+
+public class XMLParser {
+	public XMLParser(){
+		
+	}
+	
+	public static Form parseForm(String xml){
+		Form f = null;
+		
+		Serializer serializer = new Persister();
+		
+		//Look into serialization/deserialization of objects
+		try{
+			f = serializer.read(Form.class, xml);
+			
+			int formID = f.getFormId();
+			String formName = f.getFormName();
+			
+			assert formID == 351;
+			assert formName == "Survey";
+			
+			//Log.v(TAG,"Form id is " + formID);
+			//Log.v(TAG,"Form name is " + formName);
+			
+			for( Question q: f.questions){
+				System.out.println(q.getClass());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return f;
+	}
+	
+	public static String getXML(Form f, Context ctx){
+		FileOutputStream fos = null;
+		FileInputStream fis = null;
+		String FILENAME = "testForm";
+		StringWriter writer = new StringWriter();
+		
+		try{
+			fos = ctx.openFileOutput(FILENAME, Context.MODE_PRIVATE	);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Serializer serializer = new Persister();
+		String xmlChunk = "String coming from the form.";
+		try
+		{
+			serializer.write(f, fos);
+			//fos.close();
+			//xmlChunk = FileUtils.readFileToString(xmlFile);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try{
+			fis = ctx.openFileInput(FILENAME);
+			
+			Log.v("Parser", "here is file length" + fis.available() );
+			
+			//IOUtils.copy(fis, writer);
+			BufferedReader br = new BufferedReader( new InputStreamReader(fis));
+			StringBuilder sb = new StringBuilder();
+			
+			while((xmlChunk = br.readLine()) != null){
+				sb.append(xmlChunk);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
+		//xmlChunk = writer.toString();
+		
+		return xmlChunk;
+	}
+	
+}

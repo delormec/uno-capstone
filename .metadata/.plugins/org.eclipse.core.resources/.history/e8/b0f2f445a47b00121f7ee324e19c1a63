@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HabitatHumanityApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="newFormButton">New Form</string>
+    <string name="title_activity_display_form">DisplayFormActivity</string>
+    <string name="testTextString">Empty</string>
+    <string name="getFormButton">Get Form</string>
+    <string name="dataStoreTest">Data Store Test</string>
+    <string name="title_activity_data_store_test">DataStoreTest</string>
+    <string name="title_activity_parse_form">ParseFormActivity</string>
+    <string name="parseFormTest">parseFormTest</string>
+    <string name="xmlForm">m</string>
+    <string name="strGetXml">Get XML Test</string>
+
+</resources>

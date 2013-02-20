@@ -19,9 +19,11 @@ public final class R {
         public static final int DSTest3=0x7f080005;
         public static final int TextView01=0x7f080002;
         public static final int dataStoreTest=0x7f080009;
+        public static final int fullXmlCode=0x7f08000b;
         public static final int getFormButton=0x7f080007;
-        public static final int menu_settings=0x7f08000a;
+        public static final int menu_settings=0x7f08000c;
         public static final int newForm=0x7f080008;
+        public static final int parseFormButton=0x7f08000a;
         public static final int testText=0x7f080006;
         public static final int textView1=0x7f080001;
         public static final int textView2=0x7f080004;
@@ -30,11 +32,13 @@ public final class R {
         public static final int activity_data_store_test=0x7f030000;
         public static final int activity_display_form=0x7f030001;
         public static final int activity_main_screen=0x7f030002;
+        public static final int activity_parse_form=0x7f030003;
     }
     public static final class menu {
         public static final int activity_data_store_test=0x7f070000;
         public static final int activity_display_form=0x7f070001;
         public static final int activity_main_screen=0x7f070002;
+        public static final int activity_parse_form=0x7f070003;
     }
     public static final class raw {
         public static final int form=0x7f040000;
@@ -46,9 +50,14 @@ public final class R {
         public static final int hello_world=0x7f050001;
         public static final int menu_settings=0x7f050002;
         public static final int newFormButton=0x7f050003;
+        public static final int parseFormTest=0x7f05000a;
+        public static final int strGetForm=0x7f05000d;
+        public static final int strGetXml=0x7f05000c;
         public static final int testTextString=0x7f050005;
         public static final int title_activity_data_store_test=0x7f050008;
         public static final int title_activity_display_form=0x7f050004;
+        public static final int title_activity_parse_form=0x7f050009;
+        public static final int xmlForm=0x7f05000b;
     }
     public static final class style {
         /** 

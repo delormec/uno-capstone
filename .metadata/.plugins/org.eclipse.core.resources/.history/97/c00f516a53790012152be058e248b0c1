@@ -1,0 +1,13 @@
+package com.example.habitathumanityapp;
+
+public class XMLParser {
+	public XMLParser(){
+		
+	}
+	
+	public static Form parseForm(String xml){
+		Form f;
+		
+		return null;
+	}
+}

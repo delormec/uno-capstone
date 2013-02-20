@@ -22,10 +22,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
+<<<<<<< HEAD
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+=======
+>>>>>>> XML Parser Helper Classes
 import com.example.habitathumanityapp.sharepointauthentication.NTLMSchemeFactory;
 
 import android.util.Log;

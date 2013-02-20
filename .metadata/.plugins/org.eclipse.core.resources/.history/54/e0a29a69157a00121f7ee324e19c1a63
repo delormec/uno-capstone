@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HabitatHumanityApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="newFormButton">New Form</string>
+    <string name="title_activity_display_form">DisplayFormActivity</string>
+    <string name="testTextString">Empty</string>
+    <string name="getFormButton">Get Form</string>
+    <string name="dataStoreTest">Data Store Test</string>
+    <string name="title_activity_data_store_test">DataStoreTest</string>
+    <string name="title_activity_parse_form">ParseFormActivity</string>
+    <string name="parseFormTest">parseFormTest</string>
+    <string name="xmlForm"><?xml version="1.0" encoding="UTF-8"?><form><meta><name>Form 1</name><id>5</id></meta><questions><question class="TextQuestion"><text>This is my question?</text></question><question class="ChoiceQuestion"><text>This is my question2?</text><options length="2"><option>Choice #1</option><option>Choice #2</option></options></question></questions></form></string>
+
+</resources>

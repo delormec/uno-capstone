@@ -6,8 +6,6 @@ import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.datasource.SharePointDataSource;
 import com.example.habitathumanityapp.tasks.connectToSharePoint;
 import com.example.habitathumanityapp.tasks.createSharePointListTest;
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;

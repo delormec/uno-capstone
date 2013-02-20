@@ -25,6 +25,14 @@
         android:layout_marginTop="20dp"
         android:onClick="dataStoreTest"
         android:text="@string/dataStoreTest" />
-    
+
+    <Button
+        android:id="@+id/parseFormButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dataStoreTest"
+        android:layout_below="@+id/dataStoreTest"
+        android:onClick="@string/parseFormTest"
+        android:text="@string/parseFormTest" />
 
 </RelativeLayout>

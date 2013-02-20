@@ -22,6 +22,7 @@ import android.support.v4.app.NavUtils;
 public class DisplayFormActivity extends Activity {
 
 	public Handler mHandler = new Handler(){
+		@Override
 		public void handleMessage(Message msg){
 			Bundle b = msg.getData();
 			Boolean isEmpty = b.isEmpty();
@@ -70,6 +71,7 @@ public class DisplayFormActivity extends Activity {
 		*/
 		
 		Runnable runnable = new Runnable(){
+			@Override
 			public void run(){	
 				//android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 				Form f = null;
