@@ -46,7 +46,9 @@ public class XML
         xml += string.Format("\t\t<id>{0}</id>\n", form.FormId);
         xml += string.Format("\t\t<name>{0}</name>\n", form.Name);
         xml += string.Format("\t\t<url>{0}</url>\n", form.URL);
-
+        xml += string.Format("\t\t<listame>{0}</listname>\n", form.ListName);
+        xml += string.Format("\t\t<keyfield>{0}</keyfield>\n", form.KeyField);
+        xml += string.Format("\t\t<formgroup>{0}</formgroup>\n", form.Group);
         
         // Autoupdate
         if (form.AutoUpdate == null || form.AutoUpdate == false)
@@ -109,10 +111,22 @@ public class XML
                 // Cast q as a ChoiceQuestion
                 ChoiceQuestion question = (ChoiceQuestion)q;
 
+
+                // Multiple select
+                if (question.Multiple == true)
+                {
+                    xml += "\t\t\t<multipleselect>true</multipleselect>\n";
+                }
+                else
+                {
+                    xml += "\t\t\t<multipleselect>false</multipleselect>\n";
+                }
+
+
                 // Open options tag
                 xml += "\n\t\t\t<options>\n";
 
-
+                
                 // Add each option to the question
                 foreach (Option o in question.Options)
                 {
@@ -121,7 +135,7 @@ public class XML
                     xml += string.Format("\t\t\t\t\t<sortorder>{0}</sortorder>\n", o.SortOrder);
                     xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", o.Text);
                     xml += "\t\t\t\t</option>\n\n";
-                }
+                }         
 
 
                 // Other

@@ -38,6 +38,7 @@
                         <input class="text-box single-line" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The name of the field for this question in the SharePoint list")</td>
             </tr>
             <tr>
                 <td>Field Type</td>
@@ -46,14 +47,16 @@
                         <input class="text-box single-line" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The type of the field for this question in the SharePoint list")</td>
             </tr>
             <tr>
-                <td>Steps (1-?)</td>
+                <td>Steps (2-?)</td>
                 <td>
                     <div id="question-steps">
                         <input class="text-box single-line" type="text" value="@Model.Steps" name="[@Model.SortOrder].Steps"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The number of choices from 'low label' to 'high label' (minimum of 2)")</td>
             </tr>
 
             <tr>
@@ -65,6 +68,7 @@
                         <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[0].Text" name="[@Model.SortOrder].Labels[0].Text"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The lower end of the scale for the question")</td>
             </tr>
 
             <tr>
@@ -76,6 +80,7 @@
                         <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[1].Text" name="[@Model.SortOrder].Labels[1].Text"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The higher end of the scale for the question")</td>
             </tr>
         </table>
 

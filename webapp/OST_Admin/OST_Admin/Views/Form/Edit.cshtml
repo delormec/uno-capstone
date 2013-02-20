@@ -33,6 +33,7 @@
                         <input id="URL" class="text-box single-line" type="text" value="@Model.URL" name="URL"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The URL to the SharePoint list for this form")</td>
             </tr>
             <tr>
                 <td> SharePoint ListName </td>
@@ -41,6 +42,7 @@
                         <input id="ListName" class="text-box single-line" type="text" value="@Model.ListName" name="ListName"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The name of the list in SharePoint for this form")</td>
             </tr>
             <tr>
                 <td> Form Group </td>
@@ -49,6 +51,7 @@
                         <input id="Group" class="text-box single-line" type="text" value="@Model.Group" name="Group"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The group for this form. This is how forms will be categorized on the device application.")</td>
             </tr>
             <tr>
                 <td>Auto Update</td>
@@ -68,6 +71,7 @@
                         </div>
                     }
                 </td>
+                <td>@MyHTML.Help("True - completed forms will be pushed to the SharePoint list automatically from the device when the device is connected to the Internet.\nFalse - completed forms will be manually pushed to SharePoint from the device by the user.")</td>
             </tr>
             <tr>
                 <td> Key Field</td>
@@ -76,6 +80,7 @@
                         <input id="KeyField" class="text-box single-line" type="text" value="@Model.KeyField" name="KeyField"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The key field of a form will be used by the device to display a list of completed forms. The key field should be a field that is unique for each completed form.")</td>
             </tr>
         </table>
 
