@@ -1,6 +1,7 @@
 <form>
         <meta>
                 <formid>351</formid>
+                <group>Test</group>
                 <name>Survey</name>
                 <url>86.52.51.12/service.scv</url>
                 <autoupload>false</autoupload>

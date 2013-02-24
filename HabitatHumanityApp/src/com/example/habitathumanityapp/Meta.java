@@ -13,6 +13,9 @@ public class Meta implements Serializable{
 	@Element (name="formid")
 	public int formid;
 	
+	@Element (name="group")
+	public String group;
+	
 	@Element (name="name")
 	public String name;
 	

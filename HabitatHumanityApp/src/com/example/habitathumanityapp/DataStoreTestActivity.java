@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class DataStoreTestActivity extends Activity {
 			form1.meta.autoUpload = "false";
 			form1.meta.url = "http://www.google.com";
 			form1.meta.name = "Test Form";
+			form1.meta.group = "Test Group";
 			form1.questions.add(tq1);
 			form1.questions.add(lsq1);
 			form1.questions.add(cq1);
@@ -127,6 +129,11 @@ public class DataStoreTestActivity extends Activity {
 		//display my new name
 		DSTest3.setText(form4.meta.name);
 
+		//testing new functions
+		Log.v("data store test", String.valueOf(ostDS.getAllTemplateGroups().size()));
+		Log.v("data store test", String.valueOf(ostDS.getAllTemplateInfoByGroup("Test Group").size()));
+		
+		
 		//remove any templates in db
 		ostDS.removeAllTemplates();
 		ostDS.removeAllForms();
@@ -135,9 +142,11 @@ public class DataStoreTestActivity extends Activity {
 		
 		SharePointDataSource spDS = new SharePointDataSource();
 		
+
+		
 		//create threads that do shit
-		new connectToSharePoint().execute(spDS);
-		new createSharePointListTest().execute(spDS);
+		//new connectToSharePoint().execute(spDS);
+		//new createSharePointListTest().execute(spDS);
 
 		
 	}

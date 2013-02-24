@@ -55,6 +55,7 @@ public class ParseFormTestActivity extends Activity {
 		form1.meta.autoUpload = "false";
 		form1.meta.url = "http://www.google.com";
 		form1.meta.name = "Test Form";
+		form1.meta.group = "Test Group";
 		form1.meta.dateCreated ="Today";
 		form1.questions.add(tq1);
 		form1.questions.add(lsq1);

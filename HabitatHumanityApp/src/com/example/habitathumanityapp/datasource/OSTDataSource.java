@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.example.habitathumanityapp.Form;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -79,6 +80,7 @@ public class OSTDataSource {
 		  
 		  try {
 			  values.put("_id", form.meta.formid);
+			  values.put("group_name", form.meta.group);
 			  values.put("template_name", form.meta.name);
 			  values.put("template", toString(form));
 		  } catch (IOException e) {
@@ -92,6 +94,25 @@ public class OSTDataSource {
 	  /* close the db */
 	  public void close() {
 	    dbHelper.close();
+	  }
+	  
+	  public List<String[]> getAllTemplateInfoByGroup(String group)
+	  {
+		  List<String[]> template_info = new ArrayList<String[]>();
+		  Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},"group_name ==\"" + group + "\"",null,null,null,null);
+		  
+		  cursor.moveToFirst();
+		  while (!cursor.isAfterLast()) 
+		  {
+			  String[] temp = new String[2];
+			  temp[0] = String.valueOf(cursor.getInt(0));
+			  temp[1] = cursor.getString(1);
+			  template_info.add(temp);
+			  cursor.moveToNext();
+		  }
+		  
+		  cursor.close();
+		  return template_info;
 	  }
 	  
 	  /* returns template_id and template_name for all templates in the db */
@@ -133,6 +154,23 @@ public class OSTDataSource {
 		  
 		  cursor.close();
 		  return form_info;
+	  }
+	  
+	@SuppressLint("NewApi")
+	public List<String> getAllTemplateGroups()
+	  {
+		  List<String> groups = new ArrayList<String>();
+		  Cursor cursor = database.query(true, "Templates", new String[] {"group_name"}, null, null, null, null, null, null, null);
+		  
+		  cursor.moveToFirst();
+		  while (!cursor.isAfterLast()) 
+		  {
+			  groups.add(cursor.getString(0));
+			  cursor.moveToNext();
+		  }
+		  
+		  cursor.close();
+		  return groups;
 	  }
 	  
 	  public Form getFormById(int form_id)

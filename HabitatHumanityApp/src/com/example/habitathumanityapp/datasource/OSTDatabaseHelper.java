@@ -10,9 +10,9 @@ import android.util.Log;
 public class OSTDatabaseHelper extends SQLiteOpenHelper
 {
 	private static final String DATABASE_NAME = "OST";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	
-	private static final String template_table = "CREATE TABLE Templates (_id INTEGER PRIMARY KEY, template_name TEXT, template_description TEXT, template BLOB);";
+	private static final String template_table = "CREATE TABLE Templates (_id INTEGER PRIMARY KEY, group_name TEXT, template_name TEXT, template_description TEXT, template BLOB);";
 	private static final String form_table = "CREATE TABLE Forms (_id INTEGER PRIMARY KEY autoincrement, template_id INTEGER, key_field TEXT, form BLOB);";
 	
 
