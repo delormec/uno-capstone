@@ -20,5 +20,6 @@ namespace OST_Admin.Models.Repository
         Role getRoleById(int role_id);
         void addUser(User user, int role_id);
         void updateUser(User user, int role_id);
+        void deleteUser(User user);
     }
 }

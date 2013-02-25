@@ -36,7 +36,7 @@
     </Key>
     <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
-    <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="False" />
+    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="False" />
     <Property Type="String" Name="ListName" Nullable="true" />
     <Property Type="String" Name="Name" Nullable="true" />
     <Property Type="String" Name="Description" Nullable="true" />
@@ -53,7 +53,7 @@
     </Key>
     <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Type="String" Name="UserName" Nullable="false" />
-    <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="false" />
     <Property Type="String" Name="Password" Nullable="false" />
     <NavigationProperty Name="Role" Relationship="OSTModel.RoleUser" FromRole="User" ToRole="Role" />
   </EntityType>

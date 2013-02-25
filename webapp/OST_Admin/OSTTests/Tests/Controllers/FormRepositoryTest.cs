@@ -118,7 +118,7 @@ namespace OST_Admin.Tests.Controllers
         {
             string name = "New Content";
             int id = 25;
-            Form form = new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = id, Name = name };
+            Form form = new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = id, Name = name };
 
             formRepository.updateForm(form);
 
@@ -137,7 +137,7 @@ namespace OST_Admin.Tests.Controllers
             form = formRepository.getFormById(id);
 
 
-            Assert.AreEqual(true, form.Deleted);
+            Assert.AreEqual(true, form.Active);
         }
 
         [Test]

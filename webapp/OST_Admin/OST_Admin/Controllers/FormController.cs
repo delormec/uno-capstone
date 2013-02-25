@@ -81,7 +81,14 @@ namespace OST_Admin.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CreatedBy = _userRepository.getLoggedInUserId();
+            try
+            {
+                ViewBag.CreatedBy = _userRepository.getLoggedInUserId();
+            }
+            catch (NullReferenceException e)
+            {
+                return RedirectToAction("LogOut", "Account");
+            }
             return View();
         }
 

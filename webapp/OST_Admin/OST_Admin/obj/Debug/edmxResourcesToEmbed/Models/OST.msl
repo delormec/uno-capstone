@@ -6,7 +6,7 @@
         <MappingFragment StoreEntitySet="Forms">
           <ScalarProperty Name="FormId" ColumnName="FormId" />
           <ScalarProperty Name="AutoUpdate" ColumnName="AutoUpdate" />
-          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="ListName" ColumnName="ListName" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
@@ -23,7 +23,7 @@
         <MappingFragment StoreEntitySet="Users">
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>

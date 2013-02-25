@@ -32,7 +32,7 @@ namespace OST_Admin.Models.Repository
             Form form;
 
             form = getFormById(id);
-            form.Deleted = true;
+            form.Active = true;
 
             _databaseContext.SaveChanges();
         }
@@ -183,7 +183,7 @@ namespace OST_Admin.Models.Repository
             old_form.ListName = form.ListName;
             old_form.Group = form.Group;
             old_form.DateCreated = form.DateCreated;
-            old_form.Deleted = form.Deleted;
+            old_form.Active = form.Active;
             old_form.Description = form.Description;
             old_form.Name = form.Name;
             old_form.CreatedBy = form.CreatedBy;
@@ -198,11 +198,10 @@ namespace OST_Admin.Models.Repository
             Form old_form = _databaseContext.Forms.Where(p => p.FormId == form.FormId).Single();
 
             old_form.AutoUpdate = form.AutoUpdate;
-            old_form.Deleted = form.Deleted;
+            old_form.Active = form.Active;
             old_form.Description = form.Description;
             old_form.Name = form.Name;
             old_form.URL = form.URL;
-            old_form.Deleted = form.Deleted;
             old_form.KeyField = form.KeyField;
             old_form.Group = form.Group;
             old_form.ListName = form.ListName;

@@ -56,7 +56,7 @@
     </Key>
     <Property Name="FormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AutoUpdate" Type="bit" Nullable="true" />
-    <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Active" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="ListName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
@@ -72,7 +72,7 @@
     </Key>
     <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Active" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Role_RoleId" Type="int" Nullable="false" />
   </EntityType>
@@ -292,7 +292,7 @@
           </Key>
           <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
-          <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="False" />
+          <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="False" />
           <Property Type="String" Name="ListName" Nullable="true" />
           <Property Type="String" Name="Name" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
@@ -309,7 +309,7 @@
           </Key>
           <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="UserName" Nullable="false" />
-          <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="false" />
           <Property Type="String" Name="Password" Nullable="false" />
           <NavigationProperty Name="Role" Relationship="OSTModel.RoleUser" FromRole="User" ToRole="Role" />
         </EntityType>
@@ -417,7 +417,7 @@
         <MappingFragment StoreEntitySet="Forms">
           <ScalarProperty Name="FormId" ColumnName="FormId" />
           <ScalarProperty Name="AutoUpdate" ColumnName="AutoUpdate" />
-          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="ListName" ColumnName="ListName" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
@@ -434,7 +434,7 @@
         <MappingFragment StoreEntitySet="Users">
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
           <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>

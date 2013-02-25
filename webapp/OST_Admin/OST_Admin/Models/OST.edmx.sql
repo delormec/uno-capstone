@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 02/17/2013 22:17:20
+-- Date Created: 02/24/2013 17:14:49
 -- Generated from EDMX file: C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OST_Admin\Models\OST.edmx
 -- --------------------------------------------------
 
@@ -88,7 +88,7 @@ GO
 CREATE TABLE [dbo].[Forms] (
     [FormId] int IDENTITY(1,1) NOT NULL,
     [AutoUpdate] bit  NULL,
-    [Deleted] bit  NOT NULL,
+    [Active] bit  NOT NULL,
     [ListName] nvarchar(max)  NULL,
     [Name] nvarchar(max)  NULL,
     [Description] nvarchar(max)  NULL,
@@ -104,7 +104,7 @@ GO
 CREATE TABLE [dbo].[Users] (
     [UserId] int IDENTITY(1,1) NOT NULL,
     [UserName] nvarchar(max)  NOT NULL,
-    [Deleted] bit  NOT NULL,
+    [Active] bit  NOT NULL,
     [Password] nvarchar(max)  NOT NULL,
     [Role_RoleId] int  NOT NULL
 );

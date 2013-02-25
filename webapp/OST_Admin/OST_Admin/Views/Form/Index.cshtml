@@ -9,15 +9,11 @@
 <table id="form-index-table">
     <thead>
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
+        <th> Group </th>
+        <th> Name  </th>
+        <th> Description </th>
+        <th> Date Created</th>
+        <th> Active </th>
         <th></th>
     </tr>
     </thead>
@@ -26,18 +22,29 @@
 
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.Group)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
+            @item.DateCreated.Value.ToShortDateString()
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.FormId}) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.FormId }) |
-            @Html.ActionLink("XML", "XML", new { id = item.FormId })
+            @if (item.Active == false)
+            {
+                <text>inactive</text>
+            }
+            else
+            {
+                <text>active</text>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.FormId })&nbsp;|&nbsp;@Html.ActionLink("Delete", "Delete", new { id = item.FormId })&nbsp;|&nbsp;@Html.ActionLink("XML", "XML", new { id = item.FormId })
 
             @{
             //@Html.ActionLink("Edit", "Edit", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only", role = "button" })
@@ -53,7 +60,6 @@
 </table>
 
 </div>
-<br />
 @Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
 </div>
 @section Scripts {
@@ -64,7 +70,18 @@
     $(function () {
         $("a[id=btn-create]").button();
         $("a[id=btn-log-out]").button();
-        $("#form-index-table").dataTable();
+        $("#form-index-table").dataTable({
+            "bJQueryUI": true,
+            "bPaginate": false,
+            "aaSorting": [[4, "asc"], [0, "asc"], [1, "asc"]],
+            "aoColumns": [
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": false}]
+        });
     });
 </script>
 }

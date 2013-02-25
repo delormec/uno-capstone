@@ -180,6 +180,7 @@ a
     border: 1px solid rgb(0,0,0);
     padding:3px 3px 3px 3px;
     width:300px;
+    display:inline;
 }
 
 #form-editor #form-key-field
@@ -345,6 +346,6 @@ a
 {
  
  margin: 0px 0px 5px 0px;
- padding: 5px 15px 0px 5px;
+ padding: 5px 5px 5px 5px;
 }
 

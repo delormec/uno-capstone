@@ -14,7 +14,7 @@ namespace OST_Admin
                         "~/Scripts/jquery.dataTables.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-1.10.0.custom.js"));
+                        "~/Scripts/jquery-ui-1.10.1.custom.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
@@ -29,7 +29,7 @@ namespace OST_Admin
 
 
             bundles.Add(new StyleBundle("~/Content/themes/ui-notdarkness/css").Include(
-                        "~/Content/themes/ui-notdarkness/jquery-ui-1.10.0.custom.css"));
+                        "~/Content/themes/ui-notdarkness/jquery-ui-1.10.1.custom.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

@@ -37,6 +37,7 @@
                         <input class="text-box single-line" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The name of the field for this question in the SharePoint list")</td>
             </tr>
             <tr>
                 <td>Field Type</td>
@@ -45,6 +46,7 @@
                         <input class="text-box single-line" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
                     </div>
                 </td>
+                <td>@MyHTML.Help("The type of the field for this question in the SharePoint list")</td>
             </tr>
             <tr>
                 <td>Allow Multiple</td>
@@ -65,6 +67,7 @@
                         </div>
                     }
                 </td>
+                <td>@MyHTML.Help("Yes - The question allow the user to select more than one option from the available choices\nNo - the question will allow only one option to be selected")</td>
             </tr>
             <tr>
                 <td>Add "Other"</td>
@@ -85,6 +88,7 @@
                         </div>
                     }
                 </td>
+                <td>@MyHTML.Help("True - Allows the user to select \"other\" and enter a custom text answer")</td>
             </tr>
 
         </table>

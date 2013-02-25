@@ -22,11 +22,11 @@ namespace OSTTests.Tests.Controllers
 
             //OSTDataContext.User.
 
-            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false,  DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = 1, Name = "This is my name" });
-            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = 2, Name = "This is my name" });
-            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = 3, Name = "This is my name" });
-            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = 4, Name = "This is my name" });
-            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false,  DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description", FormId = 5, Name = "This is my name" });
+            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false,  DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = 1, Name = "This is my name" });
+            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = 2, Name = "This is my name" });
+            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = 3, Name = "This is my name" });
+            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = 4, Name = "This is my name" });
+            OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = 5, Name = "This is my name" });
             OSTDataContext.SaveChanges();
         }
     }

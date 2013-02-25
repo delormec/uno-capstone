@@ -22,7 +22,16 @@
 <div id="main-menu" class="ui-widget-header ui-corner-bottom">
 <span>
 <a id="main-menu-forms" href="/Form/Index" class="">Forms</a>
-<a id="main-menu-users" href="/User/Index">Users</a>
+@{
+    //TODO - DO NOT LIKE THIS AT ALL.
+}
+@if (HttpContext.Current.Session["__UserId"] != null)
+{
+    if ((int)HttpContext.Current.Session["__UserId"] == 1)
+    {
+        <a id="main-menu-users" href="/User/Index">Users</a>
+    }
+}
 <a id="main-menu-logout" href="/Account/LogOut">Log Out</a>
 </span>
 </div>

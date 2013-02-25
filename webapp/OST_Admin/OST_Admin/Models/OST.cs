@@ -598,24 +598,24 @@ namespace OST_Admin.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Boolean Deleted
+        public global::System.Boolean Active
         {
             get
             {
-                return _Deleted;
+                return _Active;
             }
             set
             {
-                OnDeletedChanging(value);
-                ReportPropertyChanging("Deleted");
-                _Deleted = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Deleted");
-                OnDeletedChanged();
+                OnActiveChanging(value);
+                ReportPropertyChanging("Active");
+                _Active = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Active");
+                OnActiveChanged();
             }
         }
-        private global::System.Boolean _Deleted = false;
-        partial void OnDeletedChanging(global::System.Boolean value);
-        partial void OnDeletedChanged();
+        private global::System.Boolean _Active = false;
+        partial void OnActiveChanging(global::System.Boolean value);
+        partial void OnActiveChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1813,24 +1813,24 @@ namespace OST_Admin.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Boolean Deleted
+        public global::System.Boolean Active
         {
             get
             {
-                return _Deleted;
+                return _Active;
             }
             set
             {
-                OnDeletedChanging(value);
-                ReportPropertyChanging("Deleted");
-                _Deleted = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Deleted");
-                OnDeletedChanged();
+                OnActiveChanging(value);
+                ReportPropertyChanging("Active");
+                _Active = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Active");
+                OnActiveChanged();
             }
         }
-        private global::System.Boolean _Deleted = false;
-        partial void OnDeletedChanging(global::System.Boolean value);
-        partial void OnDeletedChanged();
+        private global::System.Boolean _Active = false;
+        partial void OnActiveChanging(global::System.Boolean value);
+        partial void OnActiveChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

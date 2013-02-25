@@ -18,10 +18,10 @@ namespace OST_Admin.Models.Repository
         public int authenticateUser(string user_name, string password)
         {
             //if no match, return -1 (failed)
-            if (_databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Deleted == false).Count() == 0)
+            if (_databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Active == true).Count() == 0)
                 return -1;
             else
-                return _databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Deleted == false).Single().UserId;
+                return _databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Active == true).Single().UserId;
         }
 
         //return their role by user id
@@ -72,6 +72,12 @@ namespace OST_Admin.Models.Repository
 
             user.Role = existing_role;
 
+            if (user.UserName == null)
+                user.UserName = "";
+
+            if (user.Password == null)
+                user.Password = "";
+
             _databaseContext.SaveChanges();
         }
 
@@ -96,7 +102,7 @@ namespace OST_Admin.Models.Repository
 
             old_user.Password = user.Password;
             old_user.UserName = user.UserName;
-            old_user.Deleted = user.Deleted;
+            old_user.Active = user.Active;
 
 
             //temp remove the user from the database so it can be assigned to the correct role
@@ -116,6 +122,13 @@ namespace OST_Admin.Models.Repository
             //   //do something    
             //}
 
+            _databaseContext.SaveChanges();
+        }
+
+
+        public void deleteUser(User user)
+        {
+            _databaseContext.DeleteObject(user);
             _databaseContext.SaveChanges();
         }
     }

@@ -51,7 +51,7 @@
     </Key>
     <Property Name="FormId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AutoUpdate" Type="bit" Nullable="true" />
-    <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Active" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="ListName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
@@ -67,7 +67,7 @@
     </Key>
     <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Deleted" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="Active" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Role_RoleId" Type="int" Nullable="false" />
   </EntityType>
