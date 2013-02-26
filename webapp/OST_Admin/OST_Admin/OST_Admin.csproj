@@ -165,6 +165,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\APIFormController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">

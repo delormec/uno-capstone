@@ -19,6 +19,7 @@ namespace OST_Admin.Controllers
     [Authorize]
     public class FormController : Controller
     {
+        //TODO -- remove the rest of db interactions
         private OSTDataContext db = new OSTDataContext();
         private readonly IFormRepository _formRepository;
         private readonly IUserRepository _userRepository;
@@ -32,24 +33,23 @@ namespace OST_Admin.Controllers
         //
         // GET: /Form/
 
-        
+        //Updated to only show forms you have access to
         public ActionResult Index()
         {
-            return View(_formRepository.GetAll().ToList());
-        }
-
-        //
-        // GET: /Form/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Form form = db.Forms.Single(f => f.FormId == id);
-            
-            if (form == null)
+            int user_id;
+            try
             {
-                return HttpNotFound();
+                user_id = _userRepository.getLoggedInUserId();
             }
-            return View(form);
+            catch (NullReferenceException e)
+            {
+                return RedirectToAction("LogOut", "Account");
+            }
+
+            if (_userRepository.getLoggedInRole() == "Administrator")
+                return View(_formRepository.GetAll().ToList());
+            else
+                return View(_formRepository.GetAll().Where(p => p.CreatedBy == user_id).ToList());
         }
 
         /// <summary>
@@ -137,13 +137,29 @@ namespace OST_Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            Form form = _formRepository.getFormById(id);            
+            int user_id;
+            String user_role;
+            Form form;
+            try
+            {
+                user_id = _userRepository.getLoggedInUserId();
+                user_role = _userRepository.getLoggedInRole();
+
+                form = _formRepository.getFormById(id);
+
+                if (form.CreatedBy != user_id && user_role != "Administrator")
+                    return RedirectToAction("LogOut", "Account");
+            }
+            catch (NullReferenceException e)
+            {
+                return RedirectToAction("LogOut", "Account");
+            }
 
             //pass in form id
             ViewBag.formId = id;
             //open the first tab
             ViewBag.tabopen = 0;
-           
+
             return View(form);
         }
 
