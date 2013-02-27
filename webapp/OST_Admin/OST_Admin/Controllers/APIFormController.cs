@@ -19,6 +19,7 @@ namespace OST_Admin.Controllers
         }
 
         // GET api/apiform
+        [Queryable]
         public IQueryable<String> Get()
         {
             IQueryable<Form> forms = _formRepository.GetAll().Where(p => p.Active == true);
