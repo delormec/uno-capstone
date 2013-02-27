@@ -15,5 +15,7 @@
     <string name="xmlForm">m</string>
     <string name="strGetXml">Get XML Test</string>
     <string name="strGetForm">Get Form Test</string>
+    <string name="strMainMenu">Main Menu</string>
+    <string name="title_activity_main_menu">Main Menu</string>
 
 </resources>

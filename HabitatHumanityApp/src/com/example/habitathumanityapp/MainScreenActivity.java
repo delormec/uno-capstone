@@ -48,5 +48,10 @@ public class MainScreenActivity extends Activity {
 		Intent intent = new Intent(this, ParseFormTestActivity.class);
 		startActivity(intent);
 	}
+	
+	public void mainMenuTest(View view){
+		Intent intent = new Intent(this, MainMenuActivity.class);
+		startActivity(intent);
+	}
 
 }

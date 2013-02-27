@@ -46,6 +46,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.habitathumanityapp.MainScreenActivity" />
         </activity>
+           <activity
+            android:name="com.example.habitathumanityapp.MainMenuActivity"
+            android:label="@string/title_activity_main_menu" >
+        </activity>
     </application>
 
 </manifest>

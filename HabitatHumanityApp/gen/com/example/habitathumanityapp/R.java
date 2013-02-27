@@ -20,9 +20,10 @@ public final class R {
         public static final int TextView01=0x7f080002;
         public static final int dataStoreTest=0x7f08000c;
         public static final int formMenu=0x7f08000a;
-        public static final int fullXmlCode=0x7f08000e;
+        public static final int fullXmlCode=0x7f08000f;
         public static final int getFormButton=0x7f080007;
-        public static final int menu_settings=0x7f08000f;
+        public static final int mainMenu=0x7f08000e;
+        public static final int menu_settings=0x7f080010;
         public static final int newForm=0x7f08000b;
         public static final int parseFormButton=0x7f08000d;
         public static final int templateMenu=0x7f080009;
@@ -41,8 +42,9 @@ public final class R {
     public static final class menu {
         public static final int activity_data_store_test=0x7f070000;
         public static final int activity_display_form=0x7f070001;
-        public static final int activity_main_screen=0x7f070002;
-        public static final int activity_parse_form=0x7f070003;
+        public static final int activity_main_menu=0x7f070002;
+        public static final int activity_main_screen=0x7f070003;
+        public static final int activity_parse_form=0x7f070004;
     }
     public static final class raw {
         public static final int form=0x7f040000;
@@ -57,9 +59,11 @@ public final class R {
         public static final int parseFormTest=0x7f05000a;
         public static final int strGetForm=0x7f05000d;
         public static final int strGetXml=0x7f05000c;
+        public static final int strMainMenu=0x7f05000e;
         public static final int testTextString=0x7f050005;
         public static final int title_activity_data_store_test=0x7f050008;
         public static final int title_activity_display_form=0x7f050004;
+        public static final int title_activity_main_menu=0x7f05000f;
         public static final int title_activity_parse_form=0x7f050009;
         public static final int xmlForm=0x7f05000b;
     }

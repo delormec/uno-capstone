@@ -8,22 +8,23 @@
         android:id="@+id/typeMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
     <Spinner
         android:id="@+id/templateMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/typeMenu" />
+        android:layout_below="@+id/typeMenu"
+        android:layout_marginTop="24dp" />
 
     <Spinner
         android:id="@+id/formMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/templateMenu" />
+        android:layout_below="@+id/templateMenu"
+        android:layout_marginTop="22dp" />
 
 </RelativeLayout>

@@ -19,6 +19,7 @@ import android.widget.Toast;
 public class MainMenuActivity extends Activity {
 	
 	private Spinner templateSpinner, templateGroupSpinner, formSpinner;
+	
 	void showToast(CharSequence msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
@@ -27,18 +28,23 @@ public class MainMenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 		
-		populateTemplateSpinner();
-		addTemplateSpinnerListener();
+		populateTemplateGroupSpinner();
+		addTemplateGroupSpinnerListener();
 	}
 	
-	public void addTemplateSpinnerListener() {
-		templateSpinner = (Spinner)findViewById(R.id.templateMenu);
-		templateSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+	public void addTemplateGroupSpinnerListener() {
+		templateGroupSpinner = (Spinner)findViewById(R.id.typeMenu);
+		templateGroupSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
-				showToast("Value is " + parent.getItemAtPosition(pos).toString());
+				String templateGroup = parent.getItemAtPosition(pos).toString();
+				
+				//showToast("Value is " + templateGroup);
+				
+				populateTemplateSpinner(templateGroup);
+				addTemplateSpinnerListener();
 				
 				//Populate second spinner (template group spinner) 
 			}
@@ -51,20 +57,62 @@ public class MainMenuActivity extends Activity {
 		});
 	}
 
+	public void addTemplateSpinnerListener() {
+		templateSpinner = (Spinner)findViewById(R.id.templateMenu);
+		templateSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+				
+					String template = parent.getItemAtPosition(pos).toString();
+					showToast("Value is " + template);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+	}
+	public void populateTemplateGroupSpinner() {
+		templateGroupSpinner = (Spinner)findViewById(R.id.typeMenu);
+		List<String> templateList = new ArrayList<String>();
+		
+		// Connect to the database and get a list of all of the templates corresponding to the group.
+		OSTDataSource ostDS = new OSTDataSource(this);
+		ostDS.open();
+		templateList = ostDS.getAllTemplateGroups();
+		
+		templateList.add("Template Group one");
+		templateList.add("Template Group two");
+		templateList.add("Template Group three");
+		
+		// Fill the drop down boxes with the templates.
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		templateGroupSpinner.setAdapter(dataAdapter);
+		
+	}
 	//Add items into the Template drop down initially
-	public void populateTemplateSpinner() {
+	public void populateTemplateSpinner(String template) {
 		
 		templateSpinner = (Spinner)findViewById(R.id.templateMenu);
 		List<String> templateList = new ArrayList<String>();
 		
-		//OSTDataSource ostDS = new OSTDataSource(this);
-		//ostDS.open();
-		//templateList = ostDS.getAllTemplateGroups();
+		// Connect to the database and get a list of all of the template groups.
+		OSTDataSource ostDS = new OSTDataSource(this);
+		ostDS.open();
+		templateList = ostDS.getAllTemplateGroups();
 		
-		templateList.add("Item one");
-		templateList.add("Item two");
-		templateList.add("Item three");
+		templateList.add("Template one");
+		templateList.add("Template two");
+		templateList.add("Template three");
 		
+		// Fill the drop down boxes with the template groups.
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		templateSpinner.setAdapter(dataAdapter);
