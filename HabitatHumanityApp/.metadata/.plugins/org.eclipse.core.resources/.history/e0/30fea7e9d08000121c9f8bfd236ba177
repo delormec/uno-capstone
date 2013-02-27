@@ -1,0 +1,41 @@
+package com.example.habitathumanityapp;
+
+import org.json.JSONObject;
+
+
+public class FormHelper 
+{
+	// Turns the form into a JSON object for pushing to SharePoint
+	public static JSONObject jsonize(Form form)
+	{
+		JSONObject form_json = new JSONObject();
+
+		// Create a test form
+		Form test = new Form();
+		Question q1 = new Question();
+		Question q2 = new Question();
+			
+		q1.FieldName = "ADDRESS";
+		q2.FieldName = "CITY";
+			
+		test.questions.add(q1);
+		test.questions.add(q2);
+			
+			
+		// Go through each question and add the answer to the field in the json object
+		for(Question q : test.questions)
+		{
+			try
+			{
+				// Generic answer will be replaced with q.answer when the Question object is updated
+				form_json.put(q.FieldName, "generic answer for now");
+			}
+			catch(JSONException e)
+			{
+				System.out.printf("Error pushing form to sharepoint. JSON Exception: %s", e.toString());
+			}
+		}
+			
+		return form_json;
+	}
+}
