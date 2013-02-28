@@ -39,10 +39,18 @@
         android:id="@+id/mainMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/parseFormButton"
+        android:layout_alignLeft="@+id/parseFormButton"
         android:layout_below="@+id/parseFormButton"
-        android:layout_marginRight="14dp"
         android:onClick="mainMenuTest"
         android:text="@string/strMainMenu" />
+
+    <Button
+        android:id="@+id/LayoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mainMenu"
+        android:layout_below="@+id/mainMenu"
+        android:text="Layout Test"
+        android:onClick="viewLayout" />
 
 </RelativeLayout>

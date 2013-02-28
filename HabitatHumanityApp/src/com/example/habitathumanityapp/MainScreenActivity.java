@@ -1,6 +1,8 @@
 package com.example.habitathumanityapp;
 
 
+
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,4 +56,15 @@ public class MainScreenActivity extends Activity {
 		startActivity(intent);
 	}
 
+	public void viewLayout(View view){
+		setContentView(R.layout.main_form_screen);
+	}
+	
+	public void viewFormQuestions(View view){
+		setContentView(R.layout.main_question_screen);
+	}
+	
+	public void viewSubmit(View view){
+		setContentView(R.layout.main_submit_screen);
+	}
 }
