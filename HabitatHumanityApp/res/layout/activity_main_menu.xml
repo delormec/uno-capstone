@@ -27,4 +27,13 @@
         android:layout_below="@+id/templateMenu"
         android:layout_marginTop="22dp" />
 
+    <TextView
+        android:id="@+id/selectedForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/formMenu"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp"
+        android:text="@string/strSelectedForm" />
+
 </RelativeLayout>
