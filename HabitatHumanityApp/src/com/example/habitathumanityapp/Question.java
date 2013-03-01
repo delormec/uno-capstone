@@ -18,4 +18,7 @@ public class Question {
 	
 	@Element (name= "fieldtype")
 	public String FieldType;
+	
+	@Element (name="answer")
+	public String Answer;
 }
