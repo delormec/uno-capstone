@@ -7,18 +7,25 @@ public class Question {
 	@Element ( name= "text")
 	public String Text;
 	
-	@Element (name= "id")
+	//TODO wrong name here
+	@Element (name= "formid",required=false)
+	public int formid;
+	
+	@Element (name="sortorder")
 	public int QuestionID;
 	
 	@Element (name= "helptext", required=false)
 	public String HelpText;
 	
-	@Element (name= "fieldname")
+	
+	//TODO shouldnt be false
+	@Element (name= "fieldname", required=false)
 	public String FieldName;
 	
-	@Element (name= "fieldtype")
+	//TODO shouldnt be false
+	@Element (name= "fieldtype", required=false)
 	public String FieldType;
 	
-	@Element (name="answer")
+	@Element (name="answer", required=false)
 	public String Answer;
 }

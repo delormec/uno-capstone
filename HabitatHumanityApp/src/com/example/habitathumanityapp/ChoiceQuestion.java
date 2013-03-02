@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 
 public class ChoiceQuestion extends Question implements Serializable{
@@ -12,6 +13,10 @@ public class ChoiceQuestion extends Question implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -3551249012662043472L;
+	
+	@Element(name="multipleselect")
+	public String multipleselect;
+	
 	@ElementList
 	public List<String> options;
 	
