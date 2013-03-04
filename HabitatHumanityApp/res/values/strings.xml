@@ -17,5 +17,6 @@
     <string name="strGetForm">Get Form Test</string>
     <string name="strMainMenu">Main Menu</string>
     <string name="title_activity_main_menu">Main Menu</string>
+    <string name="strSelectedForm">Selected Form</string>
 
 </resources>

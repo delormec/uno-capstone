@@ -14,11 +14,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainMenuActivity extends Activity {
 	
 	private Spinner templateSpinner, templateGroupSpinner, formSpinner;
+	private TextView selectedFormBox;
 	
 	void showToast(CharSequence msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
@@ -67,6 +69,9 @@ public class MainMenuActivity extends Activity {
 				
 					String template = parent.getItemAtPosition(pos).toString();
 					showToast("Value is " + template);
+					
+					populateFormSpinner(template);
+					addFormSpinnerTemplate();
 			}
 
 			@Override
@@ -76,6 +81,49 @@ public class MainMenuActivity extends Activity {
 			}
 			
 		});
+		
+	}
+	public void addFormSpinnerTemplate() {
+		formSpinner = (Spinner)findViewById(R.id.formMenu);
+		formSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int pos, long id) {
+					
+					String form = parent.getItemAtPosition(pos).toString();
+					
+					selectedFormBox = (TextView)findViewById(R.id.selectedForm);
+					selectedFormBox.setText(form);
+					
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+	}
+	public void populateFormSpinner(String template) {
+		formSpinner = (Spinner)findViewById(R.id.formMenu);
+		List<String> templateList = new ArrayList<String>();
+		
+		// Connect to the database and get a list of all of the templates corresponding to the group.
+		//OSTDataSource ostDS = new OSTDataSource(this);
+		//ostDS.open();
+		//templateList = ostDS.getAllTemplateGroups();
+		
+		templateList.add("Form one");
+		templateList.add("Form two");
+		templateList.add("Form three");
+		
+		// Fill the drop down boxes with completed forms.
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		formSpinner.setAdapter(dataAdapter);
+		
 		
 	}
 	public void populateTemplateGroupSpinner() {

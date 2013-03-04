@@ -19,15 +19,36 @@ public class XMLParser {
 		
 		//Look into serialization/deserialization of objects
 		try{
-			f = serializer.read(Form.class, xml);
-
+			f = serializer.read(Form.class, xml.toString());
 			/*for( Question q: f.questions){
 				System.out.println(q.getClass());
 			}*/
 		}catch(Exception e){
 			e.printStackTrace();
-		}	
+		}
+
 		return f;
+	}
+	
+	//used to get list of form ids from admintool
+	public static TemplateList getTemplateList(String xml){
+		TemplateList tl = null;
+		
+		Serializer serializer = new Persister();
+		
+		try{
+			tl = serializer.read(TemplateList.class, xml);
+
+			/*for( Question q: f.questions){
+				System.out.println(q.getClass());
+			}*/
+		}catch(Exception e){
+			//ValueRequiredException
+			//this thing was empty so were just gonna return null
+			//e.printStackTrace();
+			return null;
+		}	
+		return tl;
 	}
 	
 	public static String getXML(Form f, Context ctx){
