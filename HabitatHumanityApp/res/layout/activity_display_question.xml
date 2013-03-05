@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/questionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/questionText"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/answerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/spacing_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/likertLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LikertLow" />
+
+    <RadioGroup
+        android:id="@+id/questionChoices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >       
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/likertHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LikertHigh" />
+    
+</LinearLayout>

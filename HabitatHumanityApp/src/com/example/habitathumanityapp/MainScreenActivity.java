@@ -4,6 +4,7 @@ package com.example.habitathumanityapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -54,4 +55,44 @@ public class MainScreenActivity extends Activity {
 		startActivity(intent);
 	}
 
+	
+	public void displayTextQuestion(View view)
+	{	
+		// Set up a dummy text question
+		TextQuestion tq = new TextQuestion();
+		tq.Text = "This is a text question.";
+		
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		intent.putExtra("questionObject", tq);
+		intent.putExtra("questionText", tq.Text); // Will try to figure out how to not need this line
+		startActivity(intent);
+	}
+	public void displayChoiceQuestion(View view)
+	{
+		// Set up a dummy choice question
+		ChoiceQuestion cq = new ChoiceQuestion();
+		cq.Text = "This is a choice question.";
+		cq.options.add("option1");
+		cq.options.add("option2");
+		cq.options.add("option3");
+		
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		intent.putExtra("questionObject", cq);
+		intent.putExtra("questionText", cq.Text);  // Will try to figure out how to not need this line
+		startActivity(intent);
+	}
+	public void displayLikertQuestion(View view)
+	{
+		// Set up a dummy likert scale question
+		LikertScaleQuestion lsq = new LikertScaleQuestion();
+		lsq.Text = "This is a likert scale question.";
+		lsq.labels.add("low label");
+		lsq.labels.add("high label");
+		lsq.steps = "5";
+		
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		intent.putExtra("questionObject", lsq);
+		intent.putExtra("questionText", lsq.Text); // Will try to figure out how to not need this line
+		startActivity(intent);
+	}
 }
