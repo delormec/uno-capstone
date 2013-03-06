@@ -56,6 +56,22 @@ public class MainScreenActivity extends Activity {
 	}
 
 	
+	
+	// Give a form to the DisplayQuestionActivity
+	public void beginForm(View view)
+	{
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		
+		Form dummy =  FormHelper.dummyForm();
+		
+		intent.putExtra("formObject", dummy);
+		intent.putExtra("questionNumber", 0);
+		intent.putExtra("questionText", dummy.questions.get(0).Text);
+		
+		startActivity(intent);
+	}
+	
+	// Displays a text question
 	public void displayTextQuestion(View view)
 	{	
 		// Set up a dummy text question
@@ -67,6 +83,8 @@ public class MainScreenActivity extends Activity {
 		intent.putExtra("questionText", tq.Text); // Will try to figure out how to not need this line
 		startActivity(intent);
 	}
+	
+	// Displays a choice question
 	public void displayChoiceQuestion(View view)
 	{
 		// Set up a dummy choice question
@@ -81,6 +99,8 @@ public class MainScreenActivity extends Activity {
 		intent.putExtra("questionText", cq.Text);  // Will try to figure out how to not need this line
 		startActivity(intent);
 	}
+	
+	// Displays a likert scale question
 	public void displayLikertQuestion(View view)
 	{
 		// Set up a dummy likert scale question

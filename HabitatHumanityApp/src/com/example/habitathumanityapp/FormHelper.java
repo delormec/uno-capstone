@@ -6,7 +6,12 @@ import org.json.JSONObject;
 
 public class FormHelper 
 {
-	// Turns the form into a JSON object for pushing to SharePoint
+	/**
+	  * Takes a Form object and creates a JSON Object to use for SharePoint
+	  * 
+	  * @param 	form	The form to create the JSON Object from
+	  * @return			A JSON Object representing the form
+	  */
 	public static JSONObject jsonize(Form form)
 	{
 		JSONObject form_json = new JSONObject();
@@ -26,5 +31,36 @@ public class FormHelper
 		}
 		
 		return form_json;
+	}
+	
+	/**
+	  * @return		A generic Form object
+	  */
+	public static Form dummyForm()
+	{
+		Form dummyForm = new Form();
+		
+		TextQuestion q1 = new TextQuestion();
+		q1.Text = "This is the text of a text question.";
+		
+		ChoiceQuestion q2 = new ChoiceQuestion();
+		q2.Text = "This is the text of a choice question.";
+		q2.options.add("Choice Option A");
+		q2.options.add("Choice Option B");
+		q2.options.add("Choice Option C");
+		q2.options.add("Choice Option D");
+		
+		LikertScaleQuestion q3 = new LikertScaleQuestion();
+		q3.Text = "This is the text of a likert scale question.";
+		q3.labels.add("Likert Low Label");
+		q3.labels.add("Likert High Label");
+		q3.steps = "5";
+		
+		
+		dummyForm.questions.add(q1);
+		dummyForm.questions.add(q2);
+		dummyForm.questions.add(q3);
+		
+		return dummyForm;
 	}
 }

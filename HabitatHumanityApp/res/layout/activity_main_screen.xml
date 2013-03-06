@@ -76,4 +76,14 @@
         android:onClick="displayLikertQuestion"
         android:text="Likert Q" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/choiceQuestionTest"
+        android:layout_alignBottom="@+id/choiceQuestionTest"
+        android:layout_toLeftOf="@+id/choiceQuestionTest"
+        android:onClick="beginForm"
+        android:text="Form" />
+
 </RelativeLayout>

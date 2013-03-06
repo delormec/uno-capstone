@@ -36,7 +36,7 @@
     <RadioGroup
         android:id="@+id/questionChoices"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >       
+        android:layout_height="wrap_content" >
     </RadioGroup>
 
     <TextView
@@ -44,5 +44,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LikertHigh" />
-    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.39" >
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Next Q" 
+            android:onClick="nextQuestion"
+            />
+
+        <Button
+            android:id="@+id/prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Prev Q"
+        	android:onClick="prevQuestion"
+        	/>
+
+    </RelativeLayout>
+
 </LinearLayout>

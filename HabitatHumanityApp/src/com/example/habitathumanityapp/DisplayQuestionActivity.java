@@ -1,6 +1,7 @@
 package com.example.habitathumanityapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,21 +14,55 @@ import android.widget.TextView;
 public class DisplayQuestionActivity extends Activity 
 {
 
+	Form form;
+	int questionNumber;
+	
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
-		// Receive the question object from whomever called
+		// Receive the form/question from whomever called
 		Question question = (Question) getIntent().getExtras().get("questionObject");	
+		form = (Form) getIntent().getExtras().get("formObject");
+		questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 		
-		setContentView(R.layout.activity_display_question);
-		TextView questionText = (TextView) findViewById(R.id.questionText);
-		questionText.setText("Question text doesn't work.");
+		if (form != null)
+		{
+			question = form.questions.get(questionNumber);
+			
+			if (question != null)
+			{
+				setContentView(R.layout.activity_display_question);
+				
+				// Set the question text (will try a better method, but it works for now)
+				TextView questionText = (TextView) findViewById(R.id.questionText);
+				String questionString = (String) getIntent().getExtras().get("questionText");
+				questionText.setText(questionString);
+			}
+			else
+			{
+				// End of form. Here it will write back to database on phone
+				// and go to the screen that has upload to SharePoint option			
+			}
+		}
+		else
+		{
+			if (question != null)
+			{
+				setContentView(R.layout.activity_display_question);
+				
+				// Set the question text (will try a better method, but it works for now)
+				TextView questionText = (TextView) findViewById(R.id.questionText);
+				String questionString = (String) getIntent().getExtras().get("questionText");
+				questionText.setText(questionString);
+			}
+		}
 		
-		String questionString = (String) getIntent().getExtras().get("questionText");
-		questionText.setText(questionString);
 			
 
+		
+		
+		
 		
 		// Set up text question view
 		if (question instanceof TextQuestion) 
@@ -80,4 +115,49 @@ public class DisplayQuestionActivity extends Activity
 			}		
 		}
 	}
+	
+	public void nextQuestion(View view)
+	{
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		
+		if (form != null)
+		{
+			// Save the info somewhere
+			
+			
+			intent.putExtra("formObject", form);
+			intent.putExtra("questionNumber", questionNumber + 1);
+			intent.putExtra("questionText", form.questions.get(questionNumber + 1).Text);
+
+			
+			// Don't stack question activities
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			
+			startActivity(intent);
+		}
+	}
+	
+	public void prevQuestion(View view)
+	{
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		
+		if (form != null)
+		{
+			if (questionNumber > 0)
+			{
+				// Save the info somewhere
+				
+				
+				intent.putExtra("formObject", form);
+				intent.putExtra("questionNumber", questionNumber - 1);
+				intent.putExtra("questionText", form.questions.get(questionNumber - 1).Text);
+				
+				// Don't stack question activities
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
+				startActivity(intent);
+			}
+		}
+	}
+	
 }
