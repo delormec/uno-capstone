@@ -55,7 +55,15 @@ public class MainScreenActivity extends Activity {
 		startActivity(intent);
 	}
 
-	
+	public void showFormScreen(View view){
+		setContentView(R.layout.main_form_screen);
+	}
+	public void showQuestionScreen(View view){
+		setContentView(R.layout.main_question_screen);
+	}
+	public void showSubmitScreen(View view){
+		setContentView(R.layout.main_submit_screen);
+	}
 	
 	// Give a form to the DisplayQuestionActivity
 	public void beginForm(View view)
