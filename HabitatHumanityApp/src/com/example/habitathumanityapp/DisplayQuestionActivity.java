@@ -15,7 +15,7 @@ public class DisplayQuestionActivity extends Activity
 {
 
 	Form form;
-	int questionNumber;
+	Integer questionNumber;
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -26,8 +26,10 @@ public class DisplayQuestionActivity extends Activity
 		form = (Form) getIntent().getExtras().get("formObject");
 		questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 		
+		
+		
 		if (form != null)
-		{
+		{		
 			question = form.questions.get(questionNumber);
 			
 			if (question != null)
@@ -46,7 +48,7 @@ public class DisplayQuestionActivity extends Activity
 			}
 		}
 		else
-		{
+		{		
 			if (question != null)
 			{
 				setContentView(R.layout.activity_display_question);

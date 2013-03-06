@@ -19,9 +19,9 @@ public final class R {
         public static final int DSTest3=0x7f080005;
         public static final int TextView01=0x7f080002;
         public static final int answerText=0x7f080009;
-        public static final int button1=0x7f08001b;
         public static final int choiceQuestionTest=0x7f080019;
         public static final int dataStoreTest=0x7f080015;
+        public static final int form=0x7f08001b;
         public static final int formMenu=0x7f080012;
         public static final int fullXmlCode=0x7f08001c;
         public static final int getFormButton=0x7f080007;
