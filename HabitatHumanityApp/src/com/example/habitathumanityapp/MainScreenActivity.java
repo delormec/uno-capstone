@@ -70,57 +70,12 @@ public class MainScreenActivity extends Activity {
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
 		
-		Form dummy =  FormHelper.dummyForm();
+		Form dummyForm =  FormHelper.dummyForm();
 		
-		intent.putExtra("formObject", dummy);
+		// This is where the form is passed
+		intent.putExtra("formObject", dummyForm);
 		intent.putExtra("questionNumber", 0);
-		intent.putExtra("questionText", dummy.questions.get(0).Text);
 		
-		startActivity(intent);
-	}
-	
-	// Displays a text question
-	public void displayTextQuestion(View view)
-	{	
-		// Set up a dummy text question
-		TextQuestion tq = new TextQuestion();
-		tq.Text = "This is a text question.";
-		
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-		intent.putExtra("questionObject", tq);
-		intent.putExtra("questionText", tq.Text); // Will try to figure out how to not need this line
-		startActivity(intent);
-	}
-	
-	// Displays a choice question
-	public void displayChoiceQuestion(View view)
-	{
-		// Set up a dummy choice question
-		ChoiceQuestion cq = new ChoiceQuestion();
-		cq.Text = "This is a choice question.";
-		cq.options.add("option1");
-		cq.options.add("option2");
-		cq.options.add("option3");
-		
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-		intent.putExtra("questionObject", cq);
-		intent.putExtra("questionText", cq.Text);  // Will try to figure out how to not need this line
-		startActivity(intent);
-	}
-	
-	// Displays a likert scale question
-	public void displayLikertQuestion(View view)
-	{
-		// Set up a dummy likert scale question
-		LikertScaleQuestion lsq = new LikertScaleQuestion();
-		lsq.Text = "This is a likert scale question.";
-		lsq.labels.add("low label");
-		lsq.labels.add("high label");
-		lsq.steps = "5";
-		
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-		intent.putExtra("questionObject", lsq);
-		intent.putExtra("questionText", lsq.Text); // Will try to figure out how to not need this line
 		startActivity(intent);
 	}
 }

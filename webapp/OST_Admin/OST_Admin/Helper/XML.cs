@@ -46,7 +46,7 @@ public class XML
         xml += string.Format("\t\t<id>{0}</id>\n", form.FormId);
         xml += string.Format("\t\t<name>{0}</name>\n", form.Name);
         xml += string.Format("\t\t<url>{0}</url>\n", form.URL);
-        xml += string.Format("\t\t<listame>{0}</listname>\n", form.ListName);
+        xml += string.Format("\t\t<listname>{0}</listname>\n", form.ListName);
         xml += string.Format("\t\t<keyfield>{0}</keyfield>\n", form.KeyField);
         xml += string.Format("\t\t<formgroup>{0}</formgroup>\n", form.Group);
         

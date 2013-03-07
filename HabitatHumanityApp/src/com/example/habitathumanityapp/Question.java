@@ -1,9 +1,16 @@
 package com.example.habitathumanityapp;
 
+import java.io.Serializable;
+
 
 import org.simpleframework.xml.Element;
 
-public class Question {
+public class Question implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3967170648257931694L;
+
 	@Element ( name= "text")
 	public String Text;
 	
