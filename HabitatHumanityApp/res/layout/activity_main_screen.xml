@@ -46,37 +46,6 @@
         android:text="@string/strMainMenu" />
 
     <Button
-        android:id="@+id/textQuestionTest"  
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/mainMenu"
-        android:layout_alignRight="@+id/mainMenu"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:onClick="displayTextQuestion"
-        android:text="Text Q" />    
-
-    <Button
-        android:id="@+id/choiceQuestionTest"     
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textQuestionTest"
-        android:layout_alignRight="@+id/textQuestionTest"
-        android:layout_below="@+id/textQuestionTest"
-        android:onClick="displayChoiceQuestion"
-        android:text="Choice Q" />
-    
-    <Button
-        android:id="@+id/likertQuestionTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/choiceQuestionTest"
-        android:layout_alignRight="@+id/choiceQuestionTest"
-        android:layout_below="@+id/choiceQuestionTest"
-        android:onClick="displayLikertQuestion"
-        android:text="Likert Q" />
-
-    <Button
         android:id="@+id/form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

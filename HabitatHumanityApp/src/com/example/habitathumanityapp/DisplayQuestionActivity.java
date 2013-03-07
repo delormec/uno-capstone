@@ -1,5 +1,7 @@
 package com.example.habitathumanityapp;
 
+import com.example.habitathumanityapp.datasource.OSTDataSource;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,7 +73,7 @@ public class DisplayQuestionActivity extends Activity
 					}			
 				}
 				
-				// Set up the likert question view
+				// Set up the likert scale question view
 				else if (question instanceof LikertScaleQuestion)
 				{
 					// Remove other fields
@@ -134,8 +136,7 @@ public class DisplayQuestionActivity extends Activity
 			if (questionNumber > 0)
 			{
 				// Save the info somewhere
-				
-				
+							
 				intent.putExtra("formObject", form);
 				intent.putExtra("questionNumber", questionNumber - 1);
 				
@@ -145,6 +146,5 @@ public class DisplayQuestionActivity extends Activity
 				startActivity(intent);
 			}
 		}
-	}
-	
+	}	
 }

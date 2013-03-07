@@ -160,7 +160,7 @@ public class OSTDataSource {
 	public List<String> getAllTemplateGroups()
 	  {
 		  List<String> groups = new ArrayList<String>();
-		  Cursor cursor = database.query(true, "Templates", new String[] {"group_name"}, null, null, null, null, null, null, null);
+		  Cursor cursor = database.query(true, "Templates", new String[] {"group_name"}, null, null, null, null, null, null);
 		  
 		  cursor.moveToFirst();
 		  while (!cursor.isAfterLast()) 
