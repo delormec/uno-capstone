@@ -3,7 +3,6 @@ package com.example.habitathumanityapp;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,8 +39,8 @@ public class DisplayQuestionActivity extends Activity
 			{
 				setContentView(R.layout.activity_display_question);
 				TextView questionText = (TextView) findViewById(R.id.questionText);
-				questionText.setText(question.Text);
-				
+				questionText.setText(question.Text);						
+				this.findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
 				
 				// Set up text question view
 				if (question instanceof TextQuestion) 
@@ -127,16 +126,14 @@ public class DisplayQuestionActivity extends Activity
 			}
 			else
 			{
-				/* No question here. It is probably the end of the form. 
-				  (Unless we got here in some unexpected way).  */
-				
-				// TODO Go to third screen here?
+				// This else block should never be entered 
+				Log.v("ryan_debug", "Entered unexpected block in method onCreate() in class DisplayQuestionActivity");
 			}
 		}
 		else
 		{				
 			// Did not receive a form object
-			Toast.makeText(this, "Error. No form received.", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error. No form received.", Toast.LENGTH_SHORT).show();
 		}
 			
 	}
@@ -157,9 +154,9 @@ public class DisplayQuestionActivity extends Activity
 			if (questionNumber < form.questions.size() - 1)
 			{
 				// Save the answer to the form object
-				form.questions.get(questionNumber).Answer = getAnswerText();			
+				saveAnswerToForm();			
 				
-				// TODO Write form to database?
+				// TODO Write form to database
 				
 				// Pass the form and question number to the next activity
 				intent.putExtra("formObject", form);
@@ -173,7 +170,7 @@ public class DisplayQuestionActivity extends Activity
 			else
 			{
 				// On last question.
-				// TODO Go to third screen here?
+				Toast.makeText(this, "End of form", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -193,9 +190,9 @@ public class DisplayQuestionActivity extends Activity
 			if (questionNumber > 0)
 			{
 				// Store the answer to the form object
-				form.questions.get(questionNumber).Answer = getAnswerText();
+				saveAnswerToForm();
 				
-				//TODO Write form to database?
+				//TODO Write form to database
 				
 				// Pass the form and question number to the next activity
 				intent.putExtra("formObject", form);
@@ -219,32 +216,63 @@ public class DisplayQuestionActivity extends Activity
 	 * 
 	 * @return	The selected answer of the currently displayed question
 	 */
-	private String getAnswerText()
+	private void saveAnswerToForm()
 	{
 		if (question instanceof TextQuestion)
 		{
 			EditText answer = (EditText)this.findViewById(R.id.answerText);
 			
-			if (answer != null) return answer.getText().toString();
-			else return null;
+			if (answer != null)
+			{
+				form.questions.get(questionNumber).Answer = answer.getText().toString();
+			}
 		}
 		else if (question instanceof ChoiceQuestion)
 		{
 			RadioGroup choices = (RadioGroup) this.findViewById(R.id.questionChoices);
 			RadioButton answer = (RadioButton) this.findViewById(choices.getCheckedRadioButtonId());
 			
-			if (answer != null) return answer.getText().toString();
-			else return null;
+			if (answer != null)
+			{
+				form.questions.get(questionNumber).Answer = answer.getText().toString();
+			}
 		}
 		else if (question instanceof LikertScaleQuestion)
 		{
 			RadioGroup choices = (RadioGroup) this.findViewById(R.id.questionChoices);
 			RadioButton answer = (RadioButton) this.findViewById(choices.getCheckedRadioButtonId());
 			
-			if (answer != null) return answer.getText().toString();
-			else return null;		
+			if (answer != null)
+			{
+				form.questions.get(questionNumber).Answer = answer.getText().toString();
+			}		
 		}
+	}
+	
+	
+	
+	
+	
+	
+	// The following navigate methods are for the implementation of the navbar layout
+	public void navigateHome(View view)
+	{
+		this.finish();
 		
-		return null;
+		// Save the answer first
+		saveAnswerToForm();
+		
+		// TODO Write form object to database
+	}
+	public void navigateEdit(View view)
+	{
+		return;
+	}
+	public void navigateSubmit(View view)
+	{
+		// Save the answer first
+		saveAnswerToForm();
+		
+		// TODO Go to third screen (once it exists).
 	}
 }

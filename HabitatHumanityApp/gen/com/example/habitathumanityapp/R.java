@@ -31,7 +31,11 @@ public final class R {
         public static final int likertHigh=0x7f08000d;
         public static final int likertLow=0x7f08000b;
         public static final int mainMenu=0x7f080017;
-        public static final int menu_settings=0x7f080022;
+        public static final int menu_settings=0x7f080026;
+        public static final int navbar=0x7f080022;
+        public static final int navbar_edit_button=0x7f080024;
+        public static final int navbar_home_button=0x7f080023;
+        public static final int navbar_submit_button=0x7f080025;
         public static final int newForm=0x7f080014;
         public static final int next=0x7f08000e;
         public static final int parseFormButton=0x7f080016;
@@ -60,6 +64,7 @@ public final class R {
         public static final int main_form_screen=0x7f030006;
         public static final int main_question_screen=0x7f030007;
         public static final int main_submit_screen=0x7f030008;
+        public static final int navbar=0x7f030009;
     }
     public static final class menu {
         public static final int activity_data_store_test=0x7f070000;
