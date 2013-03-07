@@ -65,14 +65,18 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.main_submit_screen);
 	}
 	
-	// Give a form to the DisplayQuestionActivity
+	/**
+	 * Begins the activity to display the questions of a form.
+	 * 
+	 * @param view The view of the activity that calls the function
+	 */
 	public void beginForm(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
 		
 		Form dummyForm =  FormHelper.dummyForm();
 		
-		// This is where the form is passed
+		// This is where the form is passed to the DisplayQuestionActivity
 		intent.putExtra("formObject", dummyForm);
 		intent.putExtra("questionNumber", 0);
 		

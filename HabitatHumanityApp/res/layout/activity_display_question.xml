@@ -15,10 +15,10 @@
         android:id="@+id/answerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
+        android:ems="10"
+        android:inputType="textMultiLine|textCapSentences"
+        android:imeOptions="actionDone"
+    />
 
     <TextView
         android:id="@+id/spacing_medium"

@@ -46,25 +46,23 @@
         android:text="@string/strMainMenu" />
 
     <Button
-        android:id="@+id/form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/choiceQuestionTest"
-        android:layout_alignBottom="@+id/choiceQuestionTest"
-        android:layout_toLeftOf="@+id/choiceQuestionTest"
-        android:onClick="beginForm"
-        android:text="Form" />
-
-    <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/likertQuestionTest"
-        android:layout_below="@+id/likertQuestionTest"
-        android:layout_marginTop="24dp"
-        android:text="Show Navigation" 
-        android:onClick="showFormScreen" />
-    
-    
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/mainMenu"
+        android:layout_marginTop="76dp"
+        android:onClick="showFormScreen"
+        android:text="Show Navigation" />
+
+    <Button
+        android:id="@+id/form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/button1"
+        android:layout_alignBottom="@+id/button1"
+        android:layout_alignRight="@+id/parseFormButton"
+        android:onClick="beginForm"
+        android:text="Form" />
 
 </RelativeLayout>

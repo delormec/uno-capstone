@@ -3,6 +3,7 @@ package com.example.habitathumanityapp;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DisplayQuestionActivity extends Activity 
 {
@@ -48,6 +50,13 @@ public class DisplayQuestionActivity extends Activity
 					this.findViewById(R.id.questionChoices).setVisibility(View.GONE);
 					this.findViewById(R.id.likertLow).setVisibility(View.GONE);
 					this.findViewById(R.id.likertHigh).setVisibility(View.GONE);
+					
+					// Fill in pre-existing answer
+					if (question.Answer != null)
+					{
+						EditText textField = (EditText) this.findViewById(R.id.answerText);
+						textField.setText(question.Answer);
+					}
 				}
 				
 				// Set up the choice question view
@@ -70,7 +79,19 @@ public class DisplayQuestionActivity extends Activity
 						button = new RadioButton(this);
 						button.setText(option);
 						buttons.addView(button);
+						
+						// Select pre-existing answer (by simulating the button press)
+						if (question.Answer != null)
+						{
+							if (option.compareTo(question.Answer) == 0)
+							{
+								button.performClick();
+							}
+						}					
 					}			
+					
+					
+						
 				}
 				
 				// Set up the likert scale question view
@@ -87,46 +108,82 @@ public class DisplayQuestionActivity extends Activity
 					RadioGroup buttons = (RadioGroup) findViewById(R.id.questionChoices);
 					RadioButton button;
 					
-					for(int x = 0; x < steps; x++)
+					for(Integer x = 1; x <= steps; x++)
 					{
-						button = new RadioButton(this);
+						button = new RadioButton(this);					
+						button.setText(x.toString());
 						buttons.addView(button);
+						
+						// Select pre-existing answer (by simulating the button press)
+						if (question.Answer != null)
+						{
+							if (x.toString().compareTo(question.Answer) == 0)
+							{
+								button.performClick();
+							}
+						}										
 					}		
 				}				
 			}
 			else
 			{
-				// No question here. It is probably the end of the form.
+				/* No question here. It is probably the end of the form. 
+				  (Unless we got here in some unexpected way).  */
 				
-				// This is where it should go to the save screen.
+				// TODO Go to third screen here?
 			}
 		}
 		else
-		{		
-			// The is no form object. Not sure what to do in this case. Let's just avoid it.
+		{				
+			// Did not receive a form object
+			Toast.makeText(this, "Error. No form received.", Toast.LENGTH_LONG).show();
 		}
 			
 	}
 	
+	
+	/**
+	 * Attempts to cycle to the next question of the form.
+	 * Does nothing if currently on the final question of the form.
+	 * 
+	 * @param view
+	 */
 	public void nextQuestion(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
 		
 		if (form != null)
 		{
-			// Save the info somewhere?
+			if (questionNumber < form.questions.size() - 1)
+			{
+				// Save the answer to the form object
+				form.questions.get(questionNumber).Answer = getAnswerText();			
+				
+				// TODO Write form to database?
+				
+				// Pass the form and question number to the next activity
+				intent.putExtra("formObject", form);
+				intent.putExtra("questionNumber", questionNumber + 1);
 			
+				// Don't stack question activities
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
-			intent.putExtra("formObject", form);
-			intent.putExtra("questionNumber", questionNumber + 1);
-			
-			// Don't stack question activities
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			
-			startActivity(intent);
+				startActivity(intent);
+			}
+			else
+			{
+				// On last question.
+				// TODO Go to third screen here?
+			}
 		}
 	}
 	
+	/**
+	 * Attempts to cycle to the previous question of the form.
+	 * Does nothing if currently on question 0
+	 * 
+	 * @param view The view from the activity that called this function
+	 */
 	public void prevQuestion(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
@@ -135,8 +192,12 @@ public class DisplayQuestionActivity extends Activity
 		{
 			if (questionNumber > 0)
 			{
-				// Save the info somewhere
-							
+				// Store the answer to the form object
+				form.questions.get(questionNumber).Answer = getAnswerText();
+				
+				//TODO Write form to database?
+				
+				// Pass the form and question number to the next activity
 				intent.putExtra("formObject", form);
 				intent.putExtra("questionNumber", questionNumber - 1);
 				
@@ -145,6 +206,45 @@ public class DisplayQuestionActivity extends Activity
 				
 				startActivity(intent);
 			}
+			else
+			{
+				// On the first question, can't go to previous.
+			}
 		}
 	}	
+	
+	
+	/**
+	 * Returns the user-selected answer from the currently displayed question.
+	 * 
+	 * @return	The selected answer of the currently displayed question
+	 */
+	private String getAnswerText()
+	{
+		if (question instanceof TextQuestion)
+		{
+			EditText answer = (EditText)this.findViewById(R.id.answerText);
+			
+			if (answer != null) return answer.getText().toString();
+			else return null;
+		}
+		else if (question instanceof ChoiceQuestion)
+		{
+			RadioGroup choices = (RadioGroup) this.findViewById(R.id.questionChoices);
+			RadioButton answer = (RadioButton) this.findViewById(choices.getCheckedRadioButtonId());
+			
+			if (answer != null) return answer.getText().toString();
+			else return null;
+		}
+		else if (question instanceof LikertScaleQuestion)
+		{
+			RadioGroup choices = (RadioGroup) this.findViewById(R.id.questionChoices);
+			RadioButton answer = (RadioButton) this.findViewById(choices.getCheckedRadioButtonId());
+			
+			if (answer != null) return answer.getText().toString();
+			else return null;		
+		}
+		
+		return null;
+	}
 }
