@@ -43,7 +43,7 @@ public class XML
         xml = "<form>\n\t<meta>\n";
 
         // Add the meta data to the XML string
-        xml += string.Format("\t\t<id>{0}</id>\n", form.FormId);
+        xml += string.Format("\t\t<template_id>{0}</template_id>\n", form.FormId);
         xml += string.Format("\t\t<name>{0}</name>\n", form.Name);
         xml += string.Format("\t\t<url>{0}</url>\n", form.URL);
         xml += string.Format("\t\t<listname>{0}</listname>\n", form.ListName);
