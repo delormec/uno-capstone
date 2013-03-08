@@ -26,7 +26,7 @@ public class Form implements Serializable{
 		return meta.getFormName();
 	}
 	
-	public int getFormId(){
+	public long getFormId(){
 		return meta.getFormID();
 	}
 

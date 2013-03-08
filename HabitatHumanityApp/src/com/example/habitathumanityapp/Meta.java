@@ -10,8 +10,11 @@ public class Meta implements Serializable{
 	 */
 	private static final long serialVersionUID = 3503635432336091621L;
 
-	@Element (name="formid")
-	public int formid;
+	@Element (name="template_id")
+	public long template_id;
+	
+	//doesn't come from admin tool
+	public long form_id;
 	
 	//TODO name miss match
 	@Element (name="formgroup", required=false)
@@ -48,8 +51,9 @@ public class Meta implements Serializable{
 	@Element (name="datecreated")
 	public String dateCreated;
 	
-	public int getFormID(){
-		return formid;
+	//TODO - remove/update
+	public long getFormID(){
+		return template_id;
 	}
 
 	public String getFormName(){

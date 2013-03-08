@@ -51,7 +51,7 @@ public class ParseFormTestActivity extends Activity {
 		cq1.options.add("Red");
 		cq1.options.add("Green");
 	Form form1 = new Form();
-		form1.meta.formid = 1;
+		form1.meta.template_id = 1;
 		form1.meta.autoUpload = "false";
 		form1.meta.url = "http://www.google.com";
 		form1.meta.name = "Test Form";

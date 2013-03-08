@@ -15,8 +15,8 @@ public class Question implements Serializable {
 	public String Text;
 	
 	//TODO wrong name here
-	@Element (name= "formid",required=false)
-	public int formid;
+	@Element (name= "id",required=false)
+	public int id;
 	
 	@Element (name="sortorder")
 	public int QuestionID;

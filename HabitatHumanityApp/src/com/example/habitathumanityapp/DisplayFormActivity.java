@@ -87,7 +87,7 @@ public class DisplayFormActivity extends Activity {
 				try{
 					f = serializer.read(Form.class, file);
 					
-					int formID = f.getFormId();
+					long formID = f.getFormId();
 					String formName = f.getFormName();
 					
 					assert f.getFormId() == 351;

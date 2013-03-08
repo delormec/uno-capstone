@@ -35,7 +35,7 @@ public class downloadAllTemplates extends AsyncTask {
 		{
 			String xml = aDS.getTemplateXMLByID(id);
 			//TODO -- fix this in the admin tool side
-			xml=xml.replaceAll("\\\\n", "").replaceAll("\\\\t", "").replaceAll("\\\\\"", "\"").replaceAll("</id>", "</formid>").replaceAll("<id>", "<formid>").replaceAll("<listame>", "<listname>");
+			xml=xml.replaceAll("\\\\n", "").replaceAll("\\\\t", "").replaceAll("\\\\\"", "\"");
 
 			//remove quotes from front and back -- odd as fuck
 			xml = xml.substring(1, xml.length());
@@ -46,7 +46,6 @@ public class downloadAllTemplates extends AsyncTask {
 			Form form = XMLParser.getForm(xml);
 			
 			oDS.addTemplate(form);
-			
 			//Log.v("OSTtest", oDS.getAllTemplateInfo().toString());
 		}
 	

@@ -56,7 +56,7 @@ public class DataStoreTestActivity extends Activity {
 			cq1.options.add("Red");
 			cq1.options.add("Green");
 		Form form1 = new Form();
-			form1.meta.formid = 1;
+			form1.meta.template_id = 1;
 			form1.meta.autoUpload = "false";
 			form1.meta.url = "http://www.google.com";
 			form1.meta.name = "Test Form";
@@ -73,11 +73,11 @@ public class DataStoreTestActivity extends Activity {
 		
 		//add 4 forms with different primary keys
 		ostDS.addTemplate(form1);
-		form1.meta.formid = 5;
+		form1.meta.template_id = 5;
 		ostDS.addTemplate(form1);
-		form1.meta.formid = 7;
+		form1.meta.template_id = 7;
 		ostDS.addTemplate(form1);
-		form1.meta.formid = 8;
+		form1.meta.template_id = 8;
 		ostDS.addTemplate(form1);
 
 		//get all the templates stored in the database
@@ -97,7 +97,7 @@ public class DataStoreTestActivity extends Activity {
 		DSTest2.setText(String.valueOf(form2.meta.name));
 		
 		//set my 'template_id'
-		form1.meta.formid=1;
+		form1.meta.template_id=1;
 		
 		//add my form to the db
 		ostDS.addForm(form1);
@@ -120,7 +120,7 @@ public class DataStoreTestActivity extends Activity {
 		form3.meta.name = "my new name";
 		
 		//update the existing form in db with new one
-		ostDS.updateFormById(form3, Integer.parseInt(form_id));
+		ostDS.updateForm(form3);
 		
 		//this will cause next line to fail
 		//ostDS.removeFormById(Integer.parseInt(form_id));
@@ -149,9 +149,7 @@ public class DataStoreTestActivity extends Activity {
 		//create threads that do shit
 		//new connectToSharePoint().execute(spDS);
 		//new createSharePointListTest().execute(spDS);
-		//new downloadAllTemplates().execute(this);
-
-		
+		new downloadAllTemplates().execute(this);
 	}
 	
 	@Override
