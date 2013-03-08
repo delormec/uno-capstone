@@ -15,23 +15,23 @@ import android.widget.Toast;
 
 public class DisplayQuestionActivity extends Activity 
 {
-
 	private Form form;
 	private Question question;
-	private Integer questionNumber = 0;
+	private Integer questionNumber;
+	private Toast toast;
+	private OSTDataSource ostDS;
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+				
 		// Receive the form from whomever called
 		form = (Form) getIntent().getExtras().get("formObject");
 		questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 		
 		
-		
 		if (form != null)
-		{		
+		{						
 			question = form.questions.get(questionNumber);
 			
 			// Display the question
@@ -41,6 +41,8 @@ public class DisplayQuestionActivity extends Activity
 				TextView questionText = (TextView) findViewById(R.id.questionText);
 				questionText.setText(question.Text);						
 				this.findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
+				
+				Log.v("ryan_debug", String.format("Displaying Template %s - Question %d", String.valueOf(form.meta.template_id), questionNumber));			
 				
 				// Set up text question view
 				if (question instanceof TextQuestion) 
@@ -87,10 +89,7 @@ public class DisplayQuestionActivity extends Activity
 								button.performClick();
 							}
 						}					
-					}			
-					
-					
-						
+					}									
 				}
 				
 				// Set up the likert scale question view
@@ -98,9 +97,17 @@ public class DisplayQuestionActivity extends Activity
 				{
 					// Remove other fields
 					this.findViewById(R.id.answerText).setVisibility(View.GONE);
+									
 					
 					// Cast as LikertScaleQuestion
 					LikertScaleQuestion likertScaleQuestion = (LikertScaleQuestion) question;
+					
+					
+					TextView lowText = (TextView) this.findViewById(R.id.likertLow);
+					lowText.setText(likertScaleQuestion.labels.get(0));
+					TextView highText = (TextView) this.findViewById(R.id.likertHigh);
+					highText.setText(likertScaleQuestion.labels.get(1));
+					
 					
 					int steps = Integer.parseInt(likertScaleQuestion.steps);
 					
@@ -133,9 +140,9 @@ public class DisplayQuestionActivity extends Activity
 		else
 		{				
 			// Did not receive a form object
-			Toast.makeText(this, "Error. No form received.", Toast.LENGTH_SHORT).show();
-		}
-			
+			toast = Toast.makeText(this, "Error. No form received.", Toast.LENGTH_SHORT);
+			toast.show();
+		}		
 	}
 	
 	
@@ -151,12 +158,13 @@ public class DisplayQuestionActivity extends Activity
 		
 		if (form != null)
 		{
+			if (toast != null) toast.cancel();
+			
 			if (questionNumber < form.questions.size() - 1)
 			{
-				// Save the answer to the form object
+				// Save the answer and form
 				saveAnswerToForm();			
-				
-				// TODO Write form to database
+				//ostDS.updateForm(form);
 				
 				// Pass the form and question number to the next activity
 				intent.putExtra("formObject", form);
@@ -164,13 +172,14 @@ public class DisplayQuestionActivity extends Activity
 			
 				// Don't stack question activities
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			
+				
 				startActivity(intent);
 			}
 			else
 			{
-				// On last question.
-				Toast.makeText(this, "End of form", Toast.LENGTH_LONG).show();
+				// On last question.'				
+				toast = Toast.makeText(this, "End of form", Toast.LENGTH_SHORT);
+				toast.show();
 			}
 		}
 	}
@@ -187,12 +196,13 @@ public class DisplayQuestionActivity extends Activity
 		
 		if (form != null)
 		{
+			if (toast != null) toast.cancel();
+			
 			if (questionNumber > 0)
 			{
-				// Store the answer to the form object
+				// Save the answer and form
 				saveAnswerToForm();
-				
-				//TODO Write form to database
+
 				
 				// Pass the form and question number to the next activity
 				intent.putExtra("formObject", form);
@@ -200,12 +210,17 @@ public class DisplayQuestionActivity extends Activity
 				
 				// Don't stack question activities
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 				
 				startActivity(intent);
 			}
 			else
 			{
 				// On the first question, can't go to previous.
+				if (toast != null) toast.cancel();
+				
+				toast = Toast.makeText(this, "Beginning of form", Toast.LENGTH_SHORT);
+				toast.show();
 			}
 		}
 	}	
@@ -256,13 +271,14 @@ public class DisplayQuestionActivity extends Activity
 	
 	// The following navigate methods are for the implementation of the navbar layout
 	public void navigateHome(View view)
-	{
-		this.finish();
-		
-		// Save the answer first
+	{	
+		// Save the answer and form first
 		saveAnswerToForm();
 		
-		// TODO Write form object to database
+		
+		if (toast != null) toast.cancel();
+		
+		this.finish();
 	}
 	public void navigateEdit(View view)
 	{
@@ -270,8 +286,11 @@ public class DisplayQuestionActivity extends Activity
 	}
 	public void navigateSubmit(View view)
 	{
-		// Save the answer first
+		// Save the answer and form first
 		saveAnswerToForm();
+
+		
+		if (toast != null) toast.cancel();
 		
 		// TODO Go to third screen (once it exists).
 	}

@@ -1,6 +1,11 @@
 package com.example.habitathumanityapp;
 
 
+import java.util.List;
+import java.util.Random;
+
+import com.example.habitathumanityapp.datasource.OSTDataSource;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,20 +70,54 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.main_submit_screen);
 	}
 	
+	
+	
+	
 	/**
-	 * Begins the activity to display the questions of a form.
+	 * Calls DisplayQuestionActivity with the first form in the database
 	 * 
 	 * @param view The view of the activity that calls the function
 	 */
-	public void beginForm(View view)
+	public void beginForm0(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
 		
-		Form dummyForm =  FormHelper.dummyForm();
+		// Get first form from database
+		OSTDataSource ostDS = new OSTDataSource(this);
+		ostDS.open();	
+		List<String[]> templates = ostDS.getAllTemplateInfo();	
+		Form form = ostDS.getTemplateById(Long.parseLong(templates.get(0)[0]));
 		
 		// This is where the form is passed to the DisplayQuestionActivity
-		intent.putExtra("formObject", dummyForm);
+		intent.putExtra("formObject", form);
 		intent.putExtra("questionNumber", 0);
+		
+		ostDS.close();
+		
+		startActivity(intent);
+	}
+	
+	
+	public void beginRandomForm(View view)
+	{
+		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+	
+		Random random = new Random();	
+		OSTDataSource ostDS = new OSTDataSource(this);
+		ostDS.open();
+		
+		// Get random form from database
+		List<String[]> templates = ostDS.getAllTemplateInfo();
+		
+		Log.v("ryan_debug", String.format("There are %d templates in the database.", templates.size()));
+		int formNumber = random.nextInt(templates.size());
+		Log.v("ryan_debug", String.format("Randomed template %d", formNumber));
+		Form form = ostDS.getTemplateById(Long.parseLong(templates.get(formNumber)[0]));
+		
+		intent.putExtra("formObject", form);
+		intent.putExtra("questionNumber", 0);
+		
+		ostDS.close();
 		
 		startActivity(intent);
 	}

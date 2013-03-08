@@ -17,25 +17,27 @@ public final class R {
         public static final int DSTest1=0x7f080000;
         public static final int DSTest2=0x7f080003;
         public static final int DSTest3=0x7f080005;
-        public static final int EditButton=0x7f08001d;
-        public static final int FormButton=0x7f08001c;
-        public static final int SendButton=0x7f08001e;
+        public static final int EditButton=0x7f08001e;
+        public static final int FormButton=0x7f08001d;
+        public static final int SendButton=0x7f08001f;
         public static final int TextView01=0x7f080002;
         public static final int answerText=0x7f080009;
         public static final int button1=0x7f080018;
+        public static final int custom_title=0x7f080028;
         public static final int dataStoreTest=0x7f080015;
         public static final int form=0x7f080019;
         public static final int formMenu=0x7f080012;
-        public static final int fullXmlCode=0x7f08001a;
+        public static final int form_rand=0x7f08001a;
+        public static final int fullXmlCode=0x7f08001b;
         public static final int getFormButton=0x7f080007;
         public static final int likertHigh=0x7f08000d;
         public static final int likertLow=0x7f08000b;
         public static final int mainMenu=0x7f080017;
-        public static final int menu_settings=0x7f080026;
-        public static final int navbar=0x7f080022;
-        public static final int navbar_edit_button=0x7f080024;
-        public static final int navbar_home_button=0x7f080023;
-        public static final int navbar_submit_button=0x7f080025;
+        public static final int menu_settings=0x7f080029;
+        public static final int navbar=0x7f080023;
+        public static final int navbar_edit_button=0x7f080025;
+        public static final int navbar_home_button=0x7f080024;
+        public static final int navbar_submit_button=0x7f080026;
         public static final int newForm=0x7f080014;
         public static final int next=0x7f08000e;
         public static final int parseFormButton=0x7f080016;
@@ -48,11 +50,12 @@ public final class R {
         public static final int testText=0x7f080006;
         public static final int textView1=0x7f080001;
         public static final int textView2=0x7f080004;
+        public static final int title_image=0x7f080027;
         public static final int typeMenu=0x7f080010;
-        public static final int widget0=0x7f08001f;
-        public static final int widget34=0x7f08001b;
-        public static final int widget46=0x7f080021;
-        public static final int widget47=0x7f080020;
+        public static final int widget0=0x7f080020;
+        public static final int widget34=0x7f08001c;
+        public static final int widget46=0x7f080022;
+        public static final int widget47=0x7f080021;
     }
     public static final class layout {
         public static final int activity_data_store_test=0x7f030000;
@@ -65,6 +68,7 @@ public final class R {
         public static final int main_question_screen=0x7f030007;
         public static final int main_submit_screen=0x7f030008;
         public static final int navbar=0x7f030009;
+        public static final int titlebar=0x7f03000a;
     }
     public static final class menu {
         public static final int activity_data_store_test=0x7f070000;
