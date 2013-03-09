@@ -123,6 +123,16 @@ public class XML
                 }
 
 
+                // Other
+                if (question.Other == true)
+                {
+                    xml += "\t\t\t\t<other>true</other>\n";
+                }
+                else
+                {
+                    xml += "\t\t\t\t<other>false</other>\n";
+                }
+
                 // Open options tag
                 xml += "\n\t\t\t<options>\n";
 
@@ -139,17 +149,6 @@ public class XML
 
                     xml += string.Format("\t\t\t\t\t<option>{0}</option>\n", o.Text);
                 }         
-
-
-                // Other
-                if (question.Other == true)
-                {
-                    xml += "\t\t\t\t<other>true</other>\n";
-                }
-                else
-                {
-                    xml += "\t\t\t\t<other>false</other>\n";
-                }
 
                 // Close options tag
                 xml += "\t\t\t</options>\n";
