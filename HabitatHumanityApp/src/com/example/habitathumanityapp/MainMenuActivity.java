@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.habitathumanityapp.datasource.OSTDataSource;
+import com.example.habitathumanityapp.tasks.downloadAllTemplates;
 
 
 import android.os.Bundle;
@@ -29,9 +30,6 @@ public class MainMenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
-		
-		populateTemplateGroupSpinner();
-		addTemplateGroupSpinnerListener();
 	}
 	
 	public void addTemplateGroupSpinnerListener() {
@@ -113,7 +111,6 @@ public class MainMenuActivity extends Activity {
 		// Connect to the database and get a list of all of the templates corresponding to the group.
 		//OSTDataSource ostDS = new OSTDataSource(this);
 		//ostDS.open();
-		//templateList = ostDS.getAllTemplateGroups();
 		
 		templateList.add("Form one");
 		templateList.add("Form two");
@@ -135,9 +132,11 @@ public class MainMenuActivity extends Activity {
 		ostDS.open();
 		templateList = ostDS.getAllTemplateGroups();
 		
+		/*
 		templateList.add("Template Group one");
 		templateList.add("Template Group two");
 		templateList.add("Template Group three");
+		*/
 		
 		// Fill the drop down boxes with the templates.
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
@@ -152,9 +151,8 @@ public class MainMenuActivity extends Activity {
 		List<String> templateList = new ArrayList<String>();
 		
 		// Connect to the database and get a list of all of the template groups.
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		templateList = ostDS.getAllTemplateGroups();
+		//OSTDataSource ostDS = new OSTDataSource(this);
+		//ostDS.open();
 		
 		templateList.add("Template one");
 		templateList.add("Template two");
@@ -166,6 +164,16 @@ public class MainMenuActivity extends Activity {
 		templateSpinner.setAdapter(dataAdapter);
 	}
 
+	public void startFormDownload(View view)
+	{
+		new downloadAllTemplates().execute(this);
+	}
+	
+	public void startPopulateSpinners(View view)
+	{
+		populateTemplateGroupSpinner();
+		addTemplateGroupSpinnerListener();
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

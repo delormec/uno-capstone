@@ -27,13 +27,32 @@
         android:layout_below="@+id/templateMenu"
         android:layout_marginTop="22dp" />
 
+    <Button
+        android:id="@+id/getFormsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selectedForm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:onClick="startFormDownload"
+        android:text="@string/strDownloadForms" />
+
+    <Button
+        android:id="@+id/startPopulateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/getFormsBtn"
+        android:layout_below="@+id/getFormsBtn"
+        android:onClick="startPopulateSpinners"
+        android:text="@string/strPopulateSpinners" />
+
     <TextView
         android:id="@+id/selectedForm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/formMenu"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="42dp"
         android:text="@string/strSelectedForm" />
 
 </RelativeLayout>
