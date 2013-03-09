@@ -17,6 +17,9 @@ public class ChoiceQuestion extends Question implements Serializable{
 	@Element(name="multipleselect")
 	public String multipleselect;
 	
+	@Element(name="other")
+	public String other;
+	
 	@ElementList
 	public List<String> options;
 	
