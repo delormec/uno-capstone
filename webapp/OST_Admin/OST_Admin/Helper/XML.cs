@@ -130,11 +130,14 @@ public class XML
                 // Add each option to the question
                 foreach (Option o in question.Options)
                 {
-                    xml += "\t\t\t\t<option>\n";
-                    xml += string.Format("\t\t\t\t\t<id>{0}</id>\n", o.OptionId);
-                    xml += string.Format("\t\t\t\t\t<sortorder>{0}</sortorder>\n", o.SortOrder);
-                    xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", o.Text);
-                    xml += "\t\t\t\t</option>\n\n";
+
+                    //xml += "\t\t\t\t<option>\n";
+                    //xml += string.Format("\t\t\t\t\t<id>{0}</id>\n", o.OptionId);
+                    //xml += string.Format("\t\t\t\t\t<sortorder>{0}</sortorder>\n", o.SortOrder);
+                    //xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", o.Text);
+                    //xml += "\t\t\t\t</option>\n\n";
+
+                    xml += string.Format("\t\t\t\t\t<option>{0}</option>\n", o.Text);
                 }         
 
 
@@ -167,11 +170,13 @@ public class XML
                 // Add each label to the question
                 foreach (Label l in question.Labels)
                 {
-                    xml += "\t\t\t\t<label>\n";
-                    xml += string.Format("\t\t\t\t\t<id>{0}</id>\n", l.LabelId);
-                    xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", l.Text);
-                    xml += string.Format("\t\t\t\t\t<range>{0}</range>\n", l.Range);
-                    xml += "\t\t\t\t</label>\n\n";
+                    //xml += "\t\t\t\t<label>\n";
+                    //xml += string.Format("\t\t\t\t\t<id>{0}</id>\n", l.LabelId);
+                    //xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", l.Text);
+                    //xml += string.Format("\t\t\t\t\t<range>{0}</range>\n", l.Range);
+                    //xml += "\t\t\t\t</label>\n\n";
+
+                    xml += string.Format("\t\t\t\t\t<label>{0}</label>\n", l.Text);
                 }
 
                 // Close labels tag
