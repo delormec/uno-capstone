@@ -1,84 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+    >
+    
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    android:focusableInTouchMode="true"
+	    >
+	 
+	
  
-    <TextView
-        android:id="@+id/questionText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/questionText"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<TextView
+        	android:id="@+id/questionText"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:text="@string/questionText"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
-        android:id="@+id/answerText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine|textCapSentences"
-        android:imeOptions="actionDone"
-    />
+    	<EditText
+        	android:id="@+id/answerText"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:ems="10"
+        	android:inputType="textMultiLine|textCapSentences"
+	        android:imeOptions="actionDone"
+    	/>
 
-    <TextView
-        android:id="@+id/spacing_medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<TextView
+        	android:id="@+id/spacing_medium"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text=""
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/likertLow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LikertLow" />
+    	<TextView
+        	android:id="@+id/likertLow"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+	        android:text="LikertLow" />
 
-    <RadioGroup
-        android:id="@+id/questionChoices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-    </RadioGroup>
+    	<RadioGroup
+        	android:id="@+id/questionChoices"
+        	android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+    	</RadioGroup>
 
-    <TextView
-        android:id="@+id/likertHigh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LikertHigh" />
+    	<TextView
+        	android:id="@+id/likertHigh"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+	        android:text="LikertHigh" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_weight="0.39" >
+    	<RelativeLayout
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginBottom="30dp"
+        	android:layout_weight="0.39" >
 
-        <Button
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:text="Next Q" 
-            android:onClick="nextQuestion"
-            />
+        	<Button
+            	android:id="@+id/next"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_alignParentRight="true"
+            	android:layout_alignParentBottom="true"
+            	android:text="Next Q" 
+            	android:onClick="nextQuestion"
+	            />
 
-        <Button
-            android:id="@+id/prev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"       
-            android:text="Prev Q"
-        	android:onClick="prevQuestion"
-        	/>
+        	<Button
+            	android:id="@+id/prev"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_alignParentLeft="true"
+            	android:layout_alignParentBottom="true"       
+            	android:text="Prev Q"
+        		android:onClick="prevQuestion"
+    	    	/>
 
-    </RelativeLayout>
+	    </RelativeLayout>
+	
+    	<include
+        	android:layout_width="wrap_content"
+        	android:layout_height="50dp"
+        	android:layout_alignParentBottom="true"
+        	android:layout_alignParentLeft="true"
+    	    layout="@layout/navbar" />
 
-    <include
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        layout="@layout/navbar" />
-
-</LinearLayout>
+	</LinearLayout>
+</ScrollView>
