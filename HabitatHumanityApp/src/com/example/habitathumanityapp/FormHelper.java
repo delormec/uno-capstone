@@ -3,6 +3,8 @@ package com.example.habitathumanityapp;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 public class FormHelper 
 {
@@ -62,5 +64,27 @@ public class FormHelper
 		dummyForm.questions.add(q3);
 		
 		return dummyForm;
+	}
+	
+	
+	/**
+	 * Dumps the contents of a form object in to the LogCat
+	 * 
+	 * @param form	The Form to dump
+	 */
+	public static void dumpForm(Form form)
+	{
+		// Feel free to add things if you want 
+		
+		Log.v("ryan_debug", "Beginning form dump...");
+		
+		Log.v("ryan_debug", String.format("Template_ID: %s", form.meta.template_id));
+		Log.v("ryan_debug", String.format("Form_ID: %s", form.meta.form_id));
+		
+		for (Question q : form.questions)
+		{
+			Log.v("ryan_debug", String.format("\tQuestion: %s", q.Text));
+			Log.v("ryan_debug", String.format("\t\tAnswer: %s", q.Answer));
+		}
 	}
 }

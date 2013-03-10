@@ -44,10 +44,20 @@
         	android:layout_height="wrap_content"
 	        android:text="LikertLow" />
 
+    	<LinearLayout
+    		android:id="@+id/multipleSelectChoices"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="wrap_content"
+    		    android:orientation="vertical" >
+    		</LinearLayout>
+
     	<RadioGroup
         	android:id="@+id/questionChoices"
         	android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" >
+
+    		
+
     	</RadioGroup>
 
     	<TextView
@@ -87,8 +97,6 @@
     	<include
         	android:layout_width="wrap_content"
         	android:layout_height="50dp"
-        	android:layout_alignParentBottom="true"
-        	android:layout_alignParentLeft="true"
     	    layout="@layout/navbar" />
 
 	</LinearLayout>
