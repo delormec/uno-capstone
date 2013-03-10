@@ -59,6 +59,11 @@ public class MainScreenActivity extends Activity {
 		Intent intent = new Intent(this, MainMenuActivity.class);
 		startActivity(intent);
 	}
+	
+	public void navigationTest(View view){
+		Intent intent = new Intent(this, NavigationActivity.class);
+		startActivity(intent);
+	}
 
 	public void showFormScreen(View view){
 		setContentView(R.layout.main_form_screen);

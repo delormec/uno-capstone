@@ -52,7 +52,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/mainMenu"
         android:layout_marginTop="76dp"
-        android:onClick="showFormScreen"
+        android:onClick="navigationTest"
         android:text="Show Navigation" />
 
     <Button
