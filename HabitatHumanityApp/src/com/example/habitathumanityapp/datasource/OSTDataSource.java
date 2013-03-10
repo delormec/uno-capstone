@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.habitathumanityapp.Form;
+import com.example.habitathumanityapp.MyData;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -197,6 +198,7 @@ public class OSTDataSource {
 		return template_info;
 	}
 
+
 	/** Returns a List of 2 element string arrays where group == param<br>
 	 *    string[0] = template_id <br>
 	 *    string[1] = template_name
@@ -214,6 +216,32 @@ public class OSTDataSource {
 			String[] temp = new String[2];
 			temp[0] = String.valueOf(cursor.getInt(0));
 			temp[1] = cursor.getString(1);
+			template_info.add(temp);
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		return template_info;
+	}
+	
+	/** Returns a List of MyData objects where group == param<br>
+	 *    string[0] = template_id <br>
+	 *    string[1] = template_name
+	 * @param group
+	 * @return List<MyData>; List of two element string arrays
+	 */
+	public List<MyData> getAllTemplateInfoByGroupMyData(String group)
+	{
+		List<MyData> template_info = new ArrayList<MyData>();
+		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},"group_name ==\"" + group + "\"",null,null,null,null);
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) 
+		{
+			String key = cursor.getString(1);
+			String value = String.valueOf(cursor.getInt(0));
+			MyData temp = new MyData(key,value);
+			
 			template_info.add(temp);
 			cursor.moveToNext();
 		}
