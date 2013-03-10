@@ -25,5 +25,6 @@
     <string name="strTemplateGroupLabel">Template Groups:</string>
     <string name="strTemplateLabel">Templates:</string>
     <string name="strFormsLabel">Forms:</string>
+    <string name="strNewForm">Add New Form</string>
 
 </resources>

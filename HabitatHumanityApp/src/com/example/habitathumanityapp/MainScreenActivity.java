@@ -78,6 +78,7 @@ public class MainScreenActivity extends Activity {
 	 * 
 	 * @param view The view of the activity that calls the function
 	 */
+	/*
 	public void beginStandardForm(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
@@ -86,7 +87,7 @@ public class MainScreenActivity extends Activity {
 		// Get the standard form from database
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();	
-		List<String[]> templates = ostDS.getAllTemplateInfo();	
+		//List<String[]> templates = ostDS.getAllTemplateInfo();	
 		
 		for(String[] templateInfo : templates)
 		{
@@ -115,7 +116,7 @@ public class MainScreenActivity extends Activity {
 		ostDS.open();
 		
 		// Get random form from database
-		List<String[]> templates = ostDS.getAllTemplateInfo();
+		//List<String[]> templates = ostDS.getAllTemplateInfo();
 		
 		int formNumber = random.nextInt(templates.size());
 		Form form = ostDS.getTemplateById(Long.parseLong(templates.get(formNumber)[0]));
@@ -127,4 +128,5 @@ public class MainScreenActivity extends Activity {
 		
 		startActivity(intent);
 	}
+	*/
 }

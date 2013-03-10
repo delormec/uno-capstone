@@ -135,6 +135,7 @@ public class OSTDataSource {
 	 * @param template_id
 	 * @return List<String[]>; List of two element string arrays
 	 */
+	/*
 	public List<String[]> getAllFormInfoByTemplateId(int template_id)
 	{
 		List<String[]> form_info = new ArrayList<String[]>();
@@ -154,7 +155,29 @@ public class OSTDataSource {
 		cursor.close();
 		return form_info;
 	}
+*/
+	public List<MyData> getAllFormInfoByTemplateId(int template_id)
+	{
+		List<MyData> form_info = new ArrayList<MyData>();
+		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template_id),null,null,null,null);
 
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) 
+		{
+			String key = cursor.getString(1);
+			//String value = String.valueOf(cursor.getInt(0));
+			int value = cursor.getInt(0);
+			MyData temp = new MyData(key,value);
+
+			form_info.add(temp);
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		return form_info;
+	}
+	
 	/** Returns a List containing all the unique template groups in the database
 	 * @return List of unique template groups
 	 */
@@ -179,6 +202,7 @@ public class OSTDataSource {
 	 *    string[1] = template_name
 	 * @return List<String[]>; List of two element string arrays
 	 */
+	/*
 	public List<String[]> getAllTemplateInfo()
 	{
 		List<String[]> template_info = new ArrayList<String[]>();
@@ -197,6 +221,27 @@ public class OSTDataSource {
 		cursor.close();
 		return template_info;
 	}
+	*/
+	public List<MyData> getAllTemplateInfo()
+	{
+		List<MyData> template_info = new ArrayList<MyData>();
+		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},null,null,null,null,null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) 
+		{
+			String key = cursor.getString(1);
+			//String value = String.valueOf(cursor.getInt(0));
+			int value = cursor.getInt(0);
+			MyData temp = new MyData(key,value);
+			
+			template_info.add(temp);
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		return template_info;
+	}
 
 
 	/** Returns a List of 2 element string arrays where group == param<br>
@@ -205,6 +250,7 @@ public class OSTDataSource {
 	 * @param group
 	 * @return List<String[]>; List of two element string arrays
 	 */
+	/*
 	public List<String[]> getAllTemplateInfoByGroup(String group)
 	{
 		List<String[]> template_info = new ArrayList<String[]>();
@@ -218,11 +264,14 @@ public class OSTDataSource {
 			temp[1] = cursor.getString(1);
 			template_info.add(temp);
 			cursor.moveToNext();
+			
+			
 		}
 
 		cursor.close();
 		return template_info;
 	}
+	*/
 	
 	/** Returns a List of MyData objects where group == param<br>
 	 *    string[0] = template_id <br>
@@ -239,7 +288,8 @@ public class OSTDataSource {
 		while (!cursor.isAfterLast()) 
 		{
 			String key = cursor.getString(1);
-			String value = String.valueOf(cursor.getInt(0));
+			//String value = String.valueOf(cursor.getInt(0));
+			int value = cursor.getInt(0);
 			MyData temp = new MyData(key,value);
 			
 			template_info.add(temp);

@@ -26,13 +26,13 @@ public final class R {
         public static final int custom_title=0x7f08002e;
         public static final int dataStoreTest=0x7f08001b;
         public static final int form=0x7f08001f;
-        public static final int formLabel=0x7f080019;
+        public static final int formLabel=0x7f080017;
         public static final int formMenu=0x7f080014;
         public static final int form_rand=0x7f080020;
         public static final int fullXmlCode=0x7f080021;
         public static final int getFormButton=0x7f080007;
-        public static final int getFormsBtn=0x7f080015;
-        public static final int groupLabel=0x7f080017;
+        public static final int getFormsBtn=0x7f080018;
+        public static final int groupLabel=0x7f080015;
         public static final int likertHigh=0x7f08000e;
         public static final int likertLow=0x7f08000b;
         public static final int mainMenu=0x7f08001d;
@@ -50,8 +50,8 @@ public final class R {
         public static final int questionText=0x7f080008;
         public static final int selectedForm=0x7f080012;
         public static final int spacing_medium=0x7f08000a;
-        public static final int startPopulateBtn=0x7f080016;
-        public static final int templateLabel=0x7f080018;
+        public static final int startPopulateBtn=0x7f080019;
+        public static final int templateLabel=0x7f080016;
         public static final int templateMenu=0x7f080013;
         public static final int testText=0x7f080006;
         public static final int textView1=0x7f080001;
@@ -101,6 +101,7 @@ public final class R {
         public static final int strGetForm=0x7f05000d;
         public static final int strGetXml=0x7f05000c;
         public static final int strMainMenu=0x7f05000e;
+        public static final int strNewForm=0x7f050018;
         public static final int strPopulateSpinners=0x7f050014;
         public static final int strSelectedForm=0x7f050010;
         public static final int strTemplateGroupLabel=0x7f050015;

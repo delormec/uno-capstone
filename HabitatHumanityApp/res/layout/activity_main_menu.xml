@@ -27,25 +27,6 @@
         android:layout_below="@+id/templateMenu"
         android:layout_marginTop="22dp" />
 
-    <Button
-        android:id="@+id/getFormsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/selectedForm"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:onClick="startFormDownload"
-        android:text="@string/strDownloadForms" />
-
-    <Button
-        android:id="@+id/startPopulateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/getFormsBtn"
-        android:layout_below="@+id/getFormsBtn"
-        android:onClick="startPopulateSpinners"
-        android:text="@string/strPopulateSpinners" />
-
     <TextView
         android:id="@+id/selectedForm"
         android:layout_width="wrap_content"
@@ -81,5 +62,35 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="21dp"
         android:text="@string/strFormsLabel" />
+
+    <Button
+        android:id="@+id/getFormsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/startPopulateBtn"
+        android:layout_below="@+id/selectedForm"
+        android:layout_marginTop="16dp"
+        android:onClick="startFormDownload"
+        android:text="@string/strDownloadForms" />
+
+    <Button
+        android:id="@+id/startPopulateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/getFormsBtn"
+        android:layout_marginLeft="14dp"
+        android:onClick="startPopulateSpinners"
+        android:text="@string/strPopulateSpinners" />
+
+    <Button
+        android:id="@+id/newForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/getFormsBtn"
+        android:layout_alignBottom="@+id/getFormsBtn"
+        android:layout_toRightOf="@+id/selectedForm"
+        android:onClick="createNewForm"
+        android:text="@string/strNewForm" />
 
 </RelativeLayout>

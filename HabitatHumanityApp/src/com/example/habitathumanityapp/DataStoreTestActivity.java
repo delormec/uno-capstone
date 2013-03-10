@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 @SuppressLint({ "HandlerLeak", "ShowToast" })
 public class DataStoreTestActivity extends Activity {
-
+/*
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -175,5 +175,5 @@ public class DataStoreTestActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+*/
 }

@@ -1,7 +1,7 @@
 package com.example.habitathumanityapp;
 
 public class MyData {
-	public MyData( String spinnerText, String value ) {
+	public MyData( String spinnerText, int value ) {
         this.spinnerText = spinnerText;
         this.value = value;
     }
@@ -10,7 +10,7 @@ public class MyData {
         return spinnerText;
     }
 
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
@@ -19,6 +19,6 @@ public class MyData {
     }
 
     String spinnerText;
-    String value;	
+    int value;	
 
 }
