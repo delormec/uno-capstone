@@ -45,7 +45,7 @@ public class DisplayQuestionActivity extends Activity
 				questionText.setText(question.Text);						
 				this.findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
 				
-				Log.v("ryan_debug", String.format("Displaying Template %s - Question %d", String.valueOf(form.meta.template_id), questionNumber));			
+				//Log.v("ryan_debug", String.format("Displaying Template %s - Question %d", String.valueOf(form.meta.template_id), questionNumber));			
 				
 				
 				
@@ -386,10 +386,7 @@ public class DisplayQuestionActivity extends Activity
 					}
 				}
 				
-				if (answer.compareTo("") != 0)
-				{
-					form.questions.get(questionNumber).Answer = answer;
-				}
+				form.questions.get(questionNumber).Answer = answer;
 			}
 			else
 			{

@@ -78,16 +78,24 @@ public class MainScreenActivity extends Activity {
 	 * 
 	 * @param view The view of the activity that calls the function
 	 */
-	public void beginForm0(View view)
+	public void beginStandardForm(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		Form form = FormHelper.dummyForm();
 		
-		// Get first form from database
+		// Get the standard form from database
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();	
 		List<String[]> templates = ostDS.getAllTemplateInfo();	
-		Form form = ostDS.getTemplateById(Long.parseLong(templates.get(0)[0]));
 		
+		for(String[] templateInfo : templates)
+		{
+			if (templateInfo[1].compareTo("Ryan_Test") == 0)
+			{
+				form = ostDS.getTemplateById(Long.parseLong(templateInfo[0]));
+			}
+		}
+			
 		// This is where the form is passed to the DisplayQuestionActivity
 		intent.putExtra("formObject", form);
 		intent.putExtra("questionNumber", 0);
@@ -109,9 +117,7 @@ public class MainScreenActivity extends Activity {
 		// Get random form from database
 		List<String[]> templates = ostDS.getAllTemplateInfo();
 		
-		Log.v("ryan_debug", String.format("There are %d templates in the database.", templates.size()));
 		int formNumber = random.nextInt(templates.size());
-		Log.v("ryan_debug", String.format("Randomed template %d", formNumber));
 		Form form = ostDS.getTemplateById(Long.parseLong(templates.get(formNumber)[0]));
 		
 		intent.putExtra("formObject", form);

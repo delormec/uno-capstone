@@ -62,8 +62,9 @@
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
         android:layout_alignRight="@+id/parseFormButton"
-        android:onClick="beginForm0"
-        android:text="DB Form 0" />
+        android:text="Standard Form"
+        android:onClick="beginStandardForm"
+        />
 
     <Button
         android:id="@+id/form_rand"
