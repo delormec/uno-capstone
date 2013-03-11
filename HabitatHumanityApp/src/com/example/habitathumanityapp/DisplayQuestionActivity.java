@@ -3,11 +3,9 @@ package com.example.habitathumanityapp;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,6 +30,11 @@ public class DisplayQuestionActivity extends Activity
 		form = (Form) getIntent().getExtras().get("formObject");
 		questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 		
+		if (questionNumber == null)
+		{
+			questionNumber = 0;
+		}
+		
 		
 		if (form != null && form.questions.size() > 0)
 		{					
@@ -40,44 +43,10 @@ public class DisplayQuestionActivity extends Activity
 			// Display the question
 			if (question != null)
 			{
-				setContentView(R.layout.activity_display_question);
-				TextView questionText = (TextView) findViewById(R.id.questionText);
-				questionText.setText(question.Text);						
-				this.findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
+				setContentView(R.layout.activity_display_question);					
+				findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
 				
-				//Log.v("ryan_debug", String.format("Displaying Template %s - Question %d", String.valueOf(form.meta.template_id), questionNumber));			
-				
-				
-				
-				
-				
-				// Set up text question view
-				if (question instanceof TextQuestion) 
-				{
-					setupTextQuestionView((TextQuestion) question);
-				}
-				
-				// Set up the choice question view
-				else if (question instanceof ChoiceQuestion)
-				{	
-					setupChoiceQuestionView((ChoiceQuestion) question);												
-				}
-		
-				// Set up the likert scale question view
-				else if (question instanceof LikertScaleQuestion)
-				{
-					setupLikertQuestionView((LikertScaleQuestion) question);		
-				}
-				
-				else
-				{
-					// This block should ideally never be entered
-					Log.v("ryan_debug", "Entered unexpectedblock in method onCreate() in class DisplayQuestionActivity (received qestion of unknown type)");
-					
-					toast = Toast.makeText(this, "Unknown question type", Toast.LENGTH_SHORT);
-					toast.show();
-					this.prevQuestion(null);
-				}			
+				displayNewQuestion(question);
 			}
 			else
 			{
@@ -97,6 +66,65 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	
+	/**
+	 * Begins the setup for displaying a new question
+	 * Calls one of three helper methods, one for each type of question
+	 * 
+	 * @param question	The new question to display
+	 */
+	private void displayNewQuestion(Question question)
+	{
+		if (question != null)
+		{
+			// Set the question view and question text (same for all three types)		
+			TextView questionText = (TextView) findViewById(R.id.questionText);
+			questionText.setText(question.Text);
+			
+			
+			// Set up text question view
+			if (question instanceof TextQuestion) 
+			{
+				// Reset the TextQuestion views
+				((TextView) findViewById(R.id.answerText)).setText(null);
+							
+				setupTextQuestionView((TextQuestion) question);
+			}
+		
+			// Set up the choice question view
+			else if (question instanceof ChoiceQuestion)
+			{	
+				// Reset the ChoiceQuestion views
+				((RadioGroup) findViewById(R.id.questionChoices)).removeAllViews();
+				((LinearLayout) findViewById(R.id.multipleSelectChoices)).removeAllViews();
+				
+				
+				setupChoiceQuestionView((ChoiceQuestion) question);												
+			}
+
+			// Set up the likert scale question view
+			else if (question instanceof LikertScaleQuestion)
+			{
+				// Reset the LikertScaleQuestion views
+				((RadioGroup) findViewById(R.id.questionChoices)).removeAllViews();
+				((TextView) findViewById(R.id.likertHigh)).setText(null);
+				((TextView) findViewById(R.id.likertLow)).setText(null);
+					
+				setupLikertQuestionView((LikertScaleQuestion) question);		
+			}
+		
+			else
+			{
+				// This block should ideally never be entered
+				Log.v("ryan_debug", "Entered unexpectedblock in method onCreate() in class DisplayQuestionActivity (received qestion of unknown type)");
+			
+				toast = Toast.makeText(this, "Unknown question type", Toast.LENGTH_SHORT);
+				toast.show();
+				this.prevQuestion(null);
+			}
+		}
+	}
+	
+	
 	
 	
 	
@@ -108,14 +136,18 @@ public class DisplayQuestionActivity extends Activity
 	private void setupTextQuestionView(TextQuestion tq)
 	{	
 		// Remove other fields
-		this.findViewById(R.id.questionChoices).setVisibility(View.GONE);
-		this.findViewById(R.id.likertLow).setVisibility(View.GONE);
-		this.findViewById(R.id.likertHigh).setVisibility(View.GONE);
+		findViewById(R.id.questionChoices).setVisibility(View.GONE);
+		findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
+		findViewById(R.id.likertLow).setVisibility(View.GONE);
+		findViewById(R.id.likertHigh).setVisibility(View.GONE);
+		
+		// Make TextQuestion fields visible
+		findViewById(R.id.answerText).setVisibility(View.VISIBLE);
 		
 		// Fill in pre-existing answer
 		if (tq.Answer != null)
 		{
-			EditText textField = (EditText) this.findViewById(R.id.answerText);
+			EditText textField = (EditText) findViewById(R.id.answerText);
 			textField.setText(tq.Answer);
 		}
 	}
@@ -130,15 +162,20 @@ public class DisplayQuestionActivity extends Activity
 	private void setupChoiceQuestionView(ChoiceQuestion cq)
 	{
 		// Remove other fields
-		this.findViewById(R.id.answerText).setVisibility(View.GONE);
-		this.findViewById(R.id.likertLow).setVisibility(View.GONE);
-		this.findViewById(R.id.likertHigh).setVisibility(View.GONE);
+		findViewById(R.id.answerText).setVisibility(View.GONE);
+		findViewById(R.id.likertLow).setVisibility(View.GONE);
+		findViewById(R.id.likertHigh).setVisibility(View.GONE);
 		
 		
 		// Set up multiple select ChoiceQuestion
 		if (cq.multipleselect.compareToIgnoreCase("true") == 0)
 		{
-			LinearLayout multipleSelectChoices = (LinearLayout) this.findViewById(R.id.multipleSelectChoices);
+			findViewById(R.id.questionChoices).setVisibility(View.GONE);
+			findViewById(R.id.multipleSelectChoices).setVisibility(View.VISIBLE);
+			
+			
+			
+			LinearLayout multipleSelectChoices = (LinearLayout) findViewById(R.id.multipleSelectChoices);
 			CheckBox checkBox;
 			String[] answers;
 			
@@ -180,9 +217,14 @@ public class DisplayQuestionActivity extends Activity
 				}
 			}
 		}
+		
+		
 		// Set up normal ChoiceQuestion
 		else
 		{	
+			findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
+			findViewById(R.id.questionChoices).setVisibility(View.VISIBLE);
+			
 			RadioGroup buttons = (RadioGroup) findViewById(R.id.questionChoices);
 			RadioButton button;
 			
@@ -222,13 +264,20 @@ public class DisplayQuestionActivity extends Activity
 	private void setupLikertQuestionView(LikertScaleQuestion lsq)
 	{
 		// Remove other fields
-		this.findViewById(R.id.answerText).setVisibility(View.GONE);
+		findViewById(R.id.answerText).setVisibility(View.GONE);
+		findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
+		
+		// Make LikertScaleQuestion fields visible
+		findViewById(R.id.likertHigh).setVisibility(View.VISIBLE);
+		findViewById(R.id.likertLow).setVisibility(View.VISIBLE);
+		findViewById(R.id.questionChoices).setVisibility(View.VISIBLE);
+		
 		
 		if (lsq.labels.size() >= 2)
 		{
-			TextView lowText = (TextView) this.findViewById(R.id.likertLow);
+			TextView lowText = (TextView) findViewById(R.id.likertLow);
 			lowText.setText(lsq.labels.get(0));
-			TextView highText = (TextView) this.findViewById(R.id.likertHigh);
+			TextView highText = (TextView) findViewById(R.id.likertHigh);
 			highText.setText(lsq.labels.get(1));
 		}
 		
@@ -268,35 +317,26 @@ public class DisplayQuestionActivity extends Activity
 	 * @param view
 	 */
 	public void nextQuestion(View view)
-	{
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+	{	
+		if (toast != null) toast.cancel();
 		
-		if (form != null)
+		Utility.hideSoftKeyboard(this);
+			
+		if (questionNumber < form.questions.size() - 1)
 		{
-			if (toast != null) toast.cancel();
-			
-			if (questionNumber < form.questions.size() - 1)
-			{
-				// Save the answer and form
-				saveAnswerToForm();			
-				// TODO save form to database here
+			// Save the answer and form
+			saveAnswerToForm();			
+			// TODO save form to database here
 				
-				
-				// Pass the form and question number to the next activity
-				intent.putExtra("formObject", form);
-				intent.putExtra("questionNumber", questionNumber + 1);
-			
-				// Don't stack question activities
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				
-				startActivity(intent);
-			}
-			else
-			{
-				// On last question.'				
-				toast = Toast.makeText(this, "End of form", Toast.LENGTH_SHORT);
-				toast.show();
-			}
+			questionNumber++;
+			question = form.questions.get(questionNumber);
+			displayNewQuestion(question);
+		}
+		else
+		{
+			// On last question.			
+			toast = Toast.makeText(this, "End of form", Toast.LENGTH_SHORT);
+			toast.show();
 		}
 	}
 	
@@ -309,53 +349,42 @@ public class DisplayQuestionActivity extends Activity
 	 * @param view The view from the activity that called this function
 	 */
 	public void prevQuestion(View view)
-	{
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-		
-		if (form != null)
-		{
-			if (toast != null) toast.cancel();
+	{		
+		if (toast != null) toast.cancel();
 			
-			if (questionNumber > 0)
-			{
-				// Save the answer and form
-				saveAnswerToForm();
-				// TODO save form to database here
-				
-				
-				// Pass the form and question number to the next activity
-				intent.putExtra("formObject", form);
-				intent.putExtra("questionNumber", questionNumber - 1);
-				
-				// Don't stack question activities
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Utility.hideSoftKeyboard(this);
 		
-				startActivity(intent);
-			}
-			else
-			{
-				// On the first question, can't go to previous.
-				if (toast != null) toast.cancel();
+		if (questionNumber > 0)
+		{
+			// Save the answer and form
+			saveAnswerToForm();
+			// TODO save form to database here
+
 				
-				toast = Toast.makeText(this, "Beginning of form", Toast.LENGTH_SHORT);
-				toast.show();
-			}
+			questionNumber--;
+			question = form.questions.get(questionNumber);
+			displayNewQuestion(question);
+		}
+		else
+		{
+			// On the first question, can't go to previous.				
+			toast = Toast.makeText(this, "Beginning of form", Toast.LENGTH_SHORT);
+			toast.show();
 		}
 	}	
 	
 	
 	
 	/**
-	 * Returns the user-selected answer from the currently displayed question.
-	 * 
-	 * @return	The selected answer of the currently displayed question
+	 * Saves the user-selected answer to the form object
 	 */
 	private void saveAnswerToForm()
-	{
+	{	
+		// Save the TextQuestion answer
 		if (question instanceof TextQuestion)
 		{
 			// Pull the answer
-			EditText answer = (EditText) this.findViewById(R.id.answerText);
+			EditText answer = (EditText) findViewById(R.id.answerText);
 			
 			// Store the answer
 			if (answer != null)
@@ -363,13 +392,16 @@ public class DisplayQuestionActivity extends Activity
 				form.questions.get(questionNumber).Answer = answer.getText().toString();
 			}
 		}
+		
+		// Save the ChoiceQuestion answer
 		else if (question instanceof ChoiceQuestion)
 		{
 			ChoiceQuestion cq = ((ChoiceQuestion) question);
 			
+			// Save the multiple-select answer(s)
 			if (cq.multipleselect.compareToIgnoreCase("true") == 0)
 			{
-				LinearLayout choices = (LinearLayout) this.findViewById(R.id.multipleSelectChoices);	
+				LinearLayout choices = (LinearLayout) findViewById(R.id.multipleSelectChoices);	
 				int numBoxes = choices.getChildCount();
 				
 				String answer = "";
@@ -379,7 +411,8 @@ public class DisplayQuestionActivity extends Activity
 				for (int x = 0; x < numBoxes; x++)
 				{
 					CheckBox checkBox = (CheckBox) choices.getChildAt(x);
-								
+					
+					// Add the answer to the string
 					if (checkBox.isChecked())
 					{
 						answer += String.format("%s;", checkBox.getText().toString());
@@ -388,21 +421,28 @@ public class DisplayQuestionActivity extends Activity
 				
 				form.questions.get(questionNumber).Answer = answer;
 			}
+			
+			// Save the single-select answer
 			else
 			{
-				RadioGroup choices = (RadioGroup) this.findViewById(R.id.questionChoices);
-				RadioButton answer = (RadioButton) this.findViewById(choices.getCheckedRadioButtonId());
+				Log.v("ryan_debug", "Saving single-select choice answer...");
+				
+				RadioGroup choices = (RadioGroup) findViewById(R.id.questionChoices);
+				RadioButton answer = (RadioButton) findViewById(choices.getCheckedRadioButtonId());
 			
 				if (answer != null)
 				{
 					form.questions.get(questionNumber).Answer = answer.getText().toString();
+					Log.v("ryan_debug", String.format("Answer: %s", answer.getText().toString()));
 				}
 			}
 		}
+		
+		// Save the LikertScaleQuestion answer
 		else if (question instanceof LikertScaleQuestion)
 		{
-			RadioGroup choices = (RadioGroup) this.findViewById(R.id.questionChoices);
-			RadioButton answer = (RadioButton) this.findViewById(choices.getCheckedRadioButtonId());
+			RadioGroup choices = (RadioGroup) findViewById(R.id.questionChoices);
+			RadioButton answer = (RadioButton) findViewById(choices.getCheckedRadioButtonId());
 			
 			if (answer != null)
 			{
@@ -410,6 +450,8 @@ public class DisplayQuestionActivity extends Activity
 			}		
 		}
 	}
+	
+	
 	
 	
 	

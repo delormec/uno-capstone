@@ -66,14 +66,4 @@
         android:onClick="beginStandardForm"
         />
 
-    <Button
-        android:id="@+id/form_rand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/form"
-        android:layout_below="@+id/form"
-        android:text="Random Form"
-    	android:onClick="beginRandomForm"
-    	/>
-
 </RelativeLayout>

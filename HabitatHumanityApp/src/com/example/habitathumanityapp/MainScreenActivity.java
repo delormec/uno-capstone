@@ -1,9 +1,5 @@
 package com.example.habitathumanityapp;
 
-
-import java.util.List;
-import java.util.Random;
-
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
 import android.app.Activity;
@@ -77,61 +73,23 @@ public class MainScreenActivity extends Activity {
 	
 	
 	
+
 	
-	/**
-	 * Calls DisplayQuestionActivity with the first form in the database
-	 * 
-	 * @param view The view of the activity that calls the function
-	 */
-	/*
 	public void beginStandardForm(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-		Form form = FormHelper.dummyForm();
 		
 		// Get the standard form from database
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();	
-		//List<String[]> templates = ostDS.getAllTemplateInfo();	
 		
-		for(String[] templateInfo : templates)
-		{
-			if (templateInfo[1].compareTo("Ryan_Test") == 0)
-			{
-				form = ostDS.getTemplateById(Long.parseLong(templateInfo[0]));
-			}
-		}
-			
+		Form form = ostDS.getTemplateById(9);
+
 		// This is where the form is passed to the DisplayQuestionActivity
 		intent.putExtra("formObject", form);
-		intent.putExtra("questionNumber", 0);
 		
 		ostDS.close();
 		
 		startActivity(intent);
 	}
-	
-	
-	public void beginRandomForm(View view)
-	{
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-	
-		Random random = new Random();	
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		
-		// Get random form from database
-		//List<String[]> templates = ostDS.getAllTemplateInfo();
-		
-		int formNumber = random.nextInt(templates.size());
-		Form form = ostDS.getTemplateById(Long.parseLong(templates.get(formNumber)[0]));
-		
-		intent.putExtra("formObject", form);
-		intent.putExtra("questionNumber", 0);
-		
-		ostDS.close();
-		
-		startActivity(intent);
-	}
-	*/
 }

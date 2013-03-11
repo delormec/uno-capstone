@@ -34,11 +34,6 @@
                 android:value="com.example.habitathumanityapp.MainScreenActivity" />
         </activity>
         <activity
-            android:name="com.example.habitathumanityapp.NavigationActivity"
-            android:label="NavigationActivity"
-            android:parentActivityName="com.example.habitathumanityapp.MainScreenActivity" >
-        </activity>
-        <activity
             android:name="com.example.habitathumanityapp.DataStoreTestActivity"
             android:label="@string/title_activity_data_store_test"
             android:parentActivityName="com.example.habitathumanityapp.MainScreenActivity" >
