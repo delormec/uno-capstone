@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
+import android.util.Log;
 
 
 /**
@@ -128,26 +129,24 @@ public class OSTDataSource {
 		dbHelper.close();
 	}
 
-	/* returns form_id and key_field for all templates in the db */
-	/**	Returns a List of 2 element string arrays that represent all forms with template_id == param <br>
-	 *    string[0] = form_id <br>
-	 *    string[1] = value of key_field, if empty returns -none-
-	 * @param template_id
-	 * @return List<String[]>; List of two element string arrays
+	/** Returns a List of MyData which contains the value of a form's key field <br>
+	 *  and it's form_id.
+	 * @return List of MyData used to populate spinners
 	 */
-	/*
-	public List<String[]> getAllFormInfoByTemplateId(int template_id)
+	public List<MyData> getAllFormInfo()
 	{
-		List<String[]> form_info = new ArrayList<String[]>();
-		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template_id),null,null,null,null);
+		List<MyData> form_info = new ArrayList<MyData>();
+		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, null,null,null,null,null);
 
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) 
 		{
-			String[] temp = new String[2];
-			temp[0] = String.valueOf(cursor.getInt(0));
-			temp[1] = cursor.getString(1);
+			String key = cursor.getString(1);
+			//String value = String.valueOf(cursor.getInt(0));
+			int value = cursor.getInt(0);
+			MyData temp = new MyData(key,value);
+
 			form_info.add(temp);
 			cursor.moveToNext();
 		}
@@ -155,7 +154,12 @@ public class OSTDataSource {
 		cursor.close();
 		return form_info;
 	}
-*/
+	
+	/**	Returns a List of MyData which contains the value of a form's key field <br>
+	 *  and it's form_id WHERE template_id == param.
+	 * @param template_id template id in form table
+	 * @return List of MyData used to populate spinners
+	 */
 	public List<MyData> getAllFormInfoByTemplateId(int template_id)
 	{
 		List<MyData> form_info = new ArrayList<MyData>();
@@ -178,6 +182,37 @@ public class OSTDataSource {
 		return form_info;
 	}
 	
+	/**	Returns a List of MyData which contains the value of a form's key field <br>
+	 *  and it's form_id WHERE form.template_id == template.id and template.group_name = param
+	 * @param group group name
+	 * @return List of MyData used to populate spinners
+	 */
+	public List<MyData> getAllFormInfoByTemplateGroup(String group)
+	{
+		List<MyData> form_info = new ArrayList<MyData>();
+		List<MyData> templates = getAllTemplateInfoByGroupMyData(group);
+		
+		for (MyData template : templates)
+		{
+			Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template.getValue()),null,null,null,null);
+
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) 
+			{
+				String key = cursor.getString(1);
+				int value = cursor.getInt(0);
+				MyData temp = new MyData(key,value);
+				form_info.add(temp);
+				cursor.moveToNext();
+			}
+			
+			cursor.close();
+		}
+		
+		return form_info;
+	}
+	
+	
 	/** Returns a List containing all the unique template groups in the database
 	 * @return List of unique template groups
 	 */
@@ -197,31 +232,10 @@ public class OSTDataSource {
 		return groups;
 	}
 
-	/** Returns a List of 2 element string arrays that represent all templates in the database <br>
-	 *    string[0] = template_id <br>
-	 *    string[1] = template_name
-	 * @return List<String[]>; List of two element string arrays
+
+	/**	Returns a List of MyData which contains the all the template names and their template_id.
+	 * @return List of MyData used to populate spinners
 	 */
-	/*
-	public List<String[]> getAllTemplateInfo()
-	{
-		List<String[]> template_info = new ArrayList<String[]>();
-		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},null,null,null,null,null);
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) 
-		{
-			String[] temp = new String[2];
-			temp[0] = String.valueOf(cursor.getInt(0));
-			temp[1] = cursor.getString(1);
-			template_info.add(temp);
-			cursor.moveToNext();
-		}
-
-		cursor.close();
-		return template_info;
-	}
-	*/
 	public List<MyData> getAllTemplateInfo()
 	{
 		List<MyData> template_info = new ArrayList<MyData>();
@@ -242,42 +256,12 @@ public class OSTDataSource {
 		cursor.close();
 		return template_info;
 	}
-
-
-	/** Returns a List of 2 element string arrays where group == param<br>
-	 *    string[0] = template_id <br>
-	 *    string[1] = template_name
-	 * @param group
-	 * @return List<String[]>; List of two element string arrays
-	 */
-	/*
-	public List<String[]> getAllTemplateInfoByGroup(String group)
-	{
-		List<String[]> template_info = new ArrayList<String[]>();
-		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},"group_name ==\"" + group + "\"",null,null,null,null);
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) 
-		{
-			String[] temp = new String[2];
-			temp[0] = String.valueOf(cursor.getInt(0));
-			temp[1] = cursor.getString(1);
-			template_info.add(temp);
-			cursor.moveToNext();
-			
-			
-		}
-
-		cursor.close();
-		return template_info;
-	}
-	*/
 	
 	/** Returns a List of MyData objects where group == param<br>
 	 *    string[0] = template_id <br>
 	 *    string[1] = template_name
 	 * @param group
-	 * @return List<MyData>; List of two element string arrays
+	 * @return List<MyData>
 	 */
 	public List<MyData> getAllTemplateInfoByGroupMyData(String group)
 	{

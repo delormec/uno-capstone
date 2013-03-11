@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 @SuppressLint({ "HandlerLeak", "ShowToast" })
 public class DataStoreTestActivity extends Activity {
-/*
+
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,8 @@ public class DataStoreTestActivity extends Activity {
 		TextView DSTest1 = (TextView)findViewById(R.id.DSTest1);
 		TextView DSTest2 = (TextView)findViewById(R.id.DSTest2);
 		TextView DSTest3 = (TextView)findViewById(R.id.DSTest3);
+		
+		/*
 		
 		//set up a sample form
 		TextQuestion tq1 = new TextQuestion();
@@ -140,12 +142,19 @@ public class DataStoreTestActivity extends Activity {
 		ostDS.removeAllTemplates();
 		ostDS.removeAllForms();
 		ostDS.close();
-		
+		*/
 		
 		SharePointDataSource spDS = new SharePointDataSource();
-		
+		//OSTDataSource ostDS = new OSTDataSource(this);
+		//ostDS.open();
+		//List<MyData> mdl = ostDS.getAllFormInfo();
 
-		
+		//for (MyData md : mdl)
+		//{
+		//	Log.v("cody_test", String.valueOf(md.getValue()));
+			
+		//}
+		//ostDS.close();
 		//create threads that do shit
 		//new connectToSharePoint().execute(spDS);
 		//new createSharePointListTest().execute(spDS);
@@ -175,5 +184,5 @@ public class DataStoreTestActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-*/
+
 }
