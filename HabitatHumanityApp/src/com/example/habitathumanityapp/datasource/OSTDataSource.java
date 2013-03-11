@@ -190,7 +190,7 @@ public class OSTDataSource {
 	public List<MyData> getAllFormInfoByTemplateGroup(String group)
 	{
 		List<MyData> form_info = new ArrayList<MyData>();
-		List<MyData> templates = getAllTemplateInfoByGroupMyData(group);
+		List<MyData> templates = getAllTemplateInfoByGroup(group);
 		
 		for (MyData template : templates)
 		{
@@ -263,7 +263,7 @@ public class OSTDataSource {
 	 * @param group
 	 * @return List<MyData>
 	 */
-	public List<MyData> getAllTemplateInfoByGroupMyData(String group)
+	public List<MyData> getAllTemplateInfoByGroup(String group)
 	{
 		List<MyData> template_info = new ArrayList<MyData>();
 		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},"group_name ==\"" + group + "\"",null,null,null,null);
