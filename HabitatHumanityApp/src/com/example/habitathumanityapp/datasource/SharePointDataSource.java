@@ -29,13 +29,15 @@ import org.json.JSONObject;
 
 //=======
 //>>>>>>> XML Parser Helper Classes
+import com.example.habitathumanityapp.Form;
+import com.example.habitathumanityapp.Question;
 import com.example.habitathumanityapp.sharepointauthentication.NTLMSchemeFactory;
 
 import android.util.Log;
 
 public class SharePointDataSource {
 	
-	private String URL;
+	/*private String URL;
 	private String list_name;
 	private String user_name;
 	private String password;
@@ -51,18 +53,100 @@ public class SharePointDataSource {
 		user_name = "CDelorme";
 		password = "CDelorme463";
 		domain = "xtranet";
-	}
+	}*/
 	
-	public SharePointDataSource(String URL, String list_name, String user_name, String password, String domain)
+	public static String[] uploadFormToSharePoint(Form form, String URL, String list_name, String user_name, String password, String domain)
 	{
-		this.URL = URL;
-		this.list_name = list_name;
-		this.user_name = user_name;
-		this.password = password;
-		this.domain = domain;
+		HttpContext localContext;
+		
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+        httpclient.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
+        NTCredentials creds = new NTCredentials(user_name, password, domain, domain);
+        httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
+
+        HttpHost target = new HttpHost(URL, 80, "http");
+        localContext = new BasicHttpContext();
+        
+		HttpPost httppost = new HttpPost(list_name);
+		httppost.setHeader("Accept", "application/json");
+		JSONObject jsonObj = new JSONObject();
+		
+		try
+		{
+			for (Question q : form.questions)
+			{
+				if (q.Answer != "")
+					jsonObj.put(q.FieldName, q.Answer);
+				//else, do nothing, we won't enter blank answers
+			}
+		}
+		catch (JSONException e1)
+		{
+			e1.printStackTrace();
+			return new String[] {"-1", "Error: JSON error"};
+		}
+
+		StringEntity myEntity = null;
+		
+		//i dont understand why this needs a try/catch
+		try {
+			myEntity = new StringEntity(jsonObj.toString(), HTTP.UTF_8);
+			//Log.v("cody", jsonObj.toString());
+			
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return new String[] {"-1","Error: Unsuccessful encoding error"};
+		} 
+		
+		
+		myEntity.setContentType("application/json");		
+		httppost.setEntity(myEntity);
+
+        //ok here we're trying to get something
+        HttpResponse response1 = null;
+		try {
+			response1 = httpclient.execute(target, httppost, localContext);
+			
+			//something broke if this isn't 201
+			if (response1.getStatusLine().getStatusCode() != 201)
+			{
+			   return new String[] {"-1","Error: SharePont Response: " + response1.getStatusLine().toString()};	
+			}
+
+			//this is where we could print the response if we wanted 
+			//HttpEntity entity1 = response1.getEntity();
+			
+			//Log.v(entity1.,"here4");
+			
+			//Read response, but we don't need this right now
+        	//BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
+        	//StringBuilder results = new StringBuilder();
+        	//String line;
+        	//while ((line = reader.readLine()) != null) {
+            //	results.append(line + '\n');
+        	//}
+        		
+        	//Log.v("cody_test1", response1.getStatusLine().toString());
+        	//Log.v("cody_test2",results.toString());
+        	
+        	//have to run this to free up the connection.
+        	response1.getEntity().consumeContent();
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new String[] {"-1", "Error: ClientProtocol error."};
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new String[] {"-1", "Error: IOException error."};
+		}
+
+		return new String[] {"0", "Success: Form uploaded to SharePoint."};
 	}
 	
-	
+	/* TODO - remove this, its old code
 	//sets up data connection, returns 0 if successful -1 if failed
 	public int setupConnection()
 	{
@@ -200,5 +284,5 @@ public class SharePointDataSource {
 			return -1;
 		}
 		return 0;
-	}
+	}*/
 }

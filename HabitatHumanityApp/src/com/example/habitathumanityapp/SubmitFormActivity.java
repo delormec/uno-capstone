@@ -1,10 +1,15 @@
 package com.example.habitathumanityapp;
 
+import java.util.concurrent.ExecutionException;
+
 import com.example.habitathumanityapp.datasource.OSTDataSource;
+import com.example.habitathumanityapp.tasks.uploadFormToSharePoint;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,8 +38,35 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void upload(View view)
 	{
-		// TODO Upload the form to SharePoint
 		// TODO Delete form from database?
+		//Had to suppress this warning, not sure what the deal is
+		@SuppressWarnings("unchecked")
+		AsyncTask<Form, Void, String[]> task = new uploadFormToSharePoint();
+		
+		//Start the task
+		task.execute(form);
+		try {
+			//Wait for the task to finish and get it's response
+			String[] response = task.get();
+			Toast.makeText(this, response[1], Toast.LENGTH_LONG).show();
+
+			//reponse of -1 == error
+			//response of 0 == success
+			if (response[0] == "0")
+			{
+				//code to discard goes here
+			}
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+
+		
 		return;
 	}
 	

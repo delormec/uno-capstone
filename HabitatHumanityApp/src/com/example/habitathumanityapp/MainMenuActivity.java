@@ -203,6 +203,10 @@ public class MainMenuActivity extends Activity {
 			formList = ostDS.getAllFormInfoByTemplateGroup(templ_grp);
 		}
 
+		//Add option to create new form.
+		MyData createNew = new MyData("Create new form...", -1);
+		formList.add(0,createNew);
+		
 		// Fill the drop down boxes with completed forms.
 		ArrayAdapter<MyData> dataAdapter = new ArrayAdapter<MyData>(this, android.R.layout.simple_spinner_dropdown_item, formList);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -4,8 +4,7 @@ import java.util.List;
 
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.datasource.SharePointDataSource;
-import com.example.habitathumanityapp.tasks.connectToSharePoint;
-import com.example.habitathumanityapp.tasks.createSharePointListTest;
+import com.example.habitathumanityapp.tasks.uploadFormToSharePoint;
 import com.example.habitathumanityapp.tasks.downloadAllTemplates;
 
 import android.annotation.SuppressLint;
