@@ -82,15 +82,12 @@
         android:layout_marginLeft="14dp"
         android:onClick="startPopulateSpinners"
         android:text="@string/strPopulateSpinners" />
-
-    <Button
-        android:id="@+id/newForm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/getFormsBtn"
-        android:layout_alignBottom="@+id/getFormsBtn"
-        android:layout_toRightOf="@+id/selectedForm"
-        android:onClick="createNewForm"
-        android:text="@string/strNewForm" />
+    
+    
+    <include
+        	android:layout_width="wrap_content"
+        	android:layout_height="50dp"
+        	android:layout_alignParentBottom="true"
+    	    layout="@layout/navbar" />
 
 </RelativeLayout>

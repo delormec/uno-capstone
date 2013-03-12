@@ -50,7 +50,20 @@
             android:name="com.example.habitathumanityapp.MainMenuActivity"
             android:label="@string/title_activity_main_menu" >
         </activity>
-           <activity android:name="com.example.habitathumanityapp.DisplayQuestionActivity" android:label="@string/title_activity_display_question"></activity>
+        
+        <activity 
+            android:name="com.example.habitathumanityapp.DisplayQuestionActivity" 
+            android:label="Display Question">
+               
+        </activity>
+        
+        <activity
+            android:name="com.example.habitathumanityapp.SubmitFormActivity"
+            android:label="Submit Form"
+            >
+        </activity>
+           
+           
 
 
     </application>

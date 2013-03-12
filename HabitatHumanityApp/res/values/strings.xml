@@ -19,7 +19,6 @@
     <string name="title_activity_main_menu">Main Menu</string>
     <string name="strSelectedForm">Selected Form</string>
     <string name="questionText">Default Question Text</string>
-    <string name="title_activity_display_question">Question</string>
     <string name="strDownloadForms">Download Forms</string>
     <string name="strPopulateSpinners">Populate Spinners</string>
     <string name="strTemplateGroupLabel">Template Groups:</string>

@@ -3,6 +3,7 @@ package com.example.habitathumanityapp;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,15 +21,21 @@ public class DisplayQuestionActivity extends Activity
 	private Question question;
 	private Integer questionNumber;
 	private Toast toast;
-	private OSTDataSource ostDS;
+	private OSTDataSource database;
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 				
-		// Receive the form from whomever called
+		// Set up database object for future use
+		database = new OSTDataSource(this);
+		
+		// Receive the form object and question number
 		form = (Form) getIntent().getExtras().get("formObject");
 		questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
+		
+		Log.v("ryan_debug", String.format("Screen2: Received form with database ID: %s", String.valueOf(form.meta.form_id)));
+		
 		
 		if (questionNumber == null)
 		{
@@ -67,8 +74,8 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Begins the setup for displaying a new question
-	 * Calls one of three helper methods, one for each type of question
+	 * Begins the setup for displaying a new question. <br>
+	 * Calls one of three helper methods, one for each type of question.
 	 * 
 	 * @param question	The new question to display
 	 */
@@ -129,7 +136,7 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Sets up the View for the given TextQuestion
+	 * Sets up the View for the given TextQuestion.
 	 * 
 	 * @param tq	The TextQuestion to set up
 	 */
@@ -155,7 +162,8 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Sets up the View for the given ChoiceQuestion
+	 * Sets up the View for the given ChoiceQuestion. <br>
+	 * This method handles both "single select" and "multiple select" questions.
 	 * 
 	 * @param cq	The ChoiceQuestion to set up
 	 */
@@ -197,7 +205,7 @@ public class DisplayQuestionActivity extends Activity
 				{
 					if (option.compareTo("") != 0)
 					{
-						// Add the checkbox
+						// Add the CheckBox
 						checkBox = new CheckBox(this);
 						checkBox.setText(option);
 						multipleSelectChoices.addView(checkBox);
@@ -257,7 +265,7 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Sets up the View for the given LikertScaleQuestion
+	 * Sets up the View for the given LikertScaleQuestion.
 	 * 
 	 * @param lsq	The LikertScaleQuestion to set up
 	 */
@@ -311,10 +319,10 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Attempts to cycle to the next question of the form.
+	 * Attempts to cycle to the next question of the form. <br>
 	 * Does nothing if currently on the final question of the form.
 	 * 
-	 * @param view
+	 * @param view	The View that called this method
 	 */
 	public void nextQuestion(View view)
 	{	
@@ -326,7 +334,7 @@ public class DisplayQuestionActivity extends Activity
 		{
 			// Save the answer and form
 			saveAnswerToForm();			
-			// TODO save form to database here
+			saveFormToDatabase();
 				
 			questionNumber++;
 			question = form.questions.get(questionNumber);
@@ -343,10 +351,10 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Attempts to cycle to the previous question of the form.
-	 * Does nothing if currently on question 0
+	 * Attempts to cycle to the previous question of the form. <br>
+	 * Does nothing if currently on question 0.
 	 * 
-	 * @param view The view from the activity that called this function
+	 * @param view The View that called this method
 	 */
 	public void prevQuestion(View view)
 	{		
@@ -358,7 +366,7 @@ public class DisplayQuestionActivity extends Activity
 		{
 			// Save the answer and form
 			saveAnswerToForm();
-			// TODO save form to database here
+			saveFormToDatabase();
 
 				
 			questionNumber--;
@@ -376,7 +384,7 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Saves the user-selected answer to the form object
+	 * Saves the user-selected answer to the form object.
 	 */
 	private void saveAnswerToForm()
 	{	
@@ -424,16 +432,13 @@ public class DisplayQuestionActivity extends Activity
 			
 			// Save the single-select answer
 			else
-			{
-				Log.v("ryan_debug", "Saving single-select choice answer...");
-				
+			{			
 				RadioGroup choices = (RadioGroup) findViewById(R.id.questionChoices);
 				RadioButton answer = (RadioButton) findViewById(choices.getCheckedRadioButtonId());
 			
 				if (answer != null)
 				{
 					form.questions.get(questionNumber).Answer = answer.getText().toString();
-					Log.v("ryan_debug", String.format("Answer: %s", answer.getText().toString()));
 				}
 			}
 		}
@@ -452,7 +457,15 @@ public class DisplayQuestionActivity extends Activity
 	}
 	
 	
-	
+	/**
+	 * Saves the form object to the database.
+	 */
+	public void saveFormToDatabase()
+	{
+		database.open();
+		database.updateForm(form);
+		database.close();
+	}
 	
 	
 	
@@ -463,7 +476,7 @@ public class DisplayQuestionActivity extends Activity
 	{	
 		// Save the answer and form first
 		saveAnswerToForm();
-		// TODO save form to database here
+		saveFormToDatabase();
 		
 		if (toast != null) toast.cancel();
 		
@@ -477,10 +490,15 @@ public class DisplayQuestionActivity extends Activity
 	{
 		// Save the answer and form first
 		saveAnswerToForm();
-		// TODO save form to database here
+		saveFormToDatabase();
 
 		if (toast != null) toast.cancel();
 		
-		// TODO Go to third screen (once it exists).
+		Intent intent = new Intent(this, SubmitFormActivity.class);
+		
+		intent.putExtra("formObject", form);
+		
+		startActivity(intent);
+		this.finish();
 	}
 }

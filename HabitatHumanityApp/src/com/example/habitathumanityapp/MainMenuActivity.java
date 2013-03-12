@@ -9,6 +9,8 @@ import com.example.habitathumanityapp.tasks.downloadAllTemplates;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +35,8 @@ public class MainMenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
+		
+		findViewById(R.id.navbar_home_button).setVisibility(View.GONE);
 	}
 	
 	/** Populates the first spinner with a list of template groups.
@@ -246,14 +250,12 @@ public class MainMenuActivity extends Activity {
 					String form = parent.getItemAtPosition(pos).toString();
 					
 					selectedFormBox = (TextView)findViewById(R.id.selectedForm);
-					selectedFormBox.setText(form);
-					
+					selectedFormBox.setText(form);		
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 		});
@@ -279,10 +281,11 @@ public class MainMenuActivity extends Activity {
 		addTemplateGroupSpinnerListener();
 	}
 	
+	/*
 	/** Creates a dummy form with the selected template.
 	 *  Works for the most part, errors on templates further down the list.
 	 * @param view
-	 */
+	 
 	public void createNewForm(View view)
 	{
 		OSTDataSource ostDS = new OSTDataSource(this);
@@ -315,6 +318,8 @@ public class MainMenuActivity extends Activity {
 			populateFormSpinner(templ_id);
 		}
 	}
+	*/
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -322,4 +327,124 @@ public class MainMenuActivity extends Activity {
 		return true;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	// The following navigate methods are for the implementation of the navbar layout
+	public void navigateHome(View view)
+	{	
+		return;
+	}
+	
+	
+	/**
+	 * Attempts to send the selected form to DisplayQuestionActivity. <br>
+	 * Creates a new form to send if "new form" is selected. <br>
+	 * Does nothing if no template or form is selected.
+	 * 
+	 * @param view The View that called this method
+	 */
+	public void navigateEdit(View view)
+	{
+		long formID;
+		Form form;
+		
+		if (formSpinner != null)
+		{
+			if (formSpinner.getSelectedItem() != null)
+			{
+			
+				MyData templateData = (MyData) templateSpinner.getSelectedItem();
+				MyData formData = (MyData) formSpinner.getSelectedItem();
+			
+				OSTDataSource database = new OSTDataSource(this);
+				database.open();
+			
+				formID = formData.value;
+			
+				if (formID == -1)
+				{
+					// Start a new form from the template
+					Form template = database.getTemplateById(templateData.value);
+					formID = database.addForm(template);
+				
+					form = database.getFormById(formID);
+					form.meta.form_id = formID;	
+				}
+				else
+				{
+					form = database.getFormById(formID);
+					form.meta.form_id = formID;	
+				}
+				
+				Log.v("ryan_debug", String.format("Screen1: Passing screen 2 form with database ID: %s", String.valueOf(form.meta.form_id)));
+			
+				// Pass the form to the DisplayQuestionActivity
+				Intent intent = new Intent(this, DisplayQuestionActivity.class);
+				intent.putExtra("formObject", form);	
+				startActivity(intent);
+			
+				database.close();
+			}
+			else
+			{
+				Toast.makeText(this, "No template or form selected", Toast.LENGTH_SHORT).show();
+			}
+		}
+		else
+		{
+			Toast.makeText(this, "No template or form selected", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	/**
+	 * Attempts to send the selected form to SubmitFormActivity. <br>
+	 * Does nothing if no form is selected.
+	 * 
+	 * @param view The View that called this method
+	 */
+	public void navigateSubmit(View view)
+	{
+		Form form;
+		long formID;
+		
+		if (formSpinner != null)
+		{
+			if (formSpinner.getSelectedItem() != null)
+			{
+				MyData formData = (MyData) formSpinner.getSelectedItem();		
+				formID = formData.value;
+			
+				if (formID == -1)
+				{}
+				else
+				{
+					// Get the form from the database
+					OSTDataSource database = new OSTDataSource(this);
+					database.open();
+					form = database.getFormById(formID);
+					form.meta.form_id = formID;	
+					database.close();
+				
+					// Send the form to SubmitFormActivity
+					Intent intent = new Intent(this, SubmitFormActivity.class);
+					intent.putExtra("formObject", form);
+					startActivity(intent);
+				}
+			}
+			else
+			{
+				Toast.makeText(this, "No form selected", Toast.LENGTH_SHORT).show();
+			}
+		}
+		else
+		{
+			Toast.makeText(this, "No form selected", Toast.LENGTH_SHORT).show();
+		}
+	}
 }
