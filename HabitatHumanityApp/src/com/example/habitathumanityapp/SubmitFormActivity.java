@@ -38,7 +38,6 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void upload(View view)
 	{
-		// TODO Delete form from database?
 		//Had to suppress this warning, not sure what the deal is
 		@SuppressWarnings("unchecked")
 		AsyncTask<Form, Void, String[]> task = new uploadFormToSharePoint();
@@ -54,7 +53,7 @@ public class SubmitFormActivity extends Activity
 			//response of 0 == success
 			if (response[0] == "0")
 			{
-				//code to discard goes here
+				discard(null);
 			}
 			
 		} catch (InterruptedException e) {
@@ -97,7 +96,7 @@ public class SubmitFormActivity extends Activity
 		database.removeFormById(form.meta.form_id);
 		database.close();
 		
-		Toast.makeText(this, "Form deleted", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Form removed from database", Toast.LENGTH_SHORT).show();
 		form = null;
 		
 		findViewById(R.id.submit_upload).setVisibility(View.GONE);
