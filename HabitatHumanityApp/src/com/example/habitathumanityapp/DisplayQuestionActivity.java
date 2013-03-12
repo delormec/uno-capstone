@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -15,21 +16,23 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DisplayQuestionActivity extends Activity 
+public class DisplayQuestionActivity extends Activity
 {
 	private Form form;
 	private Question question;
 	private Integer questionNumber;
 	private Toast toast;
 	private OSTDataSource database;
-	
+	private GestureDetector gestureDetector;
+
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-				
+		
+		
 		// Set up database object for future use
 		database = new OSTDataSource(this);
 		
@@ -67,6 +70,29 @@ public class DisplayQuestionActivity extends Activity
 			if (question != null)
 			{			
 				setContentView(R.layout.activity_display_question);	
+				
+				findViewById(R.id.question_layout).setOnTouchListener(
+					new OnFlingGestureListener() 
+					{
+						public void onTopToBottomSwipe()
+						{
+							return;
+						}
+						public void onBottomToTopSwipe()
+						{
+							return;
+						}
+						public void onLeftToRightSwipe()
+						{
+							prevQuestion(null);
+						}
+						public void onRightToLeftSwipe()
+						{
+							nextQuestion(null);
+						}
+					}
+				);
+				
 				findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
 				displayNewQuestion(question);
 			}
@@ -97,6 +123,7 @@ public class DisplayQuestionActivity extends Activity
 		savedInstanceState.putInt("questionNumber", questionNumber);
 	}
 	
+
 	
 	
 	/**
