@@ -381,8 +381,6 @@ public class MainMenuActivity extends Activity {
 					form = database.getFormById(formID);
 					form.meta.form_id = formID;	
 				}
-				
-				Log.v("ryan_debug", String.format("Screen1: Passing screen 2 form with database ID: %s", String.valueOf(form.meta.form_id)));
 			
 				// Pass the form to the DisplayQuestionActivity
 				Intent intent = new Intent(this, DisplayQuestionActivity.class);

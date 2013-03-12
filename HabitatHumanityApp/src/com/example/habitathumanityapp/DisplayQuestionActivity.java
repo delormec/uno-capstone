@@ -23,6 +23,9 @@ public class DisplayQuestionActivity extends Activity
 	private Toast toast;
 	private OSTDataSource database;
 	
+	
+	
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -30,11 +33,24 @@ public class DisplayQuestionActivity extends Activity
 		// Set up database object for future use
 		database = new OSTDataSource(this);
 		
-		// Receive the form object and question number
-		form = (Form) getIntent().getExtras().get("formObject");
-		questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 		
-		Log.v("ryan_debug", String.format("Screen2: Received form with database ID: %s", String.valueOf(form.meta.form_id)));
+		// This is the initial call to the Activity
+		if (savedInstanceState == null)
+		{
+			// Receive the form object and question number
+			form = (Form) getIntent().getExtras().get("formObject");
+			questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
+			
+		}
+		
+		// This is the activity restoring itself (from something like a screen rotation)
+		else
+		{
+			form = (Form) savedInstanceState.getSerializable("formObject");
+			questionNumber = savedInstanceState.getInt("questionNumber");
+		}
+		
+		
 		
 		
 		if (questionNumber == null)
@@ -49,10 +65,9 @@ public class DisplayQuestionActivity extends Activity
 			
 			// Display the question
 			if (question != null)
-			{
-				setContentView(R.layout.activity_display_question);					
+			{			
+				setContentView(R.layout.activity_display_question);	
 				findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
-				
 				displayNewQuestion(question);
 			}
 			else
@@ -72,6 +87,17 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		super.onSaveInstanceState(savedInstanceState);
+		
+		saveAnswerToForm();
+		savedInstanceState.putSerializable("formObject", form);
+		savedInstanceState.putInt("questionNumber", questionNumber);
+	}
+	
+	
 	
 	/**
 	 * Begins the setup for displaying a new question. <br>
@@ -82,7 +108,7 @@ public class DisplayQuestionActivity extends Activity
 	private void displayNewQuestion(Question question)
 	{
 		if (question != null)
-		{
+		{						
 			// Set the question view and question text (same for all three types)		
 			TextView questionText = (TextView) findViewById(R.id.questionText);
 			questionText.setText(question.Text);
@@ -130,8 +156,6 @@ public class DisplayQuestionActivity extends Activity
 			}
 		}
 	}
-	
-	
 	
 	
 	
@@ -384,7 +408,8 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	/**
-	 * Saves the user-selected answer to the form object.
+	 * Saves the user-selected answer to the form object
+	 * 
 	 */
 	private void saveAnswerToForm()
 	{	
@@ -455,6 +480,7 @@ public class DisplayQuestionActivity extends Activity
 			}		
 		}
 	}
+
 	
 	
 	/**
