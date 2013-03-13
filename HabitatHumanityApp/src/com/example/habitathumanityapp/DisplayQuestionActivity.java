@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -70,6 +71,8 @@ public class DisplayQuestionActivity extends Activity
 			if (question != null)
 			{			
 				setContentView(R.layout.activity_display_question);	
+				((ProgressBar) findViewById(R.id.formProgressBar)).setMax(form.questions.size() - 1);
+				((ProgressBar) findViewById(R.id.formProgressBar)).setProgress(questionNumber);
 				
 				findViewById(R.id.question_layout).setOnTouchListener(
 					new OnFlingGestureListener() 
@@ -389,6 +392,7 @@ public class DisplayQuestionActivity extends Activity
 				
 			questionNumber++;
 			question = form.questions.get(questionNumber);
+			((ProgressBar) findViewById(R.id.formProgressBar)).setProgress(questionNumber);
 			displayNewQuestion(question);
 		}
 		else
@@ -422,6 +426,7 @@ public class DisplayQuestionActivity extends Activity
 				
 			questionNumber--;
 			question = form.questions.get(questionNumber);
+			((ProgressBar) findViewById(R.id.formProgressBar)).setProgress(questionNumber);
 			displayNewQuestion(question);
 		}
 		else

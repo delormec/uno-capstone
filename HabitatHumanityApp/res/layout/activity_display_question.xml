@@ -93,6 +93,16 @@
         		android:onClick="prevQuestion"
     	    	/>
 
+        	<ProgressBar
+        	    android:id="@+id/formProgressBar"
+        	    style="?android:attr/progressBarStyleHorizontal"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_alignParentBottom="true"
+        	    android:layout_alignTop="@+id/next"
+        	    android:layout_toLeftOf="@+id/next"
+        	    android:layout_toRightOf="@+id/prev" />
+
 	    </RelativeLayout>
 	
     	<include
