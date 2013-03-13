@@ -356,6 +356,7 @@ public class MainMenuActivity extends Activity {
 	public void navigateEdit(View view)
 	{
 		long formID;
+		long templateID;
 		Form form;
 		
 		if (formSpinner != null)
@@ -366,19 +367,30 @@ public class MainMenuActivity extends Activity {
 				MyData templateData = (MyData) templateSpinner.getSelectedItem();
 				MyData formData = (MyData) formSpinner.getSelectedItem();
 			
+				formID = formData.value;
+				templateID = templateData.value;
+				
 				OSTDataSource database = new OSTDataSource(this);
 				database.open();
 			
-				formID = formData.value;
-			
+				
+				
 				if (formID == -1)
 				{
-					// Start a new form from the template
-					Form template = database.getTemplateById(templateData.value);
-					formID = database.addForm(template);
+					if (templateID != -1)
+					{
+						// Start a new form from the template
+						Form template = database.getTemplateById(templateID);
+						formID = database.addForm(template);
 				
-					form = database.getFormById(formID);
-					form.meta.form_id = formID;	
+						form = database.getFormById(formID);
+						form.meta.form_id = formID;
+					}
+					else
+					{
+						Toast.makeText(this, "No template or form selected", Toast.LENGTH_SHORT).show();
+						return;
+					}
 				}
 				else
 				{
