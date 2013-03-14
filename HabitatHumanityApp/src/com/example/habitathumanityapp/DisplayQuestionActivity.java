@@ -2,13 +2,16 @@ package com.example.habitathumanityapp;
 
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,6 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 public class DisplayQuestionActivity extends Activity
 {
 	private Form form;
@@ -24,8 +29,6 @@ public class DisplayQuestionActivity extends Activity
 	private Integer questionNumber;
 	private Toast toast;
 	private OSTDataSource database;
-	private GestureDetector gestureDetector;
-
 	
 	
 	@Override
@@ -61,7 +64,7 @@ public class DisplayQuestionActivity extends Activity
 		{
 			questionNumber = 0;
 		}
-		
+			
 		
 		if (form != null && form.questions.size() > 0)
 		{					
@@ -69,7 +72,7 @@ public class DisplayQuestionActivity extends Activity
 			
 			// Display the question
 			if (question != null)
-			{			
+			{							
 				setContentView(R.layout.activity_display_question);	
 				((ProgressBar) findViewById(R.id.formProgressBar)).setMax(form.questions.size() - 1);
 				((ProgressBar) findViewById(R.id.formProgressBar)).setProgress(questionNumber);
@@ -97,12 +100,14 @@ public class DisplayQuestionActivity extends Activity
 				);
 				
 				findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
+				((TextView) findViewById(R.id.formTitle)).setText(form.meta.name);
 				displayNewQuestion(question);
 			}
 			else
 			{
 				// This block should ideally never be entered
 				Log.v("ryan_debug", "Entered unexpected block in method onCreate() in class DisplayQuestionActivity (received null question)");
+				this.finish();
 			}
 		}
 		else
@@ -135,10 +140,16 @@ public class DisplayQuestionActivity extends Activity
 	 * 
 	 * @param question	The new question to display
 	 */
+	@SuppressLint("NewApi")
 	private void displayNewQuestion(Question question)
 	{
 		if (question != null)
-		{						
+		{				
+			// Set the title bar
+			ActionBar actionBar = getActionBar();
+			actionBar.setTitle(String.format("OST - %s - Question %d", form.meta.name, questionNumber));
+			
+			
 			// Set the question view and question text (same for all three types)		
 			TextView questionText = (TextView) findViewById(R.id.questionText);
 			questionText.setText(question.Text);
@@ -199,6 +210,7 @@ public class DisplayQuestionActivity extends Activity
 		// Remove other fields
 		findViewById(R.id.questionChoices).setVisibility(View.GONE);
 		findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
+		findViewById(R.id.otherText).setVisibility(View.GONE);
 		findViewById(R.id.likertLow).setVisibility(View.GONE);
 		findViewById(R.id.likertHigh).setVisibility(View.GONE);
 		
@@ -227,6 +239,7 @@ public class DisplayQuestionActivity extends Activity
 		findViewById(R.id.answerText).setVisibility(View.GONE);
 		findViewById(R.id.likertLow).setVisibility(View.GONE);
 		findViewById(R.id.likertHigh).setVisibility(View.GONE);
+		findViewById(R.id.otherText).setVisibility(View.GONE);
 		
 		
 		// Set up multiple select ChoiceQuestion
@@ -234,9 +247,7 @@ public class DisplayQuestionActivity extends Activity
 		{
 			findViewById(R.id.questionChoices).setVisibility(View.GONE);
 			findViewById(R.id.multipleSelectChoices).setVisibility(View.VISIBLE);
-			
-			
-			
+				
 			LinearLayout multipleSelectChoices = (LinearLayout) findViewById(R.id.multipleSelectChoices);
 			CheckBox checkBox;
 			String[] answers;
@@ -278,6 +289,59 @@ public class DisplayQuestionActivity extends Activity
 					}
 				}
 			}
+
+			// Add "other" option
+			if (cq.other.compareToIgnoreCase("true") == 0)
+			{
+				checkBox = new CheckBox(this);
+				checkBox.setText("Other");
+				checkBox.setOnCheckedChangeListener(
+					new OnCheckedChangeListener()
+					{
+						public void onCheckedChanged(CompoundButton checkBox, boolean checkedState)
+						{
+							if (checkedState)
+							{
+								findViewById(R.id.otherText).setVisibility(View.VISIBLE);
+								((EditText) findViewById(R.id.otherText)).setText("");
+							}
+							else
+							{
+								findViewById(R.id.otherText).setVisibility(View.GONE);
+							}
+							return;
+						}
+					}
+						
+				);
+				
+				multipleSelectChoices.addView(checkBox);
+				
+				
+				if (answers != null)
+				{
+					for (String answer : answers)
+					{
+						boolean otherFlag = true;
+						
+						for (String option: cq.options)
+						{
+							if (option.compareTo(answer) == 0)
+							{
+								otherFlag = false;
+							}
+						}
+						
+						// If the answer does not match one of the options
+						if (otherFlag)
+						{
+							checkBox.performClick();
+							((EditText) findViewById(R.id.otherText)).setText(answer);
+							break;
+						}
+					}
+				}
+			}
 		}
 		
 		
@@ -286,6 +350,7 @@ public class DisplayQuestionActivity extends Activity
 		{	
 			findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
 			findViewById(R.id.questionChoices).setVisibility(View.VISIBLE);
+			
 			
 			RadioGroup buttons = (RadioGroup) findViewById(R.id.questionChoices);
 			RadioButton button;
@@ -313,6 +378,53 @@ public class DisplayQuestionActivity extends Activity
 					}
 				}
 			}
+			
+			// Add "other" option
+			if (cq.other.compareToIgnoreCase("true") == 0)
+			{
+				button = new RadioButton(this);
+				button.setText("Other");
+				button.setOnCheckedChangeListener(
+					new OnCheckedChangeListener()
+					{
+						public void onCheckedChanged(CompoundButton radioButton, boolean checkedState)
+						{
+							if (checkedState)
+							{
+								findViewById(R.id.otherText).setVisibility(View.VISIBLE);
+								((EditText) findViewById(R.id.otherText)).setText("");
+							}
+							else
+							{
+								findViewById(R.id.otherText).setVisibility(View.GONE);
+							}
+							return;
+						}
+					}	
+				);
+				
+				buttons.addView(button);
+				
+				
+				if (cq.Answer != null)
+				{
+					boolean otherFlag = true;
+					for (String option : cq.options)
+					{
+						if (option.compareTo(cq.Answer) == 0)
+						{
+							otherFlag = false;
+						}
+					}
+					
+					if (otherFlag)
+					{
+						// If the answer does not match one of the options
+						button.performClick();
+						((EditText) findViewById(R.id.otherText)).setText(cq.Answer);
+					}
+				}
+			}
 		}
 	}
 	
@@ -328,6 +440,8 @@ public class DisplayQuestionActivity extends Activity
 		// Remove other fields
 		findViewById(R.id.answerText).setVisibility(View.GONE);
 		findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
+		findViewById(R.id.otherText).setVisibility(View.GONE);
+		
 		
 		// Make LikertScaleQuestion fields visible
 		findViewById(R.id.likertHigh).setVisibility(View.VISIBLE);
@@ -438,10 +552,10 @@ public class DisplayQuestionActivity extends Activity
 	}	
 	
 	
+
 	
 	/**
 	 * Saves the user-selected answer to the form object
-	 * 
 	 */
 	private void saveAnswerToForm()
 	{	
@@ -457,6 +571,7 @@ public class DisplayQuestionActivity extends Activity
 				form.questions.get(questionNumber).Answer = answer.getText().toString();
 			}
 		}
+		
 		
 		// Save the ChoiceQuestion answer
 		else if (question instanceof ChoiceQuestion)
@@ -480,7 +595,14 @@ public class DisplayQuestionActivity extends Activity
 					// Add the answer to the string
 					if (checkBox.isChecked())
 					{
-						answer += String.format("%s;", checkBox.getText().toString());
+						if (checkBox.getText().toString().compareToIgnoreCase("other") == 0)
+						{
+							answer += String.format("%s;", ((EditText) findViewById(R.id.otherText)).getText().toString());
+						}
+						else
+						{
+							answer += String.format("%s;", checkBox.getText().toString());
+						}
 					}
 				}
 				
@@ -495,10 +617,18 @@ public class DisplayQuestionActivity extends Activity
 			
 				if (answer != null)
 				{
-					form.questions.get(questionNumber).Answer = answer.getText().toString();
+					if (answer.getText().toString().compareToIgnoreCase("other") == 0)
+					{
+						form.questions.get(questionNumber).Answer = ((EditText) findViewById(R.id.otherText)).getText().toString();
+					}
+					else
+					{
+						form.questions.get(questionNumber).Answer = answer.getText().toString();
+					}
 				}
 			}
 		}
+		
 		
 		// Save the LikertScaleQuestion answer
 		else if (question instanceof LikertScaleQuestion)
@@ -507,7 +637,7 @@ public class DisplayQuestionActivity extends Activity
 			RadioButton answer = (RadioButton) findViewById(choices.getCheckedRadioButtonId());
 			
 			if (answer != null)
-			{
+			{	
 				form.questions.get(questionNumber).Answer = answer.getText().toString();
 			}		
 		}

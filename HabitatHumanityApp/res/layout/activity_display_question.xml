@@ -8,6 +8,7 @@
     >
     
 	<LinearLayout 
+	    android:id="@+id/question_subLayout_1"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" 
@@ -20,7 +21,7 @@
         	android:id="@+id/questionText"
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
-        	android:text="@string/questionText"
+        	android:text=""
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     	<EditText
@@ -45,21 +46,34 @@
         	android:layout_height="wrap_content"
 	        android:text="LikertLow" />
 
+    	
+    	
+    	
     	<LinearLayout
     		android:id="@+id/multipleSelectChoices"
-    		    android:layout_width="wrap_content"
-    		    android:layout_height="wrap_content"
-    		    android:orientation="vertical" >
-    		</LinearLayout>
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:orientation="vertical"    		
+    	/>
 
+    	
+    	
+    	
     	<RadioGroup
         	android:id="@+id/questionChoices"
         	android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" >
-
-    		
-
-    	</RadioGroup>
+	        android:layout_height="wrap_content"
+    	/>
+    	
+    	
+    	<EditText
+    		    android:id="@+id/otherText"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+    		    android:inputType="text"
+    		    android:hint="Please specify"
+    	/>
+    	
 
     	<TextView
         	android:id="@+id/likertHigh"
@@ -67,6 +81,8 @@
         	android:layout_height="wrap_content"
 	        android:text="LikertHigh" />
 
+    		
+    	
     	<RelativeLayout
         	android:layout_width="match_parent"
         	android:layout_height="wrap_content"
@@ -102,6 +118,15 @@
         	    android:layout_alignTop="@+id/next"
         	    android:layout_toLeftOf="@+id/next"
         	    android:layout_toRightOf="@+id/prev" />
+
+        	<TextView
+        	    android:id="@+id/formTitle"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:layout_alignParentBottom="true"
+        	    android:layout_centerHorizontal="true"
+        	    android:text="" />
+
 
 	    </RelativeLayout>
 	
