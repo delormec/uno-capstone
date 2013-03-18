@@ -23,7 +23,7 @@
 
         <div id="question-type">Multiple Choice Question</div>
         <div id="question-text">
-            <input class="text-box single-line" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
+            <input class="text-box single-line required" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
         </div>
         <div id="question-help-text">
             <input class="text-box single-line" type="text" value="@Model.HelpText" name="[@Model.SortOrder].HelpText"/>
@@ -34,7 +34,7 @@
                 <td>Field Name</td>
                 <td>
                     <div id="question-field-name">
-                        <input class="text-box single-line" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
+                        <input class="text-box single-line required" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The name of the field for this question in the SharePoint list")</td>
@@ -43,7 +43,7 @@
                 <td>Field Type</td>
                 <td>
                     <div id="question-field-type">
-                        <input class="text-box single-line" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
+                        <input class="text-box single-line required" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The type of the field for this question in the SharePoint list")</td>
@@ -88,7 +88,7 @@
                         </div>
                     }
                 </td>
-                <td>@MyHTML.Help("True - Allows the user to select \"other\" and enter a custom text answer")</td>
+                <td>@MyHTML.Help("True - Allows the user to select other and enter a custom text answer")</td>
             </tr>
 
         </table>

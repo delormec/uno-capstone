@@ -19,6 +19,13 @@ a
     color:Blue;
 }
 
+.dialog 
+{
+    display: none;
+}
+
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+
 /* /Account/LogIn/ */
 #login
 {
@@ -56,8 +63,8 @@ a
 /* Layout Page (every page) */
 #main-menu 
 {
- width:100%;
- width:800px;
+ width:80%;
+ min-width:800px;
  margin:0 auto;
  padding:0px 10px 0px 10px; 
  font-size:1.1em;
@@ -112,8 +119,8 @@ a
 /* /Form/Edit + /Form/Create */
 #form-editor-outer
 {
- width:100%;
- width:800px;
+ width:80%;
+ min-width:800px;
  margin:0 auto;
 }
 
@@ -337,8 +344,8 @@ a
 
 #form-index-outer
 {
- width:100%;
- width:800px;
+ width:80%;
+ min-width:800px;
  margin:0 auto;
 }
 
