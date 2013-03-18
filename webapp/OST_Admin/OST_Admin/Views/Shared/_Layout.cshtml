@@ -27,7 +27,7 @@
 }
 @if (HttpContext.Current.Session["__UserId"] != null)
 {
-    if ((int)HttpContext.Current.Session["__UserId"] == 1)
+    if ((String)HttpContext.Current.Session["__UserRole"] == "Administrator")
     {
         <a id="main-menu-users" href="/User/Index">Users</a>
     }

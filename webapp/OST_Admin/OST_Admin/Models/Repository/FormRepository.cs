@@ -72,6 +72,7 @@ namespace OST_Admin.Models.Repository
 
                 //this will put the item at the bottom of the list.
                 o.SortOrder = 0;
+                o.Text = "option goes here";
                 cq.Options.Add(o);
 
                 question = cq;
@@ -84,7 +85,7 @@ namespace OST_Admin.Models.Repository
                 //this will put the item at the bottom of the list.
                 lsq.SortOrder = form.Questions.Count;
 
-                List<Label> ll = new List<Label>() { new Label() { Range = "low" }, new Label() { Range = "high" } };
+                List<Label> ll = new List<Label>() { new Label() { Range = "low", Text = "low" }, new Label() { Range = "high", Text = "high" } };
 
                 //add them all to the likert scale question
                 ll.ForEach(l => lsq.Labels.Add(l));
@@ -99,6 +100,8 @@ namespace OST_Admin.Models.Repository
 
             question.Text = "enter question here";
             question.HelpText = "enter help text here";
+            question.FieldName = "FIELDNAME";
+            question.FieldType = "STRING";
 
             form.Questions.Add(question);
             _databaseContext.SaveChanges();

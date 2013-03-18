@@ -4,13 +4,13 @@
     ViewBag.Title = "Create";
  }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Form", FormMethod.Post, new { @id = "form-edit" }))
 {
     @Html.ValidationSummary(true)
    <input type="hidden" name="CreatedBy" value="@ViewBag.CreatedBy" />
    <div id="form-editor-outer">
    @{   //commented out for now, don't think we need it now that main menu exists
-        //<div>@Html.ActionLink("Back to List", "Index",null, new { id = "Back" })</div>
+    //<div>@Html.ActionLink("Back to List", "Index",null, new { id = "Back" })</div>
     }
    <div class="header ui-widget-header ui-corner-top">Create Form</div>
    
@@ -27,7 +27,7 @@
                 <td> SharePoint URL </td>
                 <td>
                     <div id="form-url">
-                        <input id="URL" class="text-box single-line" type="text" value="http://myserver/_vti_bin/ListData.svc" name="URL"/>                                         
+                        <input id="URL" class="text-box single-line" type="text" value="habitat.taic.net" name="URL"/>                                         
                     </div>
                 </td>
                 <td>@MyHTML.Help("The URL to the SharePoint list for this form")</td>
@@ -36,7 +36,7 @@
                 <td> SharePoint ListName </td>
                 <td>
                     <div id="form-list-name">
-                        <input style="display: inline" id="ListName" class="text-box single-line" type="text" value="" name="ListName"/>                        
+                        <input style="display: inline" id="ListName" class="text-box single-line" type="text" value="/omaha/-SITENAME-/_vti_bin/listdata.svc/-LISTNAME-" name="ListName"/>                        
                     </div>
                 </td>
                 <td>@MyHTML.Help("The name of the list in SharePoint for this form")</td>
@@ -45,7 +45,7 @@
                 <td> Form Group </td>
                 <td>
                     <div id="form-group">
-                        <input id="Group" class="text-box single-line" type="text" value="" name="Group"/>
+                        <input id="Group" class="text-box single-line" type="text" value="undefined" name="Group"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The group for this form. This is how forms will be categorized on the device application.")</td>
@@ -74,7 +74,7 @@
                 <td> Key Field</td>
                 <td>
                     <div id="form-key-field">
-                        <input id="KeyField" class="text-box single-line" type="text" value="" name="KeyField"/>
+                        <input id="KeyField" class="text-box single-line" type="text" value="1" name="KeyField"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The key field of a form will be used by the device to display a list of completed forms. The key field should be a field that is unique for each completed form.")</td>
@@ -104,6 +104,16 @@
 
         $("input[type=submit], button").button();
         $("#Back").button();
+
+        $("#form-edit").validate({
+            rules: {
+                Name: { required: true },
+                Group: { required: true },
+                URL: { required: true },
+                ListName: { required: true },
+                KeyField: { required: true , number: true}
+            }
+        });
     });
 </script>
 }

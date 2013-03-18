@@ -31,17 +31,26 @@
     }
     @if (item is OST_Admin.Models.TextQuestion)
     {
-        Html.RenderPartial("_TextQuestionRow", item, new ViewDataDictionary { {"vb", ViewBag}});
+        Html.RenderPartial("_TextQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
     }
     else if (item is OST_Admin.Models.ChoiceQuestion)
     {
-        Html.RenderPartial("_ChoiceQuestionRow", item, new ViewDataDictionary { {"vb", ViewBag}});   
+        Html.RenderPartial("_ChoiceQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
     }
     else if (item is OST_Admin.Models.LikertScaleQuestion)
     {
         Html.RenderPartial("_LikertScaleQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
     }
-    @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId}, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" })
+    @{
+        
+    @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post'}); $('#QuestionTabInner').hide();" })        
+
+    //Alternative method I'm not going to use for now
+    //@Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { OnBegin = "RemoveTab(" + @item.SortOrder + ");" })
+
+    }
     </div>
 }
+
+<div id="not"></div>
  </div>

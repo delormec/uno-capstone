@@ -24,7 +24,7 @@
 
         <div id="question-type">Likert Scale Question</div>
         <div id="question-text">
-            <input class="text-box single-line" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
+            <input class="text-box single-line required" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
         </div>
         <div id="question-help-text">
             <input class="text-box single-line" type="text" value="@Model.HelpText" name="[@Model.SortOrder].HelpText"/>
@@ -35,7 +35,7 @@
                 <td>Field Name</td>
                 <td>
                     <div id="question-field-name">
-                        <input class="text-box single-line" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
+                        <input class="text-box single-line required" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The name of the field for this question in the SharePoint list")</td>
@@ -44,7 +44,7 @@
                 <td>Field Type</td>
                 <td>
                     <div id="question-field-type">
-                        <input class="text-box single-line" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
+                        <input class="text-box single-line required" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The type of the field for this question in the SharePoint list")</td>
@@ -53,7 +53,7 @@
                 <td>Steps (2-?)</td>
                 <td>
                     <div id="question-steps">
-                        <input class="text-box single-line" type="text" value="@Model.Steps" name="[@Model.SortOrder].Steps"/>
+                        <input class="text-box single-line required" type="text" value="@Model.Steps" name="[@Model.SortOrder].Steps"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The number of choices from 'low label' to 'high label' (minimum of 2)")</td>
@@ -65,7 +65,7 @@
                     <div id="question-label-low">
                         @Html.Hidden("Labels[0].LabelId", Model.Labels.ToList()[0].LabelId) 
                         @Html.Hidden("Labels[0].Range", Model.Labels.ToList()[0].Range)
-                        <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[0].Text" name="[@Model.SortOrder].Labels[0].Text"/>
+                        <input class="text-box single-line required" type="text" value="@Model.Labels.ToList()[0].Text" name="[@Model.SortOrder].Labels[0].Text"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The lower end of the scale for the question")</td>
@@ -77,7 +77,7 @@
                     <div id="question-label-medium">
                         @Html.Hidden("Labels[1].LabelId", Model.Labels.ToList()[1].LabelId) 
                         @Html.Hidden("Labels[1].Range", Model.Labels.ToList()[1].Range)
-                        <input class="text-box single-line" type="text" value="@Model.Labels.ToList()[1].Text" name="[@Model.SortOrder].Labels[1].Text"/>
+                        <input class="text-box single-line required" type="text" value="@Model.Labels.ToList()[1].Text" name="[@Model.SortOrder].Labels[1].Text"/>
                     </div>
                 </td>
                 <td>@MyHTML.Help("The higher end of the scale for the question")</td>

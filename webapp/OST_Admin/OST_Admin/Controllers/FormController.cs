@@ -210,24 +210,7 @@ namespace OST_Admin.Controllers
             return View(form2);*/
         }
 
-        //
-        // GET: /Form/Delete/5
-
         public ActionResult Delete(int id = 0)
-        {
-            Form form = db.Forms.Single(f => f.FormId == id);
-            if (form == null)
-            {
-                return HttpNotFound();
-            }
-            return View(form);
-        }
-
-        //
-        // POST: /Form/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
         {
             Form form = db.Forms.Single(f => f.FormId == id);
 
@@ -249,7 +232,7 @@ namespace OST_Admin.Controllers
         public PartialViewResult AddOption(int questionId)
         {
             ChoiceQuestion cq = (ChoiceQuestion)db.Questions.Where(q => q.QuestionId == questionId).Single();
-            Option o = new Option() { SortOrder = cq.Options.Count };
+            Option o = new Option() { SortOrder = cq.Options.Count, Text = "option goes here" };
 
             //stay on the tab we just added an option to
             ViewBag.tabopen = cq.SortOrder;

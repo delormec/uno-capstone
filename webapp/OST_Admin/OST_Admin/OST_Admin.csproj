@@ -315,6 +315,7 @@
     <Content Include="Images\sort_both.png" />
     <Content Include="Images\sort_desc.png" />
     <Content Include="Images\sort_desc_disabled.png" />
+    <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery-1.7.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
@@ -324,6 +325,7 @@
     <Content Include="Scripts\jquery-ui.unobtrusive-2.0.0.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.livequery.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
     <Content Include="SQL\setup db.sql" />
     <Content Include="Views\Form\_OptionList.cshtml" />
   </ItemGroup>
@@ -333,11 +335,11 @@
     <Content Include="Models\OST.edmx.sql" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\old stuff\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\old stuff\jquery.validate.js" />
+    <Content Include="Scripts\old stuff\jquery.validate.min.js" />
+    <Content Include="Models\ViewModel\jquery.validate.unobtrusive.js" />
+    <Content Include="Models\ViewModel\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />

@@ -31,17 +31,17 @@
 
         
         <input type="radio" checked=checked/>
-            <input type="text" id="option-input" name="[@questionsortorder].Options[@option.SortOrder].Text" value="@option.Text" />
+            <input type="text" id="option-input" name="[@questionsortorder].Options[@option.SortOrder].Text" class="required" value="@option.Text" />
     
             //Hide the delete button on the first option
             if (option.SortOrder != 0)
             {
-                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();",}, new {id = "option-delete-button"})
+                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post'}); $('#QuestionTabInner').hide();", }, new { id = "option-delete-button" })
             }
 
 
         
         <br />
 }
-@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
+@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post'}); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
 </div>
