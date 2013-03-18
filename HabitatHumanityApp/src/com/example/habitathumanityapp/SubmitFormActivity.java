@@ -6,6 +6,9 @@ import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.tasks.uploadFormToSharePoint;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,12 +19,14 @@ import android.widget.Toast;
 public class SubmitFormActivity extends Activity
 {
 	Form form;
-	
+	Context context;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		context = this;
 		
 		// Receive the form object
 		form = (Form) getIntent().getExtras().get("formObject");
@@ -38,33 +43,54 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void upload(View view)
 	{
-		//Had to suppress this warning, not sure what the deal is
-		@SuppressWarnings("unchecked")
-		AsyncTask<Form, Void, String[]> task = new uploadFormToSharePoint();
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Confirm Upload");
+		adb.setMessage("If the upload is successful, the form will be removed from your device.");
+		adb.setCancelable(false);
+		adb.setPositiveButton("Upload", 
+								new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id)
+									{
+										//Had to suppress this warning, not sure what the deal is
+										@SuppressWarnings("unchecked")
+										AsyncTask<Form, Void, String[]> task = new uploadFormToSharePoint();
+										
+										//Start the task
+										task.execute(form);
+										try {
+											//Wait for the task to finish and get it's response
+											String[] response = task.get();
+											Toast.makeText(context, response[1], Toast.LENGTH_LONG).show();
+
+											//reponse of -1 == error
+											//response of 0 == success
+											if (response[0] == "0")
+											{
+												discard(null);
+											}
+											
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} catch (ExecutionException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										
+										return;
+									}
+								});
+		adb.setNegativeButton("Wait", new DialogInterface.OnClickListener()
+										{
+											public void onClick(DialogInterface dialog, int id)
+											{
+												return;
+											}
+										});
 		
-		//Start the task
-		task.execute(form);
-		try {
-			//Wait for the task to finish and get it's response
-			String[] response = task.get();
-			Toast.makeText(this, response[1], Toast.LENGTH_LONG).show();
-
-			//reponse of -1 == error
-			//response of 0 == success
-			if (response[0] == "0")
-			{
-				discard(null);
-			}
-			
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
 		
 		return;
 	}
@@ -91,18 +117,42 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void discard(View view)
 	{
-		OSTDataSource database = new OSTDataSource(this);
-		database.open();
-		database.removeFormById(form.meta.form_id);
-		database.close();
 		
-		Toast.makeText(this, "Form removed from database", Toast.LENGTH_SHORT).show();
-		form = null;
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Confirm Discard");
+		adb.setMessage("Are you sure you want to discard this form?");
+		adb.setCancelable(false);
+		adb.setPositiveButton("Discard", 
+								new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id)
+									{
+										OSTDataSource database = new OSTDataSource(context);
+										database.open();
+										database.removeFormById(form.meta.form_id);
+										database.close();
+										
+										Toast.makeText(context, "Form removed from database", Toast.LENGTH_SHORT).show();
+										form = null;
+										
+										findViewById(R.id.submit_upload).setVisibility(View.GONE);
+										findViewById(R.id.submit_save).setVisibility(View.GONE);
+										findViewById(R.id.submit_discard).setVisibility(View.GONE);
+										findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+										return;
+									}
+								});
+		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
+										{
+											public void onClick(DialogInterface dialog, int id)
+											{
+												return;
+											}
+										});
 		
-		findViewById(R.id.submit_upload).setVisibility(View.GONE);
-		findViewById(R.id.submit_save).setVisibility(View.GONE);
-		findViewById(R.id.submit_discard).setVisibility(View.GONE);
-		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
+		
 		return;
 	}
 	

@@ -335,9 +335,14 @@ public class DisplayQuestionActivity extends Activity
 						// If the answer does not match one of the options
 						if (otherFlag)
 						{
-							checkBox.performClick();
-							((EditText) findViewById(R.id.otherText)).setText(answer);
-							break;
+							if (answer.compareTo("") == 0)
+							{}
+							else
+							{
+								checkBox.performClick();
+								((EditText) findViewById(R.id.otherText)).setText(answer);
+								break;
+							}
 						}
 					}
 				}
