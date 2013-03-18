@@ -26,7 +26,10 @@ public class MainMenuActivity extends Activity {
 	private TextView selectedFormBox;
 	private int templ_id;
 	private String templ_grp;
-	private int cntr = 1;
+	private static final String TAG="MainMenu";
+	private int groupPos, templatePos, formPos = 0;
+	private boolean screenOrientChanged = false;
+	private boolean secondTime = false;
 	
 	void showToast(CharSequence msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
@@ -36,8 +39,57 @@ public class MainMenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 		
+		if(savedInstanceState == null){
+			showToast("First time opening.");
+			startPopulateSpinners();
+		}
+		else{
+			
+			if(savedInstanceState.containsKey("groupPos")){
+				groupPos = savedInstanceState.getInt("groupPos");
+				Log.v(TAG, "Template group position: " + groupPos);
+				//templateGroupSpinner.setSelection(groupPos);
+			}
+			if(savedInstanceState.containsKey("templatePos"	)){
+				templatePos = savedInstanceState.getInt("templatePos");
+				Log.v(TAG,"Template position: " + templatePos);
+				//templateSpinner.performClick();
+				//templateSpinner.setSelection(templatePos);
+			}
+			if(savedInstanceState.containsKey("formPos")){
+
+				formPos = savedInstanceState.getInt("formPos");
+				Log.v(TAG,"Form position: " + formPos);
+				//formSpinner.setSelection(formPos);
+			}
+			
+			screenOrientChanged = true;
+			//templateGroupSpinner.setSelection(groupPos);
+			//templateSpinner.setSelection(templatePos);
+			//formSpinner.setSelection(formPos);
+		}
 		findViewById(R.id.navbar_home_button).setVisibility(View.GONE);
+		
+		startPopulateSpinners();
 	}
+	
+	public void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		super.onSaveInstanceState(savedInstanceState);
+		
+		
+		int groupPos = templateGroupSpinner.getSelectedItemPosition();
+		int templatePos = templateSpinner.getSelectedItemPosition();
+		int formPos = formSpinner.getSelectedItemPosition();
+		
+		showToast(groupPos + " " + templatePos + " " + formPos);
+		
+		savedInstanceState.putInt("groupPos", groupPos);
+		savedInstanceState.putInt("templatePos", templatePos);
+		savedInstanceState.putInt("formPos", formPos);
+		
+	}
+	
 	
 	/** Populates the first spinner with a list of template groups.
 	 *  Sets a listener to the spinner to handle input selections.
@@ -50,6 +102,7 @@ public class MainMenuActivity extends Activity {
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();
 		templateGroupList = ostDS.getAllTemplateGroups();
+		ostDS.close();
 		
 		// Add a blank entry into the beginning of the templateList
 		templateGroupList.add(0, "All Groups");
@@ -59,8 +112,11 @@ public class MainMenuActivity extends Activity {
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		templateGroupSpinner.setAdapter(dataAdapter);
 		
-		ostDS.close();
-		
+		if(screenOrientChanged){
+			templateGroupSpinner.setSelection(groupPos);
+			Log.v(TAG, "Template group changed to " + groupPos);
+		}
+
 	}
 	
 	/** Adds a listener to the first spinner handling any changes to the selected item in the spinner.
@@ -73,21 +129,25 @@ public class MainMenuActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
-				String templateGroup = parent.getItemAtPosition(pos).toString();
 				
-				if(pos == 0) //If selection is "AllGroups", populate templateSpinner with all templates.
-				{
-					populateTemplateSpinner();
-					templ_grp = "";
-				}
-				else // Populate templateSpinner with filtered results by template group.
-				{
-					populateTemplateSpinner(templateGroup);
-					templ_grp = templateGroup;
-				}
-
-				addTemplateSpinnerListener();
+				if(!secondTime){
+					String templateGroup = parent.getItemAtPosition(pos).toString();
+					
+					if(pos == 0) //If selection is "AllGroups", populate templateSpinner with all templates.
+					{
+						populateTemplateSpinner();
+						templ_grp = "";
+					}
+					else // Populate templateSpinner with filtered results by template group.
+					{
+						populateTemplateSpinner(templateGroup);
+						templ_grp = templateGroup;
+					}
 				
+					addTemplateSpinnerListener();
+					
+				}
+				secondTime = false;
 			}
 
 			@Override
@@ -108,6 +168,7 @@ public class MainMenuActivity extends Activity {
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();
 		templateList = ostDS.getAllTemplateInfo();
+		ostDS.close();
 		
 		// Add a "All Forms" selection.
 		MyData allForms = new MyData("All Forms", -1);
@@ -119,7 +180,14 @@ public class MainMenuActivity extends Activity {
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		templateSpinner.setAdapter(dataAdapter);
 		
-		ostDS.close();		
+		Log.v(TAG, "TEMPLATE SPINNER BEFORE = " + templateSpinner.getSelectedItemPosition());
+		
+		if(screenOrientChanged){
+			templateSpinner.setSelection(templatePos);
+			Log.v(TAG, "Template spinner changed to "+ templatePos);
+		}
+		
+		Log.v(TAG, "TEMPLATE SPINNER AFTER = " + templateSpinner.getSelectedItemPosition());
 	}
 	
 	/** Populates the second spinner with a list of templates filtered by templateGroup.
@@ -135,7 +203,8 @@ public class MainMenuActivity extends Activity {
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();
 		templateList = ostDS.getAllTemplateInfoByGroup(templateGroup);
-
+		ostDS.close();
+		
 		MyData allForms = new MyData("All " + templateGroup + " Forms", -1);
 		templateList.add(0,allForms);
 		
@@ -144,7 +213,14 @@ public class MainMenuActivity extends Activity {
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		templateSpinner.setAdapter(dataAdapter);
 		
-		ostDS.close();
+		Log.v(TAG, "TEMPLATE SPINNER BEFORE = " + templateSpinner.getSelectedItemPosition());
+		
+		if(screenOrientChanged){
+			templateSpinner.setSelection(templatePos);
+			Log.v(TAG, "Template spinner changed to " + templatePos);
+		}
+		
+		Log.v(TAG, "TEMPLATE SPINNER AFTER = " + templateSpinner.getSelectedItemPosition());
 	}
 	
 	/** Adds a listener to the second spinner handling any changes to the selected item in the spinner.
@@ -157,23 +233,22 @@ public class MainMenuActivity extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
-				
-					//String template = parent.getItemAtPosition(pos).toString();
-					MyData template = (MyData) parent.getItemAtPosition(pos);
-					showToast("TemplateID =  " + template.getValue());
-					templ_id = template.getValue();
-					
-					if(templ_id == -1) //If All ... Forms is selected, populate "all" forms
-					{
-						populateFormSpinner();
+				if(!secondTime){
+						//String template = parent.getItemAtPosition(pos).toString();
+						MyData template = (MyData) parent.getItemAtPosition(pos);
+						templ_id = template.getValue();
+						
+						if(templ_id == -1) //If All ... Forms is selected, populate "all" forms
+						{
+							populateFormSpinner();
+						}
+						else //Populate forms based on the template id.
+						{
+							populateFormSpinner(template.getValue());
+						}
+						addFormSpinnerListener();
 					}
-					else //Populate forms based on the template id.
-					{
-						populateFormSpinner(template.getValue());
-					}
-					addFormSpinnerListener();
 			}
-
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
@@ -202,17 +277,26 @@ public class MainMenuActivity extends Activity {
 		{
 			formList = ostDS.getAllFormInfoByTemplateGroup(templ_grp);
 		}
-
-		//Add option to create new form.
-		MyData createNew = new MyData("Create new form...", -1);
-		formList.add(0,createNew);
+		ostDS.close();
+		
+		//Should not have an option to create a new form because no template is selected
 		
 		// Fill the drop down boxes with completed forms.
 		ArrayAdapter<MyData> dataAdapter = new ArrayAdapter<MyData>(this, android.R.layout.simple_spinner_dropdown_item, formList);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		formSpinner.setAdapter(dataAdapter);
 		
-		ostDS.close();
+		Log.v(TAG, "FORM SPINNER BEFORE = " + formSpinner.getSelectedItemPosition());
+		
+		if(screenOrientChanged){
+			formSpinner.setSelection(formPos);
+			Log.v(TAG, "Form spinner changed to " + formPos);
+			screenOrientChanged = false;
+			secondTime = true;
+		}
+		
+		Log.v(TAG, "FORM SPINNER AFTER = " + formSpinner.getSelectedItemPosition());
+
 		
 	}
 	/** Populates the form spinner based on the selected template_id.
@@ -227,6 +311,7 @@ public class MainMenuActivity extends Activity {
 		OSTDataSource ostDS = new OSTDataSource(this);
 		ostDS.open();
 		templateList = ostDS.getAllFormInfoByTemplateId(template_id);
+		ostDS.close();
 		
 		//Add option to create new form.
 		MyData createNew = new MyData("Create new form...", -1);
@@ -237,7 +322,17 @@ public class MainMenuActivity extends Activity {
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		formSpinner.setAdapter(dataAdapter);
 		
-		ostDS.close();
+		Log.v(TAG, "FORM SPINNER BEFORE = " + formSpinner.getSelectedItemPosition());
+		
+		if(screenOrientChanged){
+			formSpinner.setSelection(formPos);
+			Log.v(TAG, "Form spinner changed to " + formPos);
+			screenOrientChanged = false;
+			secondTime = true;
+		}
+
+		Log.v(TAG, "FORM SPINNER AFTER = " + formSpinner.getSelectedItemPosition());
+
 	}
 
 	/** Adds a listener to the third spinner handling any changes to the selected item in the spinner.
@@ -277,6 +372,15 @@ public class MainMenuActivity extends Activity {
 	
 	/** Begins population of spinners.
 	 * 
+	 */
+	public void startPopulateSpinners()
+	{
+		populateTemplateGroupSpinner();
+		addTemplateGroupSpinnerListener();
+	}
+	
+	/** Begins population of spinners.
+	 * From button click.
 	 * @param view
 	 */
 	public void startPopulateSpinners(View view)

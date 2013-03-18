@@ -649,7 +649,6 @@ public class DisplayQuestionActivity extends Activity
 	}
 
 	
-	
 	/**
 	 * Saves the form object to the database.
 	 */
@@ -659,8 +658,6 @@ public class DisplayQuestionActivity extends Activity
 		database.updateForm(form);
 		database.close();
 	}
-	
-	
 	
 	
 	
