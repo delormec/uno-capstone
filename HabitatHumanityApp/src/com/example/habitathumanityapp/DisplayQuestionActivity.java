@@ -424,9 +424,15 @@ public class DisplayQuestionActivity extends Activity
 					
 					if (otherFlag)
 					{
-						// If the answer does not match one of the options
-						button.performClick();
-						((EditText) findViewById(R.id.otherText)).setText(cq.Answer);
+						if (cq.Answer != null)
+						{
+							if (cq.Answer.compareTo("") != 0)
+							{
+								// If the answer does not match one of the options
+								button.performClick();
+								((EditText) findViewById(R.id.otherText)).setText(cq.Answer);
+							}
+						}
 					}
 				}
 			}
@@ -611,7 +617,14 @@ public class DisplayQuestionActivity extends Activity
 					}
 				}
 				
-				form.questions.get(questionNumber).Answer = answer;
+				if (answer.compareTo("") == 0)
+				{
+					form.questions.get(questionNumber).Answer = null;
+				}
+				else
+				{
+					form.questions.get(questionNumber).Answer = answer;
+				}
 			}
 			
 			// Save the single-select answer
@@ -649,6 +662,7 @@ public class DisplayQuestionActivity extends Activity
 	}
 
 	
+	
 	/**
 	 * Saves the form object to the database.
 	 */
@@ -658,6 +672,8 @@ public class DisplayQuestionActivity extends Activity
 		database.updateForm(form);
 		database.close();
 	}
+	
+	
 	
 	
 	

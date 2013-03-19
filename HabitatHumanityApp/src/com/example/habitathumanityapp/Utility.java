@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager;
  */
 public class Utility 
 {
-
 	/**
 	 * Hides the android keyboard
 	 * 
@@ -17,6 +16,11 @@ public class Utility
 	public static void hideSoftKeyboard(Activity activity) 
 	{
 	    InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-	    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	    
+	    
+	    if (activity.getCurrentFocus() != null)
+	    {
+	    	inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+	    }
 	}
 }
