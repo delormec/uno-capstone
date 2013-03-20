@@ -1,12 +1,12 @@
 ﻿@{
     ViewBag.Title = "Add";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("Add", "User", FormMethod.Post, new { @id = "user-add" }))
 {
     @Html.ValidationSummary(true)
     <div id ="form-editor-outer">
     @{  //commented out for now, don't think we need it now that main menu exists
-        //<div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
+    //<div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
     }
 
     <div class="header ui-widget-header ui-corner-top">Add User</div>
@@ -16,7 +16,7 @@
                 <td> User Name </td>
                 <td>
                     <div id="form-url">
-                        <input id="UserName" class="text-box single-line" type="text" value="" name="UserName"/>
+                        <input id="UserName" class="text-box single-line required" type="text" value="" name="UserName"/>
                     </div>
                 </td>
             </tr>
@@ -24,7 +24,7 @@
                 <td> Password </td>
                 <td>
                     <div id="form-list-name">
-                        <input id="Password" class="text-box single-line" type="text" value="" name="Password"/>
+                        <input id="Password" class="text-box single-line required" type="text" value="" name="Password"/>
                     </div>
                 </td>
             </tr>
@@ -33,7 +33,6 @@
                 <td>
                     <div id="form-list-name">
                         @Html.DropDownList("role_id", (SelectList)ViewBag.RoleSelect)
-                        TODO - changing role does not work at this time
                     </div>
                 </td>
             </tr>
@@ -58,6 +57,7 @@
         $("input[id=btn-save]").button();
         $("#form-index-table").dataTable();
         $("#AutoUpdateButtonSet").buttonset();
+        $("#user-add").validate();
     });
 </script>
 }

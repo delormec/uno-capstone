@@ -17,11 +17,22 @@ namespace OST_Admin.Models.Repository
         //returns -1 if no user found, otherwise returns their user_id
         public int authenticateUser(string user_name, string password)
         {
-            //if no match, return -1 (failed)
-            if (_databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Active == true).Count() == 0)
-                return -1;
+            User user;
+
+            if (_databaseContext.Users.Where(u => u.UserName == user_name && u.Active == true).Count() != 0)
+            {
+                user = _databaseContext.Users.Where(u => u.UserName == user_name && u.Active == true).Single();
+            }
             else
-                return _databaseContext.Users.Where(u => u.UserName == user_name && u.Password == password && u.Active == true).Single().UserId;
+                return -1;
+
+
+            if (OSTEncrpyption.VerifyHash(password, user.Password))
+            {
+                return user.UserId;
+            }
+            else 
+                return -1;
         }
 
         //return their role by user id
@@ -69,14 +80,14 @@ namespace OST_Admin.Models.Repository
         {
             //get a role, then add user to it
             Role existing_role = _databaseContext.Roles.Where(r => r.RoleId == role_id).Single();
+            byte[] salt = OSTEncrpyption.getRandomSaltBytes();
 
             user.Role = existing_role;
 
             if (user.UserName == null)
                 user.UserName = "";
 
-            if (user.Password == null)
-                user.Password = "";
+            user.Password = OSTEncrpyption.ComputeHash(user.Password, salt);// +":" + Convert.ToBase64String(salt);
 
             _databaseContext.SaveChanges();
         }
@@ -97,13 +108,21 @@ namespace OST_Admin.Models.Repository
             User old_user;
             old_user = getUserById(user.UserId);
 
-            if (user.Password == null)
-                user.Password = "";
 
-            old_user.Password = user.Password;
+            //if password is blank do nothing, if its get a random salt, and hash the plain text
+            if (user.Password == null)
+            {
+                //do nothing
+            }
+            else
+            {
+                byte[] salt = OSTEncrpyption.getRandomSaltBytes();
+                old_user.Password = OSTEncrpyption.ComputeHash(user.Password, salt);// +":" + Convert.ToBase64String(salt);
+            }
+
+            //old_user.Password = user.Password;
             old_user.UserName = user.UserName;
             old_user.Active = user.Active;
-
 
             //temp remove the user from the database so it can be assigned to the correct role
             //turns out we don't need to do this
