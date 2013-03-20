@@ -67,7 +67,7 @@ public class SubmitFormActivity extends Activity
 											//response of 0 == success
 											if (response[0] == "0")
 											{
-												discard(null);
+												discard();
 											}
 											
 										} catch (InterruptedException e) {
@@ -111,7 +111,7 @@ public class SubmitFormActivity extends Activity
 	
 	
 	/**
-	 * Deletes the form from the database.
+	 * Removes the form from the database.
 	 * 
 	 * @param view	The View that called this method
 	 */
@@ -127,18 +127,7 @@ public class SubmitFormActivity extends Activity
 								{
 									public void onClick(DialogInterface dialog, int id)
 									{
-										OSTDataSource database = new OSTDataSource(context);
-										database.open();
-										database.removeFormById(form.meta.form_id);
-										database.close();
-										
-										Toast.makeText(context, "Form removed from database", Toast.LENGTH_SHORT).show();
-										form = null;
-										
-										findViewById(R.id.submit_upload).setVisibility(View.GONE);
-										findViewById(R.id.submit_save).setVisibility(View.GONE);
-										findViewById(R.id.submit_discard).setVisibility(View.GONE);
-										findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+										discard();
 										return;
 									}
 								});
@@ -156,6 +145,27 @@ public class SubmitFormActivity extends Activity
 		return;
 	}
 	
+	
+	
+	/**
+	 * Removes the form associated with this Activity from the database
+	 */
+	public void discard()
+	{
+		OSTDataSource database = new OSTDataSource(context);
+		database.open();
+		database.removeFormById(form.meta.form_id);
+		database.close();
+		
+		Toast.makeText(context, "Form removed from database", Toast.LENGTH_SHORT).show();
+		form = null;
+		
+		findViewById(R.id.submit_upload).setVisibility(View.GONE);
+		findViewById(R.id.submit_save).setVisibility(View.GONE);
+		findViewById(R.id.submit_discard).setVisibility(View.GONE);
+		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+		return;
+	}
 	
 	
 	

@@ -157,7 +157,7 @@ public class DataStoreTestActivity extends Activity {
 		//create threads that do shit
 		//new connectToSharePoint().execute(spDS);
 		//new createSharePointListTest().execute(spDS);
-		new downloadAllTemplates().execute(this);
+		new downloadAllTemplates(this).execute(this);
 	}
 	
 	@Override

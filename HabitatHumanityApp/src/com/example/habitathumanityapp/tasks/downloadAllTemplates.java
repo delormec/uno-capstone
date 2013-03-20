@@ -7,10 +7,42 @@ import com.example.habitathumanityapp.datasource.AdminDataSource;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.*;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class downloadAllTemplates extends AsyncTask {
+	
+	private Context context;
+	private ProgressDialog progressDialog;
+	
+	public downloadAllTemplates(Context context)
+	{
+		this.context = context;
+		this.progressDialog = new ProgressDialog(context);
+	}
+	
+	
+	@Override
+	protected void onPreExecute()
+	{
+		progressDialog.setMessage("Downloading forms...");
+		progressDialog.show();
+	}
+	
+	
+	@Override
+	protected void onPostExecute(Object result)
+	{
+		if (progressDialog.isShowing())
+		{
+			progressDialog.dismiss();
+		}
+	}
+	
+	
+	
 	@Override
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub

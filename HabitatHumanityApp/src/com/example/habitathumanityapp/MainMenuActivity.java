@@ -82,8 +82,6 @@ public class MainMenuActivity extends Activity {
 		int templatePos = templateSpinner.getSelectedItemPosition();
 		int formPos = formSpinner.getSelectedItemPosition();
 		
-		showToast(groupPos + " " + templatePos + " " + formPos);
-		
 		savedInstanceState.putInt("groupPos", groupPos);
 		savedInstanceState.putInt("templatePos", templatePos);
 		savedInstanceState.putInt("formPos", formPos);
@@ -367,7 +365,8 @@ public class MainMenuActivity extends Activity {
 	@SuppressWarnings("unchecked")
 	public void startFormDownload(View view)
 	{
-		new downloadAllTemplates().execute(this);
+		downloadAllTemplates downloadTask = new downloadAllTemplates(this);
+		downloadTask.execute(this);
 	}
 	
 	/** Begins population of spinners.
