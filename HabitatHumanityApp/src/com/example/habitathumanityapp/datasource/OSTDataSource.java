@@ -136,7 +136,7 @@ public class OSTDataSource {
 	public List<MyData> getAllFormInfo()
 	{
 		List<MyData> form_info = new ArrayList<MyData>();
-		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, null,null,null,null,null);
+		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, null,null,null,null,"key_field");
 
 
 		cursor.moveToFirst();
@@ -163,7 +163,7 @@ public class OSTDataSource {
 	public List<MyData> getAllFormInfoByTemplateId(int template_id)
 	{
 		List<MyData> form_info = new ArrayList<MyData>();
-		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template_id),null,null,null,null);
+		Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template_id),null,null,null,"key_field");
 
 
 		cursor.moveToFirst();
@@ -194,7 +194,7 @@ public class OSTDataSource {
 		
 		for (MyData template : templates)
 		{
-			Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template.getValue()),null,null,null,null);
+			Cursor cursor = database.query("Forms", new String[] {"_id", "key_field"}, "template_id ==" + String.valueOf(template.getValue()),null,null,null,"key_field");
 
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) 
@@ -219,7 +219,7 @@ public class OSTDataSource {
 	public List<String> getAllTemplateGroups()
 	{
 		List<String> groups = new ArrayList<String>();
-		Cursor cursor = database.query(true, "Templates", new String[] {"group_name"}, null, null, null, null, null, null);
+		Cursor cursor = database.query(true, "Templates", new String[] {"group_name"}, null, null, null, null, "group_name", null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) 
@@ -239,7 +239,7 @@ public class OSTDataSource {
 	public List<MyData> getAllTemplateInfo()
 	{
 		List<MyData> template_info = new ArrayList<MyData>();
-		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},null,null,null,null,null);
+		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},null,null,null,null,"template_name");
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) 
@@ -266,7 +266,7 @@ public class OSTDataSource {
 	public List<MyData> getAllTemplateInfoByGroup(String group)
 	{
 		List<MyData> template_info = new ArrayList<MyData>();
-		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},"group_name ==\"" + group + "\"",null,null,null,null);
+		Cursor cursor = database.query("Templates", new String[] {"_id", "template_name"},"group_name ==\"" + group + "\"",null,null,null,"template_name");
 		
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) 

@@ -108,29 +108,33 @@ public class SharePointDataSource {
 		try {
 			response1 = httpclient.execute(target, httppost, localContext);
 			
-			//something broke if this isn't 201
-			if (response1.getStatusLine().getStatusCode() != 201)
-			{
-			   return new String[] {"-1","Error: SharePont Response: " + response1.getStatusLine().toString()};	
-			}
+
 
 			//this is where we could print the response if we wanted 
-			//HttpEntity entity1 = response1.getEntity();
+			HttpEntity entity1 = response1.getEntity();
 			
 			//Log.v(entity1.,"here4");
 			
 			//Read response, but we don't need this right now
-        	//BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
-        	//StringBuilder results = new StringBuilder();
-        	//String line;
-        	//while ((line = reader.readLine()) != null) {
-            //	results.append(line + '\n');
-        	//}
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
+        	StringBuilder results = new StringBuilder();
+        	String line;
+        	while ((line = reader.readLine()) != null) {
+            	results.append(line + '\n');
+        	}
         		
         	//Log.v("cody_test1", response1.getStatusLine().toString());
         	//Log.v("cody_test2",results.toString());
         	
         	//have to run this to free up the connection.
+			
+			//something broke if this isn't 201
+			if (response1.getStatusLine().getStatusCode() != 201)
+			{
+			   //return new String[] {"-1","Error: SharePont Response: " + response1.getStatusLine().toString()};
+				return new String[] {"-1", results.toString()};
+			}
+			
         	response1.getEntity().consumeContent();
 			
 		} catch (ClientProtocolException e) {
