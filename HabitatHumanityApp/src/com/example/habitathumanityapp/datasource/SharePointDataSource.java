@@ -75,7 +75,7 @@ public class SharePointDataSource {
 		{
 			for (Question q : form.questions)
 			{
-				if (q.Answer != "")
+				if (q.Answer != null && (q.Answer.compareTo("") != 0))
 					jsonObj.put(q.FieldName, q.Answer);
 				//else, do nothing, we won't enter blank answers
 			}
