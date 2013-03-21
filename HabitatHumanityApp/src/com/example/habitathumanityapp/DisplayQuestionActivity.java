@@ -703,6 +703,7 @@ public class DisplayQuestionActivity extends Activity
 		Intent intent = new Intent(this, SubmitFormActivity.class);
 		
 		intent.putExtra("formObject", form);
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		
 		startActivity(intent);
 		this.finish();

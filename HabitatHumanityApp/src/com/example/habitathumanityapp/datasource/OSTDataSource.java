@@ -88,11 +88,14 @@ public class OSTDataSource {
 		try {
 			values.put("template_id", form.meta.template_id);  
 			//TODO, the keyfield logic needs to be built in, right now well just take the answer to first question
-			if (form.questions.get(0).Answer != null)
+			
+
+			if (form.questions.size() > 0 && form.questions.get(0).Answer != null)
 				values.put("key_field", form.questions.get(0).Answer);
 			else
 				values.put("key_field", "-none-");
 			values.put("form", toString(form));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -157,7 +157,7 @@ public class SubmitFormActivity extends Activity
 		database.removeFormById(form.meta.form_id);
 		database.close();
 		
-		Toast.makeText(context, "Form removed from database", Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "Form removed from device", Toast.LENGTH_SHORT).show();
 		form = null;
 		
 		findViewById(R.id.submit_upload).setVisibility(View.GONE);
@@ -177,7 +177,10 @@ public class SubmitFormActivity extends Activity
 	public void navigateEdit(View view)
 	{
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
+		
 		intent.putExtra("formObject", form);
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		
 		startActivity(intent);
 		this.finish();
 	}

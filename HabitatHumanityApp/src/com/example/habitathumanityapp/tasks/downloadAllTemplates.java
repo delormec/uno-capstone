@@ -27,7 +27,7 @@ public class downloadAllTemplates extends AsyncTask {
 	@Override
 	protected void onPreExecute()
 	{
-		progressDialog.setMessage("Downloading forms...");
+		progressDialog.setMessage("Downloading form templates...");
 		progressDialog.show();
 	}
 	
