@@ -1,1 +1,7 @@
 *.class
+*.jar
+*.apk
+*.dex
+jarlist.cache
+resources.ap_
+.DS_Store

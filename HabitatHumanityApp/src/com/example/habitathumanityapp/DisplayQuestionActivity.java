@@ -24,11 +24,13 @@ import android.widget.Toast;
 
 public class DisplayQuestionActivity extends Activity
 {
-	private Form form;
-	private Question question;
-	private Integer questionNumber;
-	private Toast toast;
-	private OSTDataSource database;
+	private static DisplayQuestionActivity currentInstance;		//The current instance of this Activity
+	
+	private Form form; 					// The Form object that is being processed by the Activity
+	private Question question; 			// The Question that is being displayed by the Activity
+	private Integer questionNumber; 	// The current Question's number
+	private Toast toast; 				// The Toast object used for any Toasts
+	private OSTDataSource database; 	// The interface for interacting with the SQLite Database
 	
 	
 	@Override
@@ -36,10 +38,17 @@ public class DisplayQuestionActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		
+		// Set this instance and attempt to end any instance of SubmitFormActivity
+		currentInstance = this;
+		if (SubmitFormActivity.getInstance() != null)
+		{
+			SubmitFormActivity.getInstance().finish();
+		}
+		
 		
 		// Set up database object for future use
 		database = new OSTDataSource(this);
-		
+			
 		
 		// This is the initial call to the Activity
 		if (savedInstanceState == null)
@@ -48,8 +57,7 @@ public class DisplayQuestionActivity extends Activity
 			form = (Form) getIntent().getExtras().get("formObject");
 			questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 			
-		}
-		
+		}	
 		// This is the activity restoring itself (from something like a screen rotation)
 		else
 		{
@@ -675,6 +683,16 @@ public class DisplayQuestionActivity extends Activity
 	
 	
 	
+	/**
+	 * Returns the most recent instance of DisplayQuestionActivity
+	 * 
+	 * @return	The most recent instance of DisplayQuestionActivity
+	 */
+	public static DisplayQuestionActivity getInstance()
+	{
+		return currentInstance;
+	}
+	
 	
 	
 	// The following navigate methods are for the implementation of the navbar layout
@@ -703,7 +721,7 @@ public class DisplayQuestionActivity extends Activity
 		Intent intent = new Intent(this, SubmitFormActivity.class);
 		
 		intent.putExtra("formObject", form);
-		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		
 		startActivity(intent);
 		this.finish();

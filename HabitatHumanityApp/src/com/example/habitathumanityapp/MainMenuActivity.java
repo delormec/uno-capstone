@@ -500,13 +500,16 @@ public class MainMenuActivity extends Activity {
 					form = database.getFormById(formID);
 					form.meta.form_id = formID;	
 				}
-			
+
+				database.close();
+				
 				// Pass the form to the DisplayQuestionActivity
 				Intent intent = new Intent(this, DisplayQuestionActivity.class);
+				
 				intent.putExtra("formObject", form);	
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+							
 				startActivity(intent);
-			
-				database.close();
 			}
 			else
 			{
@@ -550,7 +553,10 @@ public class MainMenuActivity extends Activity {
 				
 					// Send the form to SubmitFormActivity
 					Intent intent = new Intent(this, SubmitFormActivity.class);
+					
 					intent.putExtra("formObject", form);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					
 					startActivity(intent);
 				}
 			}

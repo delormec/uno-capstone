@@ -18,15 +18,23 @@ import android.widget.Toast;
 
 public class SubmitFormActivity extends Activity
 {
-	Form form;
-	Context context;
+	private static SubmitFormActivity currentInstance;	// The current instance of the Activity
+	
+	private Form form;	// The form object being processed by the activity	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
-		context = this;
+		// Set this instance and attempt to end any instance of DisplayQuestionActivity
+		currentInstance = this;	
+		if (DisplayQuestionActivity.getInstance() != null)
+		{
+			DisplayQuestionActivity.getInstance().finish();
+		}
+		
 		
 		// Receive the form object
 		form = (Form) getIntent().getExtras().get("formObject");
@@ -61,7 +69,7 @@ public class SubmitFormActivity extends Activity
 										try {
 											//Wait for the task to finish and get it's response
 											String[] response = task.get();
-											Toast.makeText(context, response[1], Toast.LENGTH_LONG).show();
+											Toast.makeText(currentInstance, response[1], Toast.LENGTH_LONG).show();
 
 											//reponse of -1 == error
 											//response of 0 == success
@@ -152,12 +160,12 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void discard()
 	{
-		OSTDataSource database = new OSTDataSource(context);
+		OSTDataSource database = new OSTDataSource(currentInstance);
 		database.open();
 		database.removeFormById(form.meta.form_id);
 		database.close();
 		
-		Toast.makeText(context, "Form removed from device", Toast.LENGTH_SHORT).show();
+		Toast.makeText(currentInstance, "Form removed from device", Toast.LENGTH_SHORT).show();
 		form = null;
 		
 		findViewById(R.id.submit_upload).setVisibility(View.GONE);
@@ -165,6 +173,18 @@ public class SubmitFormActivity extends Activity
 		findViewById(R.id.submit_discard).setVisibility(View.GONE);
 		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
 		return;
+	}
+	
+	
+	
+	/**
+	 * Returns the most recent instance of SubmitFormActivity
+	 * 
+	 * @return	The most recent instance of SubmitFormActivity
+	 */
+	public static SubmitFormActivity getInstance()
+	{
+		return currentInstance;
 	}
 	
 	
@@ -179,7 +199,7 @@ public class SubmitFormActivity extends Activity
 		Intent intent = new Intent(this, DisplayQuestionActivity.class);
 		
 		intent.putExtra("formObject", form);
-		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		
 		startActivity(intent);
 		this.finish();
