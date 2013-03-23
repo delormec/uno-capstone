@@ -1,0 +1,116 @@
+﻿@model IEnumerable<HOST_Admin.Models.Form>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div id = "form-index-outer">
+<div class="header ui-widget-header ui-corner-top">Form Management</div>
+<div id ="form-index" class="ui-corner-bottom ui-widget-content ui-widget">
+<table id="form-index-table">
+    <thead>
+    <tr>
+        <th> Group </th>
+        <th> Name  </th>
+        <th> Description </th>
+        <th> Date Created</th>
+        <th> Active </th>
+        <th></th>
+    </tr>
+    </thead>
+        <tbody>
+@foreach (var item in Model.OrderBy(p => p.DateCreated)) {
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Group)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @item.DateCreated.Value.ToShortDateString()
+        </td>
+        <td>
+            @if (item.Active == false)
+            {
+                <text>inactive</text>
+            }
+            else
+            {
+                <text>active</text>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.FormId })&nbsp;|&nbsp;@Html.ActionLink("Delete", "Delete", new { id = item.FormId }, new { @class = "form-btn-delete" })&nbsp;|&nbsp;@Html.ActionLink("XML", "XML", new { id = item.FormId })
+
+            @{
+            //@Html.ActionLink("Edit", "Edit", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only", role = "button" })
+           // @Html.ActionLink("Delete", "Delete", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" }) |
+            //@Html.ActionLink("XML", "XML", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" })
+            }
+            
+        </td>
+    </tr>
+
+}
+    </tbody>
+</table>
+
+</div>
+@Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
+</div>
+
+<div id="form-delete-confirm" title="Delete this form?" class="dialog">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This form will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+@section Scripts {
+
+<script>
+
+
+    $(function () {
+        $("a[id=btn-create]").button();
+        $("a[id=btn-log-out]").button();
+        $("#form-index-table").dataTable({
+            "bJQueryUI": true,
+            "bPaginate": false,
+            "aaSorting": [[4, "asc"], [0, "asc"], [1, "asc"]],
+            "aoColumns": [
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": false}]
+        });
+
+        $("#form-delete-confirm").dialog({
+            autoOpen: false,
+            resizable: false,
+            //height: 140,
+            modal: true
+        });
+
+        $(".form-btn-delete").each(function () {
+            $(this).click(function (e) {
+                e.preventDefault();
+                var href = $(this).attr("href");
+                $("#form-delete-confirm").dialog('option', 'buttons', {
+                    "Delete Form": function () {
+                        window.location.href = href;
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                });
+                $("#form-delete-confirm").dialog("open");
+            });
+        });
+
+    });
+</script>
+}

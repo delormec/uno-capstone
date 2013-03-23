@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="capstoneModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="capstoneDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Forms" EntityType="capstoneModel.Form" />
+  </EntityContainer>
+  <EntityType Name="Form">
+    <Key>
+      <PropertyRef Name="FormId" />
+    </Key>
+    <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
+    <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="False" />
+    <Property Type="String" Name="Content" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="DateTime" Name="DateCreated" Nullable="true" />
+  </EntityType>
+</Schema>

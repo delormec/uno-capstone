@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="HOSTModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="HOSTDataContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Forms" EntityType="HOSTModel.Form" />
+    <EntitySet Name="Users" EntityType="HOSTModel.User" />
+    <EntitySet Name="Questions" EntityType="HOSTModel.Question" />
+    <EntitySet Name="Options" EntityType="HOSTModel.Option" />
+    <EntitySet Name="Labels" EntityType="HOSTModel.Label" />
+    <AssociationSet Name="FormQuestion" Association="HOSTModel.FormQuestion">
+      <End Role="Form" EntitySet="Forms" />
+      <End Role="Question" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="LikertScaleQuestionLabel" Association="HOSTModel.LikertScaleQuestionLabel">
+      <End Role="LikertScaleQuestion" EntitySet="Questions" />
+      <End Role="Label" EntitySet="Labels" />
+    </AssociationSet>
+    <AssociationSet Name="ChoiceQuestionOption" Association="HOSTModel.ChoiceQuestionOption">
+      <End Role="ChoiceQuestion" EntitySet="Questions" />
+      <End Role="Option" EntitySet="Options" />
+    </AssociationSet>
+    <EntitySet Name="Roles" EntityType="HOSTModel.Role" />
+    <AssociationSet Name="RoleUser" Association="HOSTModel.RoleUser">
+      <End EntitySet="Roles" Role="Role" />
+      <End EntitySet="Users" Role="User" />
+    </AssociationSet>
+    <EntitySet Name="Configurations" EntityType="HOSTModel.Configuration" />
+    <EntitySet Name="HelpImages" EntityType="HOSTModel.HelpImage" />
+    <AssociationSet Name="QuestionHelpImage" Association="HOSTModel.QuestionHelpImage">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="HelpImage" EntitySet="HelpImages" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Form">
+    <Key>
+      <PropertyRef Name="FormId" />
+    </Key>
+    <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
+    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="False" />
+    <Property Type="String" Name="ListName" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="DateTime" Name="DateCreated" Nullable="true" />
+    <Property Type="String" Name="URL" Nullable="true" />
+    <NavigationProperty Name="Questions" Relationship="HOSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
+    <Property Type="Int32" Name="KeyField" Nullable="true" />
+    <Property Type="String" Name="Group" Nullable="true" />
+    <Property Type="Int32" Name="CreatedBy" Nullable="true" />
+    <Property Type="String" Name="FilledDateFieldName" Nullable="true" />
+    <Property Type="String" Name="FilledDateFieldType" Nullable="true" />
+    <Property Type="String" Name="FilledByFieldName" Nullable="true" />
+    <Property Type="String" Name="FilledByFieldType" Nullable="true" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="UserName" Nullable="false" />
+    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="false" />
+    <Property Type="String" Name="Password" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="HOSTModel.RoleUser" FromRole="User" ToRole="Role" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="QuestionId" />
+    </Key>
+    <Property Type="Int32" Name="QuestionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Text" Nullable="true" />
+    <Property Type="String" Name="HelpText" Nullable="true" />
+    <Property Type="String" Name="FieldName" Nullable="true" />
+    <Property Type="String" Name="FieldType" Nullable="true" />
+    <Property Type="Int32" Name="SortOrder" Nullable="false" />
+    <NavigationProperty Name="Form" Relationship="HOSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
+    <NavigationProperty Name="HelpImages" Relationship="HOSTModel.QuestionHelpImage" FromRole="Question" ToRole="HelpImage" />
+  </EntityType>
+  <EntityType Name="ChoiceQuestion" BaseType="HOSTModel.Question">
+    <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false" />
+    <NavigationProperty Name="Options" Relationship="HOSTModel.ChoiceQuestionOption" FromRole="ChoiceQuestion" ToRole="Option" />
+    <Property Type="Boolean" Name="Multiple" Nullable="true" />
+  </EntityType>
+  <EntityType Name="LikertScaleQuestion" BaseType="HOSTModel.Question">
+    <Property Type="Int32" Name="Steps" Nullable="false" />
+    <NavigationProperty Name="Labels" Relationship="HOSTModel.LikertScaleQuestionLabel" FromRole="LikertScaleQuestion" ToRole="Label" />
+  </EntityType>
+  <EntityType Name="TextQuestion" BaseType="HOSTModel.Question" />
+  <EntityType Name="Option">
+    <Key>
+      <PropertyRef Name="OptionId" />
+    </Key>
+    <Property Type="Int32" Name="OptionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Text" Nullable="true" />
+    <Property Type="Int32" Name="SortOrder" Nullable="false" />
+    <NavigationProperty Name="ChoiceQuestion" Relationship="HOSTModel.ChoiceQuestionOption" FromRole="Option" ToRole="ChoiceQuestion" />
+  </EntityType>
+  <EntityType Name="Label">
+    <Key>
+      <PropertyRef Name="LabelId" />
+    </Key>
+    <Property Type="Int32" Name="LabelId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Text" Nullable="true" />
+    <Property Type="String" Name="Range" Nullable="true" />
+    <NavigationProperty Name="LikertScaleQuestion" Relationship="HOSTModel.LikertScaleQuestionLabel" FromRole="Label" ToRole="LikertScaleQuestion" />
+  </EntityType>
+  <Association Name="FormQuestion">
+    <End Type="HOSTModel.Form" Role="Form" Multiplicity="1" />
+    <End Type="HOSTModel.Question" Role="Question" Multiplicity="*" />
+  </Association>
+  <Association Name="LikertScaleQuestionLabel">
+    <End Type="HOSTModel.LikertScaleQuestion" Role="LikertScaleQuestion" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="HOSTModel.Label" Role="Label" Multiplicity="*" />
+  </Association>
+  <Association Name="ChoiceQuestionOption">
+    <End Type="HOSTModel.ChoiceQuestion" Role="ChoiceQuestion" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="HOSTModel.Option" Role="Option" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="HOSTModel.RoleUser" FromRole="Role" ToRole="User" />
+  </EntityType>
+  <Association Name="RoleUser">
+    <End Type="HOSTModel.Role" Multiplicity="1" Role="Role" />
+    <End Type="HOSTModel.User" Multiplicity="*" Role="User" />
+  </Association>
+  <EntityType Name="Configuration">
+    <Key>
+      <PropertyRef Name="ConfigurationId" />
+    </Key>
+    <Property Type="String" Name="SharePointUserName" Nullable="true" />
+    <Property Type="String" Name="SharePointPassword" Nullable="true" />
+    <Property Type="String" Name="SharePointURL" Nullable="true" />
+    <Property Type="Int32" Name="ConfigurationId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="HelpImage">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Type="Int32" Name="ImageId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="Binary" Name="Data" Nullable="true" />
+    <NavigationProperty Name="Question" Relationship="HOSTModel.QuestionHelpImage" FromRole="HelpImage" ToRole="Question" />
+  </EntityType>
+  <Association Name="QuestionHelpImage">
+    <End Type="HOSTModel.Question" Role="Question" Multiplicity="1" />
+    <End Type="HOSTModel.HelpImage" Role="HelpImage" Multiplicity="*" />
+  </Association>
+</Schema>

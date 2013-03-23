@@ -1,0 +1,47 @@
+﻿@model System.Data.Objects.DataClasses.EntityCollection<HOST_Admin.Models.Option>
+
+@{
+    // Uses old prefix settings if I don't overwrite it
+    ViewData.TemplateInfo.HtmlFieldPrefix = "";
+
+    //pulls viewbag from renderer
+    var vb = ((dynamic)ViewData["vb"]);
+
+    //need this to add/remove options on the fly
+    int questionid = vb.questionid;
+    int formid = vb.formid;
+    int questionsortorder = vb.sortorder;
+    int count = 0;
+}
+
+
+<div id="option-editor" class="ui-corner-all ui-widget-content ui-widget">
+<div id="option-editor-title">Options</div>
+
+
+
+@foreach (HOST_Admin.Models.Option option in Model)
+{     
+    //Have to do this so that the model binder knows that these are part of the Options List
+    @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].OptionId", option.OptionId);
+    @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].SortOrder", option.SortOrder);                                                                          
+
+
+        count = count +1;
+
+        
+        <input type="radio" checked=checked/>
+            <input type="text" id="option-input" name="[@questionsortorder].Options[@option.SortOrder].Text" class="required" value="@option.Text" />
+    
+            //Hide the delete button on the first option
+            if (option.SortOrder != 0)
+            {
+                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();"}, new { id = "option-delete-button" })
+            }
+
+
+        
+        <br />
+}
+@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
+</div>

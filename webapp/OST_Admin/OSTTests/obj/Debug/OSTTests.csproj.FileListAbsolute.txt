@@ -68,7 +68,6 @@ C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\O
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OSTTests.pdb
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\NSubstitute.dll
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OST_Admin.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\System.Web.Http.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\Microsoft.Practices.Unity.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\System.Web.Optimization.dll
@@ -81,7 +80,6 @@ C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\N
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\WebGrease.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\Antlr3.Runtime.dll
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\OST_Admin.pdb
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\NSubstitute.xml
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\nunit.framework.xml
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\System.Web.Http.xml
@@ -160,3 +158,5 @@ C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\k
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\ru\System.Spatial.resources.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\zh-Hans\System.Spatial.resources.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\zh-Hant\System.Spatial.resources.dll
+C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\HOST_Admin.dll
+C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\OSTTests\bin\Debug\HOST_Admin.pdb

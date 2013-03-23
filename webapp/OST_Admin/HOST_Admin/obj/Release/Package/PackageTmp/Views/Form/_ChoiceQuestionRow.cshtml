@@ -1,0 +1,97 @@
+﻿@model HOST_Admin.Models.ChoiceQuestion
+@{
+    ViewBag.Title = "ChoiceQuestionRow";
+    
+    //pulls viewbag from renderer
+    var vb = ((dynamic)ViewData["vb"]);
+
+    //which allows me to pass in what prefix my html elements should have (and question #)
+    int id = vb.questionid;
+
+    //need this in option area to add/remove them
+    ViewBag.formid = Model.Form.FormId;
+    ViewBag.questionid = Model.QuestionId;
+    ViewBag.sortorder = Model.SortOrder;
+
+    //appends a prefix to all my element names in this case [id]. this allows it to fit into a List<Question>
+    ViewData.TemplateInfo.HtmlFieldPrefix = "[" + id + "]";
+}
+        @Html.HiddenFor(model => model.QuestionId)
+        <input type="hidden" value="@Model.SortOrder" name="[@id].SortOrder" id="QSortOrder"/>
+        @Html.Hidden("ModelType", Model.GetType())
+
+
+        <div id="question-type">Multiple Choice Question</div>
+        <div id="question-text">
+            <input class="text-box single-line required" type="text" value="@Model.Text" name="[@Model.SortOrder].Text"/>
+        </div>
+        <div id="question-help-text">
+            <input class="text-box single-line" type="text" value="@Model.HelpText" name="[@Model.SortOrder].HelpText"/>
+        </div>
+
+        <table id="question-table">
+            <tr>
+                <td>Field Name</td>
+                <td>
+                    <div id="question-field-name">
+                        <input class="text-box single-line required" type="text" value="@Model.FieldName" name="[@Model.SortOrder].FieldName"/>
+                    </div>
+                </td>
+                <td>@MyHTML.Help("The name of the field for this question in the SharePoint list")</td>
+            </tr>
+            <tr>
+                <td>Field Type</td>
+                <td>
+                    <div id="question-field-type">
+                        <input class="text-box single-line required" type="text" value="@Model.FieldType" name="[@Model.SortOrder].FieldType"/>
+                    </div>
+                </td>
+                <td>@MyHTML.Help("The type of the field for this question in the SharePoint list")</td>
+            </tr>
+            <tr>
+                <td>Allow Multiple</td>
+                <td>
+                    @{
+                        //true/false button set
+                        <div class="MultipleSet@(id)">
+                        @if (Model.Multiple == true)
+                        {
+                            <input type="radio" id="[@id]Multiple1" name="[@id].Multiple" value="true" checked="checked"/><label for="[@id]Multiple1">Yes</label>
+                            <input type="radio" id="[@id]Multiple2" name="[@id].Multiple" value="false" /><label for="[@id]Multiple2">No</label>
+                        }
+                        else
+                        {
+                            <input type="radio" id="[@id]Multiple1" name="[@id].Multiple" value="true" /><label for="[@id]Multiple1">Yes</label>
+                            <input type="radio" id="[@id]Multiple2" name="[@id].Multiple" value="false" checked="checked"/><label for="[@id]Multiple2">No</label>
+                        }
+                        </div>
+                    }
+                </td>
+                <td>@MyHTML.Help("Yes - The question allow the user to select more than one option from the available choices\nNo - the question will allow only one option to be selected")</td>
+            </tr>
+            <tr>
+                <td>Add "Other"</td>
+                <td>
+                    @{
+                        //true/false button set
+                        <div class="OtherSet@(id)">
+                        @if (Model.Other == true)
+                        {
+                            <input type="radio" id="[@id]Other1" name="[@id].Other" value="true" checked="checked"/><label for="[@id]Other1">True</label>
+                            <input type="radio" id="[@id]Other2" name="[@id].Other" value="false" /><label for="[@id]Other2">False</label>
+                        }
+                        else
+                        {
+                            <input type="radio" id="[@id]Other1" name="[@id].Other" value="true" /><label for="[@id]Other1">True</label>
+                            <input type="radio" id="[@id]Other2" name="[@id].Other" value="false" checked="checked"/><label for="[@id]Other2">False</label>
+                        }
+                        </div>
+                    }
+                </td>
+                <td>@MyHTML.Help("True - Allows the user to select other and enter a custom text answer")</td>
+            </tr>
+
+        </table>
+
+        @Html.Partial("_OptionList", Model.Options, new ViewDataDictionary { {"vb", ViewBag}})
+  

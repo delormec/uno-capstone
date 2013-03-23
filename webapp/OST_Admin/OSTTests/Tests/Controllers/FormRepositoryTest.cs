@@ -5,20 +5,20 @@ using System.Web;
 using NUnit.Framework;
 
 using NSubstitute;
-using OST_Admin.Models;
-using OST_Admin.Models.Repository;
+using HOST_Admin.Models;
+using HOST_Admin.Models.Repository;
 using System.Data.Objects.DataClasses;
 using OSTTests.Tests.Controllers;
 using System.Transactions;
 
-namespace OST_Admin.Tests.Controllers
+namespace HOST_Admin.Tests.Controllers
 {
     [TestFixture]
     public class FormRepositoryTest
     {
-        //var OSTDataContext;
+        //var HOSTDataContext;
         TransactionScope scope;
-        IOSTDataContext _OSTDataContext;
+        IHOSTDataContext _HOSTDataContext;
         FormRepository formRepository;
 
 
@@ -26,16 +26,16 @@ namespace OST_Admin.Tests.Controllers
         public void SetUp()
         {
             scope = new TransactionScope();
-            //_OSTDataContext = Substitute.For<IOSTDataContext>();
-            _OSTDataContext = new OSTDataContext();
-            formRepository = new FormRepository(_OSTDataContext);
-            //_OSTDataContext.Forms
+            //_HOSTDataContext = Substitute.For<IHOSTDataContext>();
+            _HOSTDataContext = new HOSTDataContext();
+            formRepository = new FormRepository(_HOSTDataContext);
+            //_HOSTDataContext.Forms
 
-            //_OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
-            //_OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
-            //_OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
-            //_OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
-            //_OSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
+            //_HOSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
+            //_HOSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
+            //_HOSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
+            //_HOSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
+            //_HOSTDataContext.Forms.AddObject(new Form() { AutoUpdate = false, Content = "This is my content", DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Deleted = false, Description = "This is my description",  Name = "This is my name", Questions = new EntityCollection<Question>() { new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" } } });
 
 
 
@@ -48,14 +48,14 @@ namespace OST_Admin.Tests.Controllers
             //formy.Description = "This is my description";
             //formy.Name = "This is my name";
 
-            //_OSTDataContext.Forms.AddObject(formy);
+            //_HOSTDataContext.Forms.AddObject(formy);
 
 
             //formy.Questions.Add(new TextQuestion() { HelpText = "This is my help text bro", Text = "This is my question?" });
 
-            //_OSTDataContext.SaveChanges();
+            //_HOSTDataContext.SaveChanges();
 
-            //Form formy2 = OSTDataContext.Forms.Where(p => p.FormId == 1).Single();
+            //Form formy2 = HOSTDataContext.Forms.Where(p => p.FormId == 1).Single();
 
 
             
@@ -75,9 +75,9 @@ namespace OST_Admin.Tests.Controllers
 
             //formy.Questions.
 
-            //OSTDataContext.Forms.AddObject(formy);
+            //HOSTDataContext.Forms.AddObject(formy);
 
-            //OSTDataContext.SaveChanges();
+            //HOSTDataContext.SaveChanges();
         }
 
         [Test]

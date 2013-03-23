@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HOSTModelStoreContainer" CdmEntityContainer="HOSTDataContext">
+    <EntitySetMapping Name="Forms">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Form)">
+        <MappingFragment StoreEntitySet="Forms">
+          <ScalarProperty Name="FormId" ColumnName="FormId" />
+          <ScalarProperty Name="AutoUpdate" ColumnName="AutoUpdate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ListName" ColumnName="ListName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="KeyField" ColumnName="KeyField" />
+          <ScalarProperty Name="Group" ColumnName="Group" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="FilledDateFieldName" ColumnName="FilledDateFieldName" />
+          <ScalarProperty Name="FilledDateFieldType" ColumnName="FilledDateFieldType" />
+          <ScalarProperty Name="FilledByFieldName" ColumnName="FilledByFieldName" />
+          <ScalarProperty Name="FilledByFieldType" ColumnName="FilledByFieldType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Questions">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Question)">
+        <MappingFragment StoreEntitySet="Questions">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="HelpText" ColumnName="HelpText" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+          <ScalarProperty Name="FieldType" ColumnName="FieldType" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.LikertScaleQuestion)">
+        <MappingFragment StoreEntitySet="Questions_LikertScaleQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="Steps" ColumnName="Steps" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.ChoiceQuestion)">
+        <MappingFragment StoreEntitySet="Questions_ChoiceQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="Multiple" ColumnName="Multiple" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.TextQuestion)">
+        <MappingFragment StoreEntitySet="Questions_TextQuestion">
+          <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Options">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Option)">
+        <MappingFragment StoreEntitySet="Options">
+          <ScalarProperty Name="OptionId" ColumnName="OptionId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Labels">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Label)">
+        <MappingFragment StoreEntitySet="Labels">
+          <ScalarProperty Name="LabelId" ColumnName="LabelId" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Range" ColumnName="Range" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Role)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Configurations">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Configuration)">
+        <MappingFragment StoreEntitySet="Configurations">
+          <ScalarProperty Name="ConfigurationId" ColumnName="ConfigurationId" />
+          <ScalarProperty Name="SharePointUserName" ColumnName="SharePointUserName" />
+          <ScalarProperty Name="SharePointPassword" ColumnName="SharePointPassword" />
+          <ScalarProperty Name="SharePointURL" ColumnName="SharePointURL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HelpImages">
+      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.HelpImage)">
+        <MappingFragment StoreEntitySet="HelpImages">
+          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FormQuestion" TypeName="HOSTModel.FormQuestion" StoreEntitySet="Questions">
+      <EndProperty Name="Form">
+        <ScalarProperty Name="FormId" ColumnName="Form_FormId" />
+      </EndProperty>
+      <EndProperty Name="Question">
+        <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="LikertScaleQuestionLabel" TypeName="HOSTModel.LikertScaleQuestionLabel" StoreEntitySet="Labels">
+      <EndProperty Name="LikertScaleQuestion">
+        <ScalarProperty Name="QuestionId" ColumnName="LikertScaleQuestion_QuestionId" />
+      </EndProperty>
+      <EndProperty Name="Label">
+        <ScalarProperty Name="LabelId" ColumnName="LabelId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ChoiceQuestionOption" TypeName="HOSTModel.ChoiceQuestionOption" StoreEntitySet="Options">
+      <EndProperty Name="ChoiceQuestion">
+        <ScalarProperty Name="QuestionId" ColumnName="ChoiceQuestion_QuestionId" />
+      </EndProperty>
+      <EndProperty Name="Option">
+        <ScalarProperty Name="OptionId" ColumnName="OptionId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RoleUser" TypeName="HOSTModel.RoleUser" StoreEntitySet="Users">
+      <EndProperty Name="Role">
+        <ScalarProperty Name="RoleId" ColumnName="Role_RoleId" />
+      </EndProperty>
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserId" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="QuestionHelpImage" TypeName="HOSTModel.QuestionHelpImage" StoreEntitySet="HelpImages">
+      <EndProperty Name="Question">
+        <ScalarProperty Name="QuestionId" ColumnName="Question_QuestionId" />
+      </EndProperty>
+      <EndProperty Name="HelpImage">
+        <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

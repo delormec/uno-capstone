@@ -54,7 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="App.config" />
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>App.config</DependentUpon>
     </Content>
@@ -63,9 +65,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OST_Admin\OST_Admin.csproj">
+    <ProjectReference Include="..\HOST_Admin\HOST_Admin.csproj">
       <Project>{103E6711-E144-47DF-94B5-75BC4BACF181}</Project>
-      <Name>OST_Admin</Name>
+      <Name>HOST_Admin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

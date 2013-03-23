@@ -7,12 +7,12 @@ namespace OSTTests.Tests.Controllers
 {
     class UserRepository
     {
-        private OST_Admin.Models.IOSTDataContext OSTDataContext;
+        private HOST_Admin.Models.IHOSTDataContext HOSTDataContext;
 
-        public UserRepository(OST_Admin.Models.IOSTDataContext OSTDataContext)
+        public UserRepository(HOST_Admin.Models.IHOSTDataContext HOSTDataContext)
         {
             // TODO: Complete member initialization
-            this.OSTDataContext = OSTDataContext;
+            this.HOSTDataContext = HOSTDataContext;
         }
     }
 }
