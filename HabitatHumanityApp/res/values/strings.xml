@@ -24,5 +24,7 @@
     <string name="strTemplateLabel">Templates:</string>
     <string name="strFormsLabel">Forms:</string>
     <string name="strNewForm">Add New Form</string>
+    <string name="menu_download">Download All Templates</string>
+    <string name="startDownloadString">startFormDownload</string>
 
 </resources>

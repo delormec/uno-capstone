@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -369,6 +370,14 @@ public class MainMenuActivity extends Activity {
 		downloadTask.execute(this);
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public void startFormDownload(MenuItem item)
+	{
+		downloadAllTemplates downloadTask = new downloadAllTemplates(this);
+		downloadTask.execute(this);
+	}
+	
 	/** Begins population of spinners.
 	 * 
 	 */
@@ -432,6 +441,23 @@ public class MainMenuActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
 		return true;
+	}
+	
+	public boolean onOptionItemSelected(MenuItem item){
+		super.onOptionsItemSelected(item);
+		
+		switch( item.getItemId()){
+		case R.id.download_forms:
+			showToast("Selected Download Forms");
+			//startFormDownload();
+			return true;
+		case R.id.menu_settings:
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			return true;
+		default: 
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	
