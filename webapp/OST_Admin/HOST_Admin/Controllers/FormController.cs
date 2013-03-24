@@ -89,6 +89,16 @@ namespace HOST_Admin.Controllers
             {
                 return RedirectToAction("LogOut", "Account");
             }
+
+            List<SelectListItem> fieldtypes = new List<SelectListItem>(){
+                                        new SelectListItem() {Text = "Choice / Single-line text", Value="SINGLE"},
+                                        new SelectListItem() {Text = "Multi-line text", Value="MULTI"},
+                                        new SelectListItem() {Text = "Date", Value="DATE"},
+                                        new SelectListItem() {Text = "Currency / Number", Value="NUMBER"}
+                                    };
+
+            ViewBag.FieldTypes = fieldtypes;
+
             return View();
         }
 
@@ -160,54 +170,26 @@ namespace HOST_Admin.Controllers
             //open the first tab
             ViewBag.tabopen = 0;
 
+            List<SelectListItem> fieldtypes = new List<SelectListItem>(){
+                                        new SelectListItem() {Text = "Choice / Single-line text", Value="SINGLE"},
+                                        new SelectListItem() {Text = "Multi-line text", Value="MULTI"},
+                                        new SelectListItem() {Text = "Date", Value="DATE"},
+                                        new SelectListItem() {Text = "Currency / Number", Value="NUMBER"}
+                                    };
+
+            ViewBag.FieldTypes = fieldtypes;
+
+
             return View(form);
         }
 
         [HttpPost]
-        //public ActionResult Edit(Form form, List<QuestionViewModel> QuestionViewModel)
         public ActionResult Edit(Form form, List<Question> question_list)
         {
-
-            //foreach (var q in qlist)
-            //{
-            //    if (q is TextQuestion)
-            //    {
-            //        TryUpdateModel(q);
-            //    }
-            //    if (q is ChoiceQuestion)
-            //    {
-            //        ((ChoiceQuestion)q).Options.ToList().ForEach(oitem => TryUpdateModel(oitem));
-            //        TryUpdateModel(q);
-            //    }
-            //    if (q is LikertScaleQuestion)
-            //    {
-            //        ((LikertScaleQuestion)q).Labels.ToList().ForEach(litem => TryUpdateModel(litem));
-            //        TryUpdateModel(q);
-            //    }
-            //}
-            //TryUpdateModel(qlist);
-            //db.SaveChanges();
-            
-
             ViewBag.formId = form.FormId;
-            //this used to be if ModelState.Valid, but its causing errors so im blowing it off.
-            //if (ModelState.Valid)
-            //{
-            //}
-            
+
             _formRepository.updateForm(form, question_list);
             return RedirectToAction("Edit", new { id = form.FormId });
-            
-            
-
-
-            
-            /*
-            Form form2 = db.Forms.Where(p => p.FormId == form.FormId).Single();
-
-            ViewBag.formId = form.FormId;
-
-            return View(form2);*/
         }
 
         public ActionResult Delete(int id = 0)

@@ -57,6 +57,7 @@ namespace HOST_Admin.Models.Repository
 
                 //this will put the item at the bottom of the list.
                 tq.SortOrder = form.Questions.Count;
+                tq.FieldType = "MULTI";
                 question = tq;
 
                 form.Questions.Add(tq);
@@ -67,6 +68,7 @@ namespace HOST_Admin.Models.Repository
 
                 //this will put the item at the bottom of the list.
                 cq.SortOrder = form.Questions.Count;
+                cq.FieldType = "SINGLE";
 
                 Option o = new Option();
 
@@ -84,6 +86,7 @@ namespace HOST_Admin.Models.Repository
 
                 //this will put the item at the bottom of the list.
                 lsq.SortOrder = form.Questions.Count;
+                lsq.FieldType = "SINGLE";
 
                 List<Label> ll = new List<Label>() { new Label() { Range = "low", Text = "low" }, new Label() { Range = "high", Text = "high" } };
 
@@ -101,7 +104,7 @@ namespace HOST_Admin.Models.Repository
             question.Text = "enter question here";
             question.HelpText = "enter help text here";
             question.FieldName = "FIELDNAME";
-            question.FieldType = "STRING";
+            //question.FieldType = "STRING";
 
             form.Questions.Add(question);
             _databaseContext.SaveChanges();

@@ -5,6 +5,18 @@
     int questionid = 0;
     int tabcount = 1;
     int tabopen = ViewBag.tabopen;
+
+    //pulls viewbag from renderer (from Edit.cshtml)
+    //var vb = ((dynamic)ViewData["vb"]);
+
+    List<SelectListItem> fieldtypes = new List<SelectListItem>(){
+                                        new SelectListItem() {Text = "Choice / Single-line text", Value="SINGLE"},
+                                        new SelectListItem() {Text = "Multi-line text", Value="MULTI"},
+                                        new SelectListItem() {Text = "Date", Value="DATE"},
+                                        new SelectListItem() {Text = "Currency / Number", Value="NUMBER"}
+                                    };
+
+    ViewBag.FieldTypes = fieldtypes;                                    
     
 }
 
