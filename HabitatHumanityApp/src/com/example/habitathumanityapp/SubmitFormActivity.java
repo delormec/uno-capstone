@@ -1,13 +1,14 @@
 package com.example.habitathumanityapp;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.example.habitathumanityapp.datasource.OSTDataSource;
+import com.example.habitathumanityapp.tasks.uploadAllFormsToSharePoint;
 import com.example.habitathumanityapp.tasks.uploadFormToSharePoint;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -34,11 +35,9 @@ public class SubmitFormActivity extends Activity
 		{
 			DisplayQuestionActivity.getInstance().finish();
 		}
-		
-		
+
 		// Receive the form object
 		form = (Form) getIntent().getExtras().get("formObject");
-		
 		setContentView(R.layout.activity_submit_form);
 		findViewById(R.id.navbar_submit_button).setVisibility(View.GONE);
 	}
@@ -76,7 +75,7 @@ public class SubmitFormActivity extends Activity
 											if (response[0] == "0")
 											{
 												discard();
-											}
+											}										
 											
 										} catch (InterruptedException e) {
 											// TODO Auto-generated catch block
@@ -112,7 +111,14 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void save(View view)
 	{	
-		Toast.makeText(this, "Form saved", Toast.LENGTH_SHORT).show();
+		new uploadAllFormsToSharePoint(this).execute();
+				
+		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+		findViewById(R.id.submit_save).setVisibility(View.GONE);
+		findViewById(R.id.submit_upload).setVisibility(View.GONE);
+		findViewById(R.id.submit_discard).setVisibility(View.GONE);
+		
+		//Toast.makeText(this, "Form saved", Toast.LENGTH_SHORT).show();	
 		return;
 	}
 	

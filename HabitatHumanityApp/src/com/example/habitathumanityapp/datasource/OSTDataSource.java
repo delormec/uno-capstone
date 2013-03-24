@@ -12,7 +12,6 @@ import java.util.List;
 import com.example.habitathumanityapp.Form;
 import com.example.habitathumanityapp.MyData;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

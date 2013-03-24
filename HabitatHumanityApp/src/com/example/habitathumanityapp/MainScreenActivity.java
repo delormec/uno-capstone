@@ -1,7 +1,5 @@
 package com.example.habitathumanityapp;
 
-import com.example.habitathumanityapp.datasource.OSTDataSource;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,25 +69,4 @@ public class MainScreenActivity extends Activity {
 		setContentView(R.layout.main_submit_screen);
 	}
 	
-	
-	
-
-	
-	public void beginStandardForm(View view)
-	{
-		Intent intent = new Intent(this, DisplayQuestionActivity.class);
-		
-		// Get the standard form from database
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();	
-		
-		Form form = ostDS.getTemplateById(9);
-
-		// This is where the form is passed to the DisplayQuestionActivity
-		intent.putExtra("formObject", form);
-		
-		ostDS.close();
-		
-		startActivity(intent);
-	}
 }

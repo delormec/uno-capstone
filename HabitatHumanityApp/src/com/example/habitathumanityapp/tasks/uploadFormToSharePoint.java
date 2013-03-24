@@ -22,10 +22,9 @@ public class uploadFormToSharePoint extends AsyncTask{
 		user_name = "CDelorme";
 		password = "CDelorme463";
 		domain = "xtranet";
-		
+
 		return SharePointDataSource.uploadFormToSharePoint((Form)params[0], URL, list_name, user_name, password, domain);
 	
 		//this.notifyAll();
 	}
-
 }

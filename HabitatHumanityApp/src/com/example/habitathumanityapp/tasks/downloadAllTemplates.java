@@ -10,16 +10,13 @@ import com.example.habitathumanityapp.*;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class downloadAllTemplates extends AsyncTask {
 	
-	private Context context;
 	private ProgressDialog progressDialog;
 	
 	public downloadAllTemplates(Context context)
 	{
-		this.context = context;
 		this.progressDialog = new ProgressDialog(context);
 	}
 	
@@ -42,6 +39,12 @@ public class downloadAllTemplates extends AsyncTask {
 	}
 	
 	
+	@Override
+	protected void onProgressUpdate(Object... values)
+	{
+		progressDialog.setMessage(String.format("Downloading template %d of %d", values[0], values[1]));
+	}
+	
 	
 	@Override
 	protected Object doInBackground(Object... params) {
@@ -63,8 +66,11 @@ public class downloadAllTemplates extends AsyncTask {
 		oDS.removeAllForms();
 		oDS.removeAllTemplates();
 		
+		int x = 0;
 		for (String id : tl.ids)
 		{
+			publishProgress(x + 1, tl.ids.size());
+			
 			String xml = aDS.getTemplateXMLByID(id);
 			//TODO -- fix this in the admin tool side
 			xml=xml.replaceAll("\\\\n", "").replaceAll("\\\\t", "").replaceAll("\\\\\"", "\"");
@@ -79,6 +85,8 @@ public class downloadAllTemplates extends AsyncTask {
 			
 			oDS.addTemplate(form);
 			//Log.v("OSTtest", oDS.getAllTemplateInfo().toString());
+			
+			x++;
 		}
 	
 		oDS.close();

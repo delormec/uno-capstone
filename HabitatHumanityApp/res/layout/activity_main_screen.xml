@@ -55,15 +55,4 @@
         android:onClick="navigationTest"
         android:text="Show Navigation" />
 
-    <Button
-        android:id="@+id/form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignRight="@+id/parseFormButton"
-        android:text="Standard Form"
-        android:onClick="beginStandardForm"
-        />
-
 </RelativeLayout>
