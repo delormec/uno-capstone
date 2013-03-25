@@ -43,5 +43,5 @@
         
         <br />
 }
-@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
+@Ajax.ActionLink("add options", "AddOption", new { question_id = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
 </div>

@@ -252,9 +252,9 @@ namespace HOST_Admin.Controllers
         /// </summary>
         /// <param name="questionId">Question id you want to add an option too.</param>
         /// <returns>Returns the whole question tab to the caller.</returns>
-        public PartialViewResult AddOption(int questionId)
+        public PartialViewResult AddOption(int question_id)
         {
-            ChoiceQuestion cq = _formRepository.addOption(questionId);
+            ChoiceQuestion cq = _formRepository.addOption(question_id);
 
             //stay on the tab we just added an option to
             ViewBag.tabopen = cq.SortOrder;
