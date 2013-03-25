@@ -397,6 +397,11 @@ public class MainMenuActivity extends Activity {
 		addTemplateGroupSpinnerListener();
 	}
 	
+	public void openSettingsActivity(MenuItem item){
+		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+	
 	/*
 	/** Creates a dummy form with the selected template.
 	 *  Works for the most part, errors on templates further down the list.
@@ -443,6 +448,7 @@ public class MainMenuActivity extends Activity {
 		return true;
 	}
 	
+	/*
 	public boolean onOptionItemSelected(MenuItem item){
 		super.onOptionsItemSelected(item);
 		
@@ -459,6 +465,7 @@ public class MainMenuActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	*/
 
 	
 	

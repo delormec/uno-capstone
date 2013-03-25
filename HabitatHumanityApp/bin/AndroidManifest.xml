@@ -46,26 +46,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.habitathumanityapp.MainScreenActivity" />
         </activity>
-           <activity
+        <activity
             android:name="com.example.habitathumanityapp.MainMenuActivity"
             android:label="@string/title_activity_main_menu" >
         </activity>
-        
-        <activity 
-            android:name="com.example.habitathumanityapp.DisplayQuestionActivity" 
-            android:label="Display Question">
-               
+        <activity
+            android:name="com.example.habitathumanityapp.DisplayQuestionActivity"
+            android:label="Display Question" >
         </activity>
-        
         <activity
             android:name="com.example.habitathumanityapp.SubmitFormActivity"
-            android:label="Submit Form"
-            >
+            android:label="Submit Form" >
         </activity>
-           
-           
-
-
+        <activity
+            android:name="com.example.habitathumanityapp.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
