@@ -120,9 +120,9 @@
 
     <input type="submit" id="Save" value="Save Form" />
 
-    @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { formId = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide(); return true;" })
-    @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { formId = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
-    @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { formId = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
+    @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { form_id = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide(); return true;" })
+    @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { form_id = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
+    @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { form_id = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
     <br />  
     <div id="QuestionTabOuter">
         @Html.Partial("_QuestionList", Model.Questions)

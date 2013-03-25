@@ -36,7 +36,7 @@
             //Hide the delete button on the first option
             if (option.SortOrder != 0)
             {
-                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();"}, new { id = "option-delete-button" })
+                @Ajax.ActionLink("delete", "DeleteOption", new { option_id = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();"}, new { id = "option-delete-button" })
             }
 
 

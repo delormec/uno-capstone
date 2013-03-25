@@ -8,22 +8,33 @@ using HOST_Admin.Models.Repository;
 using System.Web.Security;
 using System.Security.Principal;
 
-
-
 namespace HOST_Admin.Controllers
 {
+    /// <summary>
+    /// Handles Login/Logout functionality, sets cookies ect. The only controller that does not require use of [Authorize].
+    /// </summary>
     public class AccountController : Controller
     {
-        private HOSTDataContext db = new HOSTDataContext();
+        /// <summary>
+        /// Reference to user repository.
+        /// </summary>
         private readonly IUserRepository _userRepository;
 
+        /// <summary>
+        /// Base constructor, MVC calls this constructor behind the scenes.
+        /// </summary>
+        /// <param name="userRepository">It is possible to pass something that implements this interface for testing purposes.</param>
         public AccountController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        //
-        // GET: /Account/
 
+        /// <summary>
+        /// GET: Launch pad of the admin tool.
+        /// </summary>
+        /// <param name="user_name">Passed back from LogIn:POST if login failed.</param>
+        /// <param name="failed">Set to true if login failed, allows view to display error message.</param>
+        /// <returns></returns>
         public ActionResult LogIn(String user_name, bool? failed)
         {
             if (failed == true)
@@ -35,6 +46,12 @@ namespace HOST_Admin.Controllers
             return View();
         }
 
+        /// <summary>
+        /// POST: User submits username/password. Checks if user is authenticated and sets session variables related to user.
+        /// </summary>
+        /// <param name="user_name">Plain text username from LogIn</param>
+        /// <param name="password">Plain text password from LogIn</param>
+        /// <returns>Goes to Form/Index if successful, back to Account/LogIn if failed.</returns>
         [HttpPost]
         public ActionResult LogIn(String user_name, String password)
         {
@@ -47,7 +64,10 @@ namespace HOST_Admin.Controllers
                 return RedirectToAction("Index", "Form");
             }
 
+            //Authenticate user
             int user_id = _userRepository.authenticateUser(user_name, password);
+
+            //If login failed send back to main page with error
             if (user_id == -1)
                 return RedirectToAction("LogIn", new {user_name = user_name, failed = true });
 
@@ -58,26 +78,13 @@ namespace HOST_Admin.Controllers
             //set cookie for authorization
             FormsAuthentication.SetAuthCookie(user_name, false);
 
-            //does not seem like good idea
-            //Roles.AddUserToRole(user_name, _userRepository.getRoleByUserId(user_id).Name);
-            //Roles.AddUserToRole("admin", "Administrator");
-            //System.Web.HttpContext.Current.rol
-
-
-            // Get Forms Identity From Current User
-            //IIdentity id = (IIdentity)System.Web.HttpContext.Current.User.Identity;
-            // Get Forms Ticket From Identity object
-            //FormsAuthenticationTicket ticket = id.Ticket;
-            // Retrieve stored user-data (our roles from db)
-            //string userData = ticket.UserData;
-            //string[] roles = userData.Split(',');
-            // Create a new Generic Principal Instance and assign to Current User
-            //System.Web.HttpContext.Current.User = new GenericPrincipal(id, new String[] { "Administrator" });
-
-
             return RedirectToAction("Index", "Form");
         }
 
+        /// <summary>
+        /// Logs out of the system, removes session variables ect.
+        /// </summary>
+        /// <returns>Goes to Account/Login</returns>
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();

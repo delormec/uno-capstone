@@ -55,7 +55,7 @@
     }
     @{
         
-    @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })        
+    @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { question_id = item.QuestionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })        
 
     //Alternative method I'm not going to use for now
     //@Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { OnBegin = "RemoveTab(" + @item.SortOrder + ");" })

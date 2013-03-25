@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.Data.OData;
 using System.Web.Http;
+using System.Data.Objects.DataClasses;
 
 namespace HOST_Admin.Models.Repository
 {
@@ -27,16 +28,17 @@ namespace HOST_Admin.Models.Repository
             return _databaseContext.Forms.Where(p => p.FormId == id).Single();
         }
 
-        public void deleteFormById(int id)
+        public void deleteFormById(int form_id)
         {
-            Form form;
+            Form form = _databaseContext.Forms.Single(f => f.FormId == form_id);
 
-            form = getFormById(id);
-            form.Active = true;
+            EntityCollection<Question> ecq = form.Questions;
 
+            ecq.ToList().ForEach(x => _databaseContext.DeleteObject(x));
+
+            _databaseContext.Forms.DeleteObject(form);
             _databaseContext.SaveChanges();
         }
-
 
         public void addQuestion(int form_id, string question_type)
         {
@@ -88,7 +90,7 @@ namespace HOST_Admin.Models.Repository
                 lsq.SortOrder = form.Questions.Count;
                 lsq.FieldType = "SINGLE";
 
-                List<Label> ll = new List<Label>() { new Label() { Range = "low", Text = "low" }, new Label() { Range = "high", Text = "high" } };
+                List<Label> ll = new List<Label>() { new Label() { Range = "low", Text = "Strongly Disagree" }, new Label() { Range = "high", Text = "Strongly Agree" } };
 
                 //add them all to the likert scale question
                 ll.ForEach(l => lsq.Labels.Add(l));
@@ -135,9 +137,15 @@ namespace HOST_Admin.Models.Repository
         }
 
 
-        public void addOption(int question_id)
+        public ChoiceQuestion addOption(int question_id)
         {
-            throw new NotImplementedException();
+            ChoiceQuestion cq = (ChoiceQuestion)_databaseContext.Questions.Where(q => q.QuestionId == question_id).Single();
+            Option o = new Option() { SortOrder = cq.Options.Count, Text = "option goes here" };
+
+            cq.Options.Add(o);
+            _databaseContext.SaveChanges();
+
+            return cq;
         }
 
         public int deleteOption(int option_id)
