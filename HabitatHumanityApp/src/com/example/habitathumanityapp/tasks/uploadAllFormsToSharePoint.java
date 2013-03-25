@@ -48,6 +48,9 @@ public class uploadAllFormsToSharePoint extends AsyncTask
 	}
 	
 	
+	// Changes the ProgressDialog to note how many forms have been uploaded so far
+	// values[0] should be the current form being uploaded
+	// values[1] should be the total number of forms being uploaded
 	@Override
 	protected void onProgressUpdate(Object... values)
 	{
@@ -78,35 +81,47 @@ public class uploadAllFormsToSharePoint extends AsyncTask
 		
 		database.open();	
 		
+		// Get all form info
 		List<MyData> formDataList = database.getAllFormInfo();
+		
 		failures = new ArrayList<Integer>(formDataList.size());
 		String[] result;
+		
+		// For each form in the database, attempt to upload it to SharePoint
 		for (int x = 0; x < formDataList.size(); x++)
 		{	
+			// Update the ProgressDialog
 			publishProgress(x + 1, formDataList.size());
 			
+			// Get the form from the database
 			formID = formDataList.get(x).getValue();
 			form = database.getFormById(formID);
 			
+			// Attempt the upload
 			result = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
 			
-			if (result[0] == "0")
+			if (result[0].compareTo("0") == 0)
 			{
+				// If the upload was successful, remove the form from the database
 				database.removeFormById(formID);
 			}
 			else
 			{
+				// Take note that this form failed to upload
 				failures.add(formID);
 			}
 		}
 		
 		database.close();
+
+
 		
-		
+		// No forms failed to upload
 		if (failures.isEmpty())
 		{
 			toastString = "All forms uploaded successfully";
 		}
+		// Some form(s) failed to upload
 		else
 		{
 			toastString = "Failed to upload some forms:";

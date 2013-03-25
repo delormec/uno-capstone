@@ -1,4 +1,4 @@
- package com.example.habitathumanityapp;
+package com.example.habitathumanityapp;
 
 import java.io.Serializable;
 
@@ -10,6 +10,23 @@ public class Meta implements Serializable{
 	 */
 	private static final long serialVersionUID = 3503635432336091621L;
 
+	@Element (name="filledbyfieldname", required=false)
+    public String filledByFieldName;
+    
+    @Element (name="filledbyfieldtype")
+    public String filledByFieldType;
+    
+    @Element (name="filleddatefieldname", required=false)
+    public String filledDateFieldName;
+    
+    @Element (name="filleddatefieldtype")
+    public String filledDateFieldType;
+    
+    public String filledDate;
+    public String filledBy;
+	
+	
+	
 	@Element (name="template_id")
 	public long template_id;
 	
