@@ -3,6 +3,7 @@ html {
     background-color: #DDDDDD;
     margin: 0;
     padding: 0;
+    
 }
 
 body {
@@ -13,6 +14,7 @@ body {
     font-family: Verdana,Arial,sans-serif;
     margin: 0;
     padding: 0;
+
 }
 a 
 {
@@ -28,7 +30,16 @@ a
 {
     border: 1px solid rgb(0,0,0);
     padding:3px 3px 3px 3px;
-    width:300px;
+    width:200px;
+}
+
+.req
+{
+    color:red;
+    display:inline;
+    float:right;
+    font-weight:bold;
+    font-size:large;
 }
 
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
@@ -72,6 +83,7 @@ label.error { float: none; color: red; padding-left: .5em; vertical-align: top; 
 {
  width:80%;
  min-width:800px;
+     max-width:800px;
  margin:0 auto;
  padding:0px 10px 0px 10px; 
  font-size:1.1em;
@@ -123,11 +135,28 @@ label.error { float: none; color: red; padding-left: .5em; vertical-align: top; 
 .ui-widget-content {border: 1px solid rgb(150,150,150);
                     background: #DDD;}
 
+
+
+/* /User/Edit + /User/Add */
+#user-editor-outer
+{
+ width:80%;
+ min-width:800px;
+ max-width:800px;
+ margin:0 auto;
+}
+
+#user-editor-table td
+{
+    width:150px;
+}
+
 /* /Form/Edit + /Form/Create */
 #form-editor-outer
 {
  width:80%;
  min-width:800px;
+ max-width:800px;
  margin:0 auto;
 }
 
@@ -162,12 +191,24 @@ label.error { float: none; color: red; padding-left: .5em; vertical-align: top; 
     width:100%;
 }
 
+#form-editor #form-editor-meta-table
+{
+    width:100%;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+}
+
+
 #form-editor #form-editor-meta-table td
 {
     padding-bottom:5px;   
-    width:125px
+    
 }
 
+#form-editor #form-list-name input
+{
+    width:100%;
+}
 
 #form-editor #form-key-field input
 {
@@ -306,6 +347,7 @@ label.error { float: none; color: red; padding-left: .5em; vertical-align: top; 
 {
  width:80%;
  min-width:800px;
+ max-width:800px;
  margin:0 auto;
 }
 

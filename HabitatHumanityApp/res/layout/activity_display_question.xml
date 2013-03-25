@@ -23,15 +23,7 @@
         	android:layout_height="wrap_content"
         	android:text=""
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    	<EditText
-        	android:id="@+id/answerText"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:ems="10"
-        	android:inputType="textMultiLine|textCapSentences"
-	        android:imeOptions="actionDone"
-    	/>
+	
 
     	<TextView
         	android:id="@+id/spacing_medium"
@@ -39,6 +31,23 @@
         	android:layout_height="wrap_content"
         	android:text=""
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    	<EditText
+        	android:id="@+id/answerText"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:ems="10"
+    	/>
+    	
+    	<TextView
+    	    android:id="@+id/dateText"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:text="SetDate"
+    	    android:textSize="35sp"
+    	    android:textColor="#0099CC"
+    	    android:onClick="showDatePicker"
+    	 />
 
     	<TextView
         	android:id="@+id/likertLow"
@@ -73,8 +82,8 @@
     		    android:inputType="text"
     		    android:hint="Please specify"
     	/>
+  
     	
-
     	<TextView
         	android:id="@+id/likertHigh"
         	android:layout_width="wrap_content"

@@ -1,6 +1,5 @@
 package com.example.habitathumanityapp;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.example.habitathumanityapp.datasource.OSTDataSource;
@@ -72,7 +71,7 @@ public class SubmitFormActivity extends Activity
 
 											//reponse of -1 == error
 											//response of 0 == success
-											if (response[0] == "0")
+											if (response[0].compareTo("0") == 0)
 											{
 												discard();
 											}										

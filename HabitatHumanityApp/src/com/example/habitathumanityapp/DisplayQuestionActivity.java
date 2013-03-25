@@ -1,17 +1,24 @@
 package com.example.habitathumanityapp;
 
+import java.util.Calendar;
+
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -22,10 +29,10 @@ import android.widget.Toast;
 
 
 
+@SuppressLint("NewApi")
 public class DisplayQuestionActivity extends Activity
 {
 	private static DisplayQuestionActivity currentInstance;		//The current instance of this Activity
-	
 	private Form form; 					// The Form object that is being processed by the Activity
 	private Question question; 			// The Question that is being displayed by the Activity
 	private Integer questionNumber; 	// The current Question's number
@@ -109,6 +116,8 @@ public class DisplayQuestionActivity extends Activity
 				
 				findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
 				((TextView) findViewById(R.id.formTitle)).setText(form.meta.name);
+						
+				
 				displayNewQuestion(question);
 			}
 			else
@@ -216,21 +225,70 @@ public class DisplayQuestionActivity extends Activity
 	private void setupTextQuestionView(TextQuestion tq)
 	{	
 		// Remove other fields
+		findViewById(R.id.answerText).setVisibility(View.GONE);
+		findViewById(R.id.dateText).setVisibility(View.GONE);
 		findViewById(R.id.questionChoices).setVisibility(View.GONE);
 		findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
 		findViewById(R.id.otherText).setVisibility(View.GONE);
 		findViewById(R.id.likertLow).setVisibility(View.GONE);
 		findViewById(R.id.likertHigh).setVisibility(View.GONE);
 		
-		// Make TextQuestion fields visible
-		findViewById(R.id.answerText).setVisibility(View.VISIBLE);
+		
+		// Set up for data types
+		EditText answerText = (EditText) findViewById(R.id.answerText);
+		// Single-line
+		if (question.FieldType.compareToIgnoreCase("single") == 0)
+		{
+			answerText.setVisibility(View.VISIBLE);	
+			answerText.setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES);
+		}
+		
+		// Multi-line
+		else if (question.FieldType.compareToIgnoreCase("multi") == 0)
+		{
+			answerText.setVisibility(View.VISIBLE);
+			answerText = (EditText) findViewById(R.id.answerText);
+			answerText.setInputType(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE | EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES);
+			answerText.setSingleLine(false);
+		}
+		
+		// Number
+		else if (question.FieldType.compareToIgnoreCase("number") == 0)
+		{
+			findViewById(R.id.answerText).setVisibility(View.VISIBLE);
+
+			answerText.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);
+		}
+		
+		// Date
+		else if (question.FieldType.compareToIgnoreCase("date") == 0)
+		{		
+			TextView dateText = (TextView) findViewById(R.id.dateText);
+			dateText.setVisibility(View.VISIBLE);
+
+			dateText.setOnClickListener(	new View.OnClickListener()
+											{
+												@Override
+												public void onClick(View v)
+												{
+													showDatePicker(null);
+												}
+											}
+										);
+			
+			// Fill in pre-existing answer
+			if (tq.Answer != null)
+			{
+				dateText.setText(tq.Answer);
+			}	
+		}
+		
 		
 		// Fill in pre-existing answer
 		if (tq.Answer != null)
-		{
-			EditText textField = (EditText) findViewById(R.id.answerText);
-			textField.setText(tq.Answer);
-		}
+		{		
+			answerText.setText(tq.Answer);
+		}	
 	}
 	
 	
@@ -241,13 +299,34 @@ public class DisplayQuestionActivity extends Activity
 	 * 
 	 * @param cq	The ChoiceQuestion to set up
 	 */
-	private void setupChoiceQuestionView(ChoiceQuestion cq)
+	private void setupChoiceQuestionView(final ChoiceQuestion cq)
 	{
 		// Remove other fields
+		findViewById(R.id.dateText).setVisibility(View.GONE);
 		findViewById(R.id.answerText).setVisibility(View.GONE);
 		findViewById(R.id.likertLow).setVisibility(View.GONE);
 		findViewById(R.id.likertHigh).setVisibility(View.GONE);
 		findViewById(R.id.otherText).setVisibility(View.GONE);
+		
+		EditText otherText = (EditText) findViewById(R.id.otherText);
+		
+		// Set up for data types
+		if (question.FieldType.compareToIgnoreCase("single") == 0)
+		{
+			otherText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+		}
+		else if (question.FieldType.compareToIgnoreCase("multi") == 0)
+		{
+			otherText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+		}
+		else if (question.FieldType.compareToIgnoreCase("number") == 0)
+		{
+			otherText.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);
+		}
+		else if (question.FieldType.compareToIgnoreCase("date") == 0)
+		{
+			otherText.setInputType(EditorInfo.TYPE_CLASS_DATETIME | EditorInfo.TYPE_DATETIME_VARIATION_DATE);
+		}
 		
 		
 		// Set up multiple select ChoiceQuestion
@@ -310,8 +389,9 @@ public class DisplayQuestionActivity extends Activity
 						{
 							if (checkedState)
 							{
-								findViewById(R.id.otherText).setVisibility(View.VISIBLE);
-								((EditText) findViewById(R.id.otherText)).setText("");
+								EditText otherText = (EditText) findViewById(R.id.otherText);
+								otherText.setVisibility(View.VISIBLE);				
+								otherText.setText("");
 							}
 							else
 							{
@@ -325,7 +405,7 @@ public class DisplayQuestionActivity extends Activity
 				
 				multipleSelectChoices.addView(checkBox);
 				
-				
+				// Check if there is already an "other" answer pre-filled
 				if (answers != null)
 				{
 					for (String answer : answers)
@@ -340,7 +420,7 @@ public class DisplayQuestionActivity extends Activity
 							}
 						}
 						
-						// If the answer does not match one of the options
+						// If the answer does not match one of the options, fill it
 						if (otherFlag)
 						{
 							if (answer.compareTo("") == 0)
@@ -363,6 +443,17 @@ public class DisplayQuestionActivity extends Activity
 		{	
 			findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
 			findViewById(R.id.questionChoices).setVisibility(View.VISIBLE);
+			
+			
+			// Set up for data types
+			if (question.FieldType.compareToIgnoreCase("single") == 0)
+			{}
+			else if (question.FieldType.compareToIgnoreCase("multi") == 0)
+			{}
+			else if (question.FieldType.compareToIgnoreCase("number") == 0)
+			{}
+			else if (question.FieldType.compareToIgnoreCase("date") == 0)
+			{}
 			
 			
 			RadioGroup buttons = (RadioGroup) findViewById(R.id.questionChoices);
@@ -457,6 +548,7 @@ public class DisplayQuestionActivity extends Activity
 	private void setupLikertQuestionView(LikertScaleQuestion lsq)
 	{
 		// Remove other fields
+		findViewById(R.id.dateText).setVisibility(View.GONE);
 		findViewById(R.id.answerText).setVisibility(View.GONE);
 		findViewById(R.id.multipleSelectChoices).setVisibility(View.GONE);
 		findViewById(R.id.otherText).setVisibility(View.GONE);
@@ -466,6 +558,16 @@ public class DisplayQuestionActivity extends Activity
 		findViewById(R.id.likertHigh).setVisibility(View.VISIBLE);
 		findViewById(R.id.likertLow).setVisibility(View.VISIBLE);
 		findViewById(R.id.questionChoices).setVisibility(View.VISIBLE);
+		
+		// Set up for data types
+		if (question.FieldType.compareToIgnoreCase("single") == 0)
+		{}
+		else if (question.FieldType.compareToIgnoreCase("multi") == 0)
+		{}
+		else if (question.FieldType.compareToIgnoreCase("number") == 0)
+		{}
+		else if (question.FieldType.compareToIgnoreCase("date") == 0)
+		{}
 		
 		
 		if (lsq.labels.size() >= 2)
@@ -581,13 +683,32 @@ public class DisplayQuestionActivity extends Activity
 		// Save the TextQuestion answer
 		if (question instanceof TextQuestion)
 		{
-			// Pull the answer
-			EditText answer = (EditText) findViewById(R.id.answerText);
-			
-			// Store the answer
-			if (answer != null)
+			// Save a date
+			if (question.FieldType.compareToIgnoreCase("date") == 0)
 			{
-				form.questions.get(questionNumber).Answer = answer.getText().toString();
+				// Pull the answer
+				TextView answer = (TextView) findViewById(R.id.dateText);
+				
+				if (answer != null)
+				{
+					// Store the answer
+					if (answer.getText().toString().compareToIgnoreCase("setdate") != 0)
+					{
+						form.questions.get(questionNumber).Answer = answer.getText().toString();
+					}
+				}
+			}
+			// Save other stuff
+			else
+			{
+				// Pull the answer
+				EditText answer = (EditText) findViewById(R.id.answerText);
+				
+				// Store the answer
+				if (answer != null)
+				{
+					form.questions.get(questionNumber).Answer = answer.getText().toString();
+				}
 			}
 		}
 		
@@ -694,6 +815,28 @@ public class DisplayQuestionActivity extends Activity
 	}
 	
 	
+	/**
+	 * Display the datePicker for input
+	 * @param view	The View that called this method
+	 */
+	public void showDatePicker(View view)
+	{
+		String presetDate;
+		
+		if (form.questions.get(questionNumber).Answer != null)
+		{
+			presetDate = form.questions.get(questionNumber).Answer;
+		}
+		else
+		{
+			presetDate = null;
+		}
+		
+		DatePickerFragment newFragment = new DatePickerFragment();
+		newFragment.setDate(presetDate);
+		newFragment.show(getFragmentManager(), "datePicker");
+	}
+
 	
 	// The following navigate methods are for the implementation of the navbar layout
 	public void navigateHome(View view)
@@ -726,4 +869,62 @@ public class DisplayQuestionActivity extends Activity
 		startActivity(intent);
 		this.finish();
 	}
+	
+	
+	
+	
+	
+	
+	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+	{
+		private String presetDate;
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState)
+		{
+			int day, month, year;
+			
+			if (presetDate != null)
+			{
+				String[] datePieces = presetDate.split("/");
+				
+				month = Integer.parseInt(datePieces[0]) - 1;
+				day = Integer.parseInt(datePieces[1]);
+				year = Integer.parseInt(datePieces[2]); 
+			}
+			else
+			{
+				Calendar calendar = Calendar.getInstance();
+				year = calendar.get(Calendar.YEAR);
+				month = calendar.get(Calendar.MONTH);
+				day = calendar.get(Calendar.DAY_OF_MONTH);
+			}
+			
+			return new DatePickerDialog(getInstance(), this, year, month, day);
+		}
+		
+		@Override
+		public void onDateSet(DatePicker view, int year, int month, int day)
+		{
+			TextView dateText = (TextView) getInstance().findViewById(R.id.dateText);
+			dateText.setText(String.format("%d/%d/%d", month + 1, day, year));
+			
+			getInstance().saveAnswerToForm();
+		}
+		
+		
+		/**
+		 * Provides the DatePicker with a preselected date
+		 * @param date	The date to preselect in the DatePicker
+		 */
+		public void setDate(String date)
+		{
+			if (date != null)
+			{
+				presetDate = date;
+			}
+		}
+	}
 }
+
+

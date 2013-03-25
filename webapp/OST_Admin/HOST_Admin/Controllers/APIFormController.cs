@@ -9,8 +9,14 @@ using HOST_Admin.Models;
 
 namespace HOST_Admin.Controllers
 {
+    /// <summary>
+    /// Controller that acts as an external system interface with the Android app.
+    /// </summary>
     public class APIFormController : ApiController
     {
+        /// <summary>
+        /// Reference to form repository.
+        /// </summary>
         private readonly IFormRepository _formRepository;
 
         public APIFormController(IFormRepository formRepository)
@@ -18,7 +24,10 @@ namespace HOST_Admin.Controllers
             _formRepository = formRepository;
         }
 
-        // GET api/apiform
+        /// <summary>
+        /// GET: Displays XML that contains all 'active' forms in the database. Acts as an ODATA endpoint.
+        /// </summary>
+        /// <returns></returns>
         [Queryable]
         public IQueryable<String> Get()
         {
@@ -30,7 +39,11 @@ namespace HOST_Admin.Controllers
             return form_ids.AsQueryable();
         }
 
-        // GET api/apiform/5
+        /// <summary>
+        /// GET/id: Returns XML representation of a form. Used in the android app.
+        /// </summary>
+        /// <param name="id">id of a form as provided by GET</param>
+        /// <returns>XML representation of form</returns>
         public String Get(int id)
         {
             String xml = XML.fromForm(_formRepository.getFormById(id));

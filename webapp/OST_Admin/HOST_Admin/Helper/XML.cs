@@ -49,6 +49,12 @@ public class XML
         xml += string.Format("\t\t<listname>{0}</listname>\n", form.ListName);
         xml += string.Format("\t\t<keyfield>{0}</keyfield>\n", form.KeyField);
         xml += string.Format("\t\t<formgroup>{0}</formgroup>\n", form.Group);
+
+        //New fields
+        xml += string.Format("\t\t<filledbyfieldname>{0}</filledbyfieldname>\n", form.FilledByFieldName);
+        xml += string.Format("\t\t<filledbyfieldtype>{0}</filledbyfieldtype>\n", form.FilledByFieldType);
+        xml += string.Format("\t\t<filleddatefieldname>{0}</filleddatefieldname>\n", form.FilledDateFieldName);
+        xml += string.Format("\t\t<filleddatefieldtype>{0}</filleddatefieldtype>\n", form.FilledDateFieldType);
         
         // Autoupdate
         if (form.AutoUpdate == null || form.AutoUpdate == false)

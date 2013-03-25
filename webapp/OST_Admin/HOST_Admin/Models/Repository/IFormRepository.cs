@@ -7,7 +7,6 @@ namespace HOST_Admin.Models.Repository
 {
     public interface IFormRepository
     {
-
         IQueryable<Form> GetAll();
         Form getFormById(int form_id);
         //void updateForm(Form form);
@@ -15,7 +14,8 @@ namespace HOST_Admin.Models.Repository
         void deleteFormById(int form_id);
         void addQuestion(int form_id, string question_type);
         int deleteQuestion(int question_id);
-        void addOption(int question_id);
+        //TODO: update this to not return ChoiceQuestion
+        ChoiceQuestion addOption(int question_id);
         int deleteOption(int option_id);
         Question getQuestionById(int question_id);
         void addForm(Form form);

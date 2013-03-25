@@ -36,12 +36,12 @@
             //Hide the delete button on the first option
             if (option.SortOrder != 0)
             {
-                @Ajax.ActionLink("delete", "DeleteOption", new { formId = formid, questionId = questionid, optionId = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();"}, new { id = "option-delete-button" })
+                @Ajax.ActionLink("delete", "DeleteOption", new { option_id = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();"}, new { id = "option-delete-button" })
             }
 
 
         
         <br />
 }
-@Ajax.ActionLink("add options", "AddOption", new { questionId = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
+@Ajax.ActionLink("add options", "AddOption", new { question_id = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
 </div>

@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Edit Form";
     int fid = ViewBag.formId;
+    List<SelectListItem> FieldTypes = ViewBag.FieldTypes;
 }
 @using (Html.BeginForm("Edit","Form", FormMethod.Post, new { @id = "form-edit" }))
 {
@@ -26,34 +27,32 @@
 
          <table id="form-editor-meta-table">
             <tr>
-                <td> SharePoint URL </td>
-                <td>
+                <td> SharePoint URL @MyHTML.Help("The URL to the SharePoint list for this form") <div class="req">*</div> </td>
+                <td colspan="3">
                     <div id="form-url">
-                        <input id="URL" class="text-box single-line host-standard-textbox" type="text" value="@Model.URL" name="URL"/>
-                    </div>
+
+                        <input id="URL" class="text-box single-line host-standard-textbox" type="text" value="@Model.URL" name="URL"/> 
+                    </div>                        
                 </td>
-                <td> @MyHTML.Help("The URL to the SharePoint list for this form") </td>
             </tr>
             <tr>
-                <td> SharePoint ListName </td>
-                <td>
+                <td> SharePoint ListName  @MyHTML.Help("The name of the list in SharePoint for this form") <div class="req">*</div> </td>
+                <td colspan="3">
                     <div id="form-list-name">
                         <input id="ListName" class="text-box single-line host-standard-textbox" type="text" value="@Model.ListName" name="ListName"/>
                     </div>
                 </td>
-                <td> @MyHTML.Help("The name of the list in SharePoint for this form") </td>
             </tr>
             <tr>
-                <td> Form Group </td>
-                <td>
+                <td> Form Group @MyHTML.Help("The group for this form. This is how forms will be categorized on the device application.") <div class="req">*</div>  </td>
+                <td colspan="3">
                     <div id="form-group">
                         <input id="Group" class="text-box single-line host-standard-textbox" type="text" value="@Model.Group" name="Group"/>
                     </div>
                 </td>
-                <td> @MyHTML.Help("The group for this form. This is how forms will be categorized on the device application.") </td> 
             </tr>
             <tr>
-                <td>Auto Update</td>
+                <td>Auto Update @MyHTML.Help("True - completed forms will be pushed to the SharePoint list automatically from the device when the device is connected to the Internet.\nFalse - completed forms will be manually pushed to SharePoint from the device by the user.") </td>
                 <td>
                     @{
                         <div id="form-edit-btnset-autoupdate">
@@ -70,10 +69,11 @@
                         </div>
                     }
                 </td>
-                <td> @MyHTML.Help("True - completed forms will be pushed to the SharePoint list automatically from the device when the device is connected to the Internet.\nFalse - completed forms will be manually pushed to SharePoint from the device by the user.") </td>
+                <td> </td>
+                <td> </td>
             </tr>
             <tr>
-                <td>Active</td>
+                <td>Active @MyHTML.Help("True - completed forms will show up on the mobile app.\nFalse - completed forms will stay in the admin tool.") </td>
                 <td>
                     @{
                         <div id="form-edit-btnset-active">
@@ -90,25 +90,39 @@
                         </div>
                     }
                 </td>
-                <td> @MyHTML.Help("True - completed forms will show up on the mobile app.\nFalse - completed forms will stay in the admin tool.") </td>
+                <td> </td>
+                <td> </td>
             </tr>
             <tr>
-                <td> Key Field</td>
+                <td> Key Field  @MyHTML.Help("The key field of a form will be used by the device to display a list of completed forms. The key field should be a field that is unique for each completed form.") <div class="req">*</div> </td>
                 <td>
                     <div id="form-key-field">
                         <input id="KeyField" class="text-box single-line host-standard-textbox" type="text" value="@Model.KeyField" name="KeyField"/>
                     </div>
                 </td>
-                <td> @MyHTML.Help("The key field of a form will be used by the device to display a list of completed forms. The key field should be a field that is unique for each completed form.") </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td>FilledBy Field Name @MyHTML.Help("This is an optional field. When it is filled in the mobile app will populate this with whomever filled out the form.\nIf this field is specified, it will cause an error if the SharePoint List does not contain this field.")</td>
+                <td> <input id="FilledByFieldName" class="text-box single-line host-standard-textbox" type="text" value="@Model.FilledByFieldName" name="FilledByFieldName" /> </td>
+                <td>FilledDate Field Name @MyHTML.Help("This is an optional field. When it is filled in the mobile app will populate this with the date a form is filled out.\nIf this field is specified, it will cause an error if the SharePoint List does not contain this field.")</td>
+                <td> <input id="FilledDateFieldName" class="text-box single-line host-standard-textbox" type="text" value="@Model.FilledDateFieldName" name="FilledDateFieldName" /> </td>
+            </tr>
+            <tr>
+                <td>FilledBy Field Type @MyHTML.Help("Data type that corresponds to the FilledBy field. It will likely be Single-line or Multi-line text.")</td>
+                <td> @Html.DropDownListFor(m => m.FilledByFieldType, new SelectList(FieldTypes, "Value", "Text", Model.FilledByFieldType)) </td>
+                <td>FilledDate Field Type @MyHTML.Help("Data type that corresponds to the FilledDate field. It will likely be of type Date.")</td>
+                <td> @Html.DropDownListFor(m => m.FilledDateFieldType, new SelectList(FieldTypes, "Value", "Text", Model.FilledDateFieldType)) </td>
             </tr>
         </table>
     </div>
 
     <input type="submit" id="Save" value="Save Form" />
 
-    @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { formId = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide(); return true;" })
-    @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { formId = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
-    @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { formId = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
+    @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { form_id = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide(); return true;" })
+    @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { form_id = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
+    @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { form_id = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
     <br />  
     <div id="QuestionTabOuter">
         @Html.Partial("_QuestionList", Model.Questions)

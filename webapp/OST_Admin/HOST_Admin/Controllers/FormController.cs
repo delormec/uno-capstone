@@ -16,27 +16,42 @@ using System.Web.Security;
 
 namespace HOST_Admin.Controllers
 {
+    /// <summary>
+    /// Handles the management of forms. [Authorize] tag requires that only authorized users are allowed.
+    /// </summary>
     [Authorize]
     public class FormController : Controller
     {
-        //TODO -- remove the rest of db interactions
-        private HOSTDataContext db = new HOSTDataContext();
+        /// <summary>
+        /// Reference to form repository.
+        /// </summary>
         private readonly IFormRepository _formRepository;
+
+        /// <summary>
+        /// Reference to user repository.
+        /// </summary>
         private readonly IUserRepository _userRepository;
 
+        /// <summary>
+        /// Base constructor, MVC calls this constructor behind the scenes.
+        /// </summary>
+        /// <param name="formRepository">It is possible to pass something that implements this interface for testing purposes.</param>
+        /// <param name="userRepository">It is possible to pass something that implements this interface for testing purposes.</param>
         public FormController(IFormRepository formRepository, IUserRepository userRepository)
         {
             _formRepository = formRepository;
             _userRepository = userRepository;
         }
 
-        //
-        // GET: /Form/
-
-        //Updated to only show forms you have access to
+        /// <summary>
+        /// Form/Index: If you are an admin it displays a list of all the forms in a system. A normal user only sees forms they've created.
+        /// </summary>
+        /// <returns>Admin: All forms, User: Only their forms; if session expired return to log in screen.</returns>
         public ActionResult Index()
         {
             int user_id;
+
+            //If the session variable has expired then logout
             try
             {
                 user_id = _userRepository.getLoggedInUserId();
@@ -46,6 +61,7 @@ namespace HOST_Admin.Controllers
                 return RedirectToAction("LogOut", "Account");
             }
 
+            //If admin display all, otherwise only display your own
             if (_userRepository.getLoggedInRole() == "Administrator")
                 return View(_formRepository.GetAll().ToList());
             else
@@ -63,12 +79,17 @@ namespace HOST_Admin.Controllers
             return View(id);
         }
 
-        //TODO -change name of formId parameter
-        public PartialViewResult AddQuestion(int formId, string type)
+        /// <summary>
+        /// AJAX: Add a question of 'type' to a particular form.
+        /// </summary>
+        /// <param name="form_id">id of form you want to add question to</param>
+        /// <param name="type">type of question you want to add ("Text", "Likert", "Choice")</param>
+        /// <returns>Returns the whole question tab to the caller.</returns>
+        public PartialViewResult AddQuestion(int form_id, string type)
         {
-            _formRepository.addQuestion(formId, type);
+            _formRepository.addQuestion(form_id, type);
 
-            Form form = _formRepository.getFormById(formId);
+            Form form = _formRepository.getFormById(form_id);
 
             //open the new tab after we create it
             ViewBag.tabopen = form.Questions.Count - 1;
@@ -76,9 +97,10 @@ namespace HOST_Admin.Controllers
             return PartialView("_QuestionList", form.Questions);
         }
 
-        //
-        // GET: /Form/Create
-
+        /// <summary>
+        /// GET form/create: Allows creation of new forms.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             try
@@ -89,12 +111,24 @@ namespace HOST_Admin.Controllers
             {
                 return RedirectToAction("LogOut", "Account");
             }
+
+            List<SelectListItem> fieldtypes = new List<SelectListItem>(){
+                                        new SelectListItem() {Text = "Choice / Single-line text", Value="SINGLE"},
+                                        new SelectListItem() {Text = "Multi-line text", Value="MULTI"},
+                                        new SelectListItem() {Text = "Date", Value="DATE"},
+                                        new SelectListItem() {Text = "Currency / Number", Value="NUMBER"}
+                                    };
+
+            ViewBag.FieldTypes = fieldtypes;
+
             return View();
         }
 
-        //
-        // POST: /Form/Create
-
+        /// <summary>
+        /// POST form/create: takes a form from the create screen and saves it to the database.
+        /// </summary>
+        /// <param name="form">Form from create screen.</param>
+        /// <returns>Redirects to edit screen if form was valid.</returns>
         [HttpPost]
         public ActionResult Create(Form form)
         {
@@ -108,10 +142,14 @@ namespace HOST_Admin.Controllers
             return View(form);
         }
 
-        //TODO - remove extra parameters, only need optionId and rename it
-        public PartialViewResult DeleteOption(int formId, int questionId, int optionId)
+        /// <summary>
+        /// AJAX: delete the specified option from the choice question.
+        /// </summary>
+        /// <param name="option_id">Option id you want to delete.</param>
+        /// <returns>Returns the whole question tab to the caller.</returns>
+        public PartialViewResult DeleteOption(int option_id)
         {
-            int question_id = _formRepository.deleteOption(optionId);
+            int question_id = _formRepository.deleteOption(option_id);
 
             //ned the question to know which tab to open, and to get the question list
             Question question = _formRepository.getQuestionById(question_id);
@@ -122,10 +160,14 @@ namespace HOST_Admin.Controllers
             return PartialView("_QuestionList", question.Form.Questions);
         }
         
-        //TODO rename questionId parameter
-        public PartialViewResult DeleteQuestion(int questionId)
+        /// <summary>
+        /// AJAX: delete the specified question from form.
+        /// </summary>
+        /// <param name="question_id">Question id you want to delete.</param>
+        /// <returns>Returns the whole question tab to the caller.</returns>
+        public PartialViewResult DeleteQuestion(int question_id)
         {
-            int form_id = _formRepository.deleteQuestion(questionId);
+            int form_id = _formRepository.deleteQuestion(question_id);
 
             Form form = _formRepository.getFormById(form_id);
 
@@ -135,6 +177,11 @@ namespace HOST_Admin.Controllers
             return PartialView("_QuestionList", form.Questions);
         }
 
+        /// <summary>
+        /// GET form/edit: Allows user to edit a specified form.
+        /// </summary>
+        /// <param name="id">Form id you want to edit</param>
+        /// <returns>If admin or a user's form then display edit page, logs out if session variable expired.</returns>
         public ActionResult Edit(int id)
         {
             int user_id;
@@ -160,86 +207,57 @@ namespace HOST_Admin.Controllers
             //open the first tab
             ViewBag.tabopen = 0;
 
+            //set up dropdown list for field_types
+            List<SelectListItem> fieldtypes = new List<SelectListItem>(){
+                                        new SelectListItem() {Text = "Choice / Single-line text", Value="SINGLE"},
+                                        new SelectListItem() {Text = "Multi-line text", Value="MULTI"},
+                                        new SelectListItem() {Text = "Date", Value="DATE"},
+                                        new SelectListItem() {Text = "Currency / Number", Value="NUMBER"}
+                                    };
+
+            ViewBag.FieldTypes = fieldtypes;
+
             return View(form);
         }
 
+        /// <summary>
+        /// POST form/edit: Save form to database in two parts, form and question_list.
+        /// </summary>
+        /// <param name="form">Form meta data to be saved.</param>
+        /// <param name="question_list">List of questions to be saved.</param>
+        /// <returns>Returns to edit page when saved.</returns>
         [HttpPost]
-        //public ActionResult Edit(Form form, List<QuestionViewModel> QuestionViewModel)
         public ActionResult Edit(Form form, List<Question> question_list)
         {
-
-            //foreach (var q in qlist)
-            //{
-            //    if (q is TextQuestion)
-            //    {
-            //        TryUpdateModel(q);
-            //    }
-            //    if (q is ChoiceQuestion)
-            //    {
-            //        ((ChoiceQuestion)q).Options.ToList().ForEach(oitem => TryUpdateModel(oitem));
-            //        TryUpdateModel(q);
-            //    }
-            //    if (q is LikertScaleQuestion)
-            //    {
-            //        ((LikertScaleQuestion)q).Labels.ToList().ForEach(litem => TryUpdateModel(litem));
-            //        TryUpdateModel(q);
-            //    }
-            //}
-            //TryUpdateModel(qlist);
-            //db.SaveChanges();
-            
-
             ViewBag.formId = form.FormId;
-            //this used to be if ModelState.Valid, but its causing errors so im blowing it off.
-            //if (ModelState.Valid)
-            //{
-            //}
-            
+
             _formRepository.updateForm(form, question_list);
             return RedirectToAction("Edit", new { id = form.FormId });
-            
-            
-
-
-            
-            /*
-            Form form2 = db.Forms.Where(p => p.FormId == form.FormId).Single();
-
-            ViewBag.formId = form.FormId;
-
-            return View(form2);*/
         }
 
-        public ActionResult Delete(int id = 0)
+        /// <summary>
+        /// POST form/delete: Delete a form from database.
+        /// </summary>
+        /// <param name="id">Form id you wish to delete.</param>
+        /// <returns>Returns to form/index.</returns>
+        public ActionResult Delete(int id)
         {
-            Form form = db.Forms.Single(f => f.FormId == id);
+            _formRepository.deleteFormById(id);
 
-            EntityCollection<Question> ecq = form.Questions;
-
-            ecq.ToList().ForEach(x => db.DeleteObject(x));
-
-            db.Forms.DeleteObject(form);
-            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        /// <summary>
+        /// AJAX: Adds an option to the question you specify.
+        /// </summary>
+        /// <param name="questionId">Question id you want to add an option too.</param>
+        /// <returns>Returns the whole question tab to the caller.</returns>
+        public PartialViewResult AddOption(int question_id)
         {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-
-        public PartialViewResult AddOption(int questionId)
-        {
-            ChoiceQuestion cq = (ChoiceQuestion)db.Questions.Where(q => q.QuestionId == questionId).Single();
-            Option o = new Option() { SortOrder = cq.Options.Count, Text = "option goes here" };
+            ChoiceQuestion cq = _formRepository.addOption(question_id);
 
             //stay on the tab we just added an option to
             ViewBag.tabopen = cq.SortOrder;
-
-            cq.Options.Add(o);
-            db.SaveChanges();
-
 
             return PartialView("_QuestionList", cq.Form.Questions);
         }
