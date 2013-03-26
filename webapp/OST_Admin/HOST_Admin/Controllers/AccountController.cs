@@ -30,7 +30,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// GET: Launch pad of the admin tool.
+        /// GET: Account/LogIn: Launch pad of the admin tool.
         /// </summary>
         /// <param name="user_name">Passed back from LogIn:POST if login failed.</param>
         /// <param name="failed">Set to true if login failed, allows view to display error message.</param>
@@ -47,7 +47,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// POST: User submits username/password. Checks if user is authenticated and sets session variables related to user.
+        /// POST: Account/LogIn: User submits username/password. Checks if user is authenticated and sets session variables related to user.
         /// </summary>
         /// <param name="user_name">Plain text username from LogIn</param>
         /// <param name="password">Plain text password from LogIn</param>
@@ -82,7 +82,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// Logs out of the system, removes session variables ect.
+        /// GET: Account/LogOut: Logs out of the system, removes session variables ect.
         /// </summary>
         /// <returns>Goes to Account/Login</returns>
         public ActionResult LogOut()

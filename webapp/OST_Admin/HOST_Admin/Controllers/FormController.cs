@@ -44,7 +44,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// Form/Index: If you are an admin it displays a list of all the forms in a system. A normal user only sees forms they've created.
+        /// GET: Form/Index: If you are an admin it displays a list of all the forms in a system. A normal user only sees forms they've created.
         /// </summary>
         /// <returns>Admin: All forms, User: Only their forms; if session expired return to log in screen.</returns>
         public ActionResult Index()
@@ -69,7 +69,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// Returns the XML view of the form
+        /// GET: Form/XML: Returns the XML view of the form
         /// </summary>
         /// <param name="id">The id of the form</param>
         /// <returns>XML view of the form</returns>
@@ -80,7 +80,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// AJAX: Add a question of 'type' to a particular form.
+        /// AJAX: Form/AddQuestion: Add a question of 'type' to a particular form.
         /// </summary>
         /// <param name="form_id">id of form you want to add question to</param>
         /// <param name="type">type of question you want to add ("Text", "Likert", "Choice")</param>
@@ -98,7 +98,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// GET form/create: Allows creation of new forms.
+        /// GET: Form/Create: Allows creation of new forms.
         /// </summary>
         /// <returns></returns>
         public ActionResult Create()
@@ -125,7 +125,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// POST form/create: takes a form from the create screen and saves it to the database.
+        /// POST: Form/Create: takes a form from the create screen and saves it to the database.
         /// </summary>
         /// <param name="form">Form from create screen.</param>
         /// <returns>Redirects to edit screen if form was valid.</returns>
@@ -143,7 +143,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// AJAX: delete the specified option from the choice question.
+        /// AJAX: Form/DeleteOption: delete the specified option from the choice question.
         /// </summary>
         /// <param name="option_id">Option id you want to delete.</param>
         /// <returns>Returns the whole question tab to the caller.</returns>
@@ -161,7 +161,7 @@ namespace HOST_Admin.Controllers
         }
         
         /// <summary>
-        /// AJAX: delete the specified question from form.
+        /// AJAX: Form/DeleteQuestion: delete the specified question from form.
         /// </summary>
         /// <param name="question_id">Question id you want to delete.</param>
         /// <returns>Returns the whole question tab to the caller.</returns>
@@ -178,7 +178,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// GET form/edit: Allows user to edit a specified form.
+        /// GET: Form/Edit: Allows user to edit a specified form.
         /// </summary>
         /// <param name="id">Form id you want to edit</param>
         /// <returns>If admin or a user's form then display edit page, logs out if session variable expired.</returns>
@@ -221,7 +221,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// POST form/edit: Save form to database in two parts, form and question_list.
+        /// POST: Form/Edit: Save form to database in two parts, form and question_list.
         /// </summary>
         /// <param name="form">Form meta data to be saved.</param>
         /// <param name="question_list">List of questions to be saved.</param>
@@ -236,7 +236,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// POST form/delete: Delete a form from database.
+        /// POST: Form/Delete: Delete a form from database.
         /// </summary>
         /// <param name="id">Form id you wish to delete.</param>
         /// <returns>Returns to form/index.</returns>
@@ -248,7 +248,7 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
-        /// AJAX: Adds an option to the question you specify.
+        /// AJAX: Form/AddOption: Adds an option to the question you specify.
         /// </summary>
         /// <param name="questionId">Question id you want to add an option too.</param>
         /// <returns>Returns the whole question tab to the caller.</returns>
