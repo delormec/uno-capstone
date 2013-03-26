@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.tasks.downloadAllTemplates;
+import com.example.habitathumanityapp.tasks.uploadAllFormsToSharePoint;
 
 
 import android.os.Bundle;
@@ -368,6 +369,18 @@ public class MainMenuActivity extends Activity {
 	{
 		downloadAllTemplates downloadTask = new downloadAllTemplates(this);
 		downloadTask.execute(this);
+	}
+	
+	
+	/**
+	 * Called from the menu. <br>
+	 * Launches the task that attempts to upload all forms on the device to SharePoint
+	 * 
+	 * @param menu	The MenuItem that called this method
+	 */
+	public void uploadAllForms(MenuItem menu)
+	{
+		new uploadAllFormsToSharePoint(this).execute();
 	}
 	
 	

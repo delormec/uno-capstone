@@ -20,12 +20,7 @@ public class MainScreenActivity extends Activity {
 		//OSTDS.getAllFormIds();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main_screen, menu);
-		return true;
-	}
+
 	/**
 	 * Handles the button click to open the DisplayFormACtivity.
 	 * Will need to add functionality to pass more information later on.

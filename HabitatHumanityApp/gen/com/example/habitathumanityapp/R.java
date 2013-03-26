@@ -29,10 +29,9 @@ public final class R {
         public static final int TextView01=0x7f0a0002;
         public static final int answerText=0x7f0a000c;
         public static final int button1=0x7f0a0024;
-        public static final int custom_title=0x7f0a0035;
         public static final int dataStoreTest=0x7f0a0021;
         public static final int dateText=0x7f0a000d;
-        public static final int download_forms=0x7f0a0037;
+        public static final int download_forms=0x7f0a0035;
         public static final int formLabel=0x7f0a001d;
         public static final int formMenu=0x7f0a001a;
         public static final int formProgressBar=0x7f0a0015;
@@ -44,7 +43,7 @@ public final class R {
         public static final int likertHigh=0x7f0a0012;
         public static final int likertLow=0x7f0a000e;
         public static final int mainMenu=0x7f0a0023;
-        public static final int menu_settings=0x7f0a0036;
+        public static final int menu_settings=0x7f0a0034;
         public static final int multipleSelectChoices=0x7f0a000f;
         public static final int navbar=0x7f0a0030;
         public static final int navbar_edit_button=0x7f0a0032;
@@ -70,7 +69,6 @@ public final class R {
         public static final int testText=0x7f0a0006;
         public static final int textView1=0x7f0a0001;
         public static final int textView2=0x7f0a0004;
-        public static final int title_image=0x7f0a0034;
         public static final int typeMenu=0x7f0a0017;
         public static final int widget0=0x7f0a002d;
         public static final int widget34=0x7f0a0029;
@@ -84,20 +82,18 @@ public final class R {
         public static final int activity_main_menu=0x7f030003;
         public static final int activity_main_screen=0x7f030004;
         public static final int activity_parse_form=0x7f030005;
-        public static final int activity_submit_form=0x7f030006;
-        public static final int main_form_screen=0x7f030007;
-        public static final int main_question_screen=0x7f030008;
-        public static final int main_submit_screen=0x7f030009;
-        public static final int navbar=0x7f03000a;
-        public static final int titlebar=0x7f03000b;
+        public static final int activity_settings=0x7f030006;
+        public static final int activity_submit_form=0x7f030007;
+        public static final int main_form_screen=0x7f030008;
+        public static final int main_question_screen=0x7f030009;
+        public static final int main_submit_screen=0x7f03000a;
+        public static final int navbar=0x7f03000b;
     }
     public static final class menu {
-        public static final int activity_data_store_test=0x7f090000;
-        public static final int activity_display_form=0x7f090001;
-        public static final int activity_main_menu=0x7f090002;
-        public static final int activity_main_screen=0x7f090003;
-        public static final int activity_parse_form=0x7f090004;
-        public static final int actvity_display_question=0x7f090005;
+        public static final int activity_main_menu=0x7f090000;
+        public static final int activity_settings=0x7f090001;
+        public static final int activity_submit_form=0x7f090002;
+        public static final int actvity_display_question=0x7f090003;
     }
     public static final class raw {
         public static final int form=0x7f050000;

@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,6 +43,16 @@ public class SubmitFormActivity extends Activity
 		findViewById(R.id.navbar_submit_button).setVisibility(View.GONE);
 	}
 
+
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_submit_form, menu);
+		return true;
+	}
+	
+	
 	
 	/**
 	 * Uploads the form to SharePoint.
@@ -67,13 +79,14 @@ public class SubmitFormActivity extends Activity
 										try {
 											//Wait for the task to finish and get it's response
 											String[] response = task.get();
-											Toast.makeText(currentInstance, response[1], Toast.LENGTH_LONG).show();
+											Toast.makeText(getInstance(), response[1], Toast.LENGTH_LONG).show();
 
 											//reponse of -1 == error
 											//response of 0 == success
 											if (response[0].compareTo("0") == 0)
 											{
 												discard();
+												getInstance().finish();
 											}										
 											
 										} catch (InterruptedException e) {
@@ -109,26 +122,19 @@ public class SubmitFormActivity extends Activity
 	 * @param view	The View that called this method
 	 */
 	public void save(View view)
-	{	
-		new uploadAllFormsToSharePoint(this).execute();
-				
-		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
-		findViewById(R.id.submit_save).setVisibility(View.GONE);
-		findViewById(R.id.submit_upload).setVisibility(View.GONE);
-		findViewById(R.id.submit_discard).setVisibility(View.GONE);
-		
-		//Toast.makeText(this, "Form saved", Toast.LENGTH_SHORT).show();	
+	{		
+		Toast.makeText(this, "Form saved", Toast.LENGTH_SHORT).show();	
 		return;
 	}
 	
 	
 	
 	/**
-	 * Removes the form from the database.
+	 * Confirms the user's intent discard before discarding the Form
 	 * 
 	 * @param view	The View that called this method
 	 */
-	public void discard(View view)
+	public void discardConfirm(View view)
 	{
 		
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -141,6 +147,7 @@ public class SubmitFormActivity extends Activity
 									public void onClick(DialogInterface dialog, int id)
 									{
 										discard();
+										getInstance().finish();
 										return;
 									}
 								});
@@ -165,18 +172,19 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void discard()
 	{
-		OSTDataSource database = new OSTDataSource(currentInstance);
+		OSTDataSource database = new OSTDataSource(this);
 		database.open();
 		database.removeFormById(form.meta.form_id);
 		database.close();
 		
-		Toast.makeText(currentInstance, "Form removed from device", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Form removed from device", Toast.LENGTH_SHORT).show();
 		form = null;
 		
 		findViewById(R.id.submit_upload).setVisibility(View.GONE);
 		findViewById(R.id.submit_save).setVisibility(View.GONE);
 		findViewById(R.id.submit_discard).setVisibility(View.GONE);
 		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+		
 		return;
 	}
 	
@@ -194,6 +202,24 @@ public class SubmitFormActivity extends Activity
 	
 	
 	
+	/**
+	 * Called from the menu. <br>
+	 * Launches the task that attempts to upload all forms on the device to SharePoint
+	 * 
+	 * @param menu	The menu that called this method
+	 */
+	public void uploadAllForms(MenuItem menu)
+	{
+		new uploadAllFormsToSharePoint(this).execute();
+	
+		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
+		findViewById(R.id.submit_save).setVisibility(View.GONE);
+		findViewById(R.id.submit_upload).setVisibility(View.GONE);
+		findViewById(R.id.submit_discard).setVisibility(View.GONE);
+	}
+	
+	
+		
 	// The following navigate methods are for the implementation of the navbar layout
 	public void navigateHome(View view)
 	{	

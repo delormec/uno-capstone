@@ -35,7 +35,7 @@
         android:layout_alignBaseline="@+id/submit_upload"
         android:layout_alignBottom="@+id/submit_upload"
         android:layout_alignParentRight="true"
-        android:onClick="discard"
+        android:onClick="discardConfirm"
         android:text="Discard" />
     
     
