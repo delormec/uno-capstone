@@ -2,12 +2,11 @@
 using HOST_Admin.Models;
 using System.Collections.Generic;
 
+/// <summary>
+/// Class comprised of static functions that convert Form objects to XML. The XML can be seen as a serialized version of the Form in a form that will be readable by mobile app.
+/// </summary>
 public class XML
 {
-    public XML()
-    {}
-
-    
     /// <summary>
     /// Generates XML for the form with the given ID
     /// </summary>
@@ -25,9 +24,8 @@ public class XML
         return fromForm(form);
     }
 
-
     /// <summary>
-    /// Generates XML for a given form.
+    /// Generates XML for a given form. Basically serialization into a form the mobile app can deserialize.
     /// </summary>
     /// <param name="form">The form to convert to XML</param>
     /// <returns>The XML as a string</returns>
@@ -37,7 +35,6 @@ public class XML
 
         // Pull out the questions list from the form
         System.Data.Objects.DataClasses.EntityCollection<Question> questions = form.Questions;
-
 
         // Open the form and meta tags
         xml = "<form>\n\t<meta>\n";
@@ -69,16 +66,12 @@ public class XML
         xml += string.Format("\t\t<datecreated>{0}</datecreated>\n", form.DateCreated.ToString());
         xml += string.Format("\t\t<description>{0}</description>\n", form.Description);
 
-
         // These two are filled in on the phone app
         xml += "\t\t<user></user>\n";
         xml += "\t\t<pass></pass>\n";
 
-
         // Close the meta tag
         xml += "\t</meta>\n\n";
-
-
 
         // Open the questions tag
         xml += "\t<questions>\n";
@@ -94,7 +87,6 @@ public class XML
             else if (q is LikertScaleQuestion)
                 xml += "\t\t<question class=\"LikertScaleQuestion\">\n";
 
-
             // Common question info
             xml += string.Format("\t\t\t<id>{0}</id>\n", q.QuestionId);
             xml += string.Format("\t\t\t<sortorder>{0}</sortorder>\n", q.SortOrder);
@@ -103,20 +95,17 @@ public class XML
             xml += string.Format("\t\t\t<fieldname>{0}</fieldname>\n", q.FieldName);
             xml += string.Format("\t\t\t<fieldtype>{0}</fieldtype>\n", q.FieldType);
 
-
             // Text question info
             if (q is TextQuestion)
             {
                 // No extra special info
             }
 
-
             // Multiple choice question info
             else if (q is ChoiceQuestion)
             {
                 // Cast q as a ChoiceQuestion
                 ChoiceQuestion question = (ChoiceQuestion)q;
-
 
                 // Multiple select
                 if (question.Multiple == true)
@@ -127,7 +116,6 @@ public class XML
                 {
                     xml += "\t\t\t<multipleselect>false</multipleselect>\n";
                 }
-
 
                 // Other
                 if (question.Other == true)
@@ -141,18 +129,10 @@ public class XML
 
                 // Open options tag
                 xml += "\n\t\t\t<options>\n";
-
-                
+               
                 // Add each option to the question
                 foreach (Option o in question.Options)
                 {
-
-                    //xml += "\t\t\t\t<option>\n";
-                    //xml += string.Format("\t\t\t\t\t<id>{0}</id>\n", o.OptionId);
-                    //xml += string.Format("\t\t\t\t\t<sortorder>{0}</sortorder>\n", o.SortOrder);
-                    //xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", o.Text);
-                    //xml += "\t\t\t\t</option>\n\n";
-
                     xml += string.Format("\t\t\t\t\t<option>{0}</option>\n", o.Text);
                 }         
 
@@ -175,12 +155,6 @@ public class XML
                 // Add each label to the question
                 foreach (Label l in question.Labels)
                 {
-                    //xml += "\t\t\t\t<label>\n";
-                    //xml += string.Format("\t\t\t\t\t<id>{0}</id>\n", l.LabelId);
-                    //xml += string.Format("\t\t\t\t\t<text>{0}</text>\n", l.Text);
-                    //xml += string.Format("\t\t\t\t\t<range>{0}</range>\n", l.Range);
-                    //xml += "\t\t\t\t</label>\n\n";
-
                     xml += string.Format("\t\t\t\t\t<label>{0}</label>\n", l.Text);
                 }
 
@@ -188,18 +162,15 @@ public class XML
                 xml += "\t\t\t</labels>\n";
             }
 
-
             // Filled in on the phone app
             xml += "\n\t\t\t<answer></answer>\n\n";  
 
             // Close question tag
-            
             xml += "\t\t</question>\n\n\n";
         }
 
         // Close questions tag and form tag
         xml += "\t</questions>\n</form>";
-
 
         // Return the xml as a string
         return xml;

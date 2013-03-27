@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace HOST_Admin.Models.ViewModel
 {
+    /// <summary>
+    /// Currently not being used.
+    /// </summary>
     public class QuestionViewModel
     {
         string ModelType { get; set; }

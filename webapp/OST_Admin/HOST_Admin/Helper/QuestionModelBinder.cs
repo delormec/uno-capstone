@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace HOST_Admin.Helper
 {
+    /// <summary>
+    /// This is a custom model binder that allows Questions to be properly bound into their respective child types (Choice/Likert/Scale).
+    /// </summary>
     public class QuestionModelBinder : DefaultModelBinder
     {
         protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)

@@ -254,7 +254,10 @@ namespace HOST_Admin.Controllers
         /// <returns>Returns the whole question tab to the caller.</returns>
         public PartialViewResult AddOption(int question_id)
         {
-            ChoiceQuestion cq = _formRepository.addOption(question_id);
+            ChoiceQuestion cq;
+            _formRepository.addOption(question_id);
+
+            cq = (ChoiceQuestion)_formRepository.getQuestionById(question_id);
 
             //stay on the tab we just added an option to
             ViewBag.tabopen = cq.SortOrder;

@@ -8,38 +8,68 @@ using System.Data.Objects.DataClasses;
 
 namespace HOST_Admin.Models.Repository
 {
+    /// <summary>
+    /// Model layer repository that handles all interactions with Form objects
+    /// </summary>
     public class FormRepository : IFormRepository
     {
+        /// <summary>
+        /// Interface with EntityFramework (database)
+        /// </summary>
         HOSTDataContext _databaseContext;
 
+        /// <summary>
+        /// Base constructor, MVC calls this constructor behind the scenes.
+        /// </summary>
+        /// <param name="databaseContext">It is possible to pass something that implements this interface for testing purposes.</param>
         public FormRepository(IHOSTDataContext databaseContext)
         {
             _databaseContext = new HOSTDataContext();
         }
 
-       
-        public System.Linq.IQueryable<Form> GetAll()
+        /// <summary>
+        /// Get all forms.
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<Form> GetAll()
         {
             return _databaseContext.Forms;
         }
 
-        public Form getFormById(int id)
+        /// <summary>
+        /// Get form by form id.
+        /// </summary>
+        /// <param name="form_id"></param>
+        /// <returns></returns>
+        public Form getFormById(int form_id)
         {
-            return _databaseContext.Forms.Where(p => p.FormId == id).Single();
+            return _databaseContext.Forms.Where(p => p.FormId == form_id).Single();
         }
 
+        /// <summary>
+        /// Delete form by form id.
+        /// </summary>
+        /// <param name="form_id"></param>
         public void deleteFormById(int form_id)
         {
             Form form = _databaseContext.Forms.Single(f => f.FormId == form_id);
 
             EntityCollection<Question> ecq = form.Questions;
 
+            //each question in a form must be deleted first
             ecq.ToList().ForEach(x => _databaseContext.DeleteObject(x));
 
+            //finally delete the form itself
             _databaseContext.Forms.DeleteObject(form);
+
             _databaseContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Add a question to a given form. Throws argument exception if unkown type is passed in.
+        /// </summary>
+        /// <param name="form_id"></param>
+        /// <param name="question_type">One of the following: 'Choice' 'Text' 'Likert'</param>
         public void addQuestion(int form_id, string question_type)
         {
             Form form = null;
@@ -112,17 +142,17 @@ namespace HOST_Admin.Models.Repository
             _databaseContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Delete a question from a form.
+        /// </summary>
+        /// <param name="question_id"></param>
+        /// <returns>(int) id of the form from which the question was removed.</returns>
         public int deleteQuestion(int question_id)
         {
-            Form form;// = db.Forms.Single(f => f.FormId == formId);
+            Form form;
+            //Find the question that is to be removed, and the form of which it is apart of
             Question question = _databaseContext.Questions.Where(q => q.QuestionId == question_id).Single();
             form = question.Form;
-
-            // don't let them delete the last question (actually let them)
-            //if (question.Form.Questions.Count == 1)
-            //{
-            //    return PartialView("_QuestionList", question.Form.Questions);
-            //}
 
             _databaseContext.DeleteObject(question);
             _databaseContext.SaveChanges();
@@ -136,18 +166,24 @@ namespace HOST_Admin.Models.Repository
             return form.FormId;
         }
 
-
-        public ChoiceQuestion addOption(int question_id)
+        /// <summary>
+        /// Add a new option to an existing choice question.
+        /// </summary>
+        /// <param name="question_id"></param>
+        public void addOption(int question_id)
         {
             ChoiceQuestion cq = (ChoiceQuestion)_databaseContext.Questions.Where(q => q.QuestionId == question_id).Single();
             Option o = new Option() { SortOrder = cq.Options.Count, Text = "option goes here" };
 
             cq.Options.Add(o);
             _databaseContext.SaveChanges();
-
-            return cq;
         }
 
+        /// <summary>
+        /// Delete an option from its respective choice question.
+        /// </summary>
+        /// <param name="option_id"></param>
+        /// <returns>Question id from which the option was deleted.</returns>
         public int deleteOption(int option_id)
         {
             Option option = _databaseContext.Options.Where(o => o.OptionId == option_id).Single();
@@ -171,13 +207,20 @@ namespace HOST_Admin.Models.Repository
             return question_id;
         }
 
-
+        /// <summary>
+        /// Retrieve a question by id.
+        /// </summary>
+        /// <param name="question_id"></param>
+        /// <returns></returns>
         public Question getQuestionById(int question_id)
         {
             return _databaseContext.Questions.Where(q => q.QuestionId == question_id).Single();
         }
 
-
+        /// <summary>
+        /// Add a new form to the database.
+        /// </summary>
+        /// <param name="form"></param>
         public void addForm(Form form)
         {
             form.DateCreated = DateTime.Now;
@@ -185,7 +228,10 @@ namespace HOST_Admin.Models.Repository
             _databaseContext.SaveChanges();
         }
 
-
+        /// <summary>
+        /// Not used anymore, would update an existing form in the database with the one passed in.
+        /// </summary>
+        /// <param name="form"></param>
         public void updateForm(Form form)
         {
             Form old_form;
@@ -209,8 +255,12 @@ namespace HOST_Admin.Models.Repository
             _databaseContext.SaveChanges();
         }
 
-
         //TODO -- CLEAN THIS UP
+        /// <summary>
+        /// Update a form and all of its related questions at once.
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="question_list">List of questions that are attached to the form, no new ones.</param>
         public void updateForm(Form form, List<Question> question_list)
         {
             Form old_form = _databaseContext.Forms.Where(p => p.FormId == form.FormId).Single();
@@ -230,8 +280,7 @@ namespace HOST_Admin.Models.Repository
             old_form.FilledDateFieldName = form.FilledDateFieldName;
             old_form.FilledDateFieldType = form.FilledDateFieldType;
 
-            //List<Question> qlist = new List<Question>();
-
+            //For each question, depending on its type, update its copy in the database.
             if (question_list != null && question_list.Count() > 0)
                 foreach (var q in question_list)
                 {
@@ -261,16 +310,11 @@ namespace HOST_Admin.Models.Repository
                         cq.FieldName = q2.FieldName;
                         cq.FieldType = q2.FieldType;
                         cq.Multiple = q2.Multiple;
-                        //cq.Options.ToList().ForEach(qoption => db.DeleteObject(qoption));
-                        //cq.Options.ToList().ForEach(qoption => db.Detach(qoption));
-                        //cq.Options.ToList().ForEach(qoption => ));
 
+                        //update the text of each option in the choice question, funny way to do it
                         q2.Options.ToList().ForEach(qoption => cq.Options.Where(cqoption => cqoption.OptionId == qoption.OptionId).Single().Text = qoption.Text);
-                        //q2.Options.ToList().ForEach(qoption => cq.Options.Attach(qoption));
-                        //cq.Options.Attach = q2.Options;
-                        old_form.Questions.Attach(cq);
 
-                        //((ChoiceQuestion)question).Other = ((ChoiceQuestion)q).Other;
+                        old_form.Questions.Attach(cq);
                     }
                     else if (question is LikertScaleQuestion)
                     {
@@ -285,24 +329,13 @@ namespace HOST_Admin.Models.Repository
                         lq.FieldName = q2.FieldName;
                         lq.FieldType = q2.FieldType;
 
-                        lq.Labels.ToList().Count();
-
+                        //update the text of each label in the likert scale question, funny way to do it.
                         q2.Labels.ToList().ForEach(qlabel => lq.Labels.Where(cqlabel => cqlabel.LabelId == qlabel.LabelId).Single().Text = qlabel.Text);
 
                         old_form.Questions.Attach(lq);
                     }
-
-
                 }
-
-
-
-            //db.Forms.Attach(form);
             _databaseContext.SaveChanges();
         }
-
-
-
-
     }
 }

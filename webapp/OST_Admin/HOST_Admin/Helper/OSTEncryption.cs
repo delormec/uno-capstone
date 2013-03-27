@@ -2,12 +2,17 @@
 using System.Security.Cryptography;
 using System.Text;
 
-/* This code was mostly taken from: http://www.obviex.com/samples/hash.aspx */
-
-
+/// <summary>
+/// Class that provides static functions for encryption of passwords.
+/// Conforms to Best Practices, code was taken from http://www.obviex.com/samples/hash.aspx.
+/// </summary>
 public class HOSTEncrpyption
 {
 
+    /// <summary>
+    /// Used to generate 4-8 bytes worth of random salt. Uses RNGCryptoServiceProvider for random number generation.
+    /// </summary>
+    /// <returns></returns>
     public static byte[] getRandomSaltBytes()
     {
         // Define min and max salt sizes.
