@@ -60,28 +60,36 @@ public class SettingsActivity extends PreferenceActivity {
 		// In the simplified UI, fragments are not used at all and we instead
 		// use the older PreferenceActivity APIs.
 
-		// Add 'general' preferences.
+		PreferenceCategory fakeHeader = new PreferenceCategory(this);
+		// Add 'sharepoint' preferences.
+		//fakeHeader.setTitle(R.string.pref_header_sharepoint_settings);
+		//getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_general);
 
-		// Add 'notifications' preferences, and a corresponding header.
-		PreferenceCategory fakeHeader = new PreferenceCategory(this);
-		fakeHeader.setTitle(R.string.pref_header_notifications);
-		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_notification);
-
-		// Add 'data and sync' preferences, and a corresponding header.
+		// Add 'sharepoint' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
-		fakeHeader.setTitle(R.string.pref_header_data_sync);
+		fakeHeader.setTitle(R.string.pref_header_sharepoint_settings);
 		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_data_sync);
+		addPreferencesFromResource(R.xml.pref_upload);
 
+		// Add 'tools' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_tools);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_tools);
+		
+		//Add 'section' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_error_log);
+		getPreferenceScreen().addPreference(fakeHeader);
+		
+		
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
 		// to reflect the new value, per the Android Design guidelines.
-		bindPreferenceSummaryToValue(findPreference("example_text"));
-		bindPreferenceSummaryToValue(findPreference("example_list"));
-		bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		bindPreferenceSummaryToValue(findPreference("sharepoint_username"));
+		bindPreferenceSummaryToValue(findPreference("admin_tool_url"));
+		
 	}
 
 	/** {@inheritDoc} */
@@ -140,30 +148,8 @@ public class SettingsActivity extends PreferenceActivity {
 						.setSummary(index >= 0 ? listPreference.getEntries()[index]
 								: null);
 
-			} else if (preference instanceof RingtonePreference) {
-				// For ringtone preferences, look up the correct display value
-				// using RingtoneManager.
-				if (TextUtils.isEmpty(stringValue)) {
-					// Empty values correspond to 'silent' (no ringtone).
-					preference.setSummary(R.string.pref_ringtone_silent);
-
-				} else {
-					Ringtone ringtone = RingtoneManager.getRingtone(
-							preference.getContext(), Uri.parse(stringValue));
-
-					if (ringtone == null) {
-						// Clear the summary if there was a lookup error.
-						preference.setSummary(null);
-					} else {
-						// Set the summary to reflect the new ringtone display
-						// name.
-						String name = ringtone
-								.getTitle(preference.getContext());
-						preference.setSummary(name);
-					}
-				}
-
-			} else {
+			}
+			else {
 				// For all other preferences, set the summary to the value's
 				// simple string representation.
 				preference.setSummary(stringValue);
@@ -212,6 +198,7 @@ public class SettingsActivity extends PreferenceActivity {
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("example_text"));
 			bindPreferenceSummaryToValue(findPreference("example_list"));
+			bindPreferenceSummaryToValue(findPreference("sharepoint_username"));
 		}
 	}
 
@@ -220,12 +207,12 @@ public class SettingsActivity extends PreferenceActivity {
 	 * activity is showing a two-pane settings UI.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class NotificationPreferenceFragment extends
+	public static class UploadPreferenceFragment extends
 			PreferenceFragment {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_notification);
+			addPreferencesFromResource(R.xml.pref_upload);
 
 			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
 			// to their values. When their values change, their summaries are
@@ -240,11 +227,11 @@ public class SettingsActivity extends PreferenceActivity {
 	 * activity is showing a two-pane settings UI.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class DataSyncPreferenceFragment extends PreferenceFragment {
+	public static class ToolsPreferenceFragment extends PreferenceFragment {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_data_sync);
+			addPreferencesFromResource(R.xml.pref_tools);
 
 			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
 			// to their values. When their values change, their summaries are

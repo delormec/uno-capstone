@@ -23,36 +23,44 @@ public final class R {
         public static final int DSTest1=0x7f0a0000;
         public static final int DSTest2=0x7f0a0003;
         public static final int DSTest3=0x7f0a0005;
-        public static final int EditButton=0x7f0a002b;
-        public static final int FormButton=0x7f0a002a;
-        public static final int SendButton=0x7f0a002c;
+        public static final int EditButton=0x7f0a0025;
+        public static final int FormButton=0x7f0a0024;
+        public static final int SendButton=0x7f0a0026;
         public static final int TextView01=0x7f0a0002;
         public static final int answerText=0x7f0a000c;
+<<<<<<< Updated upstream
         public static final int button1=0x7f0a0024;
         public static final int dataStoreTest=0x7f0a0021;
         public static final int dateText=0x7f0a000d;
         public static final int download_forms=0x7f0a0035;
+=======
+        public static final int custom_title=0x7f0a002f;
+        public static final int dateText=0x7f0a000d;
+        public static final int download_forms=0x7f0a0031;
+>>>>>>> Stashed changes
         public static final int formLabel=0x7f0a001d;
         public static final int formMenu=0x7f0a001a;
         public static final int formProgressBar=0x7f0a0015;
         public static final int formTitle=0x7f0a0016;
-        public static final int fullXmlCode=0x7f0a0025;
+        public static final int fullXmlCode=0x7f0a001f;
         public static final int getFormButton=0x7f0a0007;
-        public static final int getFormsBtn=0x7f0a001e;
         public static final int groupLabel=0x7f0a001b;
+        public static final int include1=0x7f0a001e;
         public static final int likertHigh=0x7f0a0012;
         public static final int likertLow=0x7f0a000e;
+<<<<<<< Updated upstream
         public static final int mainMenu=0x7f0a0023;
         public static final int menu_settings=0x7f0a0034;
+=======
+        public static final int menu_settings=0x7f0a0030;
+>>>>>>> Stashed changes
         public static final int multipleSelectChoices=0x7f0a000f;
-        public static final int navbar=0x7f0a0030;
-        public static final int navbar_edit_button=0x7f0a0032;
-        public static final int navbar_home_button=0x7f0a0031;
-        public static final int navbar_submit_button=0x7f0a0033;
-        public static final int newForm=0x7f0a0020;
+        public static final int navbar=0x7f0a002a;
+        public static final int navbar_edit_button=0x7f0a002c;
+        public static final int navbar_home_button=0x7f0a002b;
+        public static final int navbar_submit_button=0x7f0a002d;
         public static final int next=0x7f0a0013;
         public static final int otherText=0x7f0a0011;
-        public static final int parseFormButton=0x7f0a0022;
         public static final int prev=0x7f0a0014;
         public static final int questionChoices=0x7f0a0010;
         public static final int questionText=0x7f0a000a;
@@ -60,26 +68,30 @@ public final class R {
         public static final int question_subLayout_1=0x7f0a0009;
         public static final int selectedForm=0x7f0a0018;
         public static final int spacing_medium=0x7f0a000b;
-        public static final int startPopulateBtn=0x7f0a001f;
-        public static final int submit_discard=0x7f0a0028;
-        public static final int submit_save=0x7f0a0027;
-        public static final int submit_upload=0x7f0a0026;
+        public static final int submit_discard=0x7f0a0022;
+        public static final int submit_save=0x7f0a0021;
+        public static final int submit_upload=0x7f0a0020;
         public static final int templateLabel=0x7f0a001c;
         public static final int templateMenu=0x7f0a0019;
         public static final int testText=0x7f0a0006;
         public static final int textView1=0x7f0a0001;
         public static final int textView2=0x7f0a0004;
+<<<<<<< Updated upstream
+=======
+        public static final int title_image=0x7f0a002e;
+>>>>>>> Stashed changes
         public static final int typeMenu=0x7f0a0017;
-        public static final int widget0=0x7f0a002d;
-        public static final int widget34=0x7f0a0029;
-        public static final int widget46=0x7f0a002f;
-        public static final int widget47=0x7f0a002e;
+        public static final int widget0=0x7f0a0027;
+        public static final int widget34=0x7f0a0023;
+        public static final int widget46=0x7f0a0029;
+        public static final int widget47=0x7f0a0028;
     }
     public static final class layout {
         public static final int activity_data_store_test=0x7f030000;
         public static final int activity_display_form=0x7f030001;
         public static final int activity_display_question=0x7f030002;
         public static final int activity_main_menu=0x7f030003;
+<<<<<<< Updated upstream
         public static final int activity_main_screen=0x7f030004;
         public static final int activity_parse_form=0x7f030005;
         public static final int activity_settings=0x7f030006;
@@ -88,6 +100,16 @@ public final class R {
         public static final int main_question_screen=0x7f030009;
         public static final int main_submit_screen=0x7f03000a;
         public static final int navbar=0x7f03000b;
+=======
+        public static final int activity_parse_form=0x7f030004;
+        public static final int activity_submit_form=0x7f030005;
+        public static final int main_form_screen=0x7f030006;
+        public static final int main_question_screen=0x7f030007;
+        public static final int main_submit_screen=0x7f030008;
+        public static final int navbar=0x7f030009;
+        public static final int pref_tools=0x7f03000a;
+        public static final int titlebar=0x7f03000b;
+>>>>>>> Stashed changes
     }
     public static final class menu {
         public static final int activity_main_menu=0x7f090000;
@@ -109,27 +131,35 @@ public final class R {
         public static final int menu_startDownloadString=0x7f060018;
         public static final int newFormButton=0x7f060003;
         public static final int parseFormTest=0x7f06000a;
-        public static final int pref_default_display_name=0x7f06001f;
-        public static final int pref_description_social_recommendations=0x7f06001d;
+        public static final int pref_default_admin_tool_url=0x7f06002f;
+        public static final int pref_default_display_name=0x7f060021;
+        public static final int pref_default_sharepoint_password=0x7f06002b;
+        public static final int pref_default_sharepoint_username=0x7f06002a;
+        public static final int pref_description_social_recommendations=0x7f06001f;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f060021;
+        public static final int pref_header_data_sync=0x7f060023;
+        public static final int pref_header_error_log=0x7f060030;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f06001b;
+        public static final int pref_header_general=0x7f06001d;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f060024;
-        public static final int pref_ringtone_silent=0x7f060027;
-        public static final int pref_title_add_friends_to_messages=0x7f060020;
-        public static final int pref_title_display_name=0x7f06001e;
-        public static final int pref_title_new_message_notifications=0x7f060025;
-        public static final int pref_title_ringtone=0x7f060026;
-        public static final int pref_title_social_recommendations=0x7f06001c;
-        public static final int pref_title_sync_frequency=0x7f060022;
-        public static final int pref_title_system_sync_settings=0x7f060023;
-        public static final int pref_title_vibrate=0x7f060028;
+        public static final int pref_header_notifications=0x7f060026;
+        public static final int pref_header_sharepoint_settings=0x7f060028;
+        public static final int pref_header_tools=0x7f06002d;
+        public static final int pref_summary_download_templates=0x7f06001a;
+        public static final int pref_title_add_friends_to_messages=0x7f060022;
+        public static final int pref_title_admin_tool_url=0x7f06002e;
+        public static final int pref_title_display_name=0x7f060020;
+        public static final int pref_title_download_templates=0x7f06001b;
+        public static final int pref_title_new_message_notifications=0x7f060027;
+        public static final int pref_title_sharepoint_password=0x7f06002c;
+        public static final int pref_title_sharepoint_username=0x7f060029;
+        public static final int pref_title_social_recommendations=0x7f06001e;
+        public static final int pref_title_sync_frequency=0x7f060024;
+        public static final int pref_title_system_sync_settings=0x7f060025;
         public static final int strDownloadForms=0x7f060011;
         public static final int strFormsLabel=0x7f060015;
         public static final int strGetForm=0x7f06000d;
@@ -145,7 +175,7 @@ public final class R {
         public static final int title_activity_display_form=0x7f060004;
         public static final int title_activity_main_menu=0x7f06000f;
         public static final int title_activity_parse_form=0x7f060009;
-        public static final int title_activity_settings=0x7f06001a;
+        public static final int title_activity_settings=0x7f06001c;
         public static final int xmlForm=0x7f06000b;
     }
     public static final class style {
@@ -177,10 +207,9 @@ public final class R {
         public static final int AppTheme=0x7f080001;
     }
     public static final class xml {
-        public static final int pref_data_sync=0x7f040000;
-        public static final int pref_general=0x7f040001;
-        public static final int pref_headers=0x7f040002;
-        public static final int pref_notification=0x7f040003;
-        public static final int preferences=0x7f040004;
+        public static final int pref_general=0x7f040000;
+        public static final int pref_headers=0x7f040001;
+        public static final int pref_tools=0x7f040002;
+        public static final int pref_upload=0x7f040003;
     }
 }

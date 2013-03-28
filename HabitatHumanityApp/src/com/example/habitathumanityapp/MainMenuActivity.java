@@ -42,7 +42,6 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.activity_main_menu);
 		
 		if(savedInstanceState == null){
-			showToast("First time opening.");
 			startPopulateSpinners();
 		}
 		else{
@@ -348,8 +347,8 @@ public class MainMenuActivity extends Activity {
 					
 					String form = parent.getItemAtPosition(pos).toString();
 					
-					selectedFormBox = (TextView)findViewById(R.id.selectedForm);
-					selectedFormBox.setText(form);		
+					//selectedFormBox = (TextView)findViewById(R.id.selectedForm);
+					//selectedFormBox.setText(form);		
 			}
 
 			@Override

@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!--
+         A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked.
+    -->
+
+    <!-- Allows the user to choose a ringtone in the 'notification' category. -->
+    <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
+    <!-- NOTE: RingtonePreference's summary should be set to its value by the activity code. -->
+
+    <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
+    <EditTextPreference android:key="admin_tool_url" 
+        android:defaultValue="@string/pref_default_admin_tool_url" 
+        android:title="@string/pref_title_admin_tool_url"/>
+    <EditTextPreference android:defaultValue="@string/pref_default_sharepoint_username" 
+        android:title="@string/pref_title_sharepoint_username" 
+        android:key="sharepoint_username"/>
+    <EditTextPreference android:defaultValue="@string/pref_default_sharepoint_password" 
+        android:title="@string/pref_title_sharepoint_password" 
+        android:key="sharepoint_password"
+        android:inputType="textPassword"/>
+
+</PreferenceScreen>
