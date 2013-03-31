@@ -1,4 +1,17 @@
-﻿@model HOST_Admin.Models.LikertScaleQuestion
+﻿@*
+    Screen:         Form/Edit
+    Description:    Partial View that lists a question of type LikertScaleQuestion.
+    Input:          (LikertScaleQuestion) Model.
+                        Question to edit.
+                    (List<SelectListItem>) ViewBag.FieldTypes
+                        Used to build combo box of FieldTypes.
+                    (int) ViewBag.formid
+                        Id of form were working on.
+                    (int) ViewBag.questionid
+                        Id of the LikerScaleQuestion.
+    Output:         AJAX: Form/Edit
+*@
+@model HOST_Admin.Models.LikertScaleQuestion
 @{
     ViewBag.Title = "LikertScaleQuestionRow";
     
@@ -16,8 +29,6 @@
     ViewData.TemplateInfo.HtmlFieldPrefix = "[" + id + "]";
 
     List<SelectListItem> FieldTypes = vb.FieldTypes;
-
-    int labelcount = 0;
 }
 
         @Html.HiddenFor(model => model.QuestionId)

@@ -1,13 +1,17 @@
-﻿@{
+﻿@*
+    Screen:         User/Add
+    Description:    Displays interface to add a User to the system.
+    Input:          (SelectList) ViewBag.RoleSelect
+                        Contains key/value pair to populate Role dropdown with.
+    Output:         POST: User/Add
+*@
+@{
     ViewBag.Title = "Add";
 }
 @using (Html.BeginForm("Add", "User", FormMethod.Post, new { @id = "user-add" }))
 {
     @Html.ValidationSummary(true)
     <div id ="user-editor-outer">
-    @{  //commented out for now, don't think we need it now that main menu exists
-    //<div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
-    }
 
     <div class="header ui-widget-header ui-corner-top">Add User</div>
     <div id="user-editor" class="ui-corner-bottom ui-widget-content ui-widget">
@@ -50,8 +54,9 @@
     <input type="submit" id="btn-save" value="Save" />
 </div>
 }
-@section Scripts {
 
+@* JQuery *@
+@section Scripts {
 <script>
     $(function () {
         $("input[id=btn-save]").button();

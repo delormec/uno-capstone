@@ -1,5 +1,15 @@
-﻿@model System.Data.Objects.DataClasses.EntityCollection<HOST_Admin.Models.Question>
-
+﻿@*
+    Screen:         Form/Edit
+    Description:    Partial View that lists all the questions in a form. 
+                    Each type of question has it's own partial view.
+    Input:          (EntityCollection<Question>) Model.
+                        List of questions in a form.
+                    (int) ViewBag.tabopen
+                        Specify what question you want to open.
+    Output:         AJAX: Form/Edit
+                    AJAX: Form/DeleteQuestion 
+*@
+@model System.Data.Objects.DataClasses.EntityCollection<HOST_Admin.Models.Question>
 @{
     //used to set the form names up so that they are treated as a List<Questions>
     int questionid = 0;
@@ -22,8 +32,10 @@
 
 <input type="hidden" id="TabOpen" value="@tabopen" />
 
+@* We actually hide this area until the entire form loads then javascript shows it *@
 <div id="QuestionTabInner" style="display:none;">
 <ul>
+@* Loop through each question. *@
 @foreach (HOST_Admin.Models.Question item in Model.OrderBy(ql => ql.SortOrder))
 {
    <li><a href="#tabs-@tabcount">@tabcount</a></li>
@@ -31,16 +43,15 @@
 }
 </ul>
 
+@* Loop through each question. *@
 @foreach (HOST_Admin.Models.Question item in Model.OrderBy(ql => ql.SortOrder))
 {
 
     ViewBag.questionid = questionid;
     questionid++;
     
-    
     <div id="tabs-@questionid">
-    @{//Based on what type of question it is create the form, and pass in the viewbag so it can know what # it needs to be.
-    }
+    @* Based on what type of question it is create the form, and pass in the viewbag so it can know what # it needs to be. *@
     @if (item is HOST_Admin.Models.TextQuestion)
     {
         Html.RenderPartial("_TextQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
@@ -53,14 +64,13 @@
     {
         Html.RenderPartial("_LikertScaleQuestionRow", item, new ViewDataDictionary { { "vb", ViewBag } });
     }
-    @{
         
+    @* Dual AJAX call, first it saves the entire form, then it deletes the question and redraws the question area. *@
     @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { question_id = item.QuestionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })        
 
-    //Alternative method I'm not going to use for now
-    //@Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { OnBegin = "RemoveTab(" + @item.SortOrder + ");" })
-
-    }
+    @* Alternative method I'm not going to use for now *@
+    @* @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { OnBegin = "RemoveTab(" + @item.SortOrder + ");" }) *@
+    
     </div>
 }
 

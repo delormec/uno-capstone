@@ -1,18 +1,22 @@
-﻿@model HOST_Admin.Models.Form
-
+﻿@*
+    Screen:         Form/Create
+    Description:    Displays interface to edit a User.
+    Input:          (Form) Model.
+                        Form that will be created, starts with all fields empty.
+                    (List<SelectListItem>) ViewBag.FieldTypes
+                        Used to build combo box of FieldTypes.
+    Output:         POST: Form/Create 
+*@
+@model HOST_Admin.Models.Form
 @{
     ViewBag.Title = "Create";
     List<SelectListItem> FieldTypes = ViewBag.FieldTypes;
- }
-
+}
 @using (Html.BeginForm("Create", "Form", FormMethod.Post, new { @id = "form-edit" }))
 {
-    @Html.ValidationSummary(true)
+   @Html.ValidationSummary(true)
    <input type="hidden" name="CreatedBy" value="@ViewBag.CreatedBy" />
    <div id="form-editor-outer">
-   @{   //commented out for now, don't think we need it now that main menu exists
-    //<div>@Html.ActionLink("Back to List", "Index",null, new { id = "Back" })</div>
-    }
    <div class="header ui-widget-header ui-corner-top">Create Form</div>
    
     <div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">
@@ -102,7 +106,7 @@
 }
 
 
-
+@* JQuery *@
 @section Scripts {
 <script type="text/javascript">
     $(function () {
@@ -118,6 +122,7 @@
         $("input[type=submit], button").button();
         $("#Back").button();
 
+        //Form validation.
         $("#form-edit").validate({
             rules: {
                 Name: { required: true },

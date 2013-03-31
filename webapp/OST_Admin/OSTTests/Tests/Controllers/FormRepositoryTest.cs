@@ -106,7 +106,7 @@ namespace HOST_Admin.Tests.Controllers
             form = formRepository.getFormById(id);
 
             form.Name = name;
-            formRepository.updateForm(form);
+            //formRepository.updateForm(form);
 
             form = formRepository.getFormById(id);
 
@@ -120,7 +120,7 @@ namespace HOST_Admin.Tests.Controllers
             int id = 25;
             Form form = new Form() { AutoUpdate = false, DateCreated = new DateTime(2010, 10, 10, 10, 10, 10), Active = false, Description = "This is my description", FormId = id, Name = name };
 
-            formRepository.updateForm(form);
+            //formRepository.updateForm(form);
 
             Form form2 = formRepository.getFormById(id);
 

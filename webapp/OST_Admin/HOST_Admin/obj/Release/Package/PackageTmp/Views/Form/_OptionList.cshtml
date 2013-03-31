@@ -1,7 +1,22 @@
-﻿@model System.Data.Objects.DataClasses.EntityCollection<HOST_Admin.Models.Option>
-
+﻿@*
+    Screen:         Form/Edit
+    Description:    Partial View that lists options within a question of type ChoiceQuestion.
+    Input:          (EntityCollection<Option>) Model.
+                        List of options.
+                    (int) ViewBag.formid
+                        Id of form were working on.
+                    (int) ViewBag.questionid
+                        Id of the ChoiceQuestion.
+                    (int) ViewBag.sortorder
+                        The position of the question within the form.
+    Output:         AJAX: Form/Edit
+                    AJAX: Form/AddOption
+                    AJAX: Form/DeleteOption 
+*@
+@model System.Data.Objects.DataClasses.EntityCollection<HOST_Admin.Models.Option>
 @{
     // Uses old prefix settings if I don't overwrite it
+    // Has to do with the way input fields are named
     ViewData.TemplateInfo.HtmlFieldPrefix = "";
 
     //pulls viewbag from renderer
@@ -14,34 +29,30 @@
     int count = 0;
 }
 
-
 <div id="option-editor" class="ui-corner-all ui-widget-content ui-widget">
 <div id="option-editor-title">Options</div>
 
-
-
+@* Loop through each option *@
 @foreach (HOST_Admin.Models.Option option in Model)
 {     
     //Have to do this so that the model binder knows that these are part of the Options List
     @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].OptionId", option.OptionId);
     @Html.Hidden("["+questionsortorder+"].Options[" + option.SortOrder + "].SortOrder", option.SortOrder);                                                                          
 
+        count = count + 1;
 
-        count = count +1;
-
-        
         <input type="radio" checked=checked/>
             <input type="text" id="option-input" name="[@questionsortorder].Options[@option.SortOrder].Text" class="required" value="@option.Text" />
     
             //Hide the delete button on the first option
             if (option.SortOrder != 0)
             {
-                @Ajax.ActionLink("delete", "DeleteOption", new { option_id = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();"}, new { id = "option-delete-button" })
+                @* Dual AJAX call, first it saves the entire form, then it deletes the option and redraws the question area. *@
+                @Ajax.ActionLink("delete", "DeleteOption", new { option_id = option.OptionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-delete-button" })
             }
-
-
-        
         <br />
 }
+
+@* Dual AJAX call, first it saves the entire form, then it adds a new option and redraws the question area. *@
 @Ajax.ActionLink("add options", "AddOption", new { question_id = questionid }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" }, new { id = "option-add-button" })
 </div>

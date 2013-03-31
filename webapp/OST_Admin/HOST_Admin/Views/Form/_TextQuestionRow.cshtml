@@ -1,4 +1,17 @@
-﻿@model HOST_Admin.Models.TextQuestion
+﻿@*
+    Screen:         Form/Edit
+    Description:    Partial View that lists a question of type TextQuestion.
+    Input:          (LikertScaleQuestion) Model.
+                        Question to edit.
+                    (List<SelectListItem>) ViewBag.FieldTypes
+                        Used to build combo box of FieldTypes.
+                    (int) ViewBag.formid
+                        Id of form were working on.
+                    (int) ViewBag.questionid
+                        Id of the TextQuestion.
+    Output:         AJAX: Form/Edit
+*@
+@model HOST_Admin.Models.TextQuestion
 @{
     ViewBag.Title = "TextQuestionRow";
 
@@ -44,40 +57,3 @@
                 </td>
             </tr>
         </table>
-
-        @{
-        /*
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Text)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Text)
-            @Html.ValidationMessageFor(model => model.Text)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.HelpText)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.HelpText)
-            @Html.ValidationMessageFor(model => model.HelpText)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FieldName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FieldName)
-            @Html.ValidationMessageFor(model => model.FieldName)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FieldType)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FieldType)
-            @Html.ValidationMessageFor(model => model.FieldType)
-        </div>
-        */
-        }

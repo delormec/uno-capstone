@@ -1,5 +1,16 @@
-﻿@model IEnumerable<HOST_Admin.Models.Form>
-
+﻿@*
+    Screen:         Form/Index
+    Description:    Displays interface to access all aspects of Form management.
+                    Only the administrator user has access to every form.
+                    A normal user can only view their forms.
+    Input:          (IQueryable<Form>) Model.
+                        List of all Forms the current user has access to in the system.
+    Output:         GET: Form/Delete
+                    GET: Form/Create
+                    GET: Form/Edit
+                    GET: Form/Copy
+*@
+@model IEnumerable<HOST_Admin.Models.Form>
 @{
     ViewBag.Title = "Index";
 }
@@ -18,8 +29,8 @@
     </tr>
     </thead>
         <tbody>
+@* Loop through each Form to create a row in the table *@
 @foreach (var item in Model.OrderBy(p => p.DateCreated)) {
-
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Group)
@@ -45,16 +56,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.FormId })&nbsp;|&nbsp;@Html.ActionLink("Delete", "Delete", new { id = item.FormId }, new { @class = "form-btn-delete" })&nbsp;|&nbsp;@Html.ActionLink("XML", "XML", new { id = item.FormId })
-
-            @{
-            //@Html.ActionLink("Edit", "Edit", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only", role = "button" })
-           // @Html.ActionLink("Delete", "Delete", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" }) |
-            //@Html.ActionLink("XML", "XML", new { id = item.FormId }, new { @class = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" })
-            }
-            
         </td>
     </tr>
-
 }
     </tbody>
 </table>
@@ -63,18 +66,19 @@
 @Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
 </div>
 
+@* Dialog pop-up to confirm delete action. *@
 <div id="form-delete-confirm" title="Delete this form?" class="dialog">
     <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This form will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 
+@* JQuery *@
 @section Scripts {
-
 <script>
-
-
     $(function () {
         $("a[id=btn-create]").button();
         $("a[id=btn-log-out]").button();
+
+        //set up table with custom css / sortable columns / default sorting
         $("#form-index-table").dataTable({
             "bJQueryUI": true,
             "bPaginate": false,
@@ -88,6 +92,7 @@
                 { "bSortable": false}]
         });
 
+        //dialog settings
         $("#form-delete-confirm").dialog({
             autoOpen: false,
             resizable: false,
@@ -95,6 +100,7 @@
             modal: true
         });
 
+        //set up click event for each delete button
         $(".form-btn-delete").each(function () {
             $(this).click(function (e) {
                 e.preventDefault();
@@ -110,7 +116,6 @@
                 $("#form-delete-confirm").dialog("open");
             });
         });
-
     });
 </script>
 }

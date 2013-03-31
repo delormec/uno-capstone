@@ -1,30 +1,33 @@
-﻿<!DOCTYPE html>
+﻿@*
+    Screen:         All screens except LogIn.
+    Description:    Sets up javascript includes and CSS includes, as well as top menu.
+    Input:          __UserId + __UserRole session variables
+                        These are used to determine if the user has access to User administration.
+                    (String) V
+
+    Output:         Links to User/Index and Form/Index.
+*@
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     
-            @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui") 
-
-        @Styles.Render("~/Content/themes/ui-notdarkness/css")
-
-        <script src="/Scripts/jquery.livequery.min.js"></script>
-        <script src="/Scripts/jquery.dataTables.min.js"></script>
-        
+    @Styles.Render("~/Content/themes/ui-notdarkness/css")
+    <script src="/Scripts/jquery.livequery.min.js"></script>
+    <script src="/Scripts/jquery.dataTables.min.js"></script>
     @Styles.Render("~/Content/css")
-
 </head>
 <body >
 <div id="main-menu" class="ui-widget-header ui-corner-bottom">
 <span>
 <a id="main-menu-forms" href="/Form/Index" class="">Forms</a>
-@{
-    //TODO - DO NOT LIKE THIS AT ALL.
-}
+@* I'd really like to clean this up, I don't like how I have to rely on session variables. *@
 @if (HttpContext.Current.Session["__UserId"] != null)
 {
     if ((String)HttpContext.Current.Session["__UserRole"] == "Administrator")

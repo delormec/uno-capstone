@@ -1,4 +1,15 @@
-﻿@{
+﻿@*
+    Screen:         Account/LogIn
+    Description:    Displays login page.
+    Input:          (bool)ViewBag.failed
+                        User has already failed to login, lets us display error message.
+                    (string)ViewBag.user_name
+                        If user failed to log in, then auto fill the username textbox.
+    Output:         POST: Account/LogIn
+*@
+
+@{
+
     ViewBag.Title = "LogIn";
     Layout = "";
 }
@@ -54,7 +65,7 @@
 </body>
 </html>
 
-
+@* JQuery *@
 <script type="text/javascript">
     $(function () {
         $("#btn-login").button();

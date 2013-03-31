@@ -228,33 +228,6 @@ namespace HOST_Admin.Models.Repository
             _databaseContext.SaveChanges();
         }
 
-        /// <summary>
-        /// Not used anymore, would update an existing form in the database with the one passed in.
-        /// </summary>
-        /// <param name="form"></param>
-        public void updateForm(Form form)
-        {
-            Form old_form;
-
-            old_form = _databaseContext.Forms.Where(p => p.FormId == form.FormId).Single();
-
-            old_form.AutoUpdate = form.AutoUpdate;
-            old_form.KeyField = form.KeyField;
-            old_form.ListName = form.ListName;
-            old_form.Group = form.Group;
-            old_form.DateCreated = form.DateCreated;
-            old_form.Active = form.Active;
-            old_form.Description = form.Description;
-            old_form.Name = form.Name;
-            old_form.CreatedBy = form.CreatedBy;
-            old_form.FilledByFieldName = form.FilledByFieldName;
-            old_form.FilledByFieldType = form.FilledByFieldType;
-            old_form.FilledDateFieldName = form.FilledDateFieldName;
-            old_form.FilledDateFieldType = form.FilledDateFieldType;
-
-            _databaseContext.SaveChanges();
-        }
-
         //TODO -- CLEAN THIS UP
         /// <summary>
         /// Update a form and all of its related questions at once.

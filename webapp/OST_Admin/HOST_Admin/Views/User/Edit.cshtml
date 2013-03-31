@@ -1,4 +1,13 @@
-﻿@model HOST_Admin.Models.User
+﻿@*
+    Screen:         User/Edit
+    Description:    Displays interface to edit a User.
+    Input:          (User) Model
+                        User to be edited.
+                    (SelectList) ViewBag.RoleSelect
+                        Contains key/value pair to populate Role dropdown with.
+    Output:         POST: User/Edit
+*@
+@model HOST_Admin.Models.User
 @{
     ViewBag.Title = "Edit";
 }
@@ -6,9 +15,6 @@
 {
     @Html.ValidationSummary(true)
     <div id ="user-editor-outer">
-    @{  //commented out for now, don't think we need it now that main menu exists
-        //<div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
-    }
     <div class="header ui-widget-header ui-corner-top">Edit User</div>
     <div id="user-editor" class="ui-corner-bottom ui-widget-content ui-widget">
         @Html.HiddenFor(model => model.UserId)
@@ -61,8 +67,9 @@
     <input type="submit" id="btn-save" value="Save" />
 </div>
 }
-@section Scripts {
 
+@* JQuery *@
+@section Scripts {
 <script>
     $(function () {
         $("input[id=btn-save]").button();

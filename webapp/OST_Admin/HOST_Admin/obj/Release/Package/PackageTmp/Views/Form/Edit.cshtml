@@ -1,5 +1,16 @@
-﻿@model HOST_Admin.Models.Form
-
+﻿@*
+    Screen:         Form/Edit
+    Description:    Displays interface to edit a User.
+    Input:          (Form) Model.
+                        Form that will be edited.
+                    (List<SelectListItem>) ViewBag.FieldTypes
+                        Used to build combo box of FieldTypes.
+                    (int) ViewBag.formId
+                        Id of form.
+    Output:         POST: Form/Edit 
+                    AJAX: Form/AddQuestion
+*@
+@model HOST_Admin.Models.Form
 @{
     ViewBag.Title = "Edit Form";
     int fid = ViewBag.formId;
@@ -9,9 +20,6 @@
 {
     @Html.ValidationSummary(true)
     <div id ="form-editor-outer">
-    @{  //commented out for now, don't think we need it now that main menu exists
-    //<div>@Html.ActionLink("Back to List", "Index", null, new { id = "Back" })</div>
-    }
     <div class="header ui-widget-header ui-corner-top">Edit Form</div>
     <div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">
         @Html.HiddenFor(model => model.FormId)
@@ -120,6 +128,8 @@
 
     <input type="submit" id="Save" value="Save Form" />
 
+    @* Two part AJAX calls, first they save the entire form, then they create a new question.
+       The question area is then redrawn with the new question.  *@
     @Ajax.ActionLink("Add a Text Question", "AddQuestion", new { form_id = fid, type = "Text" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide(); return true;" })
     @Ajax.ActionLink("Add a Choice Question", "AddQuestion", new { form_id = fid, type = "Choice" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
     @Ajax.ActionLink("Add a Likert Question", "AddQuestion", new { form_id = fid, type = "Likert" }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })
@@ -128,6 +138,8 @@
         @Html.Partial("_QuestionList", Model.Questions)
     </div>
     <br />
+
+    @* Dialog pop-up to notify of errors. *@
     <div id="edit-validation-error" title="Validation Error" class="dialog">
         <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>There are required fields that have been left empty, you may have to look through questions to find it.</p>
     </div>
@@ -135,11 +147,11 @@
 
 }
 
-
+@* JQuery *@
 @section Scripts {
-
 <script>
     $(function () {
+        //Livequery ensures that when question tab is redrawn due to AJAX all these JQuery commands are rerun.
         $("#QuestionTabInner").livequery(function () {
             SetUpTabs();
             $('#QuestionTabInner').tabs({ active: $('#TabOpen').attr('value') });
@@ -162,6 +174,7 @@
 
         $("#QuestionTabInner").show();
 
+        //Form validation, pops open the dialog if errors are found.
         $("#form-edit").validate({
             rules: {
                 Name: { required: true },
@@ -176,12 +189,14 @@
             }
         });
 
+        //Dialog settings.
         $("#edit-validation-error").dialog({
             autoOpen: false,
             modal: true
         });
     });
 
+    //Not currently used.
     function RemoveTab(id)
     {
         var tab = $("#QuestionTabInner").find(".ui-tabs-nav li:eq(" + id + ")").remove();
@@ -193,6 +208,7 @@
         $("#QuestionTabInner").tabs("refresh");
     }
 
+    //Code that sets up the question tab area.
     function SetUpTabs()
     {
         var $tabs = $('#QuestionTabInner').tabs();
@@ -216,10 +232,7 @@
         $('.next-tab, .prev-tab').click(function () {
             $tabs.tabs({ active: $(this).attr("rel") });
             return false;
-        });
-
-             
+        });            
     }
-
 </script>
 }

@@ -392,7 +392,6 @@
     <None Include="Properties\PublishProfiles\Profile.pubxml" />
     <Content Include="Views\Form\Index.cshtml" />
     <Content Include="Views\Form\Create.cshtml" />
-    <Content Include="Views\Form\Delete.cshtml" />
     <Content Include="Views\Form\_TextQuestionRow.cshtml" />
     <Content Include="Views\Form\_ChoiceQuestionRow.cshtml" />
     <Content Include="Views\Form\_QuestionList.cshtml" />
@@ -403,7 +402,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Add.cshtml" />
-    <Content Include="Views\Shared\_ShortDateTime.cshtml" />
+    <Content Include="Views\Shared\_ShortDateTime2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
