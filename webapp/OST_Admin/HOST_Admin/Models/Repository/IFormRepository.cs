@@ -24,5 +24,7 @@ namespace HOST_Admin.Models.Repository
         int deleteOption(int option_id);
         Question getQuestionById(int question_id);
         void addForm(Form form);
+        Form copyForm(Form old_form, int user_id);
+        void changeQuestionPosition(int question_id, int start_position, int end_position);
     }
 }

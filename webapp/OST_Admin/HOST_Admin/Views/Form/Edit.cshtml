@@ -158,6 +158,29 @@
             $("input[type=submit],  a[data-ajax=true][id!='option-delete-button'][id!='option-add-button'], button").button();
             $("#Back").button();
             $('#QuestionTabInner').show();
+
+
+            //Apply change event to all of the change position drop downs
+            $(".ChangePosition").change(function () {
+                //save the form first
+                $('#form-edit').ajaxSubmit({ type: 'post', async: false });
+
+                var selectedValue = $(this).val() - 1;
+                //alert($(this).data('url') + "&end_position=" + selectedValue);
+
+                //then reorder the questions
+                $.ajax({
+                    url: $(this).data('url') + "&end_position=" + selectedValue,
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#QuestionTabOuter').html(result)
+                        //alert(result);
+                    }
+                });
+
+            });
+
         });
 
         $("#form-edit-btnset-autoupdate").buttonset();

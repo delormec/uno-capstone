@@ -310,5 +310,90 @@ namespace HOST_Admin.Models.Repository
                 }
             _databaseContext.SaveChanges();
         }
+
+        /// <summary>
+        /// Copy a form using reflection.
+        /// Also changes the CreatedBy/CreatedDate/Name.
+        /// </summary>
+        /// <param name="old_form">Form you want to copy.</param>
+        /// <param name="user_id">User who copied the form (changes createdby)</param>
+        /// <returns>New copy of form.</returns>
+        public Form copyForm(Form old_form, int user_id)
+        {
+            //Copy the form
+            Form new_form = HOSTCopy.CopyEntity(_databaseContext, old_form, false);
+            _databaseContext.Forms.AddObject(new_form);
+
+            //Copy each question, each type has to be handled seperatly.
+            foreach (Question old_q in old_form.Questions)
+            {
+                if (old_q is ChoiceQuestion)
+                {
+                    ChoiceQuestion new_q = HOSTCopy.CopyEntity(_databaseContext, (ChoiceQuestion)old_q, false);
+                    new_form.Questions.Add(new_q);
+
+                    foreach (Option old_option in ((ChoiceQuestion)old_q).Options)
+                    {
+                        Option new_option = HOSTCopy.CopyEntity(_databaseContext, old_option, true);
+                        new_q.Options.Add(new_option);
+                    }
+                }
+                else if (old_q is LikertScaleQuestion)
+                {
+                    LikertScaleQuestion new_q = HOSTCopy.CopyEntity(_databaseContext, (LikertScaleQuestion)old_q, false);
+                    new_form.Questions.Add(new_q);
+
+                    foreach (Label old_label in ((LikertScaleQuestion)old_q).Labels)
+                    {
+                        Label new_label = HOSTCopy.CopyEntity(_databaseContext, old_label, true);
+                        new_q.Labels.Add(new_label);
+                    }
+                }
+                else if (old_q is TextQuestion)
+                {
+                    TextQuestion new_q = HOSTCopy.CopyEntity(_databaseContext, (TextQuestion)old_q, false);
+                    new_form.Questions.Add(new_q);
+                }
+            }
+
+            new_form.CreatedBy = user_id;
+            new_form.DateCreated = DateTime.Now;
+            new_form.Name = "Copy - " + new_form.Name;
+
+            _databaseContext.SaveChanges();
+
+            return new_form;
+        }
+
+        /// <summary>
+        /// Move a question to a new position, then reorder the list to address the shift.
+        /// </summary>
+        /// <param name="question_id">Question your moving.</param>
+        /// <param name="start_position">Position the question is moving from.</param>
+        /// <param name="end_position">Position the question is moving to.</param>
+        public void changeQuestionPosition(int question_id, int start_position, int end_position)
+        {
+            int count = 0;
+
+            //Question that' being moved
+            Question question = _databaseContext.Questions.Where(q => q.QuestionId == question_id).Single();
+
+            //Form where questions are being reordered
+            Form form = question.Form;
+
+            //Shift everything above the target location by one
+            if (start_position < end_position)
+                form.Questions.Where(q => q.SortOrder <= end_position).ToList().ForEach(q => q.SortOrder = q.SortOrder - 1);
+            else if (start_position > end_position )
+                form.Questions.Where(q => q.SortOrder >= end_position).ToList().ForEach(q => q.SortOrder = q.SortOrder + 1);
+
+            //Move our question to its new spot
+            question.SortOrder = end_position;
+
+            //Renumber all the questions so there are no gaps in number
+            form.Questions.OrderBy(q => q.SortOrder).ToList().ForEach(q => q.SortOrder = count++);
+
+            _databaseContext.SaveChanges();
+        }
     }
 }

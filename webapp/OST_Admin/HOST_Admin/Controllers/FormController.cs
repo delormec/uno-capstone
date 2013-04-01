@@ -98,6 +98,26 @@ namespace HOST_Admin.Controllers
         }
 
         /// <summary>
+        /// Deep copy a form.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Copy(int id)
+        {
+            try
+            {
+                Form form = _formRepository.getFormById(id);
+                _formRepository.copyForm(form, _userRepository.getLoggedInUserId());
+            }
+            catch (NullReferenceException e)
+            {
+                return RedirectToAction("LogOut", "Account");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
         /// GET: Form/Create: Allows creation of new forms.
         /// </summary>
         /// <returns></returns>
@@ -263,6 +283,25 @@ namespace HOST_Admin.Controllers
             ViewBag.tabopen = cq.SortOrder;
 
             return PartialView("_QuestionList", cq.Form.Questions);
+        }
+
+        /// <summary>
+        /// AJAX: Form/ChangeQuestionPosition: Move a question to a new position
+        /// </summary>
+        /// <param name="question_id"></param>
+        /// <param name="start_position"></param>
+        /// <param name="end_position"></param>
+        /// <returns>Returns the whole question tab to the caller.</returns>
+        public PartialViewResult ChangeQuestionPosition(int question_id, int start_position, int end_position)
+        {
+            _formRepository.changeQuestionPosition(question_id, start_position, end_position);
+
+            Question q = _formRepository.getQuestionById(question_id);
+
+            //goto the tab of the question we moved
+            ViewBag.tabopen = q.SortOrder;
+
+            return PartialView("_QuestionList", q.Form.Questions);
         }
     }
 }

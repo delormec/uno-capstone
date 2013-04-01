@@ -26,8 +26,17 @@
                                         new SelectListItem() {Text = "Currency / Number", Value="NUMBER"}
                                     };
 
-    ViewBag.FieldTypes = fieldtypes;                                    
-    
+    //set up the drop down that will handle changing question order
+    //this really should be in the controller, but it causes issues with layered 
+    List<int> order = new List<int>();                                    
+                                    
+    for (int i = 0; i < Model.Count(); i++)
+    {
+        order.Add(i+1);
+    }
+
+    ViewBag.order = order;
+    ViewBag.FieldTypes = fieldtypes;                                       
 }
 
 <input type="hidden" id="TabOpen" value="@tabopen" />
@@ -50,7 +59,12 @@
     ViewBag.questionid = questionid;
     questionid++;
     
+    //set selected value
+    //order[item.SortOrder].Selected = true;
+    //order.Where(sli => sli.Text == item.SortOrder.ToString()).Single().Selected = true;
+    
     <div id="tabs-@questionid">
+
     @* Based on what type of question it is create the form, and pass in the viewbag so it can know what # it needs to be. *@
     @if (item is HOST_Admin.Models.TextQuestion)
     {
@@ -67,6 +81,12 @@
         
     @* Dual AJAX call, first it saves the entire form, then it deletes the question and redraws the question area. *@
     @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { question_id = item.QuestionId }, new AjaxOptions { UpdateTargetId = "QuestionTabOuter", InsertionMode = InsertionMode.Replace, OnBegin = "$('#form-edit').ajaxSubmit({type: 'post', async: false }); $('#QuestionTabInner').hide();" })        
+
+    
+    @* Drop down that will let us reorder the questions. *@
+    <div id="form-editor-question-order">
+        Change Position: @Html.DropDownList("ChangePosition" + questionid.ToString(), new SelectList(order, questionid), new { @class = "ChangePosition", data_url = Url.Action("ChangeQuestionPosition", new { question_id = item.QuestionId, start_position = item.SortOrder }) })
+    </div>
 
     @* Alternative method I'm not going to use for now *@
     @* @Ajax.ActionLink("Delete Question", "DeleteQuestion", new { questionId = item.QuestionId }, new AjaxOptions { OnBegin = "RemoveTab(" + @item.SortOrder + ");" }) *@
