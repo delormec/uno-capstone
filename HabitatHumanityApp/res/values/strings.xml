@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">HabitatHumanityApp</string>
+    <string name="app_name">Habitat OST</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="newFormButton">New Form</string>
@@ -14,8 +14,8 @@
     <string name="xmlForm">m</string>
     <string name="strGetXml">Get XML Test</string>
     <string name="strGetForm">Get Form Test</string>
-    <string name="strMainMenu">Main Menu</string>
-    <string name="title_activity_main_menu">Main Menu</string>
+    <string name="strMainMenu">Home</string>
+    <string name="title_activity_main_menu">Why is this the app name?</string>
     <string name="strSelectedForm">Selected Form</string>
     <string name="strDownloadForms">Download Forms</string>
     <string name="strPopulateSpinners">Populate Spinners</string>
