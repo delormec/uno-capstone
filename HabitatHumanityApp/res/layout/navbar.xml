@@ -1,39 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="50dp" 
-    android:id="@+id/navbar"
-    >    
+<LinearLayout 	xmlns:android="http://schemas.android.com/apk/res/android" 
+    			android:id="@+id/navbar"
+    			android:layout_width="match_parent"
+        		android:layout_height="60sp">
     
-    <Button
-	android:id="@+id/navbar_home_button"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:text="Home"
-	android:layout_alignParentBottom="true"
-	android:layout_alignParentLeft="true"
-	android:onClick="navigateHome" />
+	<Button android:id="@+id/navbar_home_button" 
+	    	android:layout_width="0dp" 
+	    	android:layout_height="match_parent" 
+	    	android:layout_weight=".33" 
+	    	android:text="Home" 
+	    	android:textSize="25sp" 
+	    	android:onClick="navigateHome"/>
 	
-	<Button
-	android:id="@+id/navbar_edit_button"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:text="Edit"
-	android:layout_alignParentBottom="true"
-	android:layout_centerHorizontal="true"
-	android:onClick="navigateEdit" />
+	<Button android:id="@+id/navbar_edit_button" 
+	    	android:layout_width="0dp" 
+			android:layout_height="match_parent" 
+			android:layout_weight=".33" 
+			android:text="Edit" 
+			android:textSize="25sp" 
+			android:onClick="navigateEdit"/>
 	
-	<Button
-	android:id="@+id/navbar_submit_button"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:text="Submit"
-	android:layout_alignParentBottom="true"
-	android:layout_alignParentRight="true"
-	android:onClick="navigateSubmit" />
-	
-</RelativeLayout>
-
+	<Button android:id="@+id/navbar_submit_button" 
+	    	android:layout_width="0dp" 
+	    	android:layout_height="match_parent" 
+	    	android:layout_weight=".33" 
+	    	android:text="Submit" 
+	    	android:textSize="25sp" 
+	    	android:onClick="navigateSubmit"/>
+</LinearLayout>
 
 

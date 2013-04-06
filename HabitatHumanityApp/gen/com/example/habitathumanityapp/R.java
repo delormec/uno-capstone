@@ -20,102 +20,51 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int DSTest1=0x7f0a0000;
-        public static final int DSTest2=0x7f0a0003;
-        public static final int DSTest3=0x7f0a0005;
-        public static final int EditButton=0x7f0a0025;
-        public static final int FormButton=0x7f0a0024;
-        public static final int SendButton=0x7f0a0026;
-        public static final int TextView01=0x7f0a0002;
-        public static final int answerText=0x7f0a000c;
-<<<<<<< Updated upstream
-        public static final int button1=0x7f0a0024;
-        public static final int dataStoreTest=0x7f0a0021;
-        public static final int dateText=0x7f0a000d;
-        public static final int download_forms=0x7f0a0035;
-=======
-        public static final int custom_title=0x7f0a002f;
-        public static final int dateText=0x7f0a000d;
-        public static final int download_forms=0x7f0a0031;
->>>>>>> Stashed changes
-        public static final int formLabel=0x7f0a001d;
-        public static final int formMenu=0x7f0a001a;
-        public static final int formProgressBar=0x7f0a0015;
-        public static final int formTitle=0x7f0a0016;
-        public static final int fullXmlCode=0x7f0a001f;
-        public static final int getFormButton=0x7f0a0007;
-        public static final int groupLabel=0x7f0a001b;
-        public static final int include1=0x7f0a001e;
-        public static final int likertHigh=0x7f0a0012;
-        public static final int likertLow=0x7f0a000e;
-<<<<<<< Updated upstream
-        public static final int mainMenu=0x7f0a0023;
-        public static final int menu_settings=0x7f0a0034;
-=======
-        public static final int menu_settings=0x7f0a0030;
->>>>>>> Stashed changes
-        public static final int multipleSelectChoices=0x7f0a000f;
-        public static final int navbar=0x7f0a002a;
-        public static final int navbar_edit_button=0x7f0a002c;
-        public static final int navbar_home_button=0x7f0a002b;
-        public static final int navbar_submit_button=0x7f0a002d;
-        public static final int next=0x7f0a0013;
-        public static final int otherText=0x7f0a0011;
-        public static final int prev=0x7f0a0014;
-        public static final int questionChoices=0x7f0a0010;
-        public static final int questionText=0x7f0a000a;
-        public static final int question_layout=0x7f0a0008;
-        public static final int question_subLayout_1=0x7f0a0009;
-        public static final int selectedForm=0x7f0a0018;
-        public static final int spacing_medium=0x7f0a000b;
-        public static final int submit_discard=0x7f0a0022;
-        public static final int submit_save=0x7f0a0021;
-        public static final int submit_upload=0x7f0a0020;
-        public static final int templateLabel=0x7f0a001c;
-        public static final int templateMenu=0x7f0a0019;
-        public static final int testText=0x7f0a0006;
-        public static final int textView1=0x7f0a0001;
-        public static final int textView2=0x7f0a0004;
-<<<<<<< Updated upstream
-=======
-        public static final int title_image=0x7f0a002e;
->>>>>>> Stashed changes
-        public static final int typeMenu=0x7f0a0017;
-        public static final int widget0=0x7f0a0027;
-        public static final int widget34=0x7f0a0023;
-        public static final int widget46=0x7f0a0029;
-        public static final int widget47=0x7f0a0028;
+        public static final int answerText=0x7f0a0005;
+        public static final int dateText=0x7f0a0006;
+        public static final int download_forms=0x7f0a0020;
+        public static final int formLabel=0x7f0a0016;
+        public static final int formMenu=0x7f0a0013;
+        public static final int formProgressBar=0x7f0a000e;
+        public static final int formTitle=0x7f0a000f;
+        public static final int groupLabel=0x7f0a0014;
+        public static final int include1=0x7f0a0017;
+        public static final int likertHigh=0x7f0a000b;
+        public static final int likertLow=0x7f0a0007;
+        public static final int menu_settings=0x7f0a001f;
+        public static final int multipleSelectChoices=0x7f0a0008;
+        public static final int navbar=0x7f0a001b;
+        public static final int navbar_edit_button=0x7f0a001d;
+        public static final int navbar_home_button=0x7f0a001c;
+        public static final int navbar_submit_button=0x7f0a001e;
+        public static final int next=0x7f0a000c;
+        public static final int otherText=0x7f0a000a;
+        public static final int prev=0x7f0a000d;
+        public static final int questionChoices=0x7f0a0009;
+        public static final int questionHelpText=0x7f0a0003;
+        public static final int questionText=0x7f0a0002;
+        public static final int question_layout=0x7f0a0000;
+        public static final int question_subLayout_1=0x7f0a0001;
+        public static final int selectedForm=0x7f0a0011;
+        public static final int spacing_medium=0x7f0a0004;
+        public static final int submit_discard=0x7f0a001a;
+        public static final int submit_save=0x7f0a0019;
+        public static final int submit_upload=0x7f0a0018;
+        public static final int templateLabel=0x7f0a0015;
+        public static final int templateMenu=0x7f0a0012;
+        public static final int typeMenu=0x7f0a0010;
     }
     public static final class layout {
-        public static final int activity_data_store_test=0x7f030000;
-        public static final int activity_display_form=0x7f030001;
-        public static final int activity_display_question=0x7f030002;
-        public static final int activity_main_menu=0x7f030003;
-<<<<<<< Updated upstream
-        public static final int activity_main_screen=0x7f030004;
-        public static final int activity_parse_form=0x7f030005;
-        public static final int activity_settings=0x7f030006;
-        public static final int activity_submit_form=0x7f030007;
-        public static final int main_form_screen=0x7f030008;
-        public static final int main_question_screen=0x7f030009;
-        public static final int main_submit_screen=0x7f03000a;
-        public static final int navbar=0x7f03000b;
-=======
-        public static final int activity_parse_form=0x7f030004;
-        public static final int activity_submit_form=0x7f030005;
-        public static final int main_form_screen=0x7f030006;
-        public static final int main_question_screen=0x7f030007;
-        public static final int main_submit_screen=0x7f030008;
-        public static final int navbar=0x7f030009;
-        public static final int pref_tools=0x7f03000a;
-        public static final int titlebar=0x7f03000b;
->>>>>>> Stashed changes
+        public static final int activity_display_question=0x7f030000;
+        public static final int activity_main_menu=0x7f030001;
+        public static final int activity_submit_form=0x7f030002;
+        public static final int navbar=0x7f030003;
+        public static final int pref_tools=0x7f030004;
     }
     public static final class menu {
         public static final int activity_main_menu=0x7f090000;
-        public static final int activity_settings=0x7f090001;
-        public static final int activity_submit_form=0x7f090002;
-        public static final int actvity_display_question=0x7f090003;
+        public static final int activity_submit_form=0x7f090001;
+        public static final int actvity_display_question=0x7f090002;
     }
     public static final class raw {
         public static final int form=0x7f050000;

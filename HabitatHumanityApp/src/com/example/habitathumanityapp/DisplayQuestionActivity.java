@@ -114,7 +114,7 @@ public class DisplayQuestionActivity extends Activity
 					}
 				);
 				
-				findViewById(R.id.navbar_edit_button).setVisibility(View.INVISIBLE);
+
 				((TextView) findViewById(R.id.formTitle)).setText(form.meta.name);
 						
 				
@@ -164,12 +164,14 @@ public class DisplayQuestionActivity extends Activity
 		{				
 			// Set the title bar
 			ActionBar actionBar = getActionBar();
-			actionBar.setTitle(String.format("OST - %s - Question %d", form.meta.name, questionNumber));
+			actionBar.setTitle(String.format("HOST - %s - Question %d", form.meta.name, questionNumber));
 			
 			
 			// Set the question view and question text (same for all three types)		
-			TextView questionText = (TextView) findViewById(R.id.questionText);
-			questionText.setText(question.Text);
+			((TextView) findViewById(R.id.questionText)).setText(question.Text);
+			((TextView) findViewById(R.id.questionHelpText)).setText(question.HelpText);
+			
+			
 			
 			
 			// Set up text question view
@@ -360,6 +362,10 @@ public class DisplayQuestionActivity extends Activity
 						// Add the CheckBox
 						checkBox = new CheckBox(this);
 						checkBox.setText(option);
+						
+						// Button style
+						checkBox.setTextSize(20);
+						
 						multipleSelectChoices.addView(checkBox);
 						
 						// Select pre-existing answer(s) (by simulating the button press)
@@ -382,6 +388,10 @@ public class DisplayQuestionActivity extends Activity
 			{
 				checkBox = new CheckBox(this);
 				checkBox.setText("Other");
+				
+				// Button style
+				checkBox.setTextSize(20);
+				
 				checkBox.setOnCheckedChangeListener(
 					new OnCheckedChangeListener()
 					{
@@ -445,17 +455,6 @@ public class DisplayQuestionActivity extends Activity
 			findViewById(R.id.questionChoices).setVisibility(View.VISIBLE);
 			
 			
-			// Set up for data types
-			if (question.FieldType.compareToIgnoreCase("single") == 0)
-			{}
-			else if (question.FieldType.compareToIgnoreCase("multi") == 0)
-			{}
-			else if (question.FieldType.compareToIgnoreCase("number") == 0)
-			{}
-			else if (question.FieldType.compareToIgnoreCase("date") == 0)
-			{}
-			
-			
 			RadioGroup buttons = (RadioGroup) findViewById(R.id.questionChoices);
 			RadioButton button;
 			
@@ -469,6 +468,10 @@ public class DisplayQuestionActivity extends Activity
 						// Add the button
 						button = new RadioButton(this);
 						button.setText(option);
+						
+						// Button style
+						button.setTextSize(20);
+						
 						buttons.addView(button);
 					
 						// Select pre-existing answer (by simulating the button press)
@@ -488,6 +491,10 @@ public class DisplayQuestionActivity extends Activity
 			{
 				button = new RadioButton(this);
 				button.setText("Other");
+				
+				// Button style
+				button.setTextSize(20);
+				
 				button.setOnCheckedChangeListener(
 					new OnCheckedChangeListener()
 					{

@@ -26,8 +26,8 @@ public abstract class OnFlingGestureListener implements OnTouchListener
 
 	private final class GestureListener extends SimpleOnGestureListener
 	{
-		private final int SWIPE_MIN_DISTANCE = 100;
-		private final int SWIPE_THRESHOLD_VELOCITY = 100;
+		private final int SWIPE_MIN_DISTANCE = 150;
+		private final int SWIPE_THRESHOLD_VELOCITY = 150;
 		
 		public GestureListener()
 		{}

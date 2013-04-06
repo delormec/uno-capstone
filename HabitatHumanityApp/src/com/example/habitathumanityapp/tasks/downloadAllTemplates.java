@@ -11,12 +11,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+
+
 public class downloadAllTemplates extends AsyncTask {
 	
 	private ProgressDialog progressDialog;
+	private Context callingContext;
 	
 	public downloadAllTemplates(Context context)
 	{
+		this.callingContext = context;
 		this.progressDialog = new ProgressDialog(context);
 	}
 	
@@ -29,6 +33,7 @@ public class downloadAllTemplates extends AsyncTask {
 	}
 	
 	
+	
 	@Override
 	protected void onPostExecute(Object result)
 	{
@@ -36,7 +41,15 @@ public class downloadAllTemplates extends AsyncTask {
 		{
 			progressDialog.dismiss();
 		}
+		
+		if (callingContext instanceof MainMenuActivity)
+		{
+			// If this was called from MainMenuActivity, then populate the spinners with the newly retrieved templates
+			MainMenuActivity getMethods = (MainMenuActivity) callingContext;
+			getMethods.startPopulateSpinners();
+		}
 	}
+	
 	
 	
 	@Override
