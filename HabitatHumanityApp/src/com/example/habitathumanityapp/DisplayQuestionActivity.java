@@ -11,6 +11,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -116,7 +118,9 @@ public class DisplayQuestionActivity extends Activity
 				
 
 				((TextView) findViewById(R.id.formTitle)).setText(form.meta.name);
-						
+				((Button) findViewById(R.id.navbar_edit_button)).setBackgroundColor(Color.parseColor("#66CCFF"));
+				((Button) findViewById(R.id.navbar_home_button)).setBackgroundColor(Color.parseColor("#888888"));
+				((Button) findViewById(R.id.navbar_submit_button)).setBackgroundColor(Color.parseColor("#888888"));					
 				
 				displayNewQuestion(question);
 			}
@@ -208,7 +212,7 @@ public class DisplayQuestionActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
-				Log.v("ryan_debug", "Entered unexpectedblock in method onCreate() in class DisplayQuestionActivity (received qestion of unknown type)");
+				ErrorLog.log(this, new Error("Received question of unknown type.", Error.Severity.Critical));
 			
 				toast = Toast.makeText(this, "Unknown question type", Toast.LENGTH_SHORT);
 				toast.show();
@@ -847,10 +851,12 @@ public class DisplayQuestionActivity extends Activity
 	
 	// The following navigate methods are for the implementation of the navbar layout
 	public void navigateHome(View view)
-	{	
+	{		
 		// Save the answer and form first
 		saveAnswerToForm();
 		saveFormToDatabase();
+		
+		
 		
 		if (toast != null) toast.cancel();
 		

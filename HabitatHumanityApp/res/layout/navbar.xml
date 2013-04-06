@@ -8,7 +8,8 @@
 	    	android:layout_height="match_parent" 
 	    	android:layout_weight=".33" 
 	    	android:text="Home" 
-	    	android:textSize="25sp" 
+	    	android:textSize="25sp"
+	    	android:background="#888888" 
 	    	android:onClick="navigateHome"/>
 	
 	<Button android:id="@+id/navbar_edit_button" 
@@ -16,7 +17,8 @@
 			android:layout_height="match_parent" 
 			android:layout_weight=".33" 
 			android:text="Edit" 
-			android:textSize="25sp" 
+			android:textSize="25sp"
+			android:background="#888888"  
 			android:onClick="navigateEdit"/>
 	
 	<Button android:id="@+id/navbar_submit_button" 
@@ -24,7 +26,8 @@
 	    	android:layout_height="match_parent" 
 	    	android:layout_weight=".33" 
 	    	android:text="Submit" 
-	    	android:textSize="25sp" 
+	    	android:textSize="25sp"
+	    	android:background="#888888"
 	    	android:onClick="navigateSubmit"/>
 </LinearLayout>
 

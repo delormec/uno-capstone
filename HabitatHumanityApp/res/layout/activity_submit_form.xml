@@ -4,44 +4,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+	<LinearLayout
+	    android:layout_centerVertical="true"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	    
+	    
+	    <Button
+	        android:id="@+id/submit_upload"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        
+	        android:layout_weight=".33"
+	  
+		    android:textSize="25sp"
+	        android:onClick="upload"
+	        android:text="Upload" />
+	    
+	    
+	   
+	
+	    <Button
+	        android:id="@+id/submit_save"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
 
-    <Button
-        android:id="@+id/submit_upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="171dp"
-        android:onClick="upload"
-        android:text="Upload" />
-    
-    
-   
+			android:layout_weight=".33"
 
-    <Button
-        android:id="@+id/submit_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/submit_upload"
-        android:layout_alignBottom="@+id/submit_upload"
-        android:layout_centerHorizontal="true"
-        android:onClick="save"
-        android:text="Save" />
+		    android:textSize="25sp"
+	        android:onClick="save"
+	        android:text="Save" />
+	
+	    <Button
+	        android:id="@+id/submit_discard"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
 
-    <Button
-        android:id="@+id/submit_discard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/submit_upload"
-        android:layout_alignBottom="@+id/submit_upload"
-        android:layout_alignParentRight="true"
-        android:onClick="discardConfirm"
-        android:text="Discard" />
-    
+			android:layout_weight=".33"
+
+		    android:textSize="25sp"
+	        android:onClick="discardConfirm"
+	        android:text="Discard" />
+    </LinearLayout>
     
      <include
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60sp"
         android:layout_alignParentBottom="true"
     	layout="@layout/navbar" />
     

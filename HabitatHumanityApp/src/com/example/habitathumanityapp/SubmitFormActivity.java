@@ -10,12 +10,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class SubmitFormActivity extends Activity
@@ -39,8 +40,12 @@ public class SubmitFormActivity extends Activity
 
 		// Receive the form object
 		form = (Form) getIntent().getExtras().get("formObject");
+	
 		setContentView(R.layout.activity_submit_form);
-		findViewById(R.id.navbar_submit_button).setVisibility(View.GONE);
+		
+		((Button) findViewById(R.id.navbar_submit_button)).setBackgroundColor(Color.parseColor("#66CCFF"));
+		((Button) findViewById(R.id.navbar_edit_button)).setBackgroundColor(Color.parseColor("#888888"));
+		((Button) findViewById(R.id.navbar_home_button)).setBackgroundColor(Color.parseColor("#888888"));
 	}
 
 

@@ -7,5 +7,6 @@
         android:title="@string/menu_settings" android:enabled="true" android:onClick="@string/menu_openSettingsString"/>
     <item android:id="@+id/download_forms" android:title="@string/menu_download" android:enabled="true" android:showAsAction="never" android:onClick="@string/menu_startDownloadString"></item>
 	<item android:title="Upload All Forms" android:enabled="true" android:showAsAction="never" android:onClick="uploadAllForms"></item>
+	<item android:title="Error Log" android:enabled="true" android:showAsAction="never" android:onClick="openErrorLog"></item>
 	
 </menu>

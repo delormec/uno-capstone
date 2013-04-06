@@ -11,6 +11,7 @@ import com.example.habitathumanityapp.tasks.uploadAllFormsToSharePoint;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +71,10 @@ public class MainMenuActivity extends Activity {
 			//templateSpinner.setSelection(templatePos);
 			//formSpinner.setSelection(formPos);
 		}
-		findViewById(R.id.navbar_home_button).setVisibility(View.GONE);
+		
+		((Button) findViewById(R.id.navbar_home_button)).setBackgroundColor(Color.parseColor("#66CCFF"));
+		((Button) findViewById(R.id.navbar_edit_button)).setBackgroundColor(Color.parseColor("#888888"));
+		((Button) findViewById(R.id.navbar_submit_button)).setBackgroundColor(Color.parseColor("#888888"));
 		
 		startPopulateSpinners();
 	}
@@ -480,6 +485,15 @@ public class MainMenuActivity extends Activity {
 	*/
 
 	
+	
+	
+	
+	
+	public void openErrorLog(MenuItem item)
+	{
+		Intent intent = new Intent(this, DisplayErrorLogActivity.class);
+		startActivity(intent);
+	}
 	
 	
 	
