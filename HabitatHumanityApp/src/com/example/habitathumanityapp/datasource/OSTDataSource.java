@@ -86,13 +86,14 @@ public class OSTDataSource {
 
 		try {
 			values.put("template_id", form.meta.template_id);  
-			//TODO, the keyfield logic needs to be built in, right now well just take the answer to first question
 			
-
-			if (form.questions.size() > 0 && form.questions.get(0).Answer != null)
-				values.put("key_field", form.questions.get(0).Answer);
+			//If the key field question is answered then insert it.
+			//Otherwise inserts a generic placeholder
+			if (form.questions.size() >= Integer.parseInt(form.meta.keyfield) && form.questions.get(Integer.parseInt(form.meta.keyfield)-1).Answer != null && form.questions.get(Integer.parseInt(form.meta.keyfield)-1).Answer.compareTo("") != 0)
+				values.put("key_field", form.questions.get(Integer.parseInt(form.meta.keyfield)-1).Answer);
 			else
-				values.put("key_field", "-none-");
+				values.put("key_field", "__Key Question " + form.meta.keyfield +  " Unanswered.");
+			
 			values.put("form", toString(form));
 			
 		} catch (IOException e) {
@@ -382,6 +383,15 @@ public class OSTDataSource {
 				values.put("key_field", form.questions.get(0).Answer);
 			else
 				values.put("key_field", "-none-");
+			
+			
+			//If the key field question is answered then insert it.
+			//Otherwise inserts a generic placeholder
+			if (form.questions.size() >= Integer.parseInt(form.meta.keyfield) && form.questions.get(Integer.parseInt(form.meta.keyfield)-1).Answer != null && form.questions.get(Integer.parseInt(form.meta.keyfield)-1).Answer.compareTo("") != 0)
+				values.put("key_field", form.questions.get(Integer.parseInt(form.meta.keyfield)-1).Answer);
+			else
+				values.put("key_field", "__Key Question " + form.meta.keyfield +  " Unanswered.");
+			
 			values.put("form", toString(form));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

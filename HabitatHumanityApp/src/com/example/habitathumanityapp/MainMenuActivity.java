@@ -3,6 +3,7 @@ package com.example.habitathumanityapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.habitathumanityapp.Helper.Connectivity;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.tasks.downloadAllTemplates;
 import com.example.habitathumanityapp.tasks.uploadAllFormsToSharePoint;
@@ -161,6 +162,19 @@ public class MainMenuActivity extends Activity {
 			
 		});
 	}
+	
+	/**
+	 * Refreshes spinners when you return to this activity from any other activity.
+	 * This seems to work as I intended.
+	 */
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		startPopulateSpinners();
+	
+	}
+	
 	/** Populates the second spinner with a list of all templates..
 	 *  Sets a listener on the spinner to handle user selections.
 	 */
@@ -364,18 +378,6 @@ public class MainMenuActivity extends Activity {
 		});
 	}
 
-	/** Starts asynchronous task to empty database and download all templates.
-	 * 
-	 * @param view
-	 */
-	@SuppressWarnings("unchecked")
-	public void startFormDownload(View view)
-	{
-		downloadAllTemplates downloadTask = new downloadAllTemplates(this);
-		downloadTask.execute(this);
-	}
-	
-	
 	/**
 	 * Called from the menu. <br>
 	 * Launches the task that attempts to upload all forms on the device to SharePoint
@@ -384,6 +386,13 @@ public class MainMenuActivity extends Activity {
 	 */
 	public void uploadAllForms(MenuItem menu)
 	{
+		//If there is no connectivity, display a popup and return
+		if (!Connectivity.isNetworkAvailable(this))
+		{
+			Connectivity.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
 		new uploadAllFormsToSharePoint(this).execute();
 	}
 	
@@ -391,6 +400,14 @@ public class MainMenuActivity extends Activity {
 	@SuppressWarnings("unchecked")
 	public void startFormDownload(MenuItem item)
 	{
+		//If there is no connectivity, display a popup and return
+		if (!Connectivity.isNetworkAvailable(this))
+		{
+			Connectivity.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
+		
 		downloadAllTemplates downloadTask = new downloadAllTemplates(this);
 		downloadTask.execute(this);
 	}

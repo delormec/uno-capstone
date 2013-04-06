@@ -2,6 +2,7 @@ package com.example.habitathumanityapp;
 
 import java.util.concurrent.ExecutionException;
 
+import com.example.habitathumanityapp.Helper.Connectivity;
 import com.example.habitathumanityapp.datasource.OSTDataSource;
 import com.example.habitathumanityapp.tasks.uploadAllFormsToSharePoint;
 import com.example.habitathumanityapp.tasks.uploadFormToSharePoint;
@@ -66,6 +67,13 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void upload(View view)
 	{
+		//If there is no connectivity, display a popup and return
+		if (!Connectivity.isNetworkAvailable(this))
+		{
+			Connectivity.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setTitle("Confirm Upload");
 		adb.setMessage("If the upload is successful, the form will be removed from your device.");
@@ -141,7 +149,6 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void discardConfirm(View view)
 	{
-		
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
 		adb.setTitle("Confirm Discard");
 		adb.setMessage("Are you sure you want to discard this form?");
@@ -215,6 +222,13 @@ public class SubmitFormActivity extends Activity
 	 */
 	public void uploadAllForms(MenuItem menu)
 	{
+		//If there is no connectivity, display a popup and return
+		if (!Connectivity.isNetworkAvailable(this))
+		{
+			Connectivity.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
 		new uploadAllFormsToSharePoint(this).execute();
 	
 		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
