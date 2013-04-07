@@ -3,8 +3,11 @@ package org.habitatomaha.HOST.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.habitatomaha.HOST.Model.Error;
+import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.SpinnerData;
+import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 import org.habitatomaha.HOST.Model.Repository.SharePointDataSource;
 
@@ -19,15 +22,15 @@ public class UploadAllForms extends AsyncTask
 	private ProgressDialog progressDialog;
 	private OSTDataSource database;
 	private List<Integer> failures;
-	private Context context;
+	private Context callingContext;
 	private String toastString;
 	
 	// Constructor
 	public UploadAllForms(Context context) 
 	{
-		this.context = context;
-		this.progressDialog = new ProgressDialog(context);
-		this.database = new OSTDataSource(context);	
+		this.callingContext = context;
+		this.progressDialog = new ProgressDialog(callingContext);
+		this.database = new OSTDataSource(callingContext);	
 		this.toastString = "";
 	}
 
@@ -45,18 +48,36 @@ public class UploadAllForms extends AsyncTask
 	{
 		progressDialog.dismiss();
 		
-		Toast.makeText(context, toastString, Toast.LENGTH_LONG).show();
+		Toast.makeText(callingContext, toastString, Toast.LENGTH_LONG).show();
 	}
 	
 	
-	// Changes the ProgressDialog to note how many forms have been uploaded so far
-	// values[0] should be the current form being uploaded
-	// values[1] should be the total number of forms being uploaded
+	/** Changes the ProgressDialog to note how many forms have been uploaded so far
+	 *  values[0] should be the current form being uploaded
+	 *  values[1] should be the total number of forms being uploaded
+	 */
 	@Override
 	protected void onProgressUpdate(Object... values)
 	{
 		progressDialog.setMessage(String.format("Uploading form %d of %d...", values[0], values[1]));
 	}
+	
+	
+	
+	/**
+	 * Sets the callingContext of this task to context and resets the progressDialog
+	 * 
+	 * @param context	The Context that called this method
+	 */
+	public void rebuild(Context context)
+	{
+		this.callingContext = context;
+		
+		progressDialog = new ProgressDialog(callingContext);
+		progressDialog.setMessage("Downloading form templates...");
+		progressDialog.show();
+	}
+	
 	
 	
 	@Override
@@ -86,7 +107,7 @@ public class UploadAllForms extends AsyncTask
 		List<SpinnerData> formDataList = database.getAllFormInfo();
 		
 		failures = new ArrayList<Integer>(formDataList.size());
-		String[] result;
+		String[] response;
 		
 		// For each form in the database, attempt to upload it to SharePoint
 		for (int x = 0; x < formDataList.size(); x++)
@@ -99,9 +120,9 @@ public class UploadAllForms extends AsyncTask
 			form = database.getFormById(formID);
 			
 			// Attempt the upload
-			result = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
+			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
 			
-			if (result[0].compareTo("0") == 0)
+			if (response[0].compareTo("0") == 0)
 			{
 				// If the upload was successful, remove the form from the database
 				database.removeFormById(formID);
@@ -109,6 +130,7 @@ public class UploadAllForms extends AsyncTask
 			else
 			{
 				// Take note that this form failed to upload
+				ErrorLog.log(callingContext, new Error("Form Upload Error", response[1], Severity.Minor));				
 				failures.add(formID);
 			}
 		}

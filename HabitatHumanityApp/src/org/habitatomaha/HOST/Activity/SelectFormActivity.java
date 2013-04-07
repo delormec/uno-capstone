@@ -6,13 +6,17 @@ import java.util.List;
 import org.habitatomaha.HOST.AsyncTask.DownloadAllTemplates;
 import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.Helper.Utility;
+import org.habitatomaha.HOST.Model.Error;
+import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.SpinnerData;
+import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
 import org.habitatomaha.HOST.R;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -39,6 +43,9 @@ public class SelectFormActivity extends Activity {
 	private int groupPos, templatePos, formPos = 0;
 	private boolean screenOrientChanged = false;
 	private boolean secondTime = false;
+	
+	private DownloadAllTemplates downloadTask;
+	private UploadAllForms uploadTask;
 	
 	void showToast(CharSequence msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
@@ -82,8 +89,27 @@ public class SelectFormActivity extends Activity {
 		((Button) findViewById(R.id.navbar_submit_button)).setBackgroundColor(Color.parseColor("#888888"));
 		
 		startPopulateSpinners();
+		
+		
+		// Retrieve the task info
+		AsyncTask task = (AsyncTask) getLastNonConfigurationInstance();
+		if (task != null)
+		{
+			if (task instanceof DownloadAllTemplates)
+			{
+				downloadTask = (DownloadAllTemplates) task;
+				downloadTask.rebuild(this);
+			}
+
+			else if (task instanceof UploadAllForms)
+			{
+				uploadTask = (UploadAllForms) task;
+				uploadTask.rebuild(this);
+			}
+		}
 	}
 	
+	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		super.onSaveInstanceState(savedInstanceState);
@@ -98,6 +124,45 @@ public class SelectFormActivity extends Activity {
 		savedInstanceState.putInt("formPos", formPos);
 		
 	}
+	
+	
+	
+	
+	@Override
+	public AsyncTask onRetainNonConfigurationInstance()
+	{	
+		// Save downloadTask
+		if (downloadTask != null)
+		{
+			if (downloadTask.getStatus() != AsyncTask.Status.FINISHED)
+			{
+				return downloadTask;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		// Save uploadTask
+		else if (uploadTask != null)
+		{
+			if (uploadTask.getStatus() != AsyncTask.Status.FINISHED)
+			{
+				return uploadTask;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		// Save neither task
+		else
+		{
+			return null;
+		}
+	}
+	
+	
 	
 	
 	/** Populates the first spinner with a list of template groups.
@@ -397,8 +462,10 @@ public class SelectFormActivity extends Activity {
 			return;
 		}
 		
-		new UploadAllForms(this).execute();
+		uploadTask = new UploadAllForms(this);
+		uploadTask.execute();
 	}
+	
 	
 	
 	@SuppressWarnings("unchecked")
@@ -412,9 +479,11 @@ public class SelectFormActivity extends Activity {
 		}
 		
 		
-		DownloadAllTemplates downloadTask = new DownloadAllTemplates(this);
+		downloadTask = new DownloadAllTemplates(this);
 		downloadTask.execute(this);
 	}
+	
+	
 	
 	/** Begins population of spinners.
 	 * 
@@ -424,6 +493,8 @@ public class SelectFormActivity extends Activity {
 		populateTemplateGroupSpinner();
 		addTemplateGroupSpinnerListener();
 	}
+	
+	
 	
 	/** Begins population of spinners.
 	 * From button click.
@@ -435,10 +506,14 @@ public class SelectFormActivity extends Activity {
 		addTemplateGroupSpinnerListener();
 	}
 	
+	
+	
 	public void openSettingsActivity(MenuItem item){
 		Intent intent = new Intent(this, SettingsActivity.class);
 		startActivity(intent);
 	}
+	
+	
 	
 	/*
 	/** Creates a dummy form with the selected template.
@@ -479,12 +554,16 @@ public class SelectFormActivity extends Activity {
 	}
 	*/
 	
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
 		return true;
 	}
+	
+	
 	
 	/*
 	public boolean onOptionItemSelected(MenuItem item){
@@ -504,9 +583,6 @@ public class SelectFormActivity extends Activity {
 		}
 	}
 	*/
-
-	
-	
 	
 	
 	
@@ -518,16 +594,11 @@ public class SelectFormActivity extends Activity {
 	
 	
 	
-	
-	
-	
-	
 	// The following navigate methods are for the implementation of the navbar layout
 	public void navigateHome(View view)
 	{	
 		return;
 	}
-	
 	
 	/**
 	 * Attempts to send the selected form to DisplayQuestionActivity. <br>

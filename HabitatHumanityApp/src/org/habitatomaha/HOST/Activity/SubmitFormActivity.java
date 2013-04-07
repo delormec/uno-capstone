@@ -5,8 +5,13 @@ import java.util.concurrent.ExecutionException;
 import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.AsyncTask.UploadForm;
 import org.habitatomaha.HOST.Helper.Utility;
+
 import org.habitatomaha.HOST.Model.Form;
+import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
+import org.habitatomaha.HOST.Model.Error;
+import org.habitatomaha.HOST.Model.Error.Severity;
+import org.habitatomaha.HOST.Model.Question;
 
 import org.habitatomaha.HOST.R;
 
@@ -21,6 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SubmitFormActivity extends Activity
@@ -47,9 +54,43 @@ public class SubmitFormActivity extends Activity
 	
 		setContentView(R.layout.activity_submit_form);
 		
+		
+		LinearLayout body = (LinearLayout) findViewById(R.id.submit_info);
+		
+		// Name of the form
+		TextView templateName = new TextView(this);
+		templateName.setText(form.meta.name);
+		templateName.setTextSize(25);
+		
+		
+		// List of unanswered questions
+		TextView unansweredQuestions = new TextView(this);
+		
+		String unans = "Unanswered questions: ";
+		int x = 0;
+		for (Question q : form.questions)
+		{
+			if (q.Answer == null || q.Answer.compareTo("") == 0 || q.Answer.compareTo("00/00/0000") == 0)
+			{
+				unans += String.format("%d ", x);
+			}
+			x++;
+		}
+		
+		unansweredQuestions.setText(unans);
+		unansweredQuestions.setTextSize(20);
+		
+		
+		
+		
+		body.addView(templateName);
+		body.addView(unansweredQuestions);
+		
+		
 		((Button) findViewById(R.id.navbar_submit_button)).setBackgroundColor(Color.parseColor("#66CCFF"));
 		((Button) findViewById(R.id.navbar_edit_button)).setBackgroundColor(Color.parseColor("#888888"));
 		((Button) findViewById(R.id.navbar_home_button)).setBackgroundColor(Color.parseColor("#888888"));
+	
 	}
 
 
@@ -93,8 +134,8 @@ public class SubmitFormActivity extends Activity
 										//Start the task
 										task.execute(form);
 										try {
-											//Wait for the task to finish and get it's response
-											String[] response = task.get();
+											//Wait for the task to finish and get its response
+											String[] response = task.get();											
 											Toast.makeText(getInstance(), response[1], Toast.LENGTH_LONG).show();
 
 											//reponse of -1 == error
@@ -103,7 +144,12 @@ public class SubmitFormActivity extends Activity
 											{
 												discard();
 												getInstance().finish();
-											}										
+											}
+											else
+											{
+												// Log the error
+												ErrorLog.log(getInstance(), new Error("Form Upload Error", response[1], Severity.Minor));
+											}
 											
 										} catch (InterruptedException e) {
 											// TODO Auto-generated catch block
@@ -213,31 +259,6 @@ public class SubmitFormActivity extends Activity
 	public static SubmitFormActivity getInstance()
 	{
 		return currentInstance;
-	}
-	
-	
-	
-	/**
-	 * Called from the menu. <br>
-	 * Launches the task that attempts to upload all forms on the device to SharePoint
-	 * 
-	 * @param menu	The menu that called this method
-	 */
-	public void uploadAllForms(MenuItem menu)
-	{
-		//If there is no connectivity, display a popup and return
-		if (!Utility.isNetworkAvailable(this))
-		{
-			Utility.displayNetworkUnavailableDialog(this);
-			return;
-		}
-		
-		new UploadAllForms(this).execute();
-	
-		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
-		findViewById(R.id.submit_save).setVisibility(View.GONE);
-		findViewById(R.id.submit_upload).setVisibility(View.GONE);
-		findViewById(R.id.submit_discard).setVisibility(View.GONE);
 	}
 	
 	

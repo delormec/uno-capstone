@@ -40,12 +40,36 @@ public class ErrorLogActivity extends Activity
 			// Display each error
 			for (Error err : errorLog)
 			{
+				int colorCode = Color.parseColor("#000000"); 
+				
+				switch(err.severity)
+				{
+					case Minor:
+						colorCode = Color.parseColor("#0000CC");
+						break;
+					case Normal:
+						colorCode = Color.parseColor("#CCCC00");
+						break;
+					case Critical:
+						colorCode = Color.parseColor("#FF0000");
+						break;
+				}
+				
+				
 				// Display the error text
 				TextView errorView = new TextView(this);
 				errorView.setText(err.errorText);
-				errorView.setTextSize(25);						
+				errorView.setTextSize(25);
+				errorView.setTextColor(colorCode);
 				errorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
 				linearLayout.addView(errorView);
+				
+				// Display timestamp
+				TextView timeView = new TextView(this);
+				timeView.setText(err.timeStamp);
+				timeView.setTextSize(20);						
+				timeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
+				linearLayout.addView(timeView);
 				
 				// Display additional info
 				TextView infoView = new TextView(this);

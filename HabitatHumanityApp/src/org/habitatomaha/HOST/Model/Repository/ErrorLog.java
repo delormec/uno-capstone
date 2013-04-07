@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import org.habitatomaha.HOST.Model.Error;
@@ -101,6 +102,12 @@ public class ErrorLog
 			log = new LinkedList<Error>();
 		}
 
+		
+		// Timestamp the Error
+		Calendar calendar = Calendar.getInstance();
+		error.timeStamp = calendar.getTime().toString();
+		
+		
 		// Attempt to add the Error to the log
 		if (log.size() < 50)
 		{

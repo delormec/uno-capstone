@@ -6,11 +6,11 @@ import org.habitatomaha.HOST.Helper.OnFlingGestureListener;
 import org.habitatomaha.HOST.Helper.Utility;
 import org.habitatomaha.HOST.Model.ChoiceQuestion;
 import org.habitatomaha.HOST.Model.Error;
+import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.LikertScaleQuestion;
 import org.habitatomaha.HOST.Model.Question;
 import org.habitatomaha.HOST.Model.TextQuestion;
-import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
@@ -25,7 +25,6 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
@@ -139,7 +138,7 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
-				Log.v("ryan_debug", "Entered unexpected block in method onCreate() in class DisplayQuestionActivity (received null question)");
+				ErrorLog.log(getInstance(), new Error("Entered unexpected block in method onCreate() in class DisplayQuestionActivity (received null question)", Severity.Normal));
 				this.finish();
 			}
 		}
@@ -224,7 +223,10 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
-				ErrorLog.log(this, new Error("Received question of unknown type.", Error.Severity.Critical));
+				ErrorLog.log(this, new Error("Question Error", 
+											"Received a question of unknown type.\n" +
+											"Ensure that a Question is always an instance of TextQuestion, ChoiceQuestion, or LikertScaleQuestion.\n", 
+											Severity.Critical));
 			
 				toast = Toast.makeText(this, "Unknown question type", Toast.LENGTH_SHORT);
 				toast.show();
