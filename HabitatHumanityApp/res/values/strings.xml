@@ -7,15 +7,10 @@
     <string name="title_activity_display_form">DisplayFormActivity</string>
     <string name="testTextString">Empty</string>
     <string name="getFormButton">Get Form</string>
-    <string name="dataStoreTest">Data Store Test</string>
-    <string name="title_activity_data_store_test">DataStoreTest</string>
-    <string name="title_activity_parse_form">ParseFormActivity</string>
-    <string name="parseFormTest">parseFormTest</string>
     <string name="xmlForm">m</string>
     <string name="strGetXml">Get XML Test</string>
     <string name="strGetForm">Get Form Test</string>
     <string name="strMainMenu">Home</string>
-    <string name="title_activity_main_menu">Why is this the app name?</string>
     <string name="strSelectedForm">Selected Form</string>
     <string name="strDownloadForms">Download Forms</string>
     <string name="strPopulateSpinners">Populate Spinners</string>
