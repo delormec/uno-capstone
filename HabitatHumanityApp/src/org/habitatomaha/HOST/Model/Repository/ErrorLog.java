@@ -75,7 +75,37 @@ public class ErrorLog
 	
 	
 	/**
+	 * Saves the error log to the file "error_log.ser"
+	 * 
+	 * @param context	The context that called this method
+	 */
+	private static void closeLog(Context context)
+	{
+		// Write the error log to the file
+		try 
+		{
+			FileOutputStream fos = context.openFileOutput("error_log.ser", Context.MODE_PRIVATE);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			
+			oos.writeObject(log);			
+			oos.close();
+			fos.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	/**
 	 * Returns a LinkedList of type Error that contains the error log
+	 * 
 	 * @param context	The Context that called this method
 	 * @return	The list of Errors stored in the error log
 	 */
@@ -115,30 +145,32 @@ public class ErrorLog
 		}
 		else
 		{
-			// Error log full, remove oldest one
+			// Error log full, remove oldest one first
 			log.removeFirst();
 			log.addLast(error);
 		}
-
-
-		// Write the error log to the file
-		try 
-		{
-			FileOutputStream fos = context.openFileOutput("error_log.ser", Context.MODE_PRIVATE);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			
-			oos.writeObject(log);			
-			oos.close();
-			fos.close();
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
+		
+		closeLog(context);
 	}
+	
+	
+	
+	/**
+	 * Removes an entry from the error log
+	 * 
+	 * @param context	The Context that called this method
+	 * @param err		The Error to remove from the log
+	 */
+	public static boolean remove(Context context, Error err)
+	{
+		boolean result;
+		
+		openLog(context);
+		result = log.remove(err);
+		closeLog(context);
+		
+		return result;
+	}
+	
 }
 

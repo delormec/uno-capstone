@@ -6,11 +6,8 @@ import java.util.List;
 import org.habitatomaha.HOST.AsyncTask.DownloadAllTemplates;
 import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.Helper.Utility;
-import org.habitatomaha.HOST.Model.Error;
-import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.SpinnerData;
-import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
 import org.habitatomaha.HOST.R;
@@ -53,6 +50,7 @@ public class SelectFormActivity extends Activity {
 	void showToast(CharSequence msg){
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

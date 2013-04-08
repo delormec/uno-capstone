@@ -2,7 +2,6 @@ package org.habitatomaha.HOST.Activity;
 
 import java.util.concurrent.ExecutionException;
 
-import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.AsyncTask.UploadForm;
 import org.habitatomaha.HOST.Helper.Utility;
 
@@ -23,7 +22,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -66,13 +64,13 @@ public class SubmitFormActivity extends Activity
 		// List of unanswered questions
 		TextView unansweredQuestions = new TextView(this);
 		
-		String unans = "Unanswered questions: ";
+		String unans = "Unanswered questions:\n";
 		int x = 0;
 		for (Question q : form.questions)
 		{
 			if (q.Answer == null || q.Answer.compareTo("") == 0 || q.Answer.compareTo("00/00/0000") == 0)
 			{
-				unans += String.format("%d ", x);
+				unans += String.format("%d ", x + 1);
 			}
 			x++;
 		}

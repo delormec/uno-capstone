@@ -2,6 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="15sp"
+    android:paddingLeft="15sp"
+    android:paddingRight="15sp"
     android:orientation="vertical" >
     
     
@@ -36,7 +39,7 @@
 	        
 	        android:layout_weight=".33"
 	  
-		    android:textSize="25sp"
+		    android:textSize="20sp"
 	        android:onClick="upload"
 	        android:text="Upload" />
 	    
@@ -50,7 +53,7 @@
 
 			android:layout_weight=".33"
 
-		    android:textSize="25sp"
+		    android:textSize="20sp"
 	        android:onClick="save"
 	        android:text="Save" />
 	
@@ -61,7 +64,7 @@
 
 			android:layout_weight=".33"
 
-		    android:textSize="25sp"
+		    android:textSize="20sp"
 	        android:onClick="discardConfirm"
 	        android:text="Discard" />
     </LinearLayout>

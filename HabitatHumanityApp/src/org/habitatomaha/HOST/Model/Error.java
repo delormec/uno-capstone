@@ -21,7 +21,7 @@ public class Error implements Serializable
 	public Severity severity;	// How big of a deal this error is
 	public String moreInfo;		// Extra info about the error(How to avoid this error in the future, etc.)
 	
-	public String timeStamp;	// Timestamp is set by ErrorLog when the Error is logged.
+	public String timeStamp;	// timeStamp is set by ErrorLog when the Error is logged.
 
 	
 	// Constructor
@@ -30,6 +30,7 @@ public class Error implements Serializable
 		this.errorText = errorText;
 		this.moreInfo = "No extra information is available.";
 		this.severity = Severity.Normal;
+		this.timeStamp = "";
 	}
 	
 	// Constructor
@@ -38,6 +39,7 @@ public class Error implements Serializable
 		this.errorText = errorText;
 		this.moreInfo = moreInfo;
 		this.severity = Severity.Normal;
+		this.timeStamp = "";
 	}
 	
 	// Constructor
@@ -46,6 +48,7 @@ public class Error implements Serializable
 		this.errorText = errorText;
 		this.moreInfo = "No extra information is available.";
 		this.severity = severity;
+		this.timeStamp = "";
 	}
 	
 	// Constructor
@@ -54,5 +57,37 @@ public class Error implements Serializable
 		this.errorText = errorText;
 		this.moreInfo = moreInfo;
 		this.severity = severity;
-	}		
+		this.timeStamp = "";
+	}
+	
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other == null)	return false;
+		if (other == this)	return true;
+		
+		if (other instanceof Error)
+		{
+			// Cast other object as Error
+			Error otherAsError = (Error) other;
+			
+			if (otherAsError.errorText.compareTo(this.errorText) == 0 &&
+				otherAsError.moreInfo.compareTo(this.moreInfo) == 0 &&
+				otherAsError.timeStamp.compareTo(this.timeStamp) == 0 &&
+				otherAsError.severity == this.severity)
+				
+			{
+				return true;
+			}		
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

@@ -138,7 +138,7 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
-				ErrorLog.log(getInstance(), new Error("Entered unexpected block in method onCreate() in class DisplayQuestionActivity (received null question)", Severity.Normal));
+				ErrorLog.log(getInstance(), new Error("Model Error", "Received a null question in EditFormActivity", Severity.Normal));
 				this.finish();
 			}
 		}
@@ -179,10 +179,11 @@ public class EditFormActivity extends Activity
 		{				
 			// Set the title bar
 			ActionBar actionBar = getActionBar();
-			actionBar.setTitle(String.format("HOST - %s - Question %d", form.meta.name, questionNumber));
+			actionBar.setTitle(String.format("HOST - %s", form.meta.name));
 			
 			
-			// Set the question view and question text (same for all three types)		
+			// Set the question view and question text (same for all three types)	
+			((TextView) findViewById(R.id.questionNumber)).setText(String.format("Question %d", questionNumber + 1));
 			((TextView) findViewById(R.id.questionText)).setText(question.Text);
 			((TextView) findViewById(R.id.questionHelpText)).setText(question.HelpText);
 			
@@ -223,7 +224,7 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
-				ErrorLog.log(this, new Error("Question Error", 
+				ErrorLog.log(this, new Error("Model Error", 
 											"Received a question of unknown type.\n" +
 											"Ensure that a Question is always an instance of TextQuestion, ChoiceQuestion, or LikertScaleQuestion.\n", 
 											Severity.Critical));
