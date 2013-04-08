@@ -6,11 +6,8 @@ import java.util.List;
 import org.habitatomaha.HOST.AsyncTask.DownloadAllTemplates;
 import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.Helper.Utility;
-import org.habitatomaha.HOST.Model.Error;
-import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.SpinnerData;
-import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
 import org.habitatomaha.HOST.R;
@@ -32,13 +29,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SelectFormActivity extends Activity {
 	
 	private Spinner templateSpinner, templateGroupSpinner, formSpinner;
-	private TextView selectedFormBox;
 	private int templ_id;
 	private String templ_grp;
 	private static final String TAG="MainMenu";
@@ -427,8 +422,7 @@ public class SelectFormActivity extends Activity {
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 		String sUser = settings.getString("sharepoint_username", "blah");
 		
-		selectedFormBox = (TextView)findViewById(R.id.selectedForm);
-		selectedFormBox.setText(sUser);
+
 
 	}
 
@@ -443,10 +437,7 @@ public class SelectFormActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
 					
-					String form = parent.getItemAtPosition(pos).toString();
-					
-					//selectedFormBox = (TextView)findViewById(R.id.selectedForm);
-					//selectedFormBox.setText(form);		
+					String form = parent.getItemAtPosition(pos).toString();	
 			}
 
 			@Override

@@ -21,6 +21,7 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
+        public static final int GridLayout1=0x7f0a0010;
         public static final int answerText=0x7f0a0005;
         public static final int dateText=0x7f0a0006;
         public static final int download_forms=0x7f0a0021;
@@ -46,7 +47,6 @@ public final class R {
         public static final int questionText=0x7f0a0002;
         public static final int question_layout=0x7f0a0000;
         public static final int question_subLayout_1=0x7f0a0001;
-        public static final int selectedForm=0x7f0a0011;
         public static final int spacing_medium=0x7f0a0004;
         public static final int submit_discard=0x7f0a001b;
         public static final int submit_info=0x7f0a0018;
@@ -54,7 +54,7 @@ public final class R {
         public static final int submit_upload=0x7f0a0019;
         public static final int templateLabel=0x7f0a0015;
         public static final int templateMenu=0x7f0a0012;
-        public static final int typeMenu=0x7f0a0010;
+        public static final int typeMenu=0x7f0a0011;
     }
     public static final class layout {
         public static final int activity_display_question=0x7f030000;

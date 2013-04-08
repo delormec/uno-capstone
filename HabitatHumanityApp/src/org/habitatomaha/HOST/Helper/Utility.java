@@ -2,10 +2,8 @@ package org.habitatomaha.HOST.Helper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -22,7 +20,7 @@ public class Utility
 	 */
 	public static void hideSoftKeyboard(Activity activity) 
 	{
-	    InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+	    InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    
 	    
 	    if (activity.getCurrentFocus() != null)
@@ -58,6 +56,7 @@ public class Utility
 		adb.setPositiveButton("Ok", 
 								new DialogInterface.OnClickListener()
 								{
+									@Override
 									public void onClick(DialogInterface dialog, int id)
 									{
 										return;

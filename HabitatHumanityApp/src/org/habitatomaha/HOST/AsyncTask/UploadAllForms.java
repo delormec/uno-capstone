@@ -94,6 +94,7 @@ public class UploadAllForms extends AsyncTask
 		String user_name;
 		String password;
 		String domain;
+		
 		//Get SharedPreferences manager.
 		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
 		

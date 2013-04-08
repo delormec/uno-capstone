@@ -25,6 +25,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
@@ -108,18 +109,22 @@ public class EditFormActivity extends Activity
 				findViewById(R.id.question_layout).setOnTouchListener(
 					new OnFlingGestureListener() 
 					{
+						@Override
 						public void onTopToBottomSwipe()
 						{
 							return;
 						}
+						@Override
 						public void onBottomToTopSwipe()
 						{
 							return;
 						}
+						@Override
 						public void onLeftToRightSwipe()
 						{
 							prevQuestion(null);
 						}
+						@Override
 						public void onRightToLeftSwipe()
 						{
 							nextQuestion(null);
@@ -260,7 +265,7 @@ public class EditFormActivity extends Activity
 		if (question.FieldType.compareToIgnoreCase("single") == 0)
 		{
 			answerText.setVisibility(View.VISIBLE);	
-			answerText.setInputType(EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES);
+			answerText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 		}
 		
 		// Multi-line
@@ -268,7 +273,7 @@ public class EditFormActivity extends Activity
 		{
 			answerText.setVisibility(View.VISIBLE);
 			answerText = (EditText) findViewById(R.id.answerText);
-			answerText.setInputType(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE | EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES);
+			answerText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 			answerText.setSingleLine(false);
 		}
 		
@@ -277,7 +282,7 @@ public class EditFormActivity extends Activity
 		{
 			findViewById(R.id.answerText).setVisibility(View.VISIBLE);
 
-			answerText.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);
+			answerText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
 		}
 		
 		// Date
@@ -333,19 +338,19 @@ public class EditFormActivity extends Activity
 		// Set up for data types
 		if (question.FieldType.compareToIgnoreCase("single") == 0)
 		{
-			otherText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+			otherText.setInputType(InputType.TYPE_CLASS_TEXT);
 		}
 		else if (question.FieldType.compareToIgnoreCase("multi") == 0)
 		{
-			otherText.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+			otherText.setInputType(InputType.TYPE_CLASS_TEXT);
 		}
 		else if (question.FieldType.compareToIgnoreCase("number") == 0)
 		{
-			otherText.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);
+			otherText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
 		}
 		else if (question.FieldType.compareToIgnoreCase("date") == 0)
 		{
-			otherText.setInputType(EditorInfo.TYPE_CLASS_DATETIME | EditorInfo.TYPE_DATETIME_VARIATION_DATE);
+			otherText.setInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_DATE);
 		}
 		
 		
@@ -413,6 +418,7 @@ public class EditFormActivity extends Activity
 				checkBox.setOnCheckedChangeListener(
 					new OnCheckedChangeListener()
 					{
+						@Override
 						public void onCheckedChanged(CompoundButton checkBox, boolean checkedState)
 						{
 							if (checkedState)
@@ -516,6 +522,7 @@ public class EditFormActivity extends Activity
 				button.setOnCheckedChangeListener(
 					new OnCheckedChangeListener()
 					{
+						@Override
 						public void onCheckedChanged(CompoundButton radioButton, boolean checkedState)
 						{
 							if (checkedState)

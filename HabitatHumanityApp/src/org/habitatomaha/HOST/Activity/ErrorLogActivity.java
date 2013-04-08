@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class ErrorLogActivity extends Activity
 		
 		LinearLayout linearLayout = new LinearLayout(this);
 		
-		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));		
+		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));		
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 		
 		
@@ -61,27 +62,27 @@ public class ErrorLogActivity extends Activity
 				errorView.setText(err.errorText);
 				errorView.setTextSize(25);
 				errorView.setTextColor(colorCode);
-				errorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
+				errorView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));			
 				linearLayout.addView(errorView);
 				
 				// Display timestamp
 				TextView timeView = new TextView(this);
 				timeView.setText(err.timeStamp);
 				timeView.setTextSize(20);						
-				timeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
+				timeView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));			
 				linearLayout.addView(timeView);
 				
 				// Display additional info
 				TextView infoView = new TextView(this);
 				infoView.setText(err.moreInfo);
 				infoView.setTextSize(15);
-				infoView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+				infoView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 				linearLayout.addView(infoView);
 				
 				// Add a horizontal rule between errors
 				View lineBreak = new View(this);
 				lineBreak.setBackgroundColor(Color.parseColor("#000000"));
-				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2));
+				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2));
 				linearLayout.addView(lineBreak);
 			}
 		}

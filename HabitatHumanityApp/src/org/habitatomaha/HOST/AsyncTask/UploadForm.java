@@ -4,19 +4,18 @@ import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.Repository.SharePointDataSource;
 
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 
 public class UploadForm extends AsyncTask{
 
 	private SharedPreferences settings;
 	
 	// Would it be a problem to add a constructor for this task? Needs context for shared Preferences.
+
 	/*
 	private Context callingContext;
-
+	
 	public UploadForm(Context context){
 		this.callingContext = context;
 	}

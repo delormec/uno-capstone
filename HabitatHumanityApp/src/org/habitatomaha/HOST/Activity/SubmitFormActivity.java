@@ -2,7 +2,6 @@ package org.habitatomaha.HOST.Activity;
 
 import java.util.concurrent.ExecutionException;
 
-import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.AsyncTask.UploadForm;
 import org.habitatomaha.HOST.Helper.Utility;
 
@@ -23,7 +22,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -35,7 +33,7 @@ public class SubmitFormActivity extends Activity
 	private static SubmitFormActivity currentInstance;	// The current instance of the Activity
 	
 	private Form form;	// The form object being processed by the activity	
-	
+	private UploadForm uploadTask;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -125,11 +123,13 @@ public class SubmitFormActivity extends Activity
 		adb.setPositiveButton("Upload", 
 								new DialogInterface.OnClickListener()
 								{
+									@Override
 									public void onClick(DialogInterface dialog, int id)
 									{
 										//Had to suppress this warning, not sure what the deal is
 										@SuppressWarnings("unchecked")
 										AsyncTask<Form, Void, String[]> task = new UploadForm();
+										
 										
 										//Start the task
 										task.execute(form);
@@ -164,6 +164,7 @@ public class SubmitFormActivity extends Activity
 								});
 		adb.setNegativeButton("Wait", new DialogInterface.OnClickListener()
 										{
+											@Override
 											public void onClick(DialogInterface dialog, int id)
 											{
 												return;
@@ -205,6 +206,7 @@ public class SubmitFormActivity extends Activity
 		adb.setPositiveButton("Discard", 
 								new DialogInterface.OnClickListener()
 								{
+									@Override
 									public void onClick(DialogInterface dialog, int id)
 									{
 										discard();
@@ -214,6 +216,7 @@ public class SubmitFormActivity extends Activity
 								});
 		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
 										{
+											@Override
 											public void onClick(DialogInterface dialog, int id)
 											{
 												return;

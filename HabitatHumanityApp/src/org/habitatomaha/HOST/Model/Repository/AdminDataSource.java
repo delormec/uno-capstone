@@ -17,8 +17,6 @@ import org.apache.http.protocol.HttpContext;
 //=======
 //>>>>>>> XML Parser Helper Classes
 
-import android.util.Log;
-
 public class AdminDataSource {
 	
 	private String URL;
