@@ -115,10 +115,12 @@ public class DownloadAllTemplates extends AsyncTask {
 			
 			String xml = aDS.getTemplateXMLByID(id);
 			//TODO -- fix this in the admin tool side
+			try
+			{
 			xml=xml.replaceAll("\\\\n", "").replaceAll("\\\\t", "").replaceAll("\\\\\"", "\"");
 
 			//remove quotes from front and back -- odd as fuck
-			xml = xml.substring(1, xml.length());
+			xml = xml.substring(1, xml.length()); // This has the potential to throw a String Index out of Bounds Error
 			
 			//TODO - replace class names
 			xml = xml.replaceAll("TextQuestion", TextQuestion.class.getName()).replaceAll("LikertScaleQuestion", LikertScaleQuestion.class.getName()).replaceAll("ChoiceQuestion", ChoiceQuestion.class.getName());
@@ -127,8 +129,15 @@ public class DownloadAllTemplates extends AsyncTask {
 			
 			oDS.addTemplate(form);
 			//Log.v("OSTtest", oDS.getAllTemplateInfo().toString());
-			
+			}
+			catch(Exception e)
+			{
+				// added by Scott. Found by Monkey
+				e.getStackTrace();
+			}
 			x++;
+			
+			
 		}
 	
 		oDS.close();
