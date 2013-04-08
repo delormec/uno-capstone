@@ -155,7 +155,7 @@ public final class R {
     public static final class xml {
         public static final int pref_general=0x7f040000;
         public static final int pref_headers=0x7f040001;
-        public static final int pref_tools=0x7f040002;
-        public static final int pref_upload=0x7f040003;
+        public static final int pref_sharepoint=0x7f040002;
+        public static final int pref_tools=0x7f040003;
     }
 }

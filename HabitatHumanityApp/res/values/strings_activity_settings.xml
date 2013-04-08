@@ -52,8 +52,8 @@
     <string name="pref_title_new_message_notifications">New message notifications</string>
     <string name="pref_header_sharepoint_settings">Sharepoint Settings</string>
     <string name="pref_title_sharepoint_username">Sharepoint Username</string>
-    <string name="pref_default_sharepoint_username">jdoe123</string>
-    <string name="pref_default_sharepoint_password">password123</string>
+    <string name="pref_default_sharepoint_username">CDelorme</string>
+    <string name="pref_default_sharepoint_password">CDelorme463</string>
     <string name="pref_title_sharepoint_password">Password</string>
     <string name="pref_header_tools">Tools</string>
     <string name="pref_title_admin_tool_url">Admin Tool URL</string>

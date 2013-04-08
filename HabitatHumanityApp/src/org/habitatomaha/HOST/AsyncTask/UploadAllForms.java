@@ -14,11 +14,14 @@ import org.habitatomaha.HOST.Model.Repository.SharePointDataSource;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 public class UploadAllForms extends AsyncTask
 {
+	private SharedPreferences settings;
 	private ProgressDialog progressDialog;
 	private OSTDataSource database;
 	private List<Integer> failures;
@@ -91,14 +94,19 @@ public class UploadAllForms extends AsyncTask
 		String user_name;
 		String password;
 		String domain;
+		//Get SharedPreferences manager.
+		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
 		
-		//TODO - Eventually these will be pulled from the configuration area of the database
+		//TODO Preferences that are needed to connect to the SharePoint site.
+		
+		//Form preferences
 		URL = "habitat.taic.net";
 		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
-		user_name = "CDelorme";
-		password = "CDelorme463";
 		domain = "xtranet";
 		
+		//User (app) preferences
+		user_name = settings.getString("sharepoint_username","");
+		password = settings.getString("sharepoint_password","");
 		
 		
 		database.open();	
@@ -118,6 +126,11 @@ public class UploadAllForms extends AsyncTask
 			// Get the form from the database
 			formID = formDataList.get(x).getValue();
 			form = database.getFormById(formID);
+			
+			//TODO Uncomment these when implemented. 
+			//URL = form.meta.url;
+			//domain = form.meta.domain;
+			//list_name = form.meta.listname;
 			
 			// Attempt the upload
 			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);

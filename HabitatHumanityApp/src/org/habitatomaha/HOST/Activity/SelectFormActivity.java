@@ -18,8 +18,10 @@ import org.habitatomaha.HOST.R;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +45,7 @@ public class SelectFormActivity extends Activity {
 	private int groupPos, templatePos, formPos = 0;
 	private boolean screenOrientChanged = false;
 	private boolean secondTime = false;
+	public static final String PREFS_NAME = "pref_sharepoint";
 	
 	private DownloadAllTemplates downloadTask;
 	private UploadAllForms uploadTask;
@@ -419,6 +422,13 @@ public class SelectFormActivity extends Activity {
 		}
 
 		Log.v(TAG, "FORM SPINNER AFTER = " + formSpinner.getSelectedItemPosition());
+		
+		//SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		String sUser = settings.getString("sharepoint_username", "blah");
+		
+		selectedFormBox = (TextView)findViewById(R.id.selectedForm);
+		selectedFormBox.setText(sUser);
 
 	}
 

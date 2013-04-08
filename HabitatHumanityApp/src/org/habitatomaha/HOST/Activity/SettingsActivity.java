@@ -72,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity {
 		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_sharepoint_settings);
 		getPreferenceScreen().addPreference(fakeHeader);
-		addPreferencesFromResource(R.xml.pref_upload);
+		addPreferencesFromResource(R.xml.pref_sharepoint);
 
 		// Add 'tools' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
@@ -214,7 +214,7 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_upload);
+			addPreferencesFromResource(R.xml.pref_sharepoint);
 
 			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
 			// to their values. When their values change, their summaries are
