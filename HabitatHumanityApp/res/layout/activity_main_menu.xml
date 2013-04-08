@@ -2,9 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/GridLayout1"
     android:layout_width="match_parent"
+<<<<<<< HEAD
     android:layout_height="match_parent"
     android:columnCount="3"
     android:orientation="horizontal"
+=======
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20sp"
+    android:layout_marginTop="20sp"
+    android:layout_marginRight="20sp"
+>>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
     tools:context=".MainMenu" >
 
     <Spinner

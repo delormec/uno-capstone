@@ -11,6 +11,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+<<<<<<< HEAD
+=======
+
+>>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 import java.util.List;
 
 import org.habitatomaha.HOST.R;

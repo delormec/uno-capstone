@@ -64,13 +64,13 @@ public class SubmitFormActivity extends Activity
 		// List of unanswered questions
 		TextView unansweredQuestions = new TextView(this);
 		
-		String unans = "Unanswered questions: ";
+		String unans = "Unanswered questions:\n";
 		int x = 0;
 		for (Question q : form.questions)
 		{
 			if (q.Answer == null || q.Answer.compareTo("") == 0 || q.Answer.compareTo("00/00/0000") == 0)
 			{
-				unans += String.format("%d ", x);
+				unans += String.format("%d ", x + 1);
 			}
 			x++;
 		}

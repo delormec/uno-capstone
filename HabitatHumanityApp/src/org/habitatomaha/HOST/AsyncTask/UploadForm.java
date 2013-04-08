@@ -3,7 +3,11 @@ package org.habitatomaha.HOST.AsyncTask;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.Repository.SharePointDataSource;
 
+<<<<<<< HEAD
 
+=======
+import android.content.Context;
+>>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
