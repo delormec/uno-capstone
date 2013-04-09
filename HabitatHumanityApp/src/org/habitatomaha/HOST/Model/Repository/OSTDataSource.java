@@ -329,6 +329,9 @@ public class OSTDataSource {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e){
+			// Error found by Monkey, added by Scott - Throws Cursor Index out of Bounds Exception
+			e.printStackTrace();
 		}
 
 		cursor.close();
