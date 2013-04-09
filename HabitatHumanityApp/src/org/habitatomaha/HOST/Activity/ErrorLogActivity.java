@@ -9,11 +9,8 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-<<<<<<< HEAD
 import android.view.ViewGroup.LayoutParams;
-=======
 import android.widget.Button;
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,15 +29,10 @@ public class ErrorLogActivity extends Activity
 		ScrollView scrollView = new ScrollView(this);
 		scrollView.setPadding(25, 25, 25, 25);
 		
-<<<<<<< HEAD
-		LinearLayout linearLayout = new LinearLayout(this);
-		
-		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));		
-=======
+
 		// The LinearLayout child of scrollView
 		LinearLayout linearLayout = new LinearLayout(this);	
 		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));		
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 		linearLayout.setOrientation(LinearLayout.VERTICAL);
 		
 		
@@ -75,14 +67,12 @@ public class ErrorLogActivity extends Activity
 				
 				
 				// Display the error text
-<<<<<<< HEAD
 				TextView errorView = new TextView(this);
 				errorView.setText(err.errorText);
 				errorView.setTextSize(25);
 				errorView.setTextColor(colorCode);
 				errorView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));			
 				linearLayout.addView(errorView);
-=======
 				TextView errorText = new TextView(this);
 				errorText.setText(err.errorText);
 				errorText.setTextSize(25);
@@ -90,29 +80,27 @@ public class ErrorLogActivity extends Activity
 				errorText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
 				errorLayout.addView(errorText);
 				
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 				
 				// Display timestamp
 				TextView timeView = new TextView(this);
 				timeView.setText(err.timeStamp);
 				timeView.setTextSize(20);						
-<<<<<<< HEAD
+
 				timeView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));			
 				linearLayout.addView(timeView);
-=======
+
 				timeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
 				errorLayout.addView(timeView);
 				
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
+
 				
 				// Display additional info
 				TextView infoView = new TextView(this);
 				infoView.setText(err.moreInfo);
 				infoView.setTextSize(15);
-<<<<<<< HEAD
 				infoView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 				linearLayout.addView(infoView);
-=======
+
 				infoView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 				errorLayout.addView(infoView);
 				
@@ -132,22 +120,22 @@ public class ErrorLogActivity extends Activity
 												);
 				errorLayout.addView(deleteButton);
 				
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
+
 				
 				// Add a horizontal rule between errors
 				View lineBreak = new View(this);
 				lineBreak.setBackgroundColor(Color.parseColor("#000000"));
-<<<<<<< HEAD
+
 				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2));
 				linearLayout.addView(lineBreak);
-=======
+
 				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2));
 				errorLayout.addView(lineBreak);
 				
 				
 				
 				linearLayout.addView(errorLayout);
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
+
 			}
 			
 			scrollView.addView(linearLayout);

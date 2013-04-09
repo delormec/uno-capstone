@@ -57,8 +57,9 @@
     <string name="pref_title_sharepoint_password">Password</string>
     <string name="pref_header_tools">Tools</string>
     <string name="pref_title_admin_tool_url">Admin Tool URL</string>
-    <string name="pref_default_admin_tool_url">wenda.sytes.net:5432/Account</string>
+    <string name="pref_default_admin_tool_url">wende.sytes.net</string>
     <string name="pref_header_error_log">Error Log</string>
+    <string name="pref_header_admintool">Admin Tool Settings</string>
 
 
 </resources>

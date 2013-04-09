@@ -1,68 +1,69 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/GridLayout1"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
-<<<<<<< HEAD
     android:layout_height="match_parent"
-    android:columnCount="3"
-    android:orientation="horizontal"
-=======
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="20sp"
-    android:layout_marginTop="20sp"
-    android:layout_marginRight="20sp"
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
+    android:orientation="vertical"
     tools:context=".MainMenu" >
 
     <Spinner
-        android:id="@+id/typeMenu"
-        android:layout_gravity="fill_horizontal" />
-
-    <Spinner
         android:id="@+id/templateMenu"
-        android:layout_gravity="fill_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/typeMenu"
         android:layout_marginTop="24dp"
-        android:layout_row="1" />
+        android:layout_toRightOf="@+id/groupLabel" />
 
     <Spinner
         android:id="@+id/formMenu"
-        android:layout_column="1"
-        android:layout_gravity="fill_horizontal"
-        android:layout_marginTop="22dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/templateMenu"
+        android:layout_marginTop="22dp"
+        android:layout_toRightOf="@+id/groupLabel" />
 
     <TextView
         android:id="@+id/groupLabel"
-        android:layout_column="0"
-        android:layout_gravity="left"
-        android:layout_marginBottom="20dp"
-        android:layout_row="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/typeMenu"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="21dp"
         android:text="@string/strTemplateGroupLabel" />
+
+    <include
+        android:id="@+id/include1"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        layout="@layout/navbar" />
+
+    <Spinner
+        android:id="@+id/typeMenu"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/templateMenu"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="94dp" />
 
     <TextView
         android:id="@+id/templateLabel"
-        android:layout_column="0"
-        android:layout_gravity="left"
-        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/groupLabel"
+        android:layout_alignTop="@+id/templateMenu"
+        android:layout_marginTop="22dp"
         android:text="@string/strTemplateLabel" />
 
     <TextView
         android:id="@+id/formLabel"
-        android:layout_column="0"
-        android:layout_gravity="left"
-        android:layout_marginBottom="21dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/formMenu"
+        android:layout_marginBottom="22dp"
+        android:layout_toLeftOf="@+id/formMenu"
         android:text="@string/strFormsLabel" />
 
-    <include
-        android:id="@+id/include1"
-        android:layout_height="60sp"
-        android:layout_column="0"
-        android:layout_columnSpan="2"
-        android:layout_gravity="fill_horizontal"
-        layout="@layout/navbar" />
-
-    <RelaSpace
-        android:layout_column="2"
-        android:layout_gravity="fill_vertical"
-        android:layout_row="4" />
-
-</GridLayout>
+</RelativeLayout>

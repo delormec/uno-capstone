@@ -11,10 +11,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-<<<<<<< HEAD
-=======
-
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 import java.util.List;
 
 import org.habitatomaha.HOST.R;
@@ -78,7 +74,13 @@ public class SettingsActivity extends PreferenceActivity {
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_tools);
 		
-		//Add 'section' preferences, and a corresponding header.
+		// Add 'admin tool' preferences, and a corresponding header.
+		fakeHeader = new PreferenceCategory(this);
+		fakeHeader.setTitle(R.string.pref_header_admintool);
+		getPreferenceScreen().addPreference(fakeHeader);
+		addPreferencesFromResource(R.xml.pref_admintool);
+		
+		//Add 'error' preferences, and a corresponding header.
 		fakeHeader = new PreferenceCategory(this);
 		fakeHeader.setTitle(R.string.pref_header_error_log);
 		getPreferenceScreen().addPreference(fakeHeader);
@@ -89,6 +91,7 @@ public class SettingsActivity extends PreferenceActivity {
 		// to reflect the new value, per the Android Design guidelines.
 		bindPreferenceSummaryToValue(findPreference("sharepoint_username"));
 		bindPreferenceSummaryToValue(findPreference("admin_tool_url"));
+		bindPreferenceSummaryToValue(findPreference("list_name"));
 		
 	}
 
@@ -198,7 +201,6 @@ public class SettingsActivity extends PreferenceActivity {
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("example_text"));
 			bindPreferenceSummaryToValue(findPreference("example_list"));
-			bindPreferenceSummaryToValue(findPreference("sharepoint_username"));
 		}
 	}
 
@@ -218,7 +220,8 @@ public class SettingsActivity extends PreferenceActivity {
 			// to their values. When their values change, their summaries are
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+			bindPreferenceSummaryToValue(findPreference("sharepoint_username"));
+			bindPreferenceSummaryToValue(findPreference("sharepoint_password"));
 		}
 	}
 
@@ -237,7 +240,21 @@ public class SettingsActivity extends PreferenceActivity {
 			// to their values. When their values change, their summaries are
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+		}
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public static class AdminToolsPreferenceFragment extends PreferenceFragment {
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			addPreferencesFromResource(R.xml.pref_admintool);
+
+			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
+			// to their values. When their values change, their summaries are
+			// updated to reflect the new value, per the Android Design
+			// guidelines.
+			bindPreferenceSummaryToValue(findPreference("admin_tool_url"));
 		}
 	}
 }

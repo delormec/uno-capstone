@@ -2,14 +2,10 @@ package org.habitatomaha.HOST.AsyncTask;
 
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.Repository.SharePointDataSource;
-
-<<<<<<< HEAD
-
-=======
 import android.content.Context;
->>>>>>> fbe092d1023d9ba54ac60541398d996d393648d8
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 public class UploadForm extends AsyncTask{
 
@@ -17,13 +13,11 @@ public class UploadForm extends AsyncTask{
 	
 	// Would it be a problem to add a constructor for this task? Needs context for shared Preferences.
 
-	/*
 	private Context callingContext;
 	
 	public UploadForm(Context context){
 		this.callingContext = context;
 	}
-	*/
 	@Override
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
@@ -34,7 +28,7 @@ public class UploadForm extends AsyncTask{
 		String domain;
 		
 		//Get SharedPreferences manager.
-		//settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
+		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
 		
 		//TODO Preferences that are needed to connect to the SharePoint site.
 		
@@ -44,10 +38,8 @@ public class UploadForm extends AsyncTask{
 		domain = "xtranet";
 		
 		//User (app) preferences
-		//user_name = settings.getString("sharepoint_username","");
-		//password = settings.getString("sharepoint_password","");
-		user_name = "CDelorme";
-		password = "CDelorme463";
+		user_name = settings.getString("sharepoint_username","");
+		password = settings.getString("sharepoint_password","");
 
 		return SharePointDataSource.uploadFormToSharePoint((Form)params[0], URL, list_name, user_name, password, domain);
 	

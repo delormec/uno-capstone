@@ -33,7 +33,6 @@ public class SubmitFormActivity extends Activity
 	private static SubmitFormActivity currentInstance;	// The current instance of the Activity
 	
 	private Form form;	// The form object being processed by the activity	
-	private UploadForm uploadTask;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -128,7 +127,7 @@ public class SubmitFormActivity extends Activity
 									{
 										//Had to suppress this warning, not sure what the deal is
 										@SuppressWarnings("unchecked")
-										AsyncTask<Form, Void, String[]> task = new UploadForm();
+										AsyncTask<Form, Void, String[]> task = new UploadForm(currentInstance);
 										
 										
 										//Start the task

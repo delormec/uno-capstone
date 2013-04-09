@@ -13,7 +13,9 @@ import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 
 
@@ -23,7 +25,7 @@ public class DownloadAllTemplates extends AsyncTask {
 	public int x;
 	
 	private ProgressDialog progressDialog;
-	
+	private SharedPreferences settings;
 	
 	
 	public DownloadAllTemplates(Context context)
@@ -91,8 +93,17 @@ public class DownloadAllTemplates extends AsyncTask {
 	@Override
 	protected Object doInBackground(Object... params) {
 		// TODO Auto-generated method stub
+		String URL;
+		String list_name;
 		
-		AdminDataSource aDS = new AdminDataSource();
+		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
+		
+		URL = settings.getString("admin_tool_url","");
+		list_name = settings.getString("list_name", "");
+		
+		
+		//AdminDataSource aDS = new AdminDataSource();
+		AdminDataSource aDS = new AdminDataSource(URL, list_name);
 		OSTDataSource oDS = new OSTDataSource((android.content.Context)params[0]);
 		oDS.open();
 		
