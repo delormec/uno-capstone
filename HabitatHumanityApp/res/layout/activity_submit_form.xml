@@ -2,9 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15sp"
-    android:paddingLeft="15sp"
-    android:paddingRight="15sp"
     android:orientation="vertical" >
     
     
@@ -15,7 +12,10 @@
 	    android:id="@+id/submit_info"
 	    android:orientation="vertical"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"/>
+	    android:layout_height="wrap_content"
+	    android:paddingTop="15sp"
+    	android:paddingLeft="15sp"
+    	android:paddingRight="15sp"/>
     
     
     
@@ -24,13 +24,7 @@
 	    android:layout_centerVertical="true"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+	   
 	    
 	    <Button
 	        android:id="@+id/submit_upload"
@@ -42,9 +36,7 @@
 		    android:textSize="20sp"
 	        android:onClick="upload"
 	        android:text="Upload" />
-	    
-	    
-	   
+  
 	
 	    <Button
 	        android:id="@+id/submit_save"
@@ -73,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="60sp"
         android:layout_alignParentBottom="true"
-    	layout="@layout/navbar" />
+        layout="@layout/navbar" />
 
      
      

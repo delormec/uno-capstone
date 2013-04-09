@@ -599,7 +599,9 @@ public class SelectFormActivity extends Activity {
 	// The following navigate methods are for the implementation of the navbar layout
 	public void navigateHome(View view)
 	{	
-		return;
+		Intent intent = new Intent(this, SelectFormActivity.class);
+		startActivity(intent);
+		this.finish();
 	}
 	
 	/**

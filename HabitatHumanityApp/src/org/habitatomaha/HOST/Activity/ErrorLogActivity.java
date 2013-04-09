@@ -60,51 +60,38 @@ public class ErrorLogActivity extends Activity
 						colorCode = Color.parseColor("#000000");
 				}
 				
+				
 				// Create a view for the error
 				LinearLayout errorLayout = new LinearLayout(this);
 				errorLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 				errorLayout.setOrientation(LinearLayout.VERTICAL);
-				
+
 				
 				// Display the error text
-				TextView errorView = new TextView(this);
-				errorView.setText(err.errorText);
-				errorView.setTextSize(25);
-				errorView.setTextColor(colorCode);
-				errorView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));			
-				linearLayout.addView(errorView);
 				TextView errorText = new TextView(this);
 				errorText.setText(err.errorText);
 				errorText.setTextSize(25);
 				errorText.setTextColor(colorCode);
 				errorText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
 				errorLayout.addView(errorText);
-				
+					
 				
 				// Display timestamp
 				TextView timeView = new TextView(this);
 				timeView.setText(err.timeStamp);
 				timeView.setTextSize(20);						
-
-				timeView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));			
-				linearLayout.addView(timeView);
-
 				timeView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));			
 				errorLayout.addView(timeView);
 				
-
-				
+		
 				// Display additional info
 				TextView infoView = new TextView(this);
 				infoView.setText(err.moreInfo);
 				infoView.setTextSize(15);
-				infoView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-				linearLayout.addView(infoView);
-
 				infoView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 				errorLayout.addView(infoView);
 				
-				
+							
 				// Delete button
 				Button deleteButton = new Button(this);
 				deleteButton.setText("Dismiss");
@@ -120,22 +107,16 @@ public class ErrorLogActivity extends Activity
 												);
 				errorLayout.addView(deleteButton);
 				
-
 				
 				// Add a horizontal rule between errors
 				View lineBreak = new View(this);
 				lineBreak.setBackgroundColor(Color.parseColor("#000000"));
-
-				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2));
-				linearLayout.addView(lineBreak);
-
 				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2));
 				errorLayout.addView(lineBreak);
 				
-				
-				
+							
+				// Add the error's view to the overall LinearLayout
 				linearLayout.addView(errorLayout);
-
 			}
 			
 			scrollView.addView(linearLayout);
