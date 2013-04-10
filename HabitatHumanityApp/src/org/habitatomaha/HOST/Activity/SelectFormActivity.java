@@ -639,6 +639,14 @@ public class SelectFormActivity extends Activity {
 					{
 						// Start a new form from the template
 						Form template = database.getTemplateById(templateID);
+						
+						// Don't create an instance of an empty template in the database
+						if (template.questions.size() == 0)
+						{
+							Toast.makeText(this, "Template contains no questions.", Toast.LENGTH_SHORT).show();
+							return;
+						}
+						
 						formID = database.addForm(template);
 				
 						form = database.getFormById(formID);
@@ -657,6 +665,10 @@ public class SelectFormActivity extends Activity {
 				}
 
 				database.close();
+				
+				
+				
+				
 				
 				// Pass the form to the DisplayQuestionActivity
 				Intent intent = new Intent(this, EditFormActivity.class);

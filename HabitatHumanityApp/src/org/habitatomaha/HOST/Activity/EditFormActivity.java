@@ -27,7 +27,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -291,20 +290,23 @@ public class EditFormActivity extends Activity
 		{		
 			TextView dateText = (TextView) findViewById(R.id.dateText);
 			dateText.setVisibility(View.VISIBLE);
-
+			dateText.setText("00/00/0000");
+			
 			dateText.setOnClickListener(	new View.OnClickListener()
 											{
 												@Override
 												public void onClick(View v)
 												{
+													DatePickerFragment.setDateToday();
 													showDatePicker(null);
 												}
 											}
 										);
 			
 			// Fill in pre-existing answer
-			if (tq.Answer != null)
+			if (tq.Answer != null && tq.Answer.compareTo("") != 0)
 			{
+				DatePickerFragment.setDate(tq.Answer);
 				dateText.setText(tq.Answer);
 			}	
 		}
@@ -821,6 +823,16 @@ public class EditFormActivity extends Activity
 				form.questions.get(questionNumber).Answer = answer.getText().toString();
 			}		
 		}
+		
+		
+		// Don't save 00/00/0000 as an answer to date questions
+		if (form.questions.get(questionNumber).Answer != null)
+		{		
+			if (form.questions.get(questionNumber).Answer.compareTo("00/00/0000") == 0)
+			{
+				form.questions.get(questionNumber).Answer = null;
+			}
+		}
 	}
 
 	
@@ -912,7 +924,7 @@ public class EditFormActivity extends Activity
 	
 	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
 	{
-		private String presetDate;
+		private static String presetDate;
 		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -949,15 +961,33 @@ public class EditFormActivity extends Activity
 		
 		
 		/**
-		 * Provides the DatePicker with a preselected date
+		 * Provides the DatePicker with a preselected date.<br>
+		 * The date should be a String in the form "MM/DD/YYYY"
+		 * 
 		 * @param date	The date to preselect in the DatePicker
 		 */
-		public void setDate(String date)
+		public static void setDate(String date)
 		{
 			if (date != null)
 			{
 				presetDate = date;
 			}
+		}
+		
+		
+		
+		/**
+		 * Sets the picker to today's date
+		 */
+		public static void setDateToday()
+		{
+			Calendar calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH);
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			
+			
+			presetDate = String.format("%d/%d/%d", month + 1, day, year);
 		}
 	}
 }
