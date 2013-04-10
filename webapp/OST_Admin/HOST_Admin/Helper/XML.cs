@@ -1,6 +1,7 @@
 ﻿using HOST_Admin.Models.Repository;
 using HOST_Admin.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Class comprised of static functions that convert Form objects to XML. The XML can be seen as a serialized version of the Form in a form that will be readable by mobile app.
@@ -73,7 +74,7 @@ public class XML
         xml += "\t<questions>\n";
 
         // Go through each question and add it to the XML
-        foreach (Question q in questions)
+        foreach (Question q in questions.AsQueryable().OrderBy(ql => ql.SortOrder))
         {
 
             if (q is TextQuestion)
