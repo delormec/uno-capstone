@@ -420,7 +420,7 @@ namespace HOST_Admin.Models.Repository
                     cq.FieldName = spsrvm.field_name + "Value"; 
                     cq.FieldType = "SINGLE";
                     cq.SortOrder = sort_order++;
-                    cq.Text = spsrvm.field_name + "enter question here";
+                    cq.Text = spsrvm.field_name + " - enter question here";
                     cq.HelpText = "enter help text here";
                     
                     int option_sort_order = 0;
@@ -450,7 +450,7 @@ namespace HOST_Admin.Models.Repository
                     else
                         tq.FieldType = "SINGLE";
                     tq.SortOrder = sort_order++;
-                    tq.Text = spsrvm.field_name + "enter question here";
+                    tq.Text = spsrvm.field_name + " - enter question here";
                     tq.HelpText = "enter help text here";
 
                     form.Questions.Add(tq);

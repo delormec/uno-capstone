@@ -163,6 +163,11 @@ namespace HOST_Admin.Controllers
         /// <returns></returns>
         public ActionResult CreateFromSharePoint(SharePointSOAPRequestViewModel spsrvm)
         {
+            if (spsrvm.url == null || spsrvm.url == "")
+            {
+                spsrvm.url = "http://habitat.taic.net/omaha/-SITENAME-/_vti_bin/lists.asmx";
+            }
+
             return View(spsrvm);
         }
 
