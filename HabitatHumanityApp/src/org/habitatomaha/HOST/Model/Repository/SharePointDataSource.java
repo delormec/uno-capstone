@@ -65,41 +65,84 @@ public class SharePointDataSource {
         HttpHost target = new HttpHost(URL, 80, "http");
         localContext = new BasicHttpContext();
         
-		HttpPost httppost = new HttpPost(list_name);
-		httppost.setHeader("Accept", "application/json");
-		JSONObject jsonObj = new JSONObject();
-		
-		try
-		{
-			for (Question q : form.questions)
-			{
-				if (q.Answer != null && (q.Answer.compareTo("") != 0))
-					jsonObj.put(q.FieldName, q.Answer);
-				//else, do nothing, we won't enter blank answers
-			}
-		}
-		catch (JSONException e1)
-		{
-			e1.printStackTrace();
-			return new String[] {"-1", "Error: JSON error"};
-		}
-
-		StringEntity myEntity = null;
-		
-		//i dont understand why this needs a try/catch
-		try {
-			myEntity = new StringEntity(jsonObj.toString(), HTTP.UTF_8);
-			//Log.v("cody", jsonObj.toString());
-			
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return new String[] {"-1","Error: Unsuccessful encoding error"};
-		} 
-		
-		
-		myEntity.setContentType("application/json");		
-		httppost.setEntity(myEntity);
+    	HttpPost httppost = new HttpPost(list_name);
+    	httppost.setHeader("Accept", "application/json");
+        
+    	List<String> fields = new ArrayList<String>();
+    	
+    	for (Question q : form.questions)
+    	{
+    		if (q.Answer != null && (q.Answer.compareTo("") != 0))
+    		{
+    			if (q.getClass() == ChoiceQuestion.class)
+    			{
+    				if (((ChoiceQuestion)q).multipleselect.compareTo("true") == 0)
+    				{					
+    					//split multiple choice answers up
+    					String[] answers;	
+    					answers = q.Answer.split(";");
+    
+    					String joined_fields = "";
+    					
+    					//end object looks like this:
+    					//"REJECTION_REASON":[{"__metadata": {"uri": "http://habitat.taic.net/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTestREJECTION_REASON('No utilities')"}}]
+    					for (String answer : answers)
+    					{
+    						//append http if it doesn't contain it
+    						if(!URL.contains("http://"))
+    							joined_fields = joined_fields + "{\"__metadata\": {\"uri\": \"" + "http://" + URL + list_name + q.FieldName + "('" + answer + "')\"}},";
+    						else
+    							joined_fields = joined_fields + "{\"__metadata\": {\"uri\": \"" + URL + list_name + q.FieldName + "('" + answer + "')\"}},";
+    					}
+    
+    					//remove the last comma, god i hate java -- why the fuck is there no join command
+    					if (joined_fields.length() != 0)
+    						joined_fields = joined_fields.substring(0, joined_fields.length()- 1);
+    					
+    					
+    					fields.add(JSONObject.quote(q.FieldName) + ":[" + joined_fields + "]");
+    				}
+    				else
+    				{
+    					fields.add(JSONObject.quote(q.FieldName) + ":" + JSONObject.quote(q.Answer));
+    				}
+    			}
+    			else
+    			{
+    				fields.add(JSONObject.quote(q.FieldName) + ":" + JSONObject.quote(q.Answer));
+    			}
+    
+    		}
+    		//else, do nothing, we won't enter blank answers
+    	}
+    
+    
+    
+    	StringEntity myEntity = null;
+    	
+    	//i dont understand why this needs a try/catch
+    	try {
+    		String joined_fields = ""; 
+    		
+    		for (String temp : fields)
+    			joined_fields = joined_fields + temp + ",";
+    
+    		if (joined_fields.length() != 0)
+    			joined_fields = joined_fields.substring(0, joined_fields.length() - 1);
+    		
+    		joined_fields = "{" + joined_fields + "}";
+    		
+    		myEntity = new StringEntity(joined_fields, HTTP.UTF_8);
+    		//Log.v("cody", joined_fields);
+    		
+    	}
+    	catch (UnsupportedEncodingException e2) {
+    		e2.printStackTrace();
+    		return new String[] {"-1","Error: Unsuccessful encoding error"};
+    	} 		
+    	
+    	myEntity.setContentType("application/json");		
+    	httppost.setEntity(myEntity);
 
         //ok here we're trying to get something
         HttpResponse response1 = null;
