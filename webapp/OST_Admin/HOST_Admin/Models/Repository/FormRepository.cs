@@ -412,12 +412,16 @@ namespace HOST_Admin.Models.Repository
                     ChoiceQuestion cq = new ChoiceQuestion();
 
                     if (spsrvm.field_type == "MultiChoice")
+                    {
                         cq.Multiple = true;
+                        cq.FieldName = spsrvm.field_name;
+                    }
                     else
+                    {
                         cq.Multiple = false;
-
+                        cq.FieldName = spsrvm.field_name + "Value"; 
+                    }
                     cq.Other = false;
-                    cq.FieldName = spsrvm.field_name + "Value"; 
                     cq.FieldType = "SINGLE";
                     cq.SortOrder = sort_order++;
                     cq.Text = spsrvm.field_name + " - enter question here";
