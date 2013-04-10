@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using HOST_Admin.Models;
-using System.Data.Objects.DataClasses;
-using System.Data.Entity.Infrastructure;
-using System.Data.Objects;
-using HOST_Admin.Helper;
-using HOST_Admin.Models.ViewModel;
 using HOST_Admin.Models.Repository;
-using System.Web.Security;
+using HOST_Admin.Models.ViewModel;
+using HOST_Admin.Helper;
 
 namespace HOST_Admin.Controllers
 {
@@ -63,9 +56,9 @@ namespace HOST_Admin.Controllers
 
             //If admin display all, otherwise only display your own
             if (_userRepository.getLoggedInRole() == "Administrator")
-                return View(_formRepository.GetAll().ToList());
+                return View(_formRepository.getAll().ToList());
             else
-                return View(_formRepository.GetAll().Where(p => p.CreatedBy == user_id).ToList());
+                return View(_formRepository.getAll().Where(p => p.CreatedBy == user_id).ToList());
         }
 
         /// <summary>
@@ -161,6 +154,45 @@ namespace HOST_Admin.Controllers
 
             return View(form);
         }
+
+        /// <summary>
+        /// GET: Provide interface to enter SharePoint credentials.
+        /// GETv2: Allow user to choose a list to generate a form from.
+        /// </summary>
+        /// <param name="spsrvm"></param>
+        /// <returns></returns>
+        public ActionResult CreateFromSharePoint(SharePointSOAPRequestViewModel spsrvm)
+        {
+            return View(spsrvm);
+        }
+
+        /// <summary>
+        /// POST: Attempt to connect to SharePoint SOAP and create a new form.
+        /// </summary>
+        /// <param name="spsrvm"></param>
+        /// <returns>If succesful add and redirect to edit screen, otherwise return to input screen.</returns>
+        [HttpPost]
+        [ActionName("CreateFromSharePoint")]
+        public ActionResult CreateFromSharePointPost(SharePointSOAPRequestViewModel spsrvm)
+        {
+            List<SharePointSOAPResponseViewModel> spsrvList = HOSTSharePoint.generateForm(spsrvm);
+
+            if (spsrvList == null)
+                return RedirectToAction("CreateFromSharePoint", spsrvm);
+
+            try
+            {
+                int user_id = _userRepository.getLoggedInUserId();
+                Form form = _formRepository.createFormFromSharePoint(spsrvList, user_id);
+
+                return RedirectToAction("Edit", new { id = form.FormId });
+            }
+            catch (NullReferenceException e)
+            {
+                return RedirectToAction("LogOut", "Account");
+            }
+        }
+
 
         /// <summary>
         /// AJAX: Form/DeleteOption: delete the specified option from the choice question.

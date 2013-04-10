@@ -41,16 +41,16 @@ public class XML
 
         // Add the meta data to the XML string
         xml += string.Format("\t\t<template_id>{0}</template_id>\n", form.FormId);
-        xml += string.Format("\t\t<name>{0}</name>\n", form.Name);
-        xml += string.Format("\t\t<url>{0}</url>\n", form.URL);
-        xml += string.Format("\t\t<listname>{0}</listname>\n", form.ListName);
+        xml += string.Format("\t\t<name><![CDATA[{0}]]></name>\n", form.Name);
+        xml += string.Format("\t\t<url><![CDATA[{0}]]></url>\n", form.URL);
+        xml += string.Format("\t\t<listname><![CDATA[{0}]]></listname>\n", form.ListName);
         xml += string.Format("\t\t<keyfield>{0}</keyfield>\n", form.KeyField);
-        xml += string.Format("\t\t<formgroup>{0}</formgroup>\n", form.Group);
+        xml += string.Format("\t\t<formgroup><![CDATA[{0}]]></formgroup>\n", form.Group);
 
         //New fields
-        xml += string.Format("\t\t<filledbyfieldname>{0}</filledbyfieldname>\n", form.FilledByFieldName);
+        xml += string.Format("\t\t<filledbyfieldname><![CDATA[{0}]]></filledbyfieldname>\n", form.FilledByFieldName);
         xml += string.Format("\t\t<filledbyfieldtype>{0}</filledbyfieldtype>\n", form.FilledByFieldType);
-        xml += string.Format("\t\t<filleddatefieldname>{0}</filleddatefieldname>\n", form.FilledDateFieldName);
+        xml += string.Format("\t\t<filleddatefieldname><![CDATA[{0}]]></filleddatefieldname>\n", form.FilledDateFieldName);
         xml += string.Format("\t\t<filleddatefieldtype>{0}</filleddatefieldtype>\n", form.FilledDateFieldType);
         
         // Autoupdate
@@ -64,11 +64,7 @@ public class XML
         }
 
         xml += string.Format("\t\t<datecreated>{0}</datecreated>\n", form.DateCreated.ToString());
-        xml += string.Format("\t\t<description>{0}</description>\n", form.Description);
-
-        // These two are filled in on the phone app
-        xml += "\t\t<user></user>\n";
-        xml += "\t\t<pass></pass>\n";
+        xml += string.Format("\t\t<description><![CDATA[{0}]]></description>\n", form.Description);
 
         // Close the meta tag
         xml += "\t</meta>\n\n";
@@ -90,9 +86,9 @@ public class XML
             // Common question info
             xml += string.Format("\t\t\t<id>{0}</id>\n", q.QuestionId);
             xml += string.Format("\t\t\t<sortorder>{0}</sortorder>\n", q.SortOrder);
-            xml += string.Format("\t\t\t<text>{0}</text>\n", q.Text);
-            xml += string.Format("\t\t\t<helptext>{0}</helptext>\n", q.HelpText);
-            xml += string.Format("\t\t\t<fieldname>{0}</fieldname>\n", q.FieldName);
+            xml += string.Format("\t\t\t<text><![CDATA[{0}]]></text>\n", q.Text);
+            xml += string.Format("\t\t\t<helptext><![CDATA[{0}]]></helptext>\n", q.HelpText);
+            xml += string.Format("\t\t\t<fieldname><![CDATA[{0}]]></fieldname>\n", q.FieldName);
             xml += string.Format("\t\t\t<fieldtype>{0}</fieldtype>\n", q.FieldType);
 
             // Text question info
@@ -133,7 +129,7 @@ public class XML
                 // Add each option to the question
                 foreach (Option o in question.Options)
                 {
-                    xml += string.Format("\t\t\t\t\t<option>{0}</option>\n", o.Text);
+                    xml += string.Format("\t\t\t\t\t<option><![CDATA[{0}]]></option>\n", o.Text);
                 }         
 
                 // Close options tag
@@ -155,15 +151,12 @@ public class XML
                 // Add each label to the question
                 foreach (Label l in question.Labels)
                 {
-                    xml += string.Format("\t\t\t\t\t<label>{0}</label>\n", l.Text);
+                    xml += string.Format("\t\t\t\t\t<label><![CDATA[{0}]]></label>\n", l.Text);
                 }
 
                 // Close labels tag
                 xml += "\t\t\t</labels>\n";
             }
-
-            // Filled in on the phone app
-            xml += "\n\t\t\t<answer></answer>\n\n";  
 
             // Close question tag
             xml += "\t\t</question>\n\n\n";

@@ -31,7 +31,7 @@ namespace HOST_Admin.Controllers
         [Queryable]
         public IQueryable<String> Get()
         {
-            IQueryable<Form> forms = _formRepository.GetAll().Where(p => p.Active == true);
+            IQueryable<Form> forms = _formRepository.getAll().Where(p => p.Active == true);
             List<String> form_ids = new List<string>();
 
             forms.ToList().ForEach(p => form_ids.Add(p.FormId.ToString()));

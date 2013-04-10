@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.Data.OData;
-using System.Web.Http;
 using System.Data.Objects.DataClasses;
+using System.Linq;
+using HOST_Admin.Models.ViewModel;
 
 namespace HOST_Admin.Models.Repository
 {
@@ -31,7 +29,7 @@ namespace HOST_Admin.Models.Repository
         /// Get all forms.
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Form> GetAll()
+        public IQueryable<Form> getAll()
         {
             return _databaseContext.Forms;
         }
@@ -394,6 +392,89 @@ namespace HOST_Admin.Models.Repository
             form.Questions.OrderBy(q => q.SortOrder).ToList().ForEach(q => q.SortOrder = count++);
 
             _databaseContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Take a set of fields and types from SharePoint and generate a form.
+        /// </summary>
+        /// <param name="spsrvmList"></param>
+        public Form createFormFromSharePoint(List<ViewModel.SharePointSOAPResponseViewModel> spsrvmList, int user_id)
+        {
+            Form form = new Form();
+            int sort_order = 0;
+
+            foreach (SharePointSOAPResponseViewModel spsrvm in spsrvmList)
+            {
+
+                //If a choice Question
+                if (spsrvm.field_type == "Choice" || spsrvm.field_type == "MultiChoice")
+                {
+                    ChoiceQuestion cq = new ChoiceQuestion();
+
+                    if (spsrvm.field_type == "MultiChoice")
+                        cq.Multiple = true;
+                    else
+                        cq.Multiple = false;
+
+                    cq.Other = false;
+                    cq.FieldName = spsrvm.field_name + "Value"; 
+                    cq.FieldType = "SINGLE";
+                    cq.SortOrder = sort_order++;
+                    cq.Text = "enter question here";
+                    cq.HelpText = "enter help text here";
+                    
+                    int option_sort_order = 0;
+                    foreach (String choice in spsrvm.choices)
+                    {
+                        Option option = new Option();
+
+                        option.SortOrder = option_sort_order++;
+                        option.Text = choice;
+                        cq.Options.Add(option);
+                    }
+                    
+                    form.Questions.Add(cq);
+                }
+                else
+                {
+                    TextQuestion tq = new TextQuestion();
+
+                    tq.FieldName = spsrvm.field_name;
+                    if (spsrvm.field_type == "Number" || spsrvm.field_type == "Currency")
+                        tq.FieldType = "NUMBER";
+                    else if (spsrvm.field_type == "Note")
+                        tq.FieldType = "MULTI";
+                    else if (spsrvm.field_type == "DateTime")
+                        tq.FieldType = "DATE";
+                    //Every other kind of type is caught here
+                    else
+                        tq.FieldType = "SINGLE";
+                    tq.SortOrder = sort_order++;
+                    tq.Text = "enter question here";
+                    tq.HelpText = "enter help text here";
+
+                    form.Questions.Add(tq);
+                }
+            }
+
+            form.DateCreated = DateTime.Now;
+            form.CreatedBy = user_id;
+            form.Name = "Form Name";
+            form.Description = "Form Description";
+            form.Group = "undefined";
+            form.AutoUpdate = false;
+            form.Active = true;
+            form.KeyField = 1;
+            form.FilledByFieldType = "SINGLE";
+            form.FilledDateFieldType = "DATE";
+            form.URL = "habitat.taic.net";
+            form.ListName = "/omaha/-SITENAME-/_vti_bin/listdata.svc/-LISTNAME-";
+
+            _databaseContext.Forms.AddObject(form);
+
+            _databaseContext.SaveChanges();
+
+            return form;
         }
     }
 }

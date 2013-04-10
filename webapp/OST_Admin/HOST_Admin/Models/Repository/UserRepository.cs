@@ -122,7 +122,7 @@ namespace HOST_Admin.Models.Repository
         /// </summary>
         /// <param name="role_id"></param>
         /// <returns></returns>
-        Role IUserRepository.getRoleById(int role_id)
+        public Role getRoleById(int role_id)
         {
             return _databaseContext.Roles.Where(r => r.RoleId == role_id).Single();
         }

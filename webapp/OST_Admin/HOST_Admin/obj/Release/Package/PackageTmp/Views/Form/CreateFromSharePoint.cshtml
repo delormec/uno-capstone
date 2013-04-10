@@ -1,0 +1,89 @@
+﻿@*
+    Screen:         Form/CreateFromSharePoint
+    Description:    Specify parameters to create
+    Input:          (SharePointSOAPRequestViewModel) Model.
+                        Contains information needed to request list information from SharePoint
+                    (List<SelectListItem>) ViewBag.FieldTypes
+                        Used to build combo box of FieldTypes.
+    Output:         POST: Form/Create 
+*@
+@model HOST_Admin.Models.ViewModel.SharePointSOAPRequestViewModel
+
+@{
+    ViewBag.Title = "CreateFromSharePoint";
+}
+
+<div id="form-editor-outer">
+<div class="header ui-widget-header ui-corner-top">Create From SharePoint</div>
+@using (Html.BeginForm("CreateFromSharePoint", "Form", FormMethod.Post, new { @id = "form-create-from-sharepoint" }))
+{  
+<div id="form-editor" class="ui-corner-bottom ui-widget-content ui-widget">
+     <table id="form-editor-meta-table">
+        <tr>
+            <td>SharePoint URL @MyHTML.Help("The URL to the SharePoint list for this form") <div class="req">*</div> </td>
+            <td colspan ="3">
+                <div>
+                    <input id="url" class="text-box single-line host-standard-textbox" type="text" value="@Model.url" name="url"/>                                         
+                </div>
+            </td>
+        </tr>
+        <tr>
+        <td>SharePoint Username @MyHTML.Help("Your SharePoint user name") <div class="req">*</div> </td>
+            <td colspan ="3">
+                <div>
+                    <input id="user_name" class="text-box single-line host-standard-textbox" type="text" value="@Model.user_name" name="user_name"/>                                         
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>SharePoint Password @MyHTML.Help("Your SharePoint password") <div class="req">*</div> </td>
+            <td colspan ="3">
+                <div>
+                    <input id="password" class="text-box single-line host-standard-textbox" type="password" value="@Model.password" name="password"/>                                         
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>SharePoint List @MyHTML.Help("Your SharePoint List name, with spaces") <div class="req">*</div> </td>
+            <td colspan ="3">
+                <div>
+                    <input id="list_name" class="text-box single-line host-standard-textbox" type="text" value="@Model.list_name" name="list_name"/>                                         
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+<input type="submit" value="Connect" />
+}
+</div>
+
+@* JQuery *@
+@section Scripts {
+<script type="text/javascript">
+    $(function () {
+
+        $("#form-create-btnset-autoupdate").livequery(function () {
+            $(this).buttonset();
+        });
+
+        $("#form-create-btnset-active").livequery(function () {
+            $(this).buttonset();
+        });
+
+        $("input[type=submit], button").button();
+
+        //Form validation.
+        $("#form-edit").validate({
+            rules: {
+                Name: { required: true },
+                Group: { required: true },
+                URL: { required: true },
+                ListName: { required: true },
+                KeyField: { required: true, number: true }
+            }
+        });
+    });
+</script>
+}

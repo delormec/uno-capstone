@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using HOST_Admin.Models.ViewModel;
 
 namespace HOST_Admin.Models.Repository
 {
@@ -14,7 +15,7 @@ namespace HOST_Admin.Models.Repository
     /// </summary>
     public interface IFormRepository
     {
-        IQueryable<Form> GetAll();
+        IQueryable<Form> getAll();
         Form getFormById(int form_id);
         void updateForm(Form form, List<Question> question_list);
         void deleteFormById(int form_id);
@@ -26,5 +27,6 @@ namespace HOST_Admin.Models.Repository
         void addForm(Form form);
         Form copyForm(Form old_form, int user_id);
         void changeQuestionPosition(int question_id, int start_position, int end_position);
+        Form createFormFromSharePoint(List<SharePointSOAPResponseViewModel> spsrvmList, int user_id);
     }
 }

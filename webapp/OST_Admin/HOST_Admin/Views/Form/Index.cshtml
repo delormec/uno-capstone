@@ -64,6 +64,7 @@
 
 </div>
 @Html.ActionLink("Create New", "Create", null,  new { id = "btn-create" })
+@Html.ActionLink("Create From SharePoint", "CreateFromSharePoint", null, new { id = "btn-create-from-sharepoint" })
 </div>
 
 @* Dialog pop-up to confirm delete action. *@
@@ -76,6 +77,7 @@
 <script>
     $(function () {
         $("a[id=btn-create]").button();
+        $("a[id=btn-create-from-sharepoint]").button();
         $("a[id=btn-log-out]").button();
 
         //set up table with custom css / sortable columns / default sorting

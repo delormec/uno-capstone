@@ -85,7 +85,7 @@ namespace HOST_Admin.Tests.Controllers
         {
             int count = 6;
 
-            Assert.AreEqual(count, formRepository.GetAll().Count());
+            Assert.AreEqual(count, formRepository.getAll().Count());
         }
 
         [Test]
@@ -193,12 +193,12 @@ namespace HOST_Admin.Tests.Controllers
         {
             Form form = new Form();
 
-            int form_count = formRepository.GetAll().Count();
+            int form_count = formRepository.getAll().Count();
 
             formRepository.addForm(form);
 
 
-            Assert.AreEqual(form_count + 1, formRepository.GetAll().Count());
+            Assert.AreEqual(form_count + 1, formRepository.getAll().Count());
         }
 
 
