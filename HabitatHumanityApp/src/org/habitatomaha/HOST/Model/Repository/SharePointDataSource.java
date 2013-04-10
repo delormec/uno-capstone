@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -18,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
+import org.habitatomaha.HOST.Model.ChoiceQuestion;
 import org.habitatomaha.HOST.Model.Form;
 import org.habitatomaha.HOST.Model.Question;
 import org.habitatomaha.HOST.SharePointAuthentication.NTLMSchemeFactory;
