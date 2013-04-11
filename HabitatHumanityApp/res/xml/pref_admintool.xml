@@ -14,5 +14,9 @@
         android:title="@string/pref_title_admin_tool_url" 
         android:key="admin_tool_url"/>
     <EditTextPreference android:key="list_name" android:title="@string/pref_title_list_name" android:defaultValue="@string/pref_default_list_name"/>
+    <EditTextPreference android:defaultValue="@string/pref_default_admin_tool_port" 
+        android:title="@string/pref_title_admin_tool_port" 
+        android:key="admin_tool_port"
+        android:inputType="numberDecimal"/>
 
 </PreferenceScreen>

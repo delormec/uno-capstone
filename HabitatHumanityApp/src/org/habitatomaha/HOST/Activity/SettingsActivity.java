@@ -88,6 +88,7 @@ public class SettingsActivity extends PreferenceActivity {
 		bindPreferenceSummaryToValue(findPreference("admin_tool_url"));
 		bindPreferenceSummaryToValue(findPreference("list_name"));
 		bindPreferenceSummaryToValue(findPreference("sharepoint_domain"));
+		bindPreferenceSummaryToValue(findPreference("admin_tool_port"));
 		
 	}
 

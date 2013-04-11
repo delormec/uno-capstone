@@ -36,6 +36,11 @@ public class UploadForm extends AsyncTask{
 		URL = "habitat.taic.net";
 		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
 		
+		//Form form = (Form)params[0];
+		//TODO Uncomment these when implemented. 
+		//URL = form.meta.url;
+		//list_name = form.meta.listname;
+		
 		//User (app) preferences
 		user_name = settings.getString("sharepoint_username","");
 		password = settings.getString("sharepoint_password","");

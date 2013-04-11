@@ -21,6 +21,7 @@ public class AdminDataSource {
 	
 	private String URL;
 	private String list_name;
+	private int port;
 
 	private DefaultHttpClient httpclient;
 	private HttpHost target;
@@ -30,12 +31,14 @@ public class AdminDataSource {
 	{
 		URL = "wende.sytes.net";
 		list_name = "/api/ApiForm";
+		port = 5432;
 	}
 	
-	public AdminDataSource(String URL, String list_name)
+	public AdminDataSource(String URL, String list_name, int port)
 	{
 		this.URL = URL;
 		this.list_name = list_name;
+		this.port = port;
 	}
 	
 	
@@ -48,7 +51,7 @@ public class AdminDataSource {
         //httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
 
         //TODO, this port will change
-        target = new HttpHost(URL, 5432, "http");
+        target = new HttpHost(URL, port, "http");
         
         localContext = new BasicHttpContext();
         

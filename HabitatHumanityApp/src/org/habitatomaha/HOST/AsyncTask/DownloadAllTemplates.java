@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 
@@ -95,15 +96,19 @@ public class DownloadAllTemplates extends AsyncTask {
 		// TODO Auto-generated method stub
 		String URL;
 		String list_name;
+		String port_string;
+		int port;
 		
 		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
 		
 		URL = settings.getString("admin_tool_url","");
 		list_name = settings.getString("list_name", "");
+		port_string = settings.getString("admin_tool_port","");
+		port = Integer.parseInt(port_string);
 		
-		
+		Log.v("Downloadtask", "Here is port " + port);
 		//AdminDataSource aDS = new AdminDataSource();
-		AdminDataSource aDS = new AdminDataSource(URL, list_name);
+		AdminDataSource aDS = new AdminDataSource(URL, list_name, port);
 		OSTDataSource oDS = new OSTDataSource((android.content.Context)params[0]);
 		oDS.open();
 		
