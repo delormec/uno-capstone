@@ -241,6 +241,7 @@ namespace HOST_Admin.Models.Repository
             old_form.Description = form.Description;
             old_form.Name = form.Name;
             old_form.URL = form.URL;
+            old_form.Port = form.Port;
             old_form.KeyField = form.KeyField;
             old_form.Group = form.Group;
             old_form.ListName = form.ListName;
@@ -472,6 +473,7 @@ namespace HOST_Admin.Models.Repository
             form.FilledByFieldType = "SINGLE";
             form.FilledDateFieldType = "DATE";
             form.URL = "habitat.taic.net";
+            form.Port = 80;
             form.ListName = "/omaha/-SITENAME-/_vti_bin/listdata.svc/-LISTNAME-";
 
             _databaseContext.Forms.AddObject(form);

@@ -69,6 +69,7 @@
     <Property Name="FilledDateFieldType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FilledByFieldName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FilledByFieldType" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Port" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -310,6 +311,7 @@
           <Property Type="String" Name="FilledDateFieldType" Nullable="true" />
           <Property Type="String" Name="FilledByFieldName" Nullable="true" />
           <Property Type="String" Name="FilledByFieldType" Nullable="true" />
+          <Property Type="Int32" Name="Port" Nullable="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -438,6 +440,7 @@
           <ScalarProperty Name="FilledDateFieldType" ColumnName="FilledDateFieldType" />
           <ScalarProperty Name="FilledByFieldName" ColumnName="FilledByFieldName" />
           <ScalarProperty Name="FilledByFieldType" ColumnName="FilledByFieldType" />
+          <ScalarProperty Name="Port" ColumnName="Port" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -587,7 +590,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="HOSTModel.Form" Width="1.5" PointX="7.125" PointY="0.5" Height="3.5644742838541656" />
+        <EntityTypeShape EntityType="HOSTModel.Form" Width="1.5" PointX="7.125" PointY="0.5" Height="3.7288216145833326" />
         <EntityTypeShape EntityType="HOSTModel.User" Width="1.5" PointX="9.5" PointY="0.5" Height="1.7566536458333335" />
         <EntityTypeShape EntityType="HOSTModel.Question" Width="1.5" PointX="3.5" PointY="0.625" Height="2.085348307291667" />
         <EntityTypeShape EntityType="HOSTModel.ChoiceQuestion" Width="1.5" PointX="2" PointY="3.375" Height="1.4279589843749996" />

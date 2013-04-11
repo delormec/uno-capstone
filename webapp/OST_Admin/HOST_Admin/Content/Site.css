@@ -33,6 +33,20 @@ a
     width:200px;
 }
 
+.host-medium-textbox
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:50px;
+}
+
+.host-short-textbox
+{
+    border: 1px solid rgb(0,0,0);
+    padding:3px 3px 3px 3px;
+    width:25px;
+}
+
 .req
 {
     color:red;
@@ -216,10 +230,7 @@ label.error { float: none; color: red; padding-left: .5em; vertical-align: top; 
     width:100%;
 }
 
-#form-editor #form-key-field input
-{
-    width:25px;
-}
+
 
 #QuestionTabOuter
 {

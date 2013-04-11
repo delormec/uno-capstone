@@ -38,8 +38,15 @@
                 <td> SharePoint URL @MyHTML.Help("The URL to the SharePoint list for this form") <div class="req">*</div> </td>
                 <td colspan="3">
                     <div id="form-url">
-
                         <input id="URL" class="text-box single-line host-standard-textbox" type="text" value="@Model.URL" name="URL"/> 
+                    </div>                        
+                </td>
+            </tr>
+            <tr>
+                <td> SharePoint Port @MyHTML.Help("The port number of your SharePoint site, default is usually 80") <div class="req">*</div> </td>
+                <td colspan="3">
+                    <div id="form-port">
+                        <input id="Port" class="text-box single-line host-medium-textbox" type="text" value="@Model.Port" name="Port"/> 
                     </div>                        
                 </td>
             </tr>
@@ -104,8 +111,8 @@
             <tr>
                 <td> Key Field  @MyHTML.Help("The key field of a form will be used by the device to display a list of completed forms. The key field should be a field that is unique for each completed form.") <div class="req">*</div> </td>
                 <td>
-                    <div id="form-key-field">
-                        <input id="KeyField" class="text-box single-line host-standard-textbox" type="text" value="@Model.KeyField" name="KeyField"/>
+                    <div>
+                        <input id="KeyField" class="text-box single-line host-short-textbox" type="text" value="@Model.KeyField" name="KeyField"/>
                     </div>
                 </td>
                 <td> </td>
@@ -203,6 +210,7 @@
                 Name: { required: true },
                 Group: { required: true },
                 URL: { required: true },
+                Port: { required: true, number: true },
                 ListName: { required: true },
                 KeyField: { required: true, number: true }
             },

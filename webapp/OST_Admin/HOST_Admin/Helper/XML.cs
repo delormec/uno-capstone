@@ -44,6 +44,7 @@ public class XML
         xml += string.Format("\t\t<template_id>{0}</template_id>\n", form.FormId);
         xml += string.Format("\t\t<name><![CDATA[{0}]]></name>\n", form.Name);
         xml += string.Format("\t\t<url><![CDATA[{0}]]></url>\n", form.URL);
+        xml += string.Format("\t\t<port>{0}</port>\n", form.Port);
         xml += string.Format("\t\t<listname><![CDATA[{0}]]></listname>\n", form.ListName);
         xml += string.Format("\t\t<keyfield>{0}</keyfield>\n", form.KeyField);
         xml += string.Format("\t\t<formgroup><![CDATA[{0}]]></formgroup>\n", form.Group);
@@ -76,7 +77,6 @@ public class XML
         // Go through each question and add it to the XML
         foreach (Question q in questions.AsQueryable().OrderBy(ql => ql.SortOrder))
         {
-
             if (q is TextQuestion)
                 xml += "\t\t<question class=\"TextQuestion\">\n";
             else if (q is ChoiceQuestion)

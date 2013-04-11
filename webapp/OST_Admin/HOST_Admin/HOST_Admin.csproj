@@ -178,8 +178,6 @@
     <Compile Include="Helper\HOSTSharePoint.cs" />
     <Compile Include="Helper\HOSTCopy.cs" />
     <Compile Include="Helper\HOSTEncryption.cs" />
-    <Compile Include="Helper\HTTPClientRequestMessage.cs" />
-    <Compile Include="Helper\HTTPClientResponseMessage.cs" />
     <Compile Include="Helper\MyHTML.cs" />
     <Compile Include="Helper\QuestionModelBinder.cs" />
     <Compile Include="Helper\XML.cs" />

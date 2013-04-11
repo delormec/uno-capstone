@@ -19,6 +19,7 @@
           <ScalarProperty Name="FilledDateFieldType" ColumnName="FilledDateFieldType" />
           <ScalarProperty Name="FilledByFieldName" ColumnName="FilledByFieldName" />
           <ScalarProperty Name="FilledByFieldType" ColumnName="FilledByFieldType" />
+          <ScalarProperty Name="Port" ColumnName="Port" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

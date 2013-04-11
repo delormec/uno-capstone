@@ -50,6 +50,7 @@
     <Property Type="String" Name="FilledDateFieldType" Nullable="true" />
     <Property Type="String" Name="FilledByFieldName" Nullable="true" />
     <Property Type="String" Name="FilledByFieldType" Nullable="true" />
+    <Property Type="Int32" Name="Port" Nullable="true" />
   </EntityType>
   <EntityType Name="User">
     <Key>

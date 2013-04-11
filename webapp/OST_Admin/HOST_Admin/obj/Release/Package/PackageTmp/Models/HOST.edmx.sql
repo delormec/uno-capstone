@@ -2,13 +2,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/23/2013 13:42:50
+-- Date Created: 04/10/2013 22:42:59
 -- Generated from EDMX file: C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\Models\HOST.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [OST];
+USE [HOST];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -100,7 +100,8 @@ CREATE TABLE [dbo].[Forms] (
     [FilledDateFieldName] nvarchar(max)  NULL,
     [FilledDateFieldType] nvarchar(max)  NULL,
     [FilledByFieldName] nvarchar(max)  NULL,
-    [FilledByFieldType] nvarchar(max)  NULL
+    [FilledByFieldType] nvarchar(max)  NULL,
+    [Port] int  NULL
 );
 GO
 

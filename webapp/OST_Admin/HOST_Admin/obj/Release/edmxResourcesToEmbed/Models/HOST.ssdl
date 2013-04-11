@@ -64,6 +64,7 @@
     <Property Name="FilledDateFieldType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FilledByFieldName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="FilledByFieldType" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Port" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
