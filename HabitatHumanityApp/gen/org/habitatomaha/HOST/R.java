@@ -82,38 +82,40 @@ public final class R {
         public static final int menu_settings=0x7f060002;
         public static final int menu_startDownloadString=0x7f060013;
         public static final int newFormButton=0x7f060003;
-        public static final int pref_default_admin_tool_url=0x7f06002c;
-        public static final int pref_default_display_name=0x7f06001e;
+        public static final int pref_default_admin_tool_url=0x7f06002e;
+        public static final int pref_default_display_name=0x7f060020;
         public static final int pref_default_list_name=0x7f060018;
-        public static final int pref_default_sharepoint_password=0x7f060028;
-        public static final int pref_default_sharepoint_username=0x7f060027;
-        public static final int pref_description_social_recommendations=0x7f06001c;
-        public static final int pref_header_admintool=0x7f06002e;
+        public static final int pref_default_sharepoint_domain=0x7f06001a;
+        public static final int pref_default_sharepoint_password=0x7f06002a;
+        public static final int pref_default_sharepoint_username=0x7f060029;
+        public static final int pref_description_social_recommendations=0x7f06001e;
+        public static final int pref_header_admintool=0x7f060030;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f060020;
-        public static final int pref_header_error_log=0x7f06002d;
+        public static final int pref_header_data_sync=0x7f060022;
+        public static final int pref_header_error_log=0x7f06002f;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f06001a;
+        public static final int pref_header_general=0x7f06001c;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f060023;
-        public static final int pref_header_sharepoint_settings=0x7f060025;
-        public static final int pref_header_tools=0x7f06002a;
+        public static final int pref_header_notifications=0x7f060025;
+        public static final int pref_header_sharepoint_settings=0x7f060027;
+        public static final int pref_header_tools=0x7f06002c;
         public static final int pref_summary_download_templates=0x7f060015;
-        public static final int pref_title_add_friends_to_messages=0x7f06001f;
-        public static final int pref_title_admin_tool_url=0x7f06002b;
-        public static final int pref_title_display_name=0x7f06001d;
+        public static final int pref_title_add_friends_to_messages=0x7f060021;
+        public static final int pref_title_admin_tool_url=0x7f06002d;
+        public static final int pref_title_display_name=0x7f06001f;
         public static final int pref_title_download_templates=0x7f060016;
         public static final int pref_title_list_name=0x7f060017;
-        public static final int pref_title_new_message_notifications=0x7f060024;
-        public static final int pref_title_sharepoint_password=0x7f060029;
-        public static final int pref_title_sharepoint_username=0x7f060026;
-        public static final int pref_title_social_recommendations=0x7f06001b;
-        public static final int pref_title_sync_frequency=0x7f060021;
-        public static final int pref_title_system_sync_settings=0x7f060022;
+        public static final int pref_title_new_message_notifications=0x7f060026;
+        public static final int pref_title_sharepoint_domain=0x7f060019;
+        public static final int pref_title_sharepoint_password=0x7f06002b;
+        public static final int pref_title_sharepoint_username=0x7f060028;
+        public static final int pref_title_social_recommendations=0x7f06001d;
+        public static final int pref_title_sync_frequency=0x7f060023;
+        public static final int pref_title_system_sync_settings=0x7f060024;
         public static final int strDownloadForms=0x7f06000c;
         public static final int strFormsLabel=0x7f060010;
         public static final int strGetForm=0x7f060009;
@@ -126,7 +128,7 @@ public final class R {
         public static final int strTemplateLabel=0x7f06000f;
         public static final int testTextString=0x7f060005;
         public static final int title_activity_display_form=0x7f060004;
-        public static final int title_activity_settings=0x7f060019;
+        public static final int title_activity_settings=0x7f06001b;
         public static final int xmlForm=0x7f060007;
     }
     public static final class style {

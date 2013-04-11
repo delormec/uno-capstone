@@ -80,11 +80,6 @@ public class SettingsActivity extends PreferenceActivity {
 		getPreferenceScreen().addPreference(fakeHeader);
 		addPreferencesFromResource(R.xml.pref_admintool);
 		
-		//Add 'error' preferences, and a corresponding header.
-		fakeHeader = new PreferenceCategory(this);
-		fakeHeader.setTitle(R.string.pref_header_error_log);
-		getPreferenceScreen().addPreference(fakeHeader);
-		
 		
 		// Bind the summaries of EditText/List/Dialog/Ringtone preferences to
 		// their values. When their values change, their summaries are updated
@@ -92,6 +87,7 @@ public class SettingsActivity extends PreferenceActivity {
 		bindPreferenceSummaryToValue(findPreference("sharepoint_username"));
 		bindPreferenceSummaryToValue(findPreference("admin_tool_url"));
 		bindPreferenceSummaryToValue(findPreference("list_name"));
+		bindPreferenceSummaryToValue(findPreference("sharepoint_domain"));
 		
 	}
 

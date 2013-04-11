@@ -108,6 +108,7 @@ public class UploadAllForms extends AsyncTask
 		//User (app) preferences
 		user_name = settings.getString("sharepoint_username","");
 		password = settings.getString("sharepoint_password","");
+		domain = settings.getString("sharepoint_domain", "");
 		
 		
 		database.open();	
@@ -130,7 +131,6 @@ public class UploadAllForms extends AsyncTask
 			
 			//TODO Uncomment these when implemented. 
 			//URL = form.meta.url;
-			//domain = form.meta.domain;
 			//list_name = form.meta.listname;
 			
 			// Attempt the upload

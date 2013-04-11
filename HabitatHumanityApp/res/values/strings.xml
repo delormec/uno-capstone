@@ -25,6 +25,8 @@
     <string name="pref_title_download_templates">Download Templates</string>
     <string name="pref_title_list_name">List Name</string>
     <string name="pref_default_list_name">/api/ApiForm</string>
+    <string name="pref_title_sharepoint_domain">Domain</string>
+    <string name="pref_default_sharepoint_domain">xtranet</string>
     
 
 </resources>

@@ -35,11 +35,11 @@ public class UploadForm extends AsyncTask{
 		//Form preferences
 		URL = "habitat.taic.net";
 		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
-		domain = "xtranet";
 		
 		//User (app) preferences
 		user_name = settings.getString("sharepoint_username","");
 		password = settings.getString("sharepoint_password","");
+		domain = settings.getString("sharepoint_domain", "");
 
 		return SharePointDataSource.uploadFormToSharePoint((Form)params[0], URL, list_name, user_name, password, domain);
 	

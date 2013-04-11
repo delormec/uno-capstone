@@ -17,5 +17,6 @@
         android:title="@string/pref_title_sharepoint_password" 
         android:key="sharepoint_password"
         android:inputType="textPassword"/>
+    <EditTextPreference android:defaultValue="@string/pref_title_sharepoint_domain" android:title="@string/pref_title_sharepoint_domain" android:key="sharepoint_domain"/>
 
 </PreferenceScreen>
