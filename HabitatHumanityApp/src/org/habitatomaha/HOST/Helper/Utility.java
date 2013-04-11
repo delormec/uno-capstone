@@ -4,15 +4,55 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 
 /**
  * A class for static methods that are useful in general for Android
  */
 public class Utility 
 {
+	/**
+	 * Creates a View of a line break (black)
+	 * 
+	 * @param context	The Context which will display the line break
+	 * @return			The View containing the line break
+	 */
+	public static View lineBreakView(Context context)
+	{
+		View lineBreak = new View(context);
+		lineBreak.setBackgroundColor(Color.parseColor("#000000"));
+		lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2));
+		
+		return lineBreak;
+	}
+	
+	
+	
+	/**
+	 * Creates a View of a line break of the given color
+	 * 
+	 * @param context	The Context which will display the line break
+	 * @param color		The color of the line break in hex, "#AAAAAA"
+	 * 
+	 * @return			The View containing the line break
+	 */
+	public static View lineBreakView(Context context, String color)
+	{
+		View lineBreak = new View(context);
+		lineBreak.setBackgroundColor(Color.parseColor(color));
+		lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2));
+		
+		return lineBreak;
+	}
+	
+	
+	
+	
 	/**
 	 * Hides the android keyboard
 	 * 
@@ -29,6 +69,8 @@ public class Utility
 	    }
 	}
 
+	
+	
 	/**
 	 * Use to check if network is available, connection could still fail even if this returns true. <br/>
 	 * Bad connection, network restrictions ect.
@@ -43,6 +85,8 @@ public class Utility
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
+	
+	
 	/** Displays a popup up notifying user that no network is currently available.
 	 * @param activity Current activity
 	 */

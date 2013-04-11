@@ -2,6 +2,7 @@ package org.habitatomaha.HOST.Activity;
 
 import java.util.LinkedList;
 
+import org.habitatomaha.HOST.Helper.Utility;
 import org.habitatomaha.HOST.Model.Error;
 import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 
@@ -109,10 +110,7 @@ public class ErrorLogActivity extends Activity
 				
 				
 				// Add a horizontal rule between errors
-				View lineBreak = new View(this);
-				lineBreak.setBackgroundColor(Color.parseColor("#000000"));
-				lineBreak.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2));
-				errorLayout.addView(lineBreak);
+				errorLayout.addView(Utility.lineBreakView(this));
 				
 							
 				// Add the error's view to the overall LinearLayout

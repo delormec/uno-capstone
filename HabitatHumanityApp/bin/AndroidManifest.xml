@@ -44,9 +44,15 @@
         
         <activity
             android:name="org.habitatomaha.HOST.Activity.ErrorLogActivity"
-            android:label="Error Log" >
+            android:label="Error Log"
+            android:parentActivityName="org.habitatomaha.HOST.Activity.SelectFormActivity">            
         </activity>
         
+        
+        <activity
+            android:name="org.habitatomaha.HOST.Activity.ScreenOneRework"
+            android:label="Screen One Rework" >
+        </activity>
     </application>
 
 </manifest>

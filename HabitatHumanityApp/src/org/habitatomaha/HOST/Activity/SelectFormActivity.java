@@ -588,12 +588,23 @@ public class SelectFormActivity extends Activity {
 	
 	
 	
+	/**
+	 * Opens the ErrorLog for display (launches new Activity)
+	 * 
+	 * @param item	The menu item that called this method
+	 */
 	public void openErrorLog(MenuItem item)
 	{
 		Intent intent = new Intent(this, ErrorLogActivity.class);
 		startActivity(intent);
 	}
 	
+	
+	public void newScreen(View view)
+	{
+		Intent intent = new Intent(this, ScreenOneRework.class);
+		startActivity(intent);
+	}
 	
 	
 	// The following navigate methods are for the implementation of the navbar layout
@@ -670,7 +681,7 @@ public class SelectFormActivity extends Activity {
 				
 				
 				
-				// Pass the form to the DisplayQuestionActivity
+				// Pass the form to the EditFormActivity
 				Intent intent = new Intent(this, EditFormActivity.class);
 				
 				intent.putExtra("formObject", form);	

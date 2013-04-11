@@ -102,7 +102,7 @@ public class SubmitFormActivity extends Activity
 	
 	
 	/**
-	 * Uploads the form to SharePoint.
+	 * Attempts to upload the Form to SharePoint.
 	 * 
 	 * @param view The View that called this method
 	 */
@@ -137,7 +137,7 @@ public class SubmitFormActivity extends Activity
 											String[] response = task.get();											
 											Toast.makeText(getInstance(), response[1], Toast.LENGTH_LONG).show();
 
-											//reponse of -1 == error
+											//response of -1 == error
 											//response of 0 == success
 											if (response[0].compareTo("0") == 0)
 											{
@@ -146,7 +146,7 @@ public class SubmitFormActivity extends Activity
 											}
 											else
 											{
-												// Log the error
+												// Log the upload error
 												ErrorLog.log(getInstance(), new Error("Form Upload Error", response[1], Severity.Minor));
 											}
 											

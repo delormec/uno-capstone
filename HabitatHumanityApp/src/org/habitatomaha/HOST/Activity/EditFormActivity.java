@@ -142,6 +142,8 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
+				// Getting here ,means that one of the Questions in the Form was null.
+				// This is probably not a user-caused error. It indicates a problem in the code.
 				ErrorLog.log(getInstance(), new Error("Model Error", "Received a null question in EditFormActivity", Severity.Normal));
 				this.finish();
 			}
@@ -228,6 +230,8 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
+				// This means that a Question was in the form that was not an instance of the three types of Question
+				// This is probably not an error caused by the user. It indicates a problem in the code.
 				ErrorLog.log(this, new Error("Model Error", 
 											"Received a question of unknown type.\n" +
 											"Ensure that a Question is always an instance of TextQuestion, ChoiceQuestion, or LikertScaleQuestion.\n", 
