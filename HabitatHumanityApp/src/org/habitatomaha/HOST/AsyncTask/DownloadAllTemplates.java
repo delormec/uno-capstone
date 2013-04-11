@@ -103,7 +103,7 @@ public class DownloadAllTemplates extends AsyncTask {
 		
 		URL = settings.getString("admin_tool_url","");
 		list_name = settings.getString("list_name", "");
-		port_string = settings.getString("admin_tool_port","");
+		port_string = settings.getString("admin_tool_port","80");
 		port = Integer.parseInt(port_string);
 		
 		Log.v("Downloadtask", "Here is port " + port);
