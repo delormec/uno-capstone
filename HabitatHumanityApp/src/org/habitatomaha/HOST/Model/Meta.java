@@ -54,6 +54,9 @@ public class Meta implements Serializable{
 	@Element (name="url")
 	public String url;
 	
+	@Element (name="port")
+	public String port;
+	
 	//TODO - this really shouldnt ever be blank
 	@Element (name="listname", required=false)
 	public String listname;
