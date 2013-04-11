@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.habitatomaha.HOST.R;
+import org.habitatomaha.HOST.AsyncTask.DownloadAllTemplates;
+import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
 import org.habitatomaha.HOST.AsyncTask.UploadForm;
 import org.habitatomaha.HOST.Helper.Utility;
 import org.habitatomaha.HOST.Model.Error;
@@ -23,6 +25,8 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,6 +51,9 @@ public class ScreenOneRework extends Activity
 	private Views currentView;
 	private String[] navTitles = new String[4];
 	
+	private DownloadAllTemplates downloadTask;
+	private UploadAllForms uploadTask;
+	
 	
 	private enum Views
 	{
@@ -63,6 +70,26 @@ public class ScreenOneRework extends Activity
 		super.onCreate(savedInstanceState);
 		
 		database = new OSTDataSource(this);
+		
+		
+		// Restore the task info
+		AsyncTask task = (AsyncTask) getLastNonConfigurationInstance();
+		if (task != null)
+		{
+			if (task instanceof DownloadAllTemplates)
+			{
+				downloadTask = (DownloadAllTemplates) task;
+				downloadTask.rebuild(this);
+			}
+
+			else if (task instanceof UploadAllForms)
+			{
+				uploadTask = (UploadAllForms) task;
+				uploadTask.rebuild(this);
+			}
+		}
+		
+		
 		
 		LinearLayout layout = new LinearLayout(this);
 		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -96,7 +123,8 @@ public class ScreenOneRework extends Activity
 										{
 											public void onClick(View view)
 											{
-												displayTemplateGroups();
+												Utility.hideSoftKeyboard(getInstance());
+												displayTemplateGroups();											
 											}
 										}					
 									);
@@ -147,6 +175,49 @@ public class ScreenOneRework extends Activity
 	
 	
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+		return true;
+	}
+	
+	
+	
+	@Override
+	public AsyncTask onRetainNonConfigurationInstance()
+	{	
+		// Save downloadTask
+		if (downloadTask != null)
+		{
+			if (downloadTask.getStatus() != AsyncTask.Status.FINISHED)
+			{
+				return downloadTask;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		// Save uploadTask
+		else if (uploadTask != null)
+		{
+			if (uploadTask.getStatus() != AsyncTask.Status.FINISHED)
+			{
+				return uploadTask;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		// Save neither task
+		else
+		{
+			return null;
+		}
+	}
+	
 	
 	
 	
@@ -176,7 +247,7 @@ public class ScreenOneRework extends Activity
 		// Navigation text
 		TextView navText = new TextView(this);
 		navText.setText(navString(1));
-		navText.setTextSize(20);
+		navText.setTextSize(30);
 		navText.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 		
 		
@@ -224,8 +295,8 @@ public class ScreenOneRework extends Activity
 		// Wrap the layout in a ScrollView
 		ScrollView wrapper = new ScrollView(this);
 		wrapper.addView(layout);
-		// TODO The 125 padding fix should probably be something else 
-		wrapper.setPadding(25, 125, 25, 25);
+		// TODO The 160 padding fix should probably be something else 
+		wrapper.setPadding(25, 160, 25, 25);
 		
 		// Put "navText" above the scroll view
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -289,7 +360,7 @@ public class ScreenOneRework extends Activity
 		// Navigation text
 		TextView navText = new TextView(this);
 		navText.setText(navString(2));
-		navText.setTextSize(20);
+		navText.setTextSize(30);
 		
 		
 		// Create a View for each template
@@ -386,8 +457,16 @@ public class ScreenOneRework extends Activity
 												}					
 											);
 				
+				// Add the button views
 				buttons.addView(newButton);
-				buttons.addView(editButton);
+
+				database.open();
+				List<SpinnerData> template_formInfo = database.getAllFormInfoByTemplateId(templateData.getValue());
+				database.close();
+				if (template_formInfo.size() > 0)
+				{
+					buttons.addView(editButton);
+				}
 			}
 		
 			
@@ -409,8 +488,8 @@ public class ScreenOneRework extends Activity
 		// Wrap the layout in a ScrollView
 		ScrollView wrapper = new ScrollView(this);
 		wrapper.addView(layout);
-		// TODO The 125 padding fix should probably be something else 
-		wrapper.setPadding(25, 125, 25, 25);
+		// TODO The 160 padding fix should probably be something else 
+		wrapper.setPadding(25, 160, 25, 25);
 		
 		// Put "navText" above the scroll view
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -474,7 +553,7 @@ public class ScreenOneRework extends Activity
 		// Navigation text
 		TextView navText = new TextView(this);
 		navText.setText(navString(3));
-		navText.setTextSize(20);
+		navText.setTextSize(30);
 		
 		
 		// Create a layout for each form
@@ -570,9 +649,9 @@ public class ScreenOneRework extends Activity
 		// Wrap the layout in a ScrollView
 		ScrollView wrapper = new ScrollView(this);
 		wrapper.addView(layout);
-		// TODO The 125 padding fix should probably be something else 
-		wrapper.setPadding(25, 125, 25, 25);
-		
+		// TODO The 160 padding fix should probably be something else 
+		wrapper.setPadding(25, 160, 25, 25);
+
 		// Put "navText" above the scroll view
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		//params.addRule(RelativeLayout.BELOW, navText.getId());
@@ -778,4 +857,68 @@ public class ScreenOneRework extends Activity
 				return "";
 		}
 	}
+	
+	
+	
+	
+	
+	/*---- MENU BUTTON IMPLEMENTATIONS ----*/
+	/**
+	 * Opens the ErrorLog for display (launches new Activity)
+	 * 
+	 * @param item	The menu item that called this method
+	 */
+	public void openErrorLog(MenuItem item)
+	{
+		Intent intent = new Intent(this, ErrorLogActivity.class);
+		startActivity(intent);
+	}
+		
+	@SuppressWarnings("unchecked")
+	public void startFormDownload(MenuItem item)
+	{
+		//If there is no connectivity, display a popup and return
+		if (!Utility.isNetworkAvailable(this))
+		{
+			Utility.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
+		
+		downloadTask = new DownloadAllTemplates(this);
+		downloadTask.execute(this);
+		
+		// TODO Change the downloadTask postExecute to reload the Activity
+	}
+	
+	
+	
+	/**
+	 * Called from the menu. <br>
+	 * Launches the task that attempts to upload all forms on the device to SharePoint
+	 * 
+	 * @param menu	The MenuItem that called this method
+	 */
+	public void uploadAllForms(MenuItem menu)
+	{
+		//If there is no connectivity, display a popup and return
+		if (!Utility.isNetworkAvailable(this))
+		{
+			Utility.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
+		uploadTask = new UploadAllForms(this);
+		uploadTask.execute();
+		
+		// TODO Change the uploadTask postExecute to reload the Activity
+	}
+	
+	
+	
+	public void openSettingsActivity(MenuItem item){
+		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+	/*---- END MENU BUTTON IMPLEMENTATIONS ----*/
 }
