@@ -23,12 +23,6 @@
       <End EntitySet="Roles" Role="Role" />
       <End EntitySet="Users" Role="User" />
     </AssociationSet>
-    <EntitySet Name="Configurations" EntityType="HOSTModel.Configuration" />
-    <EntitySet Name="HelpImages" EntityType="HOSTModel.HelpImage" />
-    <AssociationSet Name="QuestionHelpImage" Association="HOSTModel.QuestionHelpImage">
-      <End Role="Question" EntitySet="Questions" />
-      <End Role="HelpImage" EntitySet="HelpImages" />
-    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Form">
     <Key>
@@ -73,7 +67,6 @@
     <Property Type="String" Name="FieldType" Nullable="true" />
     <Property Type="Int32" Name="SortOrder" Nullable="false" />
     <NavigationProperty Name="Form" Relationship="HOSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
-    <NavigationProperty Name="HelpImages" Relationship="HOSTModel.QuestionHelpImage" FromRole="Question" ToRole="HelpImage" />
   </EntityType>
   <EntityType Name="ChoiceQuestion" BaseType="HOSTModel.Question">
     <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false" />
@@ -130,27 +123,5 @@
   <Association Name="RoleUser">
     <End Type="HOSTModel.Role" Multiplicity="1" Role="Role" />
     <End Type="HOSTModel.User" Multiplicity="*" Role="User" />
-  </Association>
-  <EntityType Name="Configuration">
-    <Key>
-      <PropertyRef Name="ConfigurationId" />
-    </Key>
-    <Property Type="String" Name="SharePointUserName" Nullable="true" />
-    <Property Type="String" Name="SharePointPassword" Nullable="true" />
-    <Property Type="String" Name="SharePointURL" Nullable="true" />
-    <Property Type="Int32" Name="ConfigurationId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-  </EntityType>
-  <EntityType Name="HelpImage">
-    <Key>
-      <PropertyRef Name="ImageId" />
-    </Key>
-    <Property Type="Int32" Name="ImageId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="String" Name="Name" Nullable="true" />
-    <Property Type="Binary" Name="Data" Nullable="true" />
-    <NavigationProperty Name="Question" Relationship="HOSTModel.QuestionHelpImage" FromRole="HelpImage" ToRole="Question" />
-  </EntityType>
-  <Association Name="QuestionHelpImage">
-    <End Type="HOSTModel.Question" Role="Question" Multiplicity="1" />
-    <End Type="HOSTModel.HelpImage" Role="HelpImage" Multiplicity="*" />
   </Association>
 </Schema>

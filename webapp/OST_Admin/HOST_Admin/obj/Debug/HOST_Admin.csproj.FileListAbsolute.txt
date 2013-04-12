@@ -97,6 +97,7 @@ C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\Micro
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\Newtonsoft.Json.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\nunit.framework.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\StructureMap.dll
+C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\System.Data.Services.Client.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\System.Net.Http.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\System.Net.Http.Formatting.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\System.Net.Http.WebRequest.dll
@@ -168,4 +169,3 @@ C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\zh-Ha
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\obj\Debug\HOST_Admin.dll
 C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\obj\Debug\HOST_Admin.pdb
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Admin\bin\System.Data.Services.Client.dll

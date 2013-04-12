@@ -12,8 +12,6 @@
     <EntitySet Name="Options" EntityType="HOSTModel.Store.Options" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Labels" EntityType="HOSTModel.Store.Labels" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Roles" EntityType="HOSTModel.Store.Roles" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Configurations" EntityType="HOSTModel.Store.Configurations" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="HelpImages" EntityType="HOSTModel.Store.HelpImages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_LikertScaleQuestion" EntityType="HOSTModel.Store.Questions_LikertScaleQuestion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_ChoiceQuestion" EntityType="HOSTModel.Store.Questions_ChoiceQuestion" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Questions_TextQuestion" EntityType="HOSTModel.Store.Questions_TextQuestion" store:Type="Tables" Schema="dbo" />
@@ -32,10 +30,6 @@
     <AssociationSet Name="RoleUser" Association="HOSTModel.Store.RoleUser">
       <End Role="Role" EntitySet="Roles" />
       <End Role="User" EntitySet="Users" />
-    </AssociationSet>
-    <AssociationSet Name="QuestionHelpImage" Association="HOSTModel.Store.QuestionHelpImage">
-      <End Role="Question" EntitySet="Questions" />
-      <End Role="HelpImage" EntitySet="HelpImages" />
     </AssociationSet>
     <AssociationSet Name="FK_LikertScaleQuestion_inherits_Question" Association="HOSTModel.Store.FK_LikertScaleQuestion_inherits_Question">
       <End Role="Question" EntitySet="Questions" />
@@ -118,24 +112,6 @@
     <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <EntityType Name="Configurations">
-    <Key>
-      <PropertyRef Name="ConfigurationId" />
-    </Key>
-    <Property Name="SharePointUserName" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="SharePointPassword" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="SharePointURL" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="ConfigurationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-  </EntityType>
-  <EntityType Name="HelpImages">
-    <Key>
-      <PropertyRef Name="ImageId" />
-    </Key>
-    <Property Name="ImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Data" Type="varbinary(max)" Nullable="true" />
-    <Property Name="Question_QuestionId" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="Questions_LikertScaleQuestion">
     <Key>
       <PropertyRef Name="QuestionId" />
@@ -209,18 +185,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="QuestionHelpImage">
-    <End Role="Question" Type="HOSTModel.Store.Questions" Multiplicity="1" />
-    <End Role="HelpImage" Type="HOSTModel.Store.HelpImages" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Question">
-        <PropertyRef Name="QuestionId" />
-      </Principal>
-      <Dependent Role="HelpImage">
-        <PropertyRef Name="Question_QuestionId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_LikertScaleQuestion_inherits_Question">
     <End Role="Question" Type="HOSTModel.Store.Questions" Multiplicity="1" />
     <End Role="LikertScaleQuestion" Type="HOSTModel.Store.Questions_LikertScaleQuestion" Multiplicity="0..1" />
@@ -284,12 +248,6 @@
             <End EntitySet="Roles" Role="Role" />
             <End EntitySet="Users" Role="User" />
           </AssociationSet>
-          <EntitySet Name="Configurations" EntityType="HOSTModel.Configuration" />
-          <EntitySet Name="HelpImages" EntityType="HOSTModel.HelpImage" />
-          <AssociationSet Name="QuestionHelpImage" Association="HOSTModel.QuestionHelpImage">
-            <End Role="Question" EntitySet="Questions" />
-            <End Role="HelpImage" EntitySet="HelpImages" />
-          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Form">
           <Key>
@@ -334,7 +292,6 @@
           <Property Type="String" Name="FieldType" Nullable="true" />
           <Property Type="Int32" Name="SortOrder" Nullable="false" />
           <NavigationProperty Name="Form" Relationship="HOSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
-          <NavigationProperty Name="HelpImages" Relationship="HOSTModel.QuestionHelpImage" FromRole="Question" ToRole="HelpImage" />
         </EntityType>
         <EntityType Name="ChoiceQuestion" BaseType="HOSTModel.Question" >
           <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false" />
@@ -393,28 +350,6 @@
         <Association Name="RoleUser">
           <End Type="HOSTModel.Role" Multiplicity="1" Role="Role" />
           <End Type="HOSTModel.User" Multiplicity="*" Role="User" />
-        </Association>
-        <EntityType Name="Configuration" >
-          <Key>
-            <PropertyRef Name="ConfigurationId" />
-          </Key>
-          <Property Type="String" Name="SharePointUserName" Nullable="true" />
-          <Property Type="String" Name="SharePointPassword" Nullable="true" />
-          <Property Type="String" Name="SharePointURL" Nullable="true" />
-          <Property Type="Int32" Name="ConfigurationId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="HelpImage">
-          <Key>
-            <PropertyRef Name="ImageId" />
-          </Key>
-          <Property Type="Int32" Name="ImageId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" Nullable="true" />
-          <Property Type="Binary" Name="Data" Nullable="true" />
-          <NavigationProperty Name="Question" Relationship="HOSTModel.QuestionHelpImage" FromRole="HelpImage" ToRole="Question" />
-        </EntityType>
-        <Association Name="QuestionHelpImage">
-          <End Type="HOSTModel.Question" Role="Question" Multiplicity="1" />
-          <End Type="HOSTModel.HelpImage" Role="HelpImage" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -510,25 +445,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Configurations">
-      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Configuration)">
-        <MappingFragment StoreEntitySet="Configurations">
-          <ScalarProperty Name="ConfigurationId" ColumnName="ConfigurationId" />
-          <ScalarProperty Name="SharePointUserName" ColumnName="SharePointUserName" />
-          <ScalarProperty Name="SharePointPassword" ColumnName="SharePointPassword" />
-          <ScalarProperty Name="SharePointURL" ColumnName="SharePointURL" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="HelpImages">
-      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.HelpImage)">
-        <MappingFragment StoreEntitySet="HelpImages">
-          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Data" ColumnName="Data" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <AssociationSetMapping Name="FormQuestion" TypeName="HOSTModel.FormQuestion" StoreEntitySet="Questions">
       <EndProperty Name="Form">
         <ScalarProperty Name="FormId" ColumnName="Form_FormId" />
@@ -559,14 +475,6 @@
       </EndProperty>
       <EndProperty Name="User">
         <ScalarProperty Name="UserId" ColumnName="UserId" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="QuestionHelpImage" TypeName="HOSTModel.QuestionHelpImage" StoreEntitySet="HelpImages">
-      <EndProperty Name="Question">
-        <ScalarProperty Name="QuestionId" ColumnName="Question_QuestionId" />
-      </EndProperty>
-      <EndProperty Name="HelpImage">
-        <ScalarProperty Name="ImageId" ColumnName="ImageId" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
@@ -634,12 +542,6 @@
         <AssociationConnector Association="HOSTModel.RoleUser">
           <ConnectorPoint PointX="9.9375" PointY="3.625" />
           <ConnectorPoint PointX="9.9375" PointY="2.2566536458333335" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="HOSTModel.Configuration" Width="1.875" PointX="9.25" PointY="5.375" Height="1.5923063151041665" />
-        <EntityTypeShape EntityType="HOSTModel.HelpImage" Width="1.5" PointX="0.875" PointY="0.875" Height="1.427958984375" />
-        <AssociationConnector Association="HOSTModel.QuestionHelpImage">
-          <ConnectorPoint PointX="3.5" PointY="1.6711531575520835" />
-          <ConnectorPoint PointX="2.375" PointY="1.6711531575520835" />
         </AssociationConnector>
         </Diagram>
     </edmx:Diagrams>

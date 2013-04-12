@@ -22,7 +22,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("HOSTModel", "LikertScaleQuestionLabel", "LikertScaleQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HOST_Admin.Models.LikertScaleQuestion), "Label", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HOST_Admin.Models.Label))]
 [assembly: EdmRelationshipAttribute("HOSTModel", "ChoiceQuestionOption", "ChoiceQuestion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HOST_Admin.Models.ChoiceQuestion), "Option", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HOST_Admin.Models.Option))]
 [assembly: EdmRelationshipAttribute("HOSTModel", "RoleUser", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HOST_Admin.Models.Role), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HOST_Admin.Models.User))]
-[assembly: EdmRelationshipAttribute("HOSTModel", "QuestionHelpImage", "Question", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HOST_Admin.Models.Question), "HelpImage", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HOST_Admin.Models.HelpImage))]
 
 #endregion
 
@@ -37,8 +36,6 @@ namespace HOST_Admin.Models
                 IObjectSet<Option> Options { get; }
                 IObjectSet<Label> Labels { get; }
                 IObjectSet<Role> Roles { get; }
-                IObjectSet<Configuration> Configurations { get; }
-                IObjectSet<HelpImage> HelpImages { get; }
                 int SaveChanges();
     }
     /// <summary>
@@ -180,38 +177,6 @@ namespace HOST_Admin.Models
             }
         }
         private IObjectSet<Role> _Roles;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public IObjectSet<Configuration> Configurations
-        {
-            get
-            {
-                if ((_Configurations == null))
-                {
-                    _Configurations = base.CreateObjectSet<Configuration>("Configurations");
-                }
-                return _Configurations;
-            }
-        }
-        private IObjectSet<Configuration> _Configurations;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public IObjectSet<HelpImage> HelpImages
-        {
-            get
-            {
-                if ((_HelpImages == null))
-                {
-                    _HelpImages = base.CreateObjectSet<HelpImage>("HelpImages");
-                }
-                return _HelpImages;
-            }
-        }
-        private IObjectSet<HelpImage> _HelpImages;
 
         #endregion
         #region AddTo Methods
@@ -262,22 +227,6 @@ namespace HOST_Admin.Models
         public void AddToRoles(Role role)
         {
             base.AddObject("Roles", role);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Configurations EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToConfigurations(Configuration configuration)
-        {
-            base.AddObject("Configurations", configuration);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the HelpImages EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToHelpImages(HelpImage helpImage)
-        {
-            base.AddObject("HelpImages", helpImage);
         }
 
         #endregion
@@ -389,133 +338,6 @@ namespace HOST_Admin.Models
         }
 
         #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="Configuration")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class Configuration : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Configuration object.
-        /// </summary>
-        /// <param name="configurationId">Initial value of the ConfigurationId property.</param>
-        public static Configuration CreateConfiguration(global::System.Int32 configurationId)
-        {
-            Configuration configuration = new Configuration();
-            configuration.ConfigurationId = configurationId;
-            return configuration;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String SharePointUserName
-        {
-            get
-            {
-                return _SharePointUserName;
-            }
-            set
-            {
-                OnSharePointUserNameChanging(value);
-                ReportPropertyChanging("SharePointUserName");
-                _SharePointUserName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("SharePointUserName");
-                OnSharePointUserNameChanged();
-            }
-        }
-        private global::System.String _SharePointUserName;
-        partial void OnSharePointUserNameChanging(global::System.String value);
-        partial void OnSharePointUserNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String SharePointPassword
-        {
-            get
-            {
-                return _SharePointPassword;
-            }
-            set
-            {
-                OnSharePointPasswordChanging(value);
-                ReportPropertyChanging("SharePointPassword");
-                _SharePointPassword = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("SharePointPassword");
-                OnSharePointPasswordChanged();
-            }
-        }
-        private global::System.String _SharePointPassword;
-        partial void OnSharePointPasswordChanging(global::System.String value);
-        partial void OnSharePointPasswordChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String SharePointURL
-        {
-            get
-            {
-                return _SharePointURL;
-            }
-            set
-            {
-                OnSharePointURLChanging(value);
-                ReportPropertyChanging("SharePointURL");
-                _SharePointURL = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("SharePointURL");
-                OnSharePointURLChanged();
-            }
-        }
-        private global::System.String _SharePointURL;
-        partial void OnSharePointURLChanging(global::System.String value);
-        partial void OnSharePointURLChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 ConfigurationId
-        {
-            get
-            {
-                return _ConfigurationId;
-            }
-            set
-            {
-                if (_ConfigurationId != value)
-                {
-                    OnConfigurationIdChanging(value);
-                    ReportPropertyChanging("ConfigurationId");
-                    _ConfigurationId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("ConfigurationId");
-                    OnConfigurationIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _ConfigurationId;
-        partial void OnConfigurationIdChanging(global::System.Int32 value);
-        partial void OnConfigurationIdChanged();
-
-        #endregion
-    
     }
     
     /// <summary>
@@ -951,150 +773,6 @@ namespace HOST_Admin.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Question>("HOSTModel.FormQuestion", "Question", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="HelpImage")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class HelpImage : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new HelpImage object.
-        /// </summary>
-        /// <param name="imageId">Initial value of the ImageId property.</param>
-        public static HelpImage CreateHelpImage(global::System.Int32 imageId)
-        {
-            HelpImage helpImage = new HelpImage();
-            helpImage.ImageId = imageId;
-            return helpImage;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 ImageId
-        {
-            get
-            {
-                return _ImageId;
-            }
-            set
-            {
-                if (_ImageId != value)
-                {
-                    OnImageIdChanging(value);
-                    ReportPropertyChanging("ImageId");
-                    _ImageId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("ImageId");
-                    OnImageIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _ImageId;
-        partial void OnImageIdChanging(global::System.Int32 value);
-        partial void OnImageIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.Byte[] Data
-        {
-            get
-            {
-                return StructuralObject.GetValidValue(_Data);
-            }
-            set
-            {
-                OnDataChanging(value);
-                ReportPropertyChanging("Data");
-                _Data = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Data");
-                OnDataChanged();
-            }
-        }
-        private global::System.Byte[] _Data;
-        partial void OnDataChanging(global::System.Byte[] value);
-        partial void OnDataChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("HOSTModel", "QuestionHelpImage", "Question")]
-        public Question Question
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Question>("HOSTModel.QuestionHelpImage", "Question").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Question>("HOSTModel.QuestionHelpImage", "Question").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Question> QuestionReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Question>("HOSTModel.QuestionHelpImage", "Question");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Question>("HOSTModel.QuestionHelpImage", "Question", value);
                 }
             }
         }
@@ -1687,28 +1365,6 @@ namespace HOST_Admin.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Form>("HOSTModel.FormQuestion", "Form", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("HOSTModel", "QuestionHelpImage", "HelpImage")]
-        public EntityCollection<HelpImage> HelpImages
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<HelpImage>("HOSTModel.QuestionHelpImage", "HelpImage");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<HelpImage>("HOSTModel.QuestionHelpImage", "HelpImage", value);
                 }
             }
         }

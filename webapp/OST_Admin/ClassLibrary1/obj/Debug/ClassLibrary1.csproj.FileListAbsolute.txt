@@ -1,5 +1,0 @@
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\ClassLibrary1\bin\Debug\ClassLibrary1.dll
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\ClassLibrary1\bin\Debug\ClassLibrary1.pdb
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\ClassLibrary1\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\ClassLibrary1\obj\Debug\ClassLibrary1.dll
-C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\ClassLibrary1\obj\Debug\ClassLibrary1.pdb

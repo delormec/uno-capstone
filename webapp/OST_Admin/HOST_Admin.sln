@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Web Developer Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HOST_Admin", "HOST_Admin\HOST_Admin.csproj", "{103E6711-E144-47DF-94B5-75BC4BACF181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSTTests", "OSTTests\OSTTests.csproj", "{C4497818-1606-4F1F-8EE9-57DE3AFF7C9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HOST_Tests", "HOST_Tests\HOST_Tests.csproj", "{C4497818-1606-4F1F-8EE9-57DE3AFF7C9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

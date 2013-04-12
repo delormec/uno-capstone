@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Tests\bin\Debug\HOST_Tests.dll" total="1" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-11" time="23:55:53">
+  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="WIN-3124RGJKI5J" user="unouser" user-domain="WIN-3124RGJKI5J" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Tests\bin\Debug\HOST_Tests.dll" executed="True" result="Success" success="True" time="13.700" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="HOST_Admin" executed="True" result="Success" success="True" time="13.671" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="13.670" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="13.670" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="13.666" asserts="0">
+                    <results>
+                      <test-case name="HOST_Admin.Tests.Controllers.FormRepositoryTest.Can_Create_Form_From_SharePoint" executed="True" result="Success" success="True" time="13.644" asserts="12" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
