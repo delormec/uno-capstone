@@ -1,5 +1,6 @@
 package org.habitatomaha.HOST.Activity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -11,6 +12,7 @@ import org.habitatomaha.HOST.AsyncTask.UploadForm;
 import org.habitatomaha.HOST.Helper.Utility;
 import org.habitatomaha.HOST.Model.Error;
 import org.habitatomaha.HOST.Model.Form;
+import org.habitatomaha.HOST.Model.LayoutInfo;
 import org.habitatomaha.HOST.Model.SpinnerData;
 import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Repository.ErrorLog;
@@ -43,25 +45,21 @@ public class ScreenOneRework extends Activity
 {
 	private static final int ALL_GROUPS_ALL_FORMS = -1111;
 	private static final int ONE_GROUP_ALL_FORMS = -111;
-	private static final int ONE_TEMPLATE_ALL_FORMS = -11;
-	
-	private static String currentUser;
-	private View[] layoutStack = new View[4];
-	private OSTDataSource database;
-	private Views currentView;
-	private String[] navTitles = new String[4];
-	
-	private DownloadAllTemplates downloadTask;
-	private UploadAllForms uploadTask;
+	private static final int HOME = 0;
+	private static final int GROUPS = 1;
+	private static final int TEMPLATES = 2;
+	private static final int FORMS = 3;
 	
 	
-	private enum Views
-	{
-		First,
-		Groups,
-		Templates,
-		Forms
-	}
+	private static String userName;					// The name of the current user
+	private OSTDataSource database;						// An accessor for the SQLite database
+	private int currentView;							// Indicated the current view
+	private View[] viewStack = new View[4];
+	private String[] navTitles = new String[4];			// For the navigation String at the top		
+	private LayoutInfo[] status = new LayoutInfo[4];	// For recovery states
+	
+	private DownloadAllTemplates downloadTask;	// For managing "DownloadAllTemplates"
+	private UploadAllForms uploadTask;			// For managing "UploadAllForms"
 	
 	
 	@Override
@@ -69,8 +67,8 @@ public class ScreenOneRework extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		
-		database = new OSTDataSource(this);
 		
+		database = new OSTDataSource(this);		
 		
 		// Restore the task info
 		AsyncTask task = (AsyncTask) getLastNonConfigurationInstance();
@@ -90,58 +88,78 @@ public class ScreenOneRework extends Activity
 		}
 		
 		
-		
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
-		
-		
-		// Text above EditText for entering user name
-		TextView nameViewTitle = new TextView(this);
-		nameViewTitle.setText("Current User:");
-		nameViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		// Restore Activity
+		if (savedInstanceState != null)
+		{	
+			userName = savedInstanceState.getString("userName");
 			
-		
-		// EditText for entering user name
-		EditText nameView = new EditText(this);
-		nameView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-		if (currentUser != null)
-		{
-			nameView.setText(currentUser);
+	
+			// Retrieve information about the Views
+			status[HOME] = (LayoutInfo) savedInstanceState.getSerializable("statusHome");
+			status[GROUPS] = (LayoutInfo) savedInstanceState.getSerializable("statusGroups");
+			status[TEMPLATES] = (LayoutInfo) savedInstanceState.getSerializable("statusTemplates");
+			status[FORMS] = (LayoutInfo) savedInstanceState.getSerializable("statusForms");	
+			
+			
+			// Rebuild each of the Views
+			navTitles = savedInstanceState.getStringArray("navTitles");
+			
+			viewStack[HOME] = buildHomeView();
+			viewStack[GROUPS] = buildGroupsView();
+			
+			if (status[TEMPLATES] != null)
+			{
+				viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
+			}
+			if (status[FORMS] != null)
+			{
+				viewStack[FORMS] = buildFormsView(status[FORMS].templateID, status[FORMS].groupName);
+			}
+			
+			
+			// Set View to the saved currentView
+			currentView = savedInstanceState.getInt("currentView");		
+			setContentView(viewStack[currentView]);
 		}
+		// New instance of Activity
 		else
+		{	
+			navTitles[0] = "Template groups";
+			
+			// Build View
+			LinearLayout homeView = (LinearLayout) buildHomeView();
+			
+			// Store relevant info about the View for rebuilding
+			LayoutInfo homeLayoutInfo = new LayoutInfo();
+			status[HOME] = homeLayoutInfo;
+	
+			// Set View
+			viewStack[HOME] = homeView;
+			setContentView(viewStack[HOME]);
+			currentView = HOME;
+		}
+	}
+	
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState)
+	{
+		super.onSaveInstanceState(savedInstanceState);
+		
+		if (currentView == HOME)
 		{
-			nameView.setText("");
-		}		
+			userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+		}
 		
+		savedInstanceState.putString("userName", userName);
+		savedInstanceState.putStringArray("navTitles", navTitles);
 		
-		// Begin Button
-		Button beginButton = new Button(this);
-		beginButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-		beginButton.setText("Begin");
-		beginButton.setOnClickListener(	new View.OnClickListener()
-										{
-											public void onClick(View view)
-											{
-												Utility.hideSoftKeyboard(getInstance());
-												displayTemplateGroups();											
-											}
-										}					
-									);
+		savedInstanceState.putInt("currentView", currentView);
 		
-		
-		// Add the Views in vertical order
-		layout.addView(nameViewTitle);
-		layout.addView(nameView);
-		layout.addView(beginButton);
-		
-		// Put the layout in the view stack
-		layoutStack[Views.First.ordinal()] = layout;
-		
-		
-		setContentView(layoutStack[Views.First.ordinal()]);
-		navTitles[0] = "Template groups";
-		currentView = Views.First;
+		savedInstanceState.putSerializable("statusHome", status[HOME]);
+		savedInstanceState.putSerializable("statusGroups", status[GROUPS]);
+		savedInstanceState.putSerializable("statusTemplates", status[TEMPLATES]);
+		savedInstanceState.putSerializable("statusForms", status[FORMS]);			
 	}
 	
 	
@@ -151,23 +169,23 @@ public class ScreenOneRework extends Activity
 	{
 		switch (currentView)
 		{
-			case First:
+			case HOME:
 				this.finish();
 				break;
 				
-			case Groups:
-				setContentView(layoutStack[Views.First.ordinal()]);
-				currentView = Views.First;
+			case GROUPS:
+				setContentView(viewStack[HOME]);
+				currentView = HOME;
 				break;
 				
-			case Templates:
-				setContentView(layoutStack[Views.Groups.ordinal()]);
-				currentView = Views.Groups;
+			case TEMPLATES:
+				setContentView(viewStack[GROUPS]);
+				currentView = GROUPS;
 				break;
 				
-			case Forms:
-				setContentView(layoutStack[Views.Templates.ordinal()]);
-				currentView = Views.Templates;
+			case FORMS:
+				setContentView(viewStack[TEMPLATES]);
+				currentView = TEMPLATES;
 				break;
 		}
 
@@ -226,102 +244,24 @@ public class ScreenOneRework extends Activity
 	 */
 	private void displayTemplateGroups()
 	{
-		// Get the template information
-		List<String> templateGroupList = new ArrayList<String>();
+		// Build View
+		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
 		
-		database.open();
-		templateGroupList = database.getAllTemplateGroups();
-		database.close();
+		// Store the userName from HOME
+		userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();	
 		
-		// Add "All Groups" to beginning of list
-		templateGroupList.add(0, "All Groups");
+		// Store the relevant information about the View for rebuilding
+		LayoutInfo groupsLayoutInfo = new LayoutInfo();
 		
-		
-		
-		// Begin the layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
-		
-		
-		// Navigation text
-		TextView navText = new TextView(this);
-		navText.setText(navString(1));
-		navText.setTextSize(30);
-		navText.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-		
-		
-		// Create a view for each template group
-		for (final String entry : templateGroupList)
-		{
-			LinearLayout groupView = new LinearLayout(this);
-			groupView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			groupView.setOrientation(LinearLayout.VERTICAL);
-			groupView.setOnClickListener(	new View.OnClickListener()
-											{
-												public void onClick(View view)
-												{
-													navTitles[1] = String.format("%s templates", entry);
-													displayGroupTemplates(entry);
-												}
-											}					
-										);
-			
-			
-			// Group name
-			TextView groupName = new TextView(this);
-			groupName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			groupName.setText(entry);
-			groupName.setTextSize(35);
-			groupName.setTextColor(Color.parseColor("#0099CC"));
-			
-			
-			
-			// Horizontal rule
-			View lineBreak = Utility.lineBreakView(this);
-			
-			
-			// Add the Views in vertical order
-			groupView.addView(groupName);
-			groupView.addView(lineBreak);
-			
-			
-			layout.addView(groupView);		
-		}
-		
-		
-		
-		// TODO This is super ugly and can probably be better/cleaner.
-		// Wrap the layout in a ScrollView
-		ScrollView wrapper = new ScrollView(this);
-		wrapper.addView(layout);
-		// TODO The 160 padding fix should probably be something else 
-		wrapper.setPadding(25, 160, 25, 25);
-		
-		// Put "navText" above the scroll view
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, navText.getId());
-		wrapper.setLayoutParams(params);
-		
-		
-		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
-		navText.setLayoutParams(navparams);
-		
-		
-		// Put the layout in the view stack
-		RelativeLayout wrapperWrapper = new RelativeLayout(this);
-		wrapperWrapper.addView(navText);
-		wrapperWrapper.addView(wrapper);
-		layoutStack[Views.Groups.ordinal()] = wrapperWrapper;
-									
-		setContentView(layoutStack[Views.Groups.ordinal()]);
-		currentView = Views.Groups;
+		status[GROUPS] = groupsLayoutInfo;
+				
+		// Set View
+		viewStack[GROUPS] = groupsView;
+		setContentView(viewStack[GROUPS]);
+		currentView = GROUPS;
 	}
 	
-	
-
-	
+		
 	
 	/**
 	 * Displays all templates for a group
@@ -330,347 +270,45 @@ public class ScreenOneRework extends Activity
 	 */
 	private void displayGroupTemplates(final String groupName)
 	{
-		List<SpinnerData> templateList;
-		database.open();
-		if (groupName.compareToIgnoreCase("all groups") == 0)
-		{
-			templateList = database.getAllTemplateInfo();
-			
-			SpinnerData allForms = new SpinnerData("All Forms", ALL_GROUPS_ALL_FORMS);
-			templateList.add(0, allForms);
-		}
-		else
-		{
-			// Get the templates from the group
-			templateList = database.getAllTemplateInfoByGroup(groupName);
-			
-			// Add "All Forms" to beginning of list
-			SpinnerData allForms = new SpinnerData("All " + groupName + " Forms", ONE_GROUP_ALL_FORMS);
-			templateList.add(0, allForms);
-		}
-		database.close();
-
+		// Build View
+		RelativeLayout templatesView = (RelativeLayout) buildTemplatesView(groupName);
 		
-		// Begin the layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
+		// Store the relevant information about the View for rebuilding
+		LayoutInfo templatesLayoutInfo = new LayoutInfo();
+		templatesLayoutInfo.groupName = groupName;
 		
+		status[TEMPLATES] = templatesLayoutInfo;
 		
-		// Navigation text
-		TextView navText = new TextView(this);
-		navText.setText(navString(2));
-		navText.setTextSize(30);
-		
-		
-		// Create a View for each template
-		for (final SpinnerData templateData : templateList)
-		{			
-			LinearLayout templateView = new LinearLayout(this);
-			templateView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			templateView.setOrientation(LinearLayout.VERTICAL);
-			
-			
-			// Template name
-			TextView templateName = new TextView(this);
-			templateName.setText(templateData.getSpinnerText());
-			templateName.setTextSize(35);
-
-			
-			
-			LinearLayout buttons = new LinearLayout(this);
-			// No buttons if "all forms"
-			if (templateData.getValue() == ONE_GROUP_ALL_FORMS)
-			{
-				templateView.setOnClickListener(	new View.OnClickListener()
-													{
-														public void onClick(View view)
-														{
-															navTitles[2] = "All forms";
-															displayTemplateForms(ONE_GROUP_ALL_FORMS, groupName);
-														}
-													}					
-												);
-				templateName.setTextColor(Color.parseColor("#0099CC"));
-			}
-			else if (templateData.getValue() == ALL_GROUPS_ALL_FORMS)
-			{
-				templateView.setOnClickListener(	new View.OnClickListener()
-													{
-														public void onClick(View view)
-														{
-															navTitles[2] = "All forms";
-															displayTemplateForms(ALL_GROUPS_ALL_FORMS, null);														
-														}
-													}					
-												);
-				templateName.setTextColor(Color.parseColor("#0099CC"));
-			}
-			else
-			{
-				// Begin "buttons view"				
-				buttons.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-				buttons.setOrientation(LinearLayout.HORIZONTAL);
-				
-	
-				// New button
-				Button newButton = new Button(this);
-				newButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-				newButton.setText("Create new");
-				newButton.setOnClickListener(	new View.OnClickListener()
-												{
-													public void onClick(View view)
-													{
-														database.open();
-														
-														// Create a new Form from the template
-														Form template = database.getTemplateById(templateData.getValue());
-														long formID = database.addForm(template);						
-														Form form = database.getFormById(formID);
-														
-														
-														// Pass the new Form to the EditFormActivity
-														Intent intent = new Intent(getInstance(), EditFormActivity.class);
-														
-														intent.putExtra("formObject", form);	
-														intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-																	
-														startActivity(intent);
-														
-														database.close();
-													}
-												}					
-											);
-				
-				
-				// Edit button
-				Button editButton = new Button(this);
-				editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-				editButton.setText("Edit existing");
-				editButton.setOnClickListener(	new View.OnClickListener()
-												{
-													public void onClick(View view)
-													{
-														navTitles[2] = templateData.getSpinnerText();
-														displayTemplateForms(templateData.getValue(), null);
-													}
-												}					
-											);
-				
-				// Add the button views
-				buttons.addView(newButton);
-
-				database.open();
-				List<SpinnerData> template_formInfo = database.getAllFormInfoByTemplateId(templateData.getValue());
-				database.close();
-				if (template_formInfo.size() > 0)
-				{
-					buttons.addView(editButton);
-				}
-			}
-		
-			
-			// Horizontal rule
-			View lineBreak = Utility.lineBreakView(this);			
-			
-			
-			// Add Views in vertical order
-			templateView.addView(templateName);				
-			templateView.addView(buttons);
-			templateView.addView(lineBreak);
-						
-			layout.addView(templateView);	
-		}
-		
-
-		
-		// TODO This is super ugly and can probably be better/cleaner.
-		// Wrap the layout in a ScrollView
-		ScrollView wrapper = new ScrollView(this);
-		wrapper.addView(layout);
-		// TODO The 160 padding fix should probably be something else 
-		wrapper.setPadding(25, 160, 25, 25);
-		
-		// Put "navText" above the scroll view
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, navText.getId());
-		wrapper.setLayoutParams(params);
-		
-		
-		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
-		navText.setLayoutParams(navparams);
-		
-		
-		// Put the layout in the view stack
-		RelativeLayout wrapperWrapper = new RelativeLayout(this);
-		wrapperWrapper.addView(navText);
-		wrapperWrapper.addView(wrapper);
-		layoutStack[Views.Templates.ordinal()] = wrapperWrapper;
-		
-		setContentView(layoutStack[Views.Templates.ordinal()]);
-		currentView = Views.Templates;
+		// Set View
+		viewStack[TEMPLATES] = templatesView;
+		setContentView(viewStack[TEMPLATES]);
+		currentView = TEMPLATES;
 	}
 
-
-	
 	
 
 	/**
 	 * Displays all the forms for a given template
 	 * 
-	 * @param templateName	The name of the template
+	 * @param templateID	The ID of the template whose forms to display
+	 * @param templateGroup	The name of the template group
 	 */
 	private void displayTemplateForms(int templateID, String templateGroup)
-	{
-		List<SpinnerData> formList = new ArrayList<SpinnerData>();
+	{	
+		// Build the View
+		RelativeLayout formsView = (RelativeLayout) buildFormsView(templateID, templateGroup);
 		
-		// Get the forms from the template
-		database.open();
-		if (templateID == ONE_GROUP_ALL_FORMS)
-		{
-			formList = database.getAllFormInfoByTemplateGroup(templateGroup);
-		}
-		else if (templateID == ALL_GROUPS_ALL_FORMS)
-		{
-			formList = database.getAllFormInfo();
-		}
-		else
-		{
-			formList = database.getAllFormInfoByTemplateId(templateID);
-		}
-		database.close();
+		// Store the relevant information about the View for rebuilding
+		LayoutInfo formsLayoutInfo = new LayoutInfo();
+		formsLayoutInfo.templateID = templateID;
+		formsLayoutInfo.groupName = templateGroup;
 		
+		status[FORMS] = formsLayoutInfo;
 		
-		
-		
-		// Begin the layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
-
-		
-		// Navigation text
-		TextView navText = new TextView(this);
-		navText.setText(navString(3));
-		navText.setTextSize(30);
-		
-		
-		// Create a layout for each form
-		for (final SpinnerData formData : formList)
-		{
-			LinearLayout formView = new LinearLayout(this);
-			formView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			formView.setOrientation(LinearLayout.VERTICAL);
-			
-			
-			// Form name
-			TextView formName = new TextView(this);
-			formName.setText(formData.getSpinnerText());
-			formName.setTextSize(35);
-			
-			
-			// Begin "buttons view"
-			LinearLayout buttons = new LinearLayout(this);		
-			buttons.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			buttons.setOrientation(LinearLayout.HORIZONTAL);
-			
-			
-			// Edit button
-			Button editButton = new Button(this);
-			editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-			editButton.setText("Edit");
-			editButton.setOnClickListener(	new View.OnClickListener()
-											{
-												public void onClick(View view)
-												{
-													database.open();
-													Form form = database.getFormById(formData.getValue());
-													
-													// Pass the form to the EditFormActivity
-													Intent intent = new Intent(getInstance(), EditFormActivity.class);
-													
-													intent.putExtra("formObject", form);	
-													intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-																
-													startActivity(intent);
-													database.close();
-												}
-											}					
-										);
-			
-			
-			// Discard button
-			Button discardButton = new Button(this);
-			discardButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-			discardButton.setText("Discard");
-			discardButton.setOnClickListener(	new View.OnClickListener()
-												{
-													public void onClick(View view)
-													{
-														discardConfirm(view, formData.getValue());
-													}
-												}					
-											);
-			
-			
-			// Upload button
-			Button uploadButton = new Button(this);
-			uploadButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-			uploadButton.setText("Upload");
-			uploadButton.setOnClickListener(new View.OnClickListener()
-											{
-												public void onClick(View view)
-												{
-													upload(formData.getValue());
-												}
-											}					
-										);
-
-			
-			// Horizontal Rule
-			View lineBreak = Utility.lineBreakView(this);
-			
-			
-			// Add the Views in vertical order
-			formView.addView(formName);
-			buttons.addView(editButton);
-			buttons.addView(discardButton);
-			buttons.addView(uploadButton);
-			formView.addView(buttons);
-			formView.addView(lineBreak);
-			
-			layout.addView(formView);
-		}
-		
-		
-		
-		// TODO This is super ugly and can probably be better/cleaner.
-		// Wrap the layout in a ScrollView
-		ScrollView wrapper = new ScrollView(this);
-		wrapper.addView(layout);
-		// TODO The 160 padding fix should probably be something else 
-		wrapper.setPadding(25, 160, 25, 25);
-
-		// Put "navText" above the scroll view
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, navText.getId());
-		wrapper.setLayoutParams(params);
-		
-		
-		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
-		navText.setLayoutParams(navparams);
-		
-		
-		// Put the layout in the view stack
-		RelativeLayout wrapperWrapper = new RelativeLayout(this);
-		wrapperWrapper.addView(navText);
-		wrapperWrapper.addView(wrapper);
-		layoutStack[Views.Forms.ordinal()] = wrapperWrapper;
-		
-		setContentView(layoutStack[Views.Forms.ordinal()]);
-		currentView = Views.Forms;
+		// Set the View
+		viewStack[FORMS] = formsView;
+		setContentView(viewStack[FORMS]);
+		currentView = FORMS;
 	}
 	
 
@@ -862,7 +500,515 @@ public class ScreenOneRework extends Activity
 	
 	
 	
-	/*---- MENU BUTTON IMPLEMENTATIONS ----*/
+	
+	/*---- BEGIN VIEW BUILDER METHODS ----*/
+	// TODO javadoc
+	private View buildHomeView()
+	{
+		LinearLayout layout = new LinearLayout(this);
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layout.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		// Text above EditText for entering user name
+		TextView nameViewTitle = new TextView(this);
+		nameViewTitle.setText("Current User:");
+		nameViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			
+		
+		// EditText for entering user name
+		EditText nameView = new EditText(this);
+		nameView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		if (userName != null)
+		{
+			nameView.setText(userName);
+		}
+		else
+		{
+			nameView.setText("");
+		}		
+		
+		
+		// Begin Button
+		Button beginButton = new Button(this);
+		beginButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		beginButton.setText("Begin");
+		beginButton.setOnClickListener(	new View.OnClickListener()
+										{
+											public void onClick(View view)
+											{
+												Utility.hideSoftKeyboard(getInstance());
+												displayTemplateGroups();											
+											}
+										}					
+									);
+		
+		
+		// Add the Views in vertical order
+		layout.addView(nameViewTitle);
+		layout.addView(nameView);
+		layout.addView(beginButton);
+			
+		return layout;
+	}
+	
+	
+	
+	// TODO javadoc
+	private View buildGroupsView()
+	{
+		// Get the template information
+		List<String> templateGroupList = new ArrayList<String>();
+		
+		database.open();
+		templateGroupList = database.getAllTemplateGroups();
+		database.close();
+		
+		// Add "All Groups" to beginning of list
+		templateGroupList.add(0, "All Groups");
+		
+		
+		
+		// Begin the layout
+		LinearLayout layout = new LinearLayout(this);
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layout.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		// Navigation text
+		TextView navText = new TextView(this);
+		navText.setText(navString(1));
+		navText.setTextSize(30);
+		navText.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		
+		
+		// Create a view for each template group
+		for (final String entry : templateGroupList)
+		{
+			LinearLayout groupView = new LinearLayout(this);
+			groupView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			groupView.setOrientation(LinearLayout.VERTICAL);
+			groupView.setOnClickListener(	new View.OnClickListener()
+											{
+												public void onClick(View view)
+												{
+													navTitles[1] = String.format("%s templates", entry);
+													displayGroupTemplates(entry);
+												}
+											}					
+										);
+			
+			
+			// Group name
+			TextView groupName = new TextView(this);
+			groupName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			groupName.setText(entry);
+			groupName.setTextSize(35);
+			groupName.setTextColor(Color.parseColor("#0099CC"));
+			
+			
+			
+			// Horizontal rule
+			View lineBreak = Utility.lineBreakView(this);
+			
+			
+			// Add the Views in vertical order
+			groupView.addView(groupName);
+			groupView.addView(lineBreak);
+			
+			
+			layout.addView(groupView);		
+		}
+		
+		
+		
+		// TODO This is super ugly and can probably be better/cleaner.
+		// Wrap the layout in a ScrollView
+		ScrollView wrapper = new ScrollView(this);
+		wrapper.addView(layout);
+		// TODO The 160 padding fix should probably be something else 
+		wrapper.setPadding(25, 160, 25, 25);
+		
+		// Put "navText" above the scroll view
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		//params.addRule(RelativeLayout.BELOW, navText.getId());
+		wrapper.setLayoutParams(params);
+		
+		
+		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
+		navText.setLayoutParams(navparams);
+		
+		
+		// Put the layout in the view stack
+		RelativeLayout wrapperWrapper = new RelativeLayout(this);
+		wrapperWrapper.addView(navText);
+		wrapperWrapper.addView(wrapper);
+		
+		return wrapperWrapper;
+	}
+	
+	
+	
+	/**
+	 * Builds the View of templates with given group name
+	 * 
+	 * @param groupName	The name of the group
+	 * 
+	 * @return	The View of the templates with group groupName
+	 */
+	private View buildTemplatesView(final String groupName)
+	{
+		List<SpinnerData> templateList;
+		database.open();
+		if (groupName.compareToIgnoreCase("all groups") == 0)
+		{
+			templateList = database.getAllTemplateInfo();
+			
+			SpinnerData allForms = new SpinnerData("All Forms", ALL_GROUPS_ALL_FORMS);
+			templateList.add(0, allForms);
+		}
+		else
+		{
+			// Get the templates from the group
+			templateList = database.getAllTemplateInfoByGroup(groupName);
+			
+			// Add "All Forms" to beginning of list
+			SpinnerData allForms = new SpinnerData("All " + groupName + " Forms", ONE_GROUP_ALL_FORMS);
+			templateList.add(0, allForms);
+		}
+		database.close();
+
+		
+		// Begin the layout
+		LinearLayout layout = new LinearLayout(this);
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layout.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		// Navigation text
+		TextView navText = new TextView(this);
+		navText.setText(navString(2));
+		navText.setTextSize(30);
+		
+		
+		// Create a View for each template
+		for (final SpinnerData templateData : templateList)
+		{			
+			LinearLayout templateView = new LinearLayout(this);
+			templateView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			templateView.setOrientation(LinearLayout.VERTICAL);
+			
+			
+			// Template name
+			TextView templateName = new TextView(this);
+			templateName.setText(templateData.getSpinnerText());
+			templateName.setTextSize(35);
+
+			
+			
+			LinearLayout buttons = new LinearLayout(this);
+			// No buttons if "all forms"
+			if (templateData.getValue() == ONE_GROUP_ALL_FORMS)
+			{
+				templateView.setOnClickListener(	new View.OnClickListener()
+													{
+														public void onClick(View view)
+														{
+															navTitles[2] = "All forms";
+															displayTemplateForms(ONE_GROUP_ALL_FORMS, groupName);
+														}
+													}					
+												);
+				templateName.setTextColor(Color.parseColor("#0099CC"));
+			}
+			else if (templateData.getValue() == ALL_GROUPS_ALL_FORMS)
+			{
+				templateView.setOnClickListener(	new View.OnClickListener()
+													{
+														public void onClick(View view)
+														{
+															navTitles[2] = "All forms";
+															displayTemplateForms(ALL_GROUPS_ALL_FORMS, null);														
+														}
+													}					
+												);
+				templateName.setTextColor(Color.parseColor("#0099CC"));
+			}
+			else
+			{
+				// Begin "buttons view"				
+				buttons.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+				buttons.setOrientation(LinearLayout.HORIZONTAL);
+				
+	
+				// New button
+				Button newButton = new Button(this);
+				newButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+				newButton.setText("Create new");
+				newButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														database.open();
+														
+														// Create a new Form from the template
+														Form template = database.getTemplateById(templateData.getValue());
+														long formID = database.addForm(template);						
+														Form form = database.getFormById(formID);
+														
+														
+														// Pass the new Form to the EditFormActivity
+														Intent intent = new Intent(getInstance(), EditFormActivity.class);
+														
+														intent.putExtra("formObject", form);	
+														intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+																	
+														startActivity(intent);
+														
+														database.close();
+													}
+												}					
+											);
+				
+				
+				// Edit button
+				Button editButton = new Button(this);
+				editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+				editButton.setText("Edit existing");
+				editButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														navTitles[2] = templateData.getSpinnerText();
+														displayTemplateForms(templateData.getValue(), null);
+													}
+												}					
+											);
+				
+				// Add the button views
+				buttons.addView(newButton);
+
+				database.open();
+				List<SpinnerData> template_formInfo = database.getAllFormInfoByTemplateId(templateData.getValue());
+				database.close();
+				if (template_formInfo.size() > 0)
+				{
+					buttons.addView(editButton);
+				}
+			}
+		
+			
+			// Horizontal rule
+			View lineBreak = Utility.lineBreakView(this);			
+			
+			
+			// Add Views in vertical order
+			templateView.addView(templateName);				
+			templateView.addView(buttons);
+			templateView.addView(lineBreak);
+						
+			layout.addView(templateView);	
+		}
+		
+
+		
+		// TODO This is super ugly and can probably be better/cleaner.
+		// Wrap the layout in a ScrollView
+		ScrollView wrapper = new ScrollView(this);
+		wrapper.addView(layout);
+		// TODO The 160 padding fix should probably be something else 
+		wrapper.setPadding(25, 160, 25, 25);
+		
+		// Put "navText" above the scroll view
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		//params.addRule(RelativeLayout.BELOW, navText.getId());
+		wrapper.setLayoutParams(params);
+		
+		
+		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
+		navText.setLayoutParams(navparams);
+		
+		
+		// Put the layout in the view stack
+		RelativeLayout wrapperWrapper = new RelativeLayout(this);
+		wrapperWrapper.addView(navText);
+		wrapperWrapper.addView(wrapper);
+		
+		return wrapperWrapper;
+	}
+	
+	
+	
+	/**
+	 * Builds a View of the Forms with given templateID/templateGroup
+	 * 
+	 * @param templateID	The ID of the template
+	 * @param templateGroup	The group of the template
+	 * 
+	 * @return	A View of the Forms for templateID/templateGroup
+	 */
+	private View buildFormsView(int templateID, String templateGroup)	 
+	{
+		List<SpinnerData> formList = new ArrayList<SpinnerData>();
+		
+		// Get the forms from the template
+		database.open();
+		if (templateID == ONE_GROUP_ALL_FORMS)
+		{
+			formList = database.getAllFormInfoByTemplateGroup(templateGroup);
+		}
+		else if (templateID == ALL_GROUPS_ALL_FORMS)
+		{
+			formList = database.getAllFormInfo();
+		}
+		else
+		{
+			formList = database.getAllFormInfoByTemplateId(templateID);
+		}
+		database.close();
+		
+		
+		
+		
+		// Begin the layout
+		LinearLayout layout = new LinearLayout(this);
+		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layout.setOrientation(LinearLayout.VERTICAL);
+
+		
+		// Navigation text
+		TextView navText = new TextView(this);
+		navText.setText(navString(3));
+		navText.setTextSize(30);
+		
+		
+		// Create a layout for each form
+		for (final SpinnerData formData : formList)
+		{
+			LinearLayout formView = new LinearLayout(this);
+			formView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			formView.setOrientation(LinearLayout.VERTICAL);
+			
+			
+			// Form name
+			TextView formName = new TextView(this);
+			formName.setText(formData.getSpinnerText());
+			formName.setTextSize(35);
+			
+			
+			// Begin "buttons view"
+			LinearLayout buttons = new LinearLayout(this);		
+			buttons.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			buttons.setOrientation(LinearLayout.HORIZONTAL);
+			
+			
+			// Edit button
+			Button editButton = new Button(this);
+			editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+			editButton.setText("Edit");
+			editButton.setOnClickListener(	new View.OnClickListener()
+											{
+												public void onClick(View view)
+												{
+													database.open();
+													Form form = database.getFormById(formData.getValue());
+													
+													// Pass the form to the EditFormActivity
+													Intent intent = new Intent(getInstance(), EditFormActivity.class);
+													
+													intent.putExtra("formObject", form);	
+													intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+																
+													startActivity(intent);
+													database.close();
+												}
+											}					
+										);
+			
+			
+			// Discard button
+			Button discardButton = new Button(this);
+			discardButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+			discardButton.setText("Discard");
+			discardButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														discardConfirm(view, formData.getValue());
+													}
+												}					
+											);
+			
+			
+			// Upload button
+			Button uploadButton = new Button(this);
+			uploadButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+			uploadButton.setText("Upload");
+			uploadButton.setOnClickListener(new View.OnClickListener()
+											{
+												public void onClick(View view)
+												{
+													upload(formData.getValue());
+												}
+											}					
+										);
+
+			
+			// Horizontal Rule
+			View lineBreak = Utility.lineBreakView(this);
+			
+			
+			// Add the Views in vertical order
+			formView.addView(formName);
+			buttons.addView(editButton);
+			buttons.addView(discardButton);
+			buttons.addView(uploadButton);
+			formView.addView(buttons);
+			formView.addView(lineBreak);
+			
+			layout.addView(formView);
+		}
+			
+		
+		// TODO This is super ugly and can probably be better/cleaner.
+		// Wrap the layout in a ScrollView
+		ScrollView wrapper = new ScrollView(this);
+		wrapper.addView(layout);
+		// TODO The 160 padding fix should probably be something else 
+		wrapper.setPadding(25, 160, 25, 25);
+
+		// Put "navText" above the scroll view
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		//params.addRule(RelativeLayout.BELOW, navText.getId());
+		wrapper.setLayoutParams(params);
+		
+		
+		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
+		navText.setLayoutParams(navparams);
+		
+		
+		// Put the layout in the view stack
+		RelativeLayout wrapperWrapper = new RelativeLayout(this);
+		wrapperWrapper.addView(navText);
+		wrapperWrapper.addView(wrapper);
+		
+		return wrapperWrapper;
+	}
+	/*---- END VIEW BUILDER METHODS ----*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---- BEGIN MENU BUTTON IMPLEMENTATIONS ----*/
 	/**
 	 * Opens the ErrorLog for display (launches new Activity)
 	 * 
@@ -915,10 +1061,13 @@ public class ScreenOneRework extends Activity
 	}
 	
 	
-	
+	// TODO javadoc
 	public void openSettingsActivity(MenuItem item){
 		Intent intent = new Intent(this, SettingsActivity.class);
 		startActivity(intent);
 	}
 	/*---- END MENU BUTTON IMPLEMENTATIONS ----*/
 }
+
+
+
