@@ -191,7 +191,19 @@ public class EditFormActivity extends Activity
 			// Set the question view and question text (same for all three types)	
 			((TextView) findViewById(R.id.questionNumber)).setText(String.format("Question %d", questionNumber + 1));
 			((TextView) findViewById(R.id.questionText)).setText(question.Text);
-			((TextView) findViewById(R.id.questionHelpText)).setText(question.HelpText);
+			
+			// Only show the helpText if it was changed in the admin tool
+			if (question.HelpText != null)
+			{
+				if (question.HelpText.compareToIgnoreCase("enter help text here") != 0)
+				{
+					((TextView) findViewById(R.id.questionHelpText)).setText(question.HelpText);
+				}
+				else
+				{
+					((TextView) findViewById(R.id.questionHelpText)).setText("");
+				}
+			}
 			
 			
 			
@@ -416,6 +428,10 @@ public class EditFormActivity extends Activity
 			// Add "other" option
 			if (cq.other.compareToIgnoreCase("true") == 0)
 			{
+				ErrorLog.log(this, new Error("Question Error", String.format("Location:\nQuestion %d in template: %s\n\nChoiceQuestions should not have both 'multiple select' and 'other' enabled in the admin tool", questionNumber + 1, form.meta.name), Severity.Normal));
+				
+				// TODO Possibly old code. Keep for now
+				/*
 				checkBox = new CheckBox(this);
 				checkBox.setText("Other");
 				
@@ -474,7 +490,7 @@ public class EditFormActivity extends Activity
 							}
 						}
 					}
-				}
+				} */
 			}
 		}
 		
@@ -862,6 +878,7 @@ public class EditFormActivity extends Activity
 	{
 		return currentInstance;
 	}
+	
 	
 	
 	/**

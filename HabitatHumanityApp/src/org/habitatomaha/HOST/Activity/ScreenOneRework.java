@@ -1,6 +1,5 @@
 package org.habitatomaha.HOST.Activity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,9 +17,9 @@ import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,17 +29,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class ScreenOneRework extends Activity
 {
 	private static final int ALL_GROUPS_ALL_FORMS = -1111;
@@ -51,7 +49,7 @@ public class ScreenOneRework extends Activity
 	private static final int FORMS = 3;
 	
 	
-	private static String userName;					// The name of the current user
+	private static String userName;						// The name of the current user
 	private OSTDataSource database;						// An accessor for the SQLite database
 	private int currentView;							// Indicated the current view
 	private View[] viewStack = new View[4];
@@ -61,6 +59,14 @@ public class ScreenOneRework extends Activity
 	private DownloadAllTemplates downloadTask;	// For managing "DownloadAllTemplates"
 	private UploadAllForms uploadTask;			// For managing "UploadAllForms"
 	
+	
+	
+	
+	
+	
+	
+
+	/*---------- BEGIN OVERRIDE METHODS ----------*/
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -125,18 +131,8 @@ public class ScreenOneRework extends Activity
 		else
 		{	
 			navTitles[0] = "Template groups";
-			
-			// Build View
-			LinearLayout homeView = (LinearLayout) buildHomeView();
-			
-			// Store relevant info about the View for rebuilding
-			LayoutInfo homeLayoutInfo = new LayoutInfo();
-			status[HOME] = homeLayoutInfo;
-	
-			// Set View
-			viewStack[HOME] = homeView;
-			setContentView(viewStack[HOME]);
-			currentView = HOME;
+					
+			displayHome();		
 		}
 	}
 	
@@ -148,7 +144,10 @@ public class ScreenOneRework extends Activity
 		
 		if (currentView == HOME)
 		{
-			userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+			if ((EditText) viewStack[HOME].findFocus() != null)
+			{
+				userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+			}
 		}
 		
 		savedInstanceState.putString("userName", userName);
@@ -174,21 +173,28 @@ public class ScreenOneRework extends Activity
 				break;
 				
 			case GROUPS:
+				// Go back to home
+				viewStack[HOME] = buildHomeView();
 				setContentView(viewStack[HOME]);
 				currentView = HOME;
 				break;
 				
 			case TEMPLATES:
+				// Go back to groups
+				viewStack[GROUPS] = buildGroupsView();
 				setContentView(viewStack[GROUPS]);
 				currentView = GROUPS;
 				break;
 				
 			case FORMS:
+				// Go back to templates
+				viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
 				setContentView(viewStack[TEMPLATES]);
 				currentView = TEMPLATES;
 				break;
 		}
-
+		
+		invalidateOptionsMenu();
 	}
 	
 	
@@ -197,6 +203,29 @@ public class ScreenOneRework extends Activity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+		return true;
+	}
+	
+	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		if (currentView == HOME)
+		{
+			menu.getItem(0).setEnabled(true);
+			menu.getItem(1).setEnabled(true);
+			menu.getItem(2).setEnabled(true);
+			menu.getItem(3).setEnabled(true);
+		}
+		else
+		{
+			menu.getItem(0).setEnabled(false);
+			menu.getItem(1).setEnabled(false);
+			menu.getItem(2).setEnabled(false);
+			menu.getItem(3).setEnabled(false);
+		}
+		
 		return true;
 	}
 	
@@ -236,6 +265,36 @@ public class ScreenOneRework extends Activity
 		}
 	}
 	
+	/*---------- END OVERRIDE METHODS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN DISPLAY METHODS ----------*/
+	
+	/**
+	 * Displays the home View for the Activity
+	 */
+	private void displayHome()
+	{
+		// Build View
+		RelativeLayout homeView = (RelativeLayout) buildHomeView();
+		
+		// Store relevant info about the View for rebuilding
+		LayoutInfo homeLayoutInfo = new LayoutInfo();
+		status[HOME] = homeLayoutInfo;
+
+		// Set View
+		viewStack[HOME] = homeView;
+		setContentView(viewStack[HOME]);
+		currentView = HOME;
+		
+		invalidateOptionsMenu();
+	}
 	
 	
 	
@@ -248,7 +307,10 @@ public class ScreenOneRework extends Activity
 		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
 		
 		// Store the userName from HOME
-		userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();	
+		if ((EditText) viewStack[HOME].findFocus() != null)
+		{
+			userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+		}
 		
 		// Store the relevant information about the View for rebuilding
 		LayoutInfo groupsLayoutInfo = new LayoutInfo();
@@ -259,6 +321,8 @@ public class ScreenOneRework extends Activity
 		viewStack[GROUPS] = groupsView;
 		setContentView(viewStack[GROUPS]);
 		currentView = GROUPS;
+		
+		invalidateOptionsMenu();
 	}
 	
 		
@@ -283,6 +347,8 @@ public class ScreenOneRework extends Activity
 		viewStack[TEMPLATES] = templatesView;
 		setContentView(viewStack[TEMPLATES]);
 		currentView = TEMPLATES;
+		
+		invalidateOptionsMenu();
 	}
 
 	
@@ -309,216 +375,62 @@ public class ScreenOneRework extends Activity
 		viewStack[FORMS] = formsView;
 		setContentView(viewStack[FORMS]);
 		currentView = FORMS;
+		
+		invalidateOptionsMenu();
 	}
 	
+	/*---------- END DISPLAY METHODS ----------*/
+
 
 	
-	/**
-	 * Confirms the user's intent discard before discarding the Form
-	 * 
-	 * @param view	The View that called this method
-	 */
-	private void discardConfirm(final View view, final int formID)
-	{
-		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setTitle("Confirm Discard");
-		adb.setMessage("Are you sure you want to discard this form?");
-		adb.setCancelable(false);
-		adb.setPositiveButton("Discard", 
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog, int id)
-									{
-										discard(formID);
-										
-										// Remove the view of the form
-										View buttons = (LinearLayout) view.getParent();
-										View formView = (LinearLayout) buttons.getParent();										
-										((LinearLayout) formView.getParent()).removeView(formView);
-										
-										return;
-									}
-								});
-		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
-										{
-											@Override
-											public void onClick(DialogInterface dialog, int id)
-											{
-												return;
-											}
-										});
-		
-		AlertDialog alertDialog = adb.create();
-		alertDialog.show();
-		
-		return;
-	}
-		
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN VIEW BUILDER METHODS ----------*/
 	
 	
 	/**
-	 * Removes a form from the database
+	 * Builds the home View of this Activity
 	 * 
-	 * @param formID	The ID of the form to remove
+	 * @return	The View of the home layout of this Activity
 	 */
-	private void discard(long formID)
-	{
-		database.open();
-		database.removeFormById(formID);
-		database.close();
-		
-		Toast.makeText(this, "Form removed from device", Toast.LENGTH_SHORT).show();	
-		return;
-	}
-	
-	
-	
-	
-	
-	/**
-	 * Attempts to upload the Form to SharePoint.
-	 * 
-	 * @param view The View that called this method
-	 */
-	public void upload(final long formID)
-	{
-		//If there is no connectivity, display a popup and return
-		if (!Utility.isNetworkAvailable(this))
-		{
-			Utility.displayNetworkUnavailableDialog(this);
-			return;
-		}
-		
-		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setTitle("Confirm Upload");
-		adb.setMessage("If the upload is successful, the form will be removed from your device.");
-		adb.setCancelable(false);
-		adb.setPositiveButton("Upload", 
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog, int id)
-									{
-										//Had to suppress this warning, not sure what the deal is
-										@SuppressWarnings("unchecked")
-										AsyncTask<Form, Void, String[]> task = new UploadForm(getInstance());
-										
-										database.open();
-										Form form = database.getFormById(formID);
-										database.close();
-												
-										//Start the task
-										task.execute(form);
-										try {
-											//Wait for the task to finish and get its response
-											String[] response = task.get();											
-											Toast.makeText(getInstance(), response[1], Toast.LENGTH_LONG).show();
-
-											//response of -1 == error
-											//response of 0 == success
-											if (response[0].compareTo("0") == 0)
-											{
-												discard(formID);
-												getInstance().finish();
-											}
-											else
-											{
-												// Log the upload error
-												ErrorLog.log(getInstance(), new Error("Form Upload Error", response[1], Severity.Minor));
-											}
-											
-										} catch (InterruptedException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										} catch (ExecutionException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-										
-										return;
-									}
-								});
-		adb.setNegativeButton("Wait", new DialogInterface.OnClickListener()
-										{
-											@Override
-											public void onClick(DialogInterface dialog, int id)
-											{
-												return;
-											}
-										});
-		
-		AlertDialog alertDialog = adb.create();
-		alertDialog.show();
-		
-		return;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * Returns the context of this activity
-	 * 
-	 * @return	This
-	 */
-	public ScreenOneRework getInstance()
-	{
-		return this;
-	}
-	
-	
-	
-	/**
-	 * Builds the navString for the top of the View
-	 * 
-	 * @param pieces	The number of pieces (1 - 3)
-	 * @return			The navString made from navTitles[]
-	 */
-	private String navString(int pieces)
-	{
-		switch (pieces)
-		{
-			case 1:
-				return String.format("%s", navTitles[0]);
-			case 2:
-				return String.format("%s >\n\t%s", navTitles[0], navTitles[1]);
-			case 3:
-				return String.format("%s >\n\t%s >\n\t\t%s", navTitles[0], navTitles[1], navTitles[2]);
-			default:
-				return "";
-		}
-	}
-	
-	
-	
-	
-	
-	
-	/*---- BEGIN VIEW BUILDER METHODS ----*/
-	// TODO javadoc
 	private View buildHomeView()
 	{
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
+		RelativeLayout.LayoutParams params;
 		
-		
-		// Text above EditText for entering user name
+		//Pre-declare layout Views/IDs for RelativeLayout
 		TextView nameViewTitle = new TextView(this);
+		nameViewTitle.setId(1);
+		
+		EditText nameView = new EditText(this);
+		nameView.setId(2);
+		
+		Button beginButton = new Button(this);
+		beginButton.setId(3);
+		
+		
+		
+		
+		// Begin layout
+		RelativeLayout layout = new RelativeLayout(this);
+		layout.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+		
+		
+		// Text above EditText for entering user name			
 		nameViewTitle.setText("Current User:");
-		nameViewTitle.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		nameViewTitle.setTextSize(30);			
+		
+		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		nameViewTitle.setLayoutParams(params);
 			
 		
+		
 		// EditText for entering user name
-		EditText nameView = new EditText(this);
-		nameView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		if (userName != null)
 		{
 			nameView.setText(userName);
@@ -526,13 +438,17 @@ public class ScreenOneRework extends Activity
 		else
 		{
 			nameView.setText("");
-		}		
+		}
+				
+		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.BELOW, nameViewTitle.getId());
+		nameView.setLayoutParams(params);
+				
 		
 		
 		// Begin Button
-		Button beginButton = new Button(this);
-		beginButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		beginButton.setText("Begin");
+		beginButton.setTextSize(30);
 		beginButton.setOnClickListener(	new View.OnClickListener()
 										{
 											public void onClick(View view)
@@ -543,20 +459,30 @@ public class ScreenOneRework extends Activity
 										}					
 									);
 		
+		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.BELOW, nameView.getId());
+		beginButton.setLayoutParams(params);
+	
 		
-		// Add the Views in vertical order
+		
+		
+		// Add the Views to the Layout in vertical order
 		layout.addView(nameViewTitle);
 		layout.addView(nameView);
 		layout.addView(beginButton);
-			
+		
 		return layout;
 	}
 	
 	
 	
-	// TODO javadoc
+	/**
+	 * Builds a View of all the template groups
+	 * 
+	 * @return	The View of the template groups layout
+	 */
 	private View buildGroupsView()
-	{
+	{	
 		// Get the template information
 		List<String> templateGroupList = new ArrayList<String>();
 		
@@ -567,26 +493,30 @@ public class ScreenOneRework extends Activity
 		// Add "All Groups" to beginning of list
 		templateGroupList.add(0, "All Groups");
 		
+	
 		
+		// Pre-declare the Views/IDs for RelativeLayout
+		TextView navText = new TextView(this);
+		navText.setId(GROUPS);
+		
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.setId(2);
+		
+		RelativeLayout.LayoutParams relParams;
+		
+			
 		
 		// Begin the layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
-		
-		
-		// Navigation text
-		TextView navText = new TextView(this);
-		navText.setText(navString(1));
-		navText.setTextSize(30);
-		navText.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-		
+		LinearLayout layoutOfGroups = new LinearLayout(this);
+		layoutOfGroups.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layoutOfGroups.setOrientation(LinearLayout.VERTICAL);
 		
 		// Create a view for each template group
 		for (final String entry : templateGroupList)
 		{
 			LinearLayout groupView = new LinearLayout(this);
 			groupView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			groupView.setPadding(25, 25, 25, 0);
 			groupView.setOrientation(LinearLayout.VERTICAL);
 			groupView.setOnClickListener(	new View.OnClickListener()
 											{
@@ -617,35 +547,36 @@ public class ScreenOneRework extends Activity
 			groupView.addView(lineBreak);
 			
 			
-			layout.addView(groupView);		
+			layoutOfGroups.addView(groupView);		
 		}
 		
 		
+				
+		// Navigation text
+		navText.setText(navString(1));
+		navText.setTextSize(30);
 		
-		// TODO This is super ugly and can probably be better/cleaner.
-		// Wrap the layout in a ScrollView
-		ScrollView wrapper = new ScrollView(this);
-		wrapper.addView(layout);
-		// TODO The 160 padding fix should probably be something else 
-		wrapper.setPadding(25, 160, 25, 25);
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		navText.setLayoutParams(relParams);
+
 		
-		// Put "navText" above the scroll view
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, navText.getId());
-		wrapper.setLayoutParams(params);
+		// Put the layout of groupViews into a scrollView
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		scrollView.setLayoutParams(relParams);
 		
-		
-		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
-		navText.setLayoutParams(navparams);
+		scrollView.addView(layoutOfGroups);
 		
 		
-		// Put the layout in the view stack
-		RelativeLayout wrapperWrapper = new RelativeLayout(this);
-		wrapperWrapper.addView(navText);
-		wrapperWrapper.addView(wrapper);
+		// Put it all in one wrapping layout
+		RelativeLayout wholeLayout = new RelativeLayout(this);		
+		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 		
-		return wrapperWrapper;
+		wholeLayout.addView(navText);
+		wholeLayout.addView(scrollView);		
+		
+		return wholeLayout;
 	}
 	
 	
@@ -680,16 +611,25 @@ public class ScreenOneRework extends Activity
 		database.close();
 
 		
-		// Begin the layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
 		
 		
-		// Navigation text
+		
+		
+		// Pre-declare the Views/IDs for RelativeLayout
 		TextView navText = new TextView(this);
-		navText.setText(navString(2));
-		navText.setTextSize(30);
+		navText.setId(1);
+		
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.setId(2);
+		
+		RelativeLayout.LayoutParams relParams;
+
+		
+		
+		// Begin the layout
+		LinearLayout layoutOfTemplates = new LinearLayout(this);
+		layoutOfTemplates.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layoutOfTemplates.setOrientation(LinearLayout.VERTICAL);
 		
 		
 		// Create a View for each template
@@ -697,6 +637,7 @@ public class ScreenOneRework extends Activity
 		{			
 			LinearLayout templateView = new LinearLayout(this);
 			templateView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			templateView.setPadding(25, 25, 25, 0);
 			templateView.setOrientation(LinearLayout.VERTICAL);
 			
 			
@@ -756,6 +697,7 @@ public class ScreenOneRework extends Activity
 														Form template = database.getTemplateById(templateData.getValue());
 														long formID = database.addForm(template);						
 														Form form = database.getFormById(formID);
+														form.meta.form_id = formID;
 														
 														
 														// Pass the new Form to the EditFormActivity
@@ -808,35 +750,36 @@ public class ScreenOneRework extends Activity
 			templateView.addView(buttons);
 			templateView.addView(lineBreak);
 						
-			layout.addView(templateView);	
+			layoutOfTemplates.addView(templateView);	
 		}
 		
 
 		
-		// TODO This is super ugly and can probably be better/cleaner.
-		// Wrap the layout in a ScrollView
-		ScrollView wrapper = new ScrollView(this);
-		wrapper.addView(layout);
-		// TODO The 160 padding fix should probably be something else 
-		wrapper.setPadding(25, 160, 25, 25);
-		
-		// Put "navText" above the scroll view
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, navText.getId());
-		wrapper.setLayoutParams(params);
-		
-		
-		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
-		navText.setLayoutParams(navparams);
-		
-		
-		// Put the layout in the view stack
-		RelativeLayout wrapperWrapper = new RelativeLayout(this);
-		wrapperWrapper.addView(navText);
-		wrapperWrapper.addView(wrapper);
-		
-		return wrapperWrapper;
+		// Navigation text
+		navText.setText(navString(TEMPLATES));
+		navText.setTextSize(30);
+
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		navText.setLayoutParams(relParams);
+
+
+		// Put the layout of groupViews into a scrollView
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		scrollView.setLayoutParams(relParams);
+
+		scrollView.addView(layoutOfTemplates);
+
+
+		// Put it all in one wrapping layout
+		RelativeLayout wholeLayout = new RelativeLayout(this);		
+		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+		wholeLayout.addView(navText);
+		wholeLayout.addView(scrollView);	
+
+		return wholeLayout;
 	}
 	
 	
@@ -871,17 +814,22 @@ public class ScreenOneRework extends Activity
 		
 		
 		
+		// Pre-declare the Views/IDs for RelativeLayout
+		TextView navText = new TextView(this);
+		navText.setId(1);
+
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.setId(2);
+
+		RelativeLayout.LayoutParams relParams;
+		
+		
 		
 		// Begin the layout
-		LinearLayout layout = new LinearLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-		layout.setOrientation(LinearLayout.VERTICAL);
-
+		LinearLayout layoutOfForms = new LinearLayout(this);
+		layoutOfForms.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layoutOfForms.setOrientation(LinearLayout.VERTICAL);
 		
-		// Navigation text
-		TextView navText = new TextView(this);
-		navText.setText(navString(3));
-		navText.setTextSize(30);
 		
 		
 		// Create a layout for each form
@@ -889,6 +837,7 @@ public class ScreenOneRework extends Activity
 		{
 			LinearLayout formView = new LinearLayout(this);
 			formView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			formView.setPadding(25, 25, 25, 0);
 			formView.setOrientation(LinearLayout.VERTICAL);
 			
 			
@@ -968,36 +917,38 @@ public class ScreenOneRework extends Activity
 			formView.addView(buttons);
 			formView.addView(lineBreak);
 			
-			layout.addView(formView);
+			layoutOfForms.addView(formView);
 		}
 			
 		
-		// TODO This is super ugly and can probably be better/cleaner.
-		// Wrap the layout in a ScrollView
-		ScrollView wrapper = new ScrollView(this);
-		wrapper.addView(layout);
-		// TODO The 160 padding fix should probably be something else 
-		wrapper.setPadding(25, 160, 25, 25);
+		// Navigation text
+		navText.setText(navString(FORMS));
+		navText.setTextSize(30);
 
-		// Put "navText" above the scroll view
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.BELOW, navText.getId());
-		wrapper.setLayoutParams(params);
-		
-		
-		RelativeLayout.LayoutParams navparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		navparams.addRule(RelativeLayout.ABOVE, wrapper.getId());
-		navText.setLayoutParams(navparams);
-		
-		
-		// Put the layout in the view stack
-		RelativeLayout wrapperWrapper = new RelativeLayout(this);
-		wrapperWrapper.addView(navText);
-		wrapperWrapper.addView(wrapper);
-		
-		return wrapperWrapper;
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		navText.setLayoutParams(relParams);
+
+
+		// Put the layout of groupViews into a scrollView
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		scrollView.setLayoutParams(relParams);
+
+		scrollView.addView(layoutOfForms);
+
+
+		// Put it all in one wrapping layout
+		RelativeLayout wholeLayout = new RelativeLayout(this);		
+		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+		wholeLayout.addView(navText);
+		wholeLayout.addView(scrollView);	
+
+		return wholeLayout;
 	}
-	/*---- END VIEW BUILDER METHODS ----*/
+	
+	/*---------- END VIEW BUILDER METHODS ----------*/
 	
 	
 	
@@ -1008,11 +959,177 @@ public class ScreenOneRework extends Activity
 	
 	
 	
-	/*---- BEGIN MENU BUTTON IMPLEMENTATIONS ----*/
+	/*---------- BEGIN METHODS THAT IMPLEMENT VARIOUS BUTTONS ----------*/
+	
+	/**
+	 * Confirms the user's intent discard before discarding the Form
+	 * 
+	 * @param view	The View that called this method
+	 */
+	private void discardConfirm(final View view, final int formID)
+	{
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Confirm Discard");
+		adb.setMessage("Are you sure you want to discard this form?");
+		adb.setCancelable(false);
+		adb.setPositiveButton("Discard", 
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog, int id)
+									{
+										discard(formID);
+										
+										// Remove the view of the form
+										View buttons = (LinearLayout) view.getParent();
+										View formView = (LinearLayout) buttons.getParent();										
+										((LinearLayout) formView.getParent()).removeView(formView);
+										
+										return;
+									}
+								});
+		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
+										{
+											@Override
+											public void onClick(DialogInterface dialog, int id)
+											{
+												return;
+											}
+										});
+		
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
+		
+		return;
+	}
+		
+	
+	
+	/**
+	 * Removes a Form from the database
+	 * 
+	 * @param formID	The ID of the form to remove
+	 */
+	private void discard(long formID)
+	{
+		database.open();
+		database.removeFormById(formID);
+		database.close();
+		
+		Toast.makeText(this, "Form removed from device", Toast.LENGTH_SHORT).show();	
+		return;
+	}
+	
+	
+
+	/**
+	 * Attempts to upload the Form to SharePoint.
+	 * 
+	 * @param view The View that called this method
+	 */
+	public void upload(final long formID)
+	{
+		//If there is no connectivity, display a popup and return
+		if (!Utility.isNetworkAvailable(this))
+		{
+			Utility.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Confirm Upload");
+		adb.setMessage("If the upload is successful, the form will be removed from your device.");
+		adb.setCancelable(false);
+		adb.setPositiveButton("Upload", 
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog, int id)
+									{
+										//Had to suppress this warning, not sure what the deal is
+										@SuppressWarnings("unchecked")
+										AsyncTask<Form, Void, String[]> task = new UploadForm(getInstance());
+										
+										database.open();
+										Form form = database.getFormById(formID);
+										database.close();
+												
+										//Start the task
+										task.execute(form);
+										try {
+											//Wait for the task to finish and get its response
+											String[] response = task.get();											
+											Toast.makeText(getInstance(), response[1], Toast.LENGTH_LONG).show();
+
+											//response of -1 == error
+											//response of 0 == success
+											if (response[0].compareTo("0") == 0)
+											{
+												discard(formID);
+											}
+											else
+											{
+												// Log the upload error
+												ErrorLog.log(getInstance(), new Error("Form Upload Error", response[1], Severity.Minor));
+											}
+											
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} catch (ExecutionException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										
+										return;
+									}
+								});
+		adb.setNegativeButton("Wait", new DialogInterface.OnClickListener()
+										{
+											@Override
+											public void onClick(DialogInterface dialog, int id)
+											{
+												return;
+											}
+										});
+		
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
+		
+		return;
+	}
+	
+	/*---------- END METHODS THAT IMPLEMENT VARIOUS BUTTONS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN MENU BUTTON METHODS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN MENU BUTTON IMPLEMENTATIONS ----------*/
+	
 	/**
 	 * Opens the ErrorLog for display (launches new Activity)
 	 * 
-	 * @param item	The menu item that called this method
+	 * @param item	The MenuItem that called this method
 	 */
 	public void openErrorLog(MenuItem item)
 	{
@@ -1020,6 +1137,13 @@ public class ScreenOneRework extends Activity
 		startActivity(intent);
 	}
 		
+	
+	
+	/**
+	 * Begins the Download Task
+	 * 
+	 * @param item	The MenuItem that called this method
+	 */
 	@SuppressWarnings("unchecked")
 	public void startFormDownload(MenuItem item)
 	{
@@ -1033,8 +1157,6 @@ public class ScreenOneRework extends Activity
 		
 		downloadTask = new DownloadAllTemplates(this);
 		downloadTask.execute(this);
-		
-		// TODO Change the downloadTask postExecute to reload the Activity
 	}
 	
 	
@@ -1056,17 +1178,64 @@ public class ScreenOneRework extends Activity
 		
 		uploadTask = new UploadAllForms(this);
 		uploadTask.execute();
-		
-		// TODO Change the uploadTask postExecute to reload the Activity
 	}
 	
 	
-	// TODO javadoc
+	
+	/**
+	 * Opens the Settings Activity
+	 * 
+	 * @param item	The MenuItem that called this method
+	 */
 	public void openSettingsActivity(MenuItem item){
 		Intent intent = new Intent(this, SettingsActivity.class);
 		startActivity(intent);
 	}
-	/*---- END MENU BUTTON IMPLEMENTATIONS ----*/
+	
+	/*---------- END MENU BUTTON METHODS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN UNCATEGORIZED METHODS ----------*/
+	
+	/**
+	 * Returns the context of this activity
+	 * 
+	 * @return	This
+	 */
+	public ScreenOneRework getInstance()
+	{
+		return this;
+	}
+	
+	
+	
+	/**
+	 * Builds the navString for the top of the View
+	 * 
+	 * @param pieces	The number of pieces (1 - 3)
+	 * @return			The navString made from navTitles[]
+	 */
+	private String navString(int pieces)
+	{
+		switch (pieces)
+		{
+			case 1:
+				return String.format("%s", navTitles[0]);
+			case 2:
+				return String.format("%s >\n\t%s", navTitles[0], navTitles[1]);
+			case 3:
+				return String.format("%s >\n\t%s >\n\t\t%s", navTitles[0], navTitles[1], navTitles[2]);
+			default:
+				return "";
+		}
+	}
+	
+	/*---------- END UNCATEGORIZED METHODS ----------*/
 }
 
 
