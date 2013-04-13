@@ -22,5 +22,27 @@ public class EditFormActivityTest {
 		assert(true);
 	}
 	
+	@Test
+	public void testSetupTextQuestionView()
+	{
+		
+		
+		assert(true);
+	}
+	
+	@Test
+	private void testSetupChoiceQuestionView()
+	{
+		
+		
+		assert(true);
+	}
 
+	@Test
+	private void testSetupLikertQuestionView()
+	{
+		
+		
+		assert(true);
+	}
 }
