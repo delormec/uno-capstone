@@ -8,11 +8,10 @@ using NSubstitute;
 using HOST_Admin.Models;
 using HOST_Admin.Models.Repository;
 using System.Data.Objects.DataClasses;
-using OSTTests.Tests.Controllers;
 using System.Transactions;
 using HOST_Admin.Models.ViewModel;
 
-namespace HOST_Admin.Tests.Controllers
+namespace HOST_Tests.Tests.Repository
 {
     /// <summary>
     /// Set of tests against the FormRepository
