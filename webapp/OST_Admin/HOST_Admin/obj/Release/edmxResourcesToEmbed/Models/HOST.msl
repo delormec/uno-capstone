@@ -89,25 +89,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Configurations">
-      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.Configuration)">
-        <MappingFragment StoreEntitySet="Configurations">
-          <ScalarProperty Name="ConfigurationId" ColumnName="ConfigurationId" />
-          <ScalarProperty Name="SharePointUserName" ColumnName="SharePointUserName" />
-          <ScalarProperty Name="SharePointPassword" ColumnName="SharePointPassword" />
-          <ScalarProperty Name="SharePointURL" ColumnName="SharePointURL" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="HelpImages">
-      <EntityTypeMapping TypeName="IsTypeOf(HOSTModel.HelpImage)">
-        <MappingFragment StoreEntitySet="HelpImages">
-          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Data" ColumnName="Data" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <AssociationSetMapping Name="FormQuestion" TypeName="HOSTModel.FormQuestion" StoreEntitySet="Questions">
       <EndProperty Name="Form">
         <ScalarProperty Name="FormId" ColumnName="Form_FormId" />
@@ -138,14 +119,6 @@
       </EndProperty>
       <EndProperty Name="User">
         <ScalarProperty Name="UserId" ColumnName="UserId" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="QuestionHelpImage" TypeName="HOSTModel.QuestionHelpImage" StoreEntitySet="HelpImages">
-      <EndProperty Name="Question">
-        <ScalarProperty Name="QuestionId" ColumnName="Question_QuestionId" />
-      </EndProperty>
-      <EndProperty Name="HelpImage">
-        <ScalarProperty Name="ImageId" ColumnName="ImageId" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

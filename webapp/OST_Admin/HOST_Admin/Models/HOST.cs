@@ -238,7 +238,7 @@ namespace HOST_Admin.Models
     #region Entities
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Extends Question base type. Corresponds to Choice Questions.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="ChoiceQuestion")]
     [Serializable()]
@@ -264,7 +264,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Specifies whether or not a Choice Question contains an Other field on the android app.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -288,7 +288,7 @@ namespace HOST_Admin.Models
         partial void OnOtherChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Specifies if a Choice Question allows multiple answers to be selected on the android app.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -316,7 +316,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// List of options in a Choice Question.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -341,7 +341,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Form class. Represents forms that will be filled out on the android app. Contains a list of questions.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="Form")]
     [Serializable()]
@@ -365,7 +365,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Unique ID of a Form, used behind the scenes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
@@ -392,7 +392,7 @@ namespace HOST_Admin.Models
         partial void OnFormIdChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Whether or not a Form will automatically upload or not.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -416,7 +416,7 @@ namespace HOST_Admin.Models
         partial void OnAutoUpdateChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Whether a form is Active or not. An inactive form won&apos;t show up on the android app.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -440,7 +440,7 @@ namespace HOST_Admin.Models
         partial void OnActiveChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Name of the List this form will be uploaded to.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -464,7 +464,7 @@ namespace HOST_Admin.Models
         partial void OnListNameChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Name of a form, used for display.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -488,7 +488,7 @@ namespace HOST_Admin.Models
         partial void OnNameChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Description of a form, only used for informative purposes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -512,7 +512,7 @@ namespace HOST_Admin.Models
         partial void OnDescriptionChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Date a form was created, auto added.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -536,7 +536,7 @@ namespace HOST_Admin.Models
         partial void OnDateCreatedChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Full URL of a SharePoint OData endpoint.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -560,7 +560,7 @@ namespace HOST_Admin.Models
         partial void OnURLChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// The number of a question that will be used as the key field.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -584,7 +584,7 @@ namespace HOST_Admin.Models
         partial void OnKeyFieldChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Used to group forms together under categories.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -608,7 +608,7 @@ namespace HOST_Admin.Models
         partial void OnGroupChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// What user created a form.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -632,7 +632,7 @@ namespace HOST_Admin.Models
         partial void OnCreatedByChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Name of a field within sharepoint that will hold the date a form was filled out.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -656,7 +656,7 @@ namespace HOST_Admin.Models
         partial void OnFilledDateFieldNameChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Data type of FilledDate, usually DATE.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -680,7 +680,7 @@ namespace HOST_Admin.Models
         partial void OnFilledDateFieldTypeChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Name of a field within sharepoint that will hold who filled out a form.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -704,7 +704,7 @@ namespace HOST_Admin.Models
         partial void OnFilledByFieldNameChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Data type of FilledBy field, usually SINGLE.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -728,7 +728,7 @@ namespace HOST_Admin.Models
         partial void OnFilledByFieldTypeChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Port number of the SharePoint site this form will be uploaded to.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -756,7 +756,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// List of questions in a Form.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -781,7 +781,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// List of labels in a Likert Scale Question. There are only ever 2 per liker question.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="Label")]
     [Serializable()]
@@ -805,7 +805,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Unique ID of an label, used behind the scenes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
@@ -832,7 +832,7 @@ namespace HOST_Admin.Models
         partial void OnLabelIdChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Label text on the low/high end of a Likert Scale question.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -856,7 +856,7 @@ namespace HOST_Admin.Models
         partial void OnTextChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Corresponds to where this label is applied. Either &quot;low&quot; or &quot;high&quot;.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -884,7 +884,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Likert Scale Question a label belongs to.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -902,7 +902,7 @@ namespace HOST_Admin.Models
             }
         }
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Likert Scale Question a label belongs to.
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
@@ -925,7 +925,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Extends Question base type.  Corresponds to Likert Scale questions.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="LikertScaleQuestion")]
     [Serializable()]
@@ -953,7 +953,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// How many steps a Likert Scale question contains. (on a scale of 1- ???)
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -981,7 +981,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// List of labels in a Likert Scale question.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -1006,7 +1006,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// List of options in a Choice Question.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="Option")]
     [Serializable()]
@@ -1032,7 +1032,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Unique ID of an option, used behind the scenes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1059,8 +1059,11 @@ namespace HOST_Admin.Models
         partial void OnOptionIdChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// 
         /// </summary>
+        /// <LongDescription>
+        /// Text of an option within a choice.
+        /// </LongDescription>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String Text
@@ -1083,7 +1086,7 @@ namespace HOST_Admin.Models
         partial void OnTextChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// This correponds to a option&apos;s position within a Choice Question.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1111,7 +1114,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Choice Question an option belongs to.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -1129,7 +1132,7 @@ namespace HOST_Admin.Models
             }
         }
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Choice Question an option belongs to.
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
@@ -1152,7 +1155,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Question class. Base type of questions within a form.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="Question")]
     [Serializable()]
@@ -1181,7 +1184,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Unique ID of a question, used behind the scenes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1208,7 +1211,7 @@ namespace HOST_Admin.Models
         partial void OnQuestionIdChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Contains the text of a question. example -&quot;What is your favorite color?&quot;
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -1232,7 +1235,7 @@ namespace HOST_Admin.Models
         partial void OnTextChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Question&apos;s help text. Used to help clarify or describe a question.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -1256,7 +1259,7 @@ namespace HOST_Admin.Models
         partial void OnHelpTextChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Holds the name of a field in a SharePoint List. Must match exactly.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -1280,7 +1283,7 @@ namespace HOST_Admin.Models
         partial void OnFieldNameChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Holds a question&apos;s datatype. Used to handle data validation on android app.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
@@ -1304,7 +1307,7 @@ namespace HOST_Admin.Models
         partial void OnFieldTypeChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// This correponds to a question&apos;s position within a form.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1332,7 +1335,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Form a question belongs to.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -1350,7 +1353,7 @@ namespace HOST_Admin.Models
             }
         }
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Form a question belongs to.
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
@@ -1373,7 +1376,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Represents a role within the admin tool. Contains a list of Users under each role.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="Role")]
     [Serializable()]
@@ -1399,7 +1402,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Unique ID of a role, used behind the scenes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1426,7 +1429,7 @@ namespace HOST_Admin.Models
         partial void OnRoleIdChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Name of a role within the system. Currently just &quot;Administrator&quot; and &quot;User&quot;.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1454,7 +1457,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// List of Users under any given Role.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -1479,7 +1482,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Extends Question base type.  Actually contains no other fields.
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="TextQuestion")]
     [Serializable()]
@@ -1506,7 +1509,7 @@ namespace HOST_Admin.Models
     }
     
     /// <summary>
-    /// No Metadata Documentation available.
+    /// Represents a User within the system. Has
     /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="HOSTModel", Name="User")]
     [Serializable()]
@@ -1534,7 +1537,7 @@ namespace HOST_Admin.Models
         #region Primitive Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Unique ID of a User, used behind the scenes.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1561,7 +1564,7 @@ namespace HOST_Admin.Models
         partial void OnUserIdChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Login of a user.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1585,7 +1588,7 @@ namespace HOST_Admin.Models
         partial void OnUserNameChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Whether or not a User can log into the system or not.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1609,7 +1612,7 @@ namespace HOST_Admin.Models
         partial void OnActiveChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Hashed/Salted password.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
@@ -1637,7 +1640,7 @@ namespace HOST_Admin.Models
         #region Navigation Properties
     
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Role that a User belongs to.
         /// </summary>
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
@@ -1655,7 +1658,7 @@ namespace HOST_Admin.Models
             }
         }
         /// <summary>
-        /// No Metadata Documentation available.
+        /// Role that a User belongs to.
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]

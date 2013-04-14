@@ -3,9 +3,16 @@ using System.Web.Optimization;
 
 namespace HOST_Admin
 {
+    /// <summary>
+    /// Handles the bundling of css and javascript files.
+    /// Obfuscates and minimizes them.
+    /// </summary>
     public class BundleConfig
     {
-        // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
+        /// <summary>
+        /// For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
+        /// </summary>
+        /// <param name="bundles"></param>
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(

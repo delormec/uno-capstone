@@ -25,76 +25,269 @@
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Form">
+    <Documentation>
+      <Summary>Form class. Represents forms that will be filled out on the android app. Contains a list of questions.</Summary>
+    </Documentation>
     <Key>
       <PropertyRef Name="FormId" />
     </Key>
-    <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="Boolean" Name="AutoUpdate" Nullable="true" />
-    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="False" />
-    <Property Type="String" Name="ListName" Nullable="true" />
-    <Property Type="String" Name="Name" Nullable="true" />
-    <Property Type="String" Name="Description" Nullable="true" />
-    <Property Type="DateTime" Name="DateCreated" Nullable="true" />
-    <Property Type="String" Name="URL" Nullable="true" />
-    <NavigationProperty Name="Questions" Relationship="HOSTModel.FormQuestion" FromRole="Form" ToRole="Question" />
-    <Property Type="Int32" Name="KeyField" Nullable="true" />
-    <Property Type="String" Name="Group" Nullable="true" />
-    <Property Type="Int32" Name="CreatedBy" Nullable="true" />
-    <Property Type="String" Name="FilledDateFieldName" Nullable="true" />
-    <Property Type="String" Name="FilledDateFieldType" Nullable="true" />
-    <Property Type="String" Name="FilledByFieldName" Nullable="true" />
-    <Property Type="String" Name="FilledByFieldType" Nullable="true" />
-    <Property Type="Int32" Name="Port" Nullable="true" />
+    <Property Type="Int32" Name="FormId" Nullable="false" annotation:StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>Unique ID of a Form, used behind the scenes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="Boolean" Name="AutoUpdate" Nullable="true">
+      <Documentation>
+        <Summary>Whether or not a Form will automatically upload or not.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="False">
+      <Documentation>
+        <Summary>Whether a form is Active or not. An inactive form won't show up on the android app.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="ListName" Nullable="true">
+      <Documentation>
+        <Summary>Name of the List this form will be uploaded to.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Name" Nullable="true">
+      <Documentation>
+        <Summary>Name of a form, used for display.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Description" Nullable="true">
+      <Documentation>
+        <Summary>Description of a form, only used for informative purposes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="DateTime" Name="DateCreated" Nullable="true">
+      <Documentation>
+        <Summary>Date a form was created, auto added.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="URL" Nullable="true">
+      <Documentation>
+        <Summary>Full URL of a SharePoint OData endpoint.</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Questions" Relationship="HOSTModel.FormQuestion" FromRole="Form" ToRole="Question">
+      <Documentation>
+        <Summary>List of questions in a Form.</Summary>
+      </Documentation>
+    </NavigationProperty>
+    <Property Type="Int32" Name="KeyField" Nullable="true">
+      <Documentation>
+        <Summary>The number of a question that will be used as the key field.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Group" Nullable="true">
+      <Documentation>
+        <Summary>Used to group forms together under categories.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="Int32" Name="CreatedBy" Nullable="true">
+      <Documentation>
+        <Summary>What user created a form.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="FilledDateFieldName" Nullable="true">
+      <Documentation>
+        <Summary>Name of a field within sharepoint that will hold the date a form was filled out.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="FilledDateFieldType" Nullable="true">
+      <Documentation>
+        <Summary>Data type of FilledDate, usually DATE.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="FilledByFieldName" Nullable="true">
+      <Documentation>
+        <Summary>Name of a field within sharepoint that will hold who filled out a form.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="FilledByFieldType" Nullable="true">
+      <Documentation>
+        <Summary>Data type of FilledBy field, usually SINGLE.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="Int32" Name="Port" Nullable="true">
+      <Documentation>
+        <Summary>Port number of the SharePoint site this form will be uploaded to.</Summary>
+      </Documentation>
+    </Property>
   </EntityType>
   <EntityType Name="User">
+    <Documentation>
+      <Summary>Represents a User within the system. Has</Summary>
+    </Documentation>
     <Key>
       <PropertyRef Name="UserId" />
     </Key>
-    <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="String" Name="UserName" Nullable="false" />
-    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="false" />
-    <Property Type="String" Name="Password" Nullable="false" />
-    <NavigationProperty Name="Role" Relationship="HOSTModel.RoleUser" FromRole="User" ToRole="Role" />
+    <Property Type="Int32" Name="UserId" Nullable="false" annotation:StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>Unique ID of a User, used behind the scenes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="UserName" Nullable="false">
+      <Documentation>
+        <Summary>Login of a user.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="Boolean" Name="Active" Nullable="false" DefaultValue="false">
+      <Documentation>
+        <Summary>Whether or not a User can log into the system or not.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Password" Nullable="false">
+      <Documentation>
+        <Summary>Hashed/Salted password.</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Role" Relationship="HOSTModel.RoleUser" FromRole="User" ToRole="Role">
+      <Documentation>
+        <Summary>Role that a User belongs to.</Summary>
+      </Documentation>
+    </NavigationProperty>
   </EntityType>
   <EntityType Name="Question">
+    <Documentation>
+      <Summary>Question class. Base type of questions within a form.</Summary>
+    </Documentation>
     <Key>
       <PropertyRef Name="QuestionId" />
     </Key>
-    <Property Type="Int32" Name="QuestionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="String" Name="Text" Nullable="true" />
-    <Property Type="String" Name="HelpText" Nullable="true" />
-    <Property Type="String" Name="FieldName" Nullable="true" />
-    <Property Type="String" Name="FieldType" Nullable="true" />
-    <Property Type="Int32" Name="SortOrder" Nullable="false" />
-    <NavigationProperty Name="Form" Relationship="HOSTModel.FormQuestion" FromRole="Question" ToRole="Form" />
+    <Property Type="Int32" Name="QuestionId" Nullable="false" annotation:StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>Unique ID of a question, used behind the scenes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Text" Nullable="true">
+      <Documentation>
+        <Summary>Contains the text of a question. example -"What is your favorite color?"</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="HelpText" Nullable="true">
+      <Documentation>
+        <Summary>Question's help text. Used to help clarify or describe a question.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="FieldName" Nullable="true">
+      <Documentation>
+        <Summary>Holds the name of a field in a SharePoint List. Must match exactly.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="FieldType" Nullable="true">
+      <Documentation>
+        <Summary>Holds a question's datatype. Used to handle data validation on android app.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="Int32" Name="SortOrder" Nullable="false">
+      <Documentation>
+        <Summary>This correponds to a question's position within a form.</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Form" Relationship="HOSTModel.FormQuestion" FromRole="Question" ToRole="Form">
+      <Documentation>
+        <Summary>Form a question belongs to.</Summary>
+      </Documentation>
+    </NavigationProperty>
   </EntityType>
   <EntityType Name="ChoiceQuestion" BaseType="HOSTModel.Question">
-    <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false" />
-    <NavigationProperty Name="Options" Relationship="HOSTModel.ChoiceQuestionOption" FromRole="ChoiceQuestion" ToRole="Option" />
-    <Property Type="Boolean" Name="Multiple" Nullable="true" />
+    <Documentation>
+      <Summary>Extends Question base type. Corresponds to Choice Questions.</Summary>
+    </Documentation>
+    <Property Type="Boolean" Name="Other" Nullable="true" DefaultValue="false">
+      <Documentation>
+        <Summary>Specifies whether or not a Choice Question contains an Other field on the android app.</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Options" Relationship="HOSTModel.ChoiceQuestionOption" FromRole="ChoiceQuestion" ToRole="Option">
+      <Documentation>
+        <Summary>List of options in a Choice Question.</Summary>
+      </Documentation>
+    </NavigationProperty>
+    <Property Type="Boolean" Name="Multiple" Nullable="true">
+      <Documentation>
+        <Summary>Specifies if a Choice Question allows multiple answers to be selected on the android app.</Summary>
+      </Documentation>
+    </Property>
   </EntityType>
   <EntityType Name="LikertScaleQuestion" BaseType="HOSTModel.Question">
-    <Property Type="Int32" Name="Steps" Nullable="false" />
-    <NavigationProperty Name="Labels" Relationship="HOSTModel.LikertScaleQuestionLabel" FromRole="LikertScaleQuestion" ToRole="Label" />
+    <Documentation>
+      <Summary>Extends Question base type.  Corresponds to Likert Scale questions.</Summary>
+    </Documentation>
+    <Property Type="Int32" Name="Steps" Nullable="false">
+      <Documentation>
+        <Summary>How many steps a Likert Scale question contains. (on a scale of 1- ???)</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Labels" Relationship="HOSTModel.LikertScaleQuestionLabel" FromRole="LikertScaleQuestion" ToRole="Label">
+      <Documentation>
+        <Summary>List of labels in a Likert Scale question.</Summary>
+      </Documentation>
+    </NavigationProperty>
   </EntityType>
-  <EntityType Name="TextQuestion" BaseType="HOSTModel.Question" />
+  <EntityType Name="TextQuestion" BaseType="HOSTModel.Question">
+    <Documentation>
+      <Summary>Extends Question base type.  Actually contains no other fields.</Summary>
+    </Documentation>
+  </EntityType>
   <EntityType Name="Option">
+    <Documentation>
+      <Summary>List of options in a Choice Question.</Summary>
+    </Documentation>
     <Key>
       <PropertyRef Name="OptionId" />
     </Key>
-    <Property Type="Int32" Name="OptionId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="String" Name="Text" Nullable="true" />
-    <Property Type="Int32" Name="SortOrder" Nullable="false" />
-    <NavigationProperty Name="ChoiceQuestion" Relationship="HOSTModel.ChoiceQuestionOption" FromRole="Option" ToRole="ChoiceQuestion" />
+    <Property Type="Int32" Name="OptionId" Nullable="false" annotation:StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>Unique ID of an option, used behind the scenes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Text" Nullable="true">
+      <Documentation>
+        <LongDescription>Text of an option within a choice.</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="Int32" Name="SortOrder" Nullable="false">
+      <Documentation>
+        <Summary>This correponds to a option's position within a Choice Question.</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="ChoiceQuestion" Relationship="HOSTModel.ChoiceQuestionOption" FromRole="Option" ToRole="ChoiceQuestion">
+      <Documentation>
+        <Summary>Choice Question an option belongs to.</Summary>
+      </Documentation>
+    </NavigationProperty>
   </EntityType>
   <EntityType Name="Label">
+    <Documentation>
+      <Summary>List of labels in a Likert Scale Question. There are only ever 2 per liker question.</Summary>
+    </Documentation>
     <Key>
       <PropertyRef Name="LabelId" />
     </Key>
-    <Property Type="Int32" Name="LabelId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="String" Name="Text" Nullable="true" />
-    <Property Type="String" Name="Range" Nullable="true" />
-    <NavigationProperty Name="LikertScaleQuestion" Relationship="HOSTModel.LikertScaleQuestionLabel" FromRole="Label" ToRole="LikertScaleQuestion" />
+    <Property Type="Int32" Name="LabelId" Nullable="false" annotation:StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>Unique ID of an label, used behind the scenes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Text" Nullable="true">
+      <Documentation>
+        <Summary>Label text on the low/high end of a Likert Scale question.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Range" Nullable="true">
+      <Documentation>
+        <Summary>Corresponds to where this label is applied. Either "low" or "high".</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="LikertScaleQuestion" Relationship="HOSTModel.LikertScaleQuestionLabel" FromRole="Label" ToRole="LikertScaleQuestion">
+      <Documentation>
+        <Summary>Likert Scale Question a label belongs to.</Summary>
+      </Documentation>
+    </NavigationProperty>
   </EntityType>
   <Association Name="FormQuestion">
     <End Type="HOSTModel.Form" Role="Form" Multiplicity="1" />
@@ -113,12 +306,27 @@
     <End Type="HOSTModel.Option" Role="Option" Multiplicity="*" />
   </Association>
   <EntityType Name="Role">
+    <Documentation>
+      <Summary>Represents a role within the admin tool. Contains a list of Users under each role.</Summary>
+    </Documentation>
     <Key>
       <PropertyRef Name="RoleId" />
     </Key>
-    <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Type="String" Name="Name" Nullable="false" />
-    <NavigationProperty Name="Users" Relationship="HOSTModel.RoleUser" FromRole="Role" ToRole="User" />
+    <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity">
+      <Documentation>
+        <Summary>Unique ID of a role, used behind the scenes.</Summary>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="Name" Nullable="false">
+      <Documentation>
+        <Summary>Name of a role within the system. Currently just "Administrator" and "User".</Summary>
+      </Documentation>
+    </Property>
+    <NavigationProperty Name="Users" Relationship="HOSTModel.RoleUser" FromRole="Role" ToRole="User">
+      <Documentation>
+        <Summary>List of Users under any given Role.</Summary>
+      </Documentation>
+    </NavigationProperty>
   </EntityType>
   <Association Name="RoleUser">
     <End Type="HOSTModel.Role" Multiplicity="1" Role="Role" />

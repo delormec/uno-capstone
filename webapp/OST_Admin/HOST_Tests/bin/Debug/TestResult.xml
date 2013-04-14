@@ -1,7 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Tests\bin\Debug\HOST_Tests.dll" total="0" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-13" time="00:18:17">
+<test-results name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Tests\bin\Debug\HOST_Tests.dll" total="32" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-13" time="21:17:47">
   <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5466" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Windows\system32" machine-name="WIN-3124RGJKI5J" user="unouser" user-domain="WIN-3124RGJKI5J" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Tests\bin\Debug\HOST_Tests.dll" executed="True" result="Inconclusive" success="False" time="0.091" asserts="0" />
+  <test-suite type="Assembly" name="C:\Users\unouser\Documents\GitHub\capstone\webapp\OST_Admin\HOST_Tests\bin\Debug\HOST_Tests.dll" executed="True" result="Success" success="True" time="33.236" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="HOST_Tests" executed="True" result="Success" success="True" time="33.203" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="33.203" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Controllers" executed="True" result="Success" success="True" time="9.701" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="AccountControllerTest" executed="True" result="Success" success="True" time="9.696" asserts="0">
+                    <results>
+                      <test-case name="HOST_Tests.Tests.Controllers.AccountControllerTest.Can_Create_LogIn_Page" executed="True" result="Success" success="True" time="9.659" asserts="0" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="Namespace" name="Repository" executed="True" result="Success" success="True" time="22.947" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="FormRepositoryTest" executed="True" result="Success" success="True" time="22.417" asserts="0">
+                    <results>
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Add_Form" executed="True" result="Success" success="True" time="15.271" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Add_Option" executed="True" result="Success" success="True" time="4.911" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Add_Question" executed="True" result="Success" success="True" time="0.347" asserts="6" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Copy_Form" executed="True" result="Success" success="True" time="0.520" asserts="5" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Create_Form_From_SharePoint" executed="True" result="Success" success="True" time="0.096" asserts="12" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Delete_Form" executed="True" result="Success" success="True" time="0.377" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Delete_Option" executed="True" result="Success" success="True" time="0.200" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Delete_Question" executed="True" result="Success" success="True" time="0.182" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Get_All_Forms" executed="True" result="Success" success="True" time="0.009" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Get_Form_By_Id" executed="True" result="Success" success="True" time="0.014" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Get_Question_By_Id" executed="True" result="Success" success="True" time="0.051" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Update_Form" executed="True" result="Success" success="True" time="0.102" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.FormRepositoryTest.Can_Update_Question_Position" executed="True" result="Success" success="True" time="0.267" asserts="1" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="TestFixture" name="UserRepositoryTest" executed="True" result="Success" success="True" time="0.510" asserts="0">
+                    <results>
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Add_User" executed="True" result="Success" success="True" time="0.110" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Authenticate_User" executed="True" result="Success" success="True" time="0.146" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Delete_User" executed="True" result="Success" success="True" time="0.024" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_All_Roles" executed="True" result="Success" success="True" time="0.026" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_All_Users" executed="True" result="Success" success="True" time="0.014" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_Logged_In_Role" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_Logged_In_User_Id" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_Role_By_Id" executed="True" result="Success" success="True" time="0.022" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_Role_By_User_Id" executed="True" result="Success" success="True" time="0.025" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Get_User_By_Id" executed="True" result="Success" success="True" time="0.013" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Set_Logged_In_Role" executed="True" result="Success" success="True" time="0.001" asserts="0" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Set_Logged_In_User_Id" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                      <test-case name="HOST_Tests.Tests.Repository.UserRepositoryTest.Can_Update_User" executed="True" result="Success" success="True" time="0.056" asserts="2" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+              <test-suite type="Namespace" name="Utility" executed="True" result="Success" success="True" time="0.529" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="UtilityTest" executed="True" result="Success" success="True" time="0.528" asserts="0">
+                    <results>
+                      <test-case name="HOST_Tests.Tests.Utility.UtilityTest.Can_Compute_SHA512_Hash" executed="True" result="Success" success="True" time="0.002" asserts="3" />
+                      <test-case name="HOST_Tests.Tests.Utility.UtilityTest.Can_Generate_Form_From_SharePoint_SOAP" executed="True" result="Success" success="True" time="0.022" asserts="1" />
+                      <test-case name="HOST_Tests.Tests.Utility.UtilityTest.Can_Generate_Random_Salt" executed="True" result="Success" success="True" time="0.024" asserts="2" />
+                      <test-case name="HOST_Tests.Tests.Utility.UtilityTest.Can_Serialize_Form_To_XML" executed="True" result="Success" success="True" time="0.452" asserts="10" />
+                      <test-case name="HOST_Tests.Tests.Utility.UtilityTest.Can_Verify_Hash" executed="True" result="Success" success="True" time="0.003" asserts="2" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
 </test-results>

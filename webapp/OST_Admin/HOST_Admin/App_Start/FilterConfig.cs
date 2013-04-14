@@ -3,6 +3,9 @@ using System.Web.Mvc;
 
 namespace HOST_Admin
 {
+    /// <summary>
+    /// MVC specific settings
+    /// </summary>
     public class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
