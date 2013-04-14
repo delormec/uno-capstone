@@ -60,7 +60,7 @@ public class ScreenOneRework extends Activity
 	private UploadAllForms uploadTask;			// For managing "UploadAllForms"
 	
 	
-	
+	private Bundle pauseState;
 	
 	
 	
@@ -142,16 +142,7 @@ public class ScreenOneRework extends Activity
 	{
 		super.onSaveInstanceState(savedInstanceState);
 		
-		if (currentView == HOME)
-		{
-			if (viewStack[HOME].findFocus() != null)
-			{
-				if (viewStack[HOME].findFocus() instanceof EditText)
-				{
-					userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
-				}
-			}
-		}
+		saveUserName();
 		
 		savedInstanceState.putString("userName", userName);
 		savedInstanceState.putStringArray("navTitles", navTitles);
@@ -271,39 +262,61 @@ public class ScreenOneRework extends Activity
 	
 	
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	protected void onPause()
 	{
-		super.onRestoreInstanceState(savedInstanceState);
+		super.onPause();
 		
-		userName = savedInstanceState.getString("userName");
+		pauseState = new Bundle();
 		
+		saveUserName();
+		pauseState.putString("userName", userName);
 		
-		// Retrieve information about the Views
-		status[HOME] = (LayoutInfo) savedInstanceState.getSerializable("statusHome");
-		status[GROUPS] = (LayoutInfo) savedInstanceState.getSerializable("statusGroups");
-		status[TEMPLATES] = (LayoutInfo) savedInstanceState.getSerializable("statusTemplates");
-		status[FORMS] = (LayoutInfo) savedInstanceState.getSerializable("statusForms");	
+		pauseState.putSerializable("statusHome", status[HOME]);
+		pauseState.putSerializable("statusGroups", status[GROUPS]);
+		pauseState.putSerializable("statusTemplates", status[TEMPLATES]);
+		pauseState.putSerializable("statusForms", status[FORMS]);
 		
+		pauseState.putStringArray("navTitles", navTitles);
+		pauseState.putInt("currentView", currentView);
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
 		
-		// Rebuild each of the Views
-		navTitles = savedInstanceState.getStringArray("navTitles");
-		
-		viewStack[HOME] = buildHomeView();
-		viewStack[GROUPS] = buildGroupsView();
-		
-		if (status[TEMPLATES] != null)
+		if (pauseState != null)
 		{
-			viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
+			userName = pauseState.getString("userName");
+			
+			
+			// Retrieve information about the Views
+			status[HOME] = (LayoutInfo) pauseState.getSerializable("statusHome");
+			status[GROUPS] = (LayoutInfo) pauseState.getSerializable("statusGroups");
+			status[TEMPLATES] = (LayoutInfo) pauseState.getSerializable("statusTemplates");
+			status[FORMS] = (LayoutInfo) pauseState.getSerializable("statusForms");	
+			
+			
+			// Rebuild each of the Views
+			navTitles = pauseState.getStringArray("navTitles");
+			
+			viewStack[HOME] = buildHomeView();
+			viewStack[GROUPS] = buildGroupsView();
+			
+			if (status[TEMPLATES] != null)
+			{
+				viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
+			}
+			if (status[FORMS] != null)
+			{
+				viewStack[FORMS] = buildFormsView(status[FORMS].templateID, status[FORMS].groupName);
+			}
+			
+			
+			// Set View to the saved currentView
+			currentView = pauseState.getInt("currentView");		
+			setContentView(viewStack[currentView]);
 		}
-		if (status[FORMS] != null)
-		{
-			viewStack[FORMS] = buildFormsView(status[FORMS].templateID, status[FORMS].groupName);
-		}
-		
-		
-		// Set View to the saved currentView
-		currentView = savedInstanceState.getInt("currentView");		
-		setContentView(viewStack[currentView]);
 	}
 	
 	/*---------- END OVERRIDE METHODS ----------*/
@@ -348,13 +361,7 @@ public class ScreenOneRework extends Activity
 		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
 		
 		// Store the userName from HOME
-		if (viewStack[HOME].findFocus() != null)
-		{
-			if (viewStack[HOME].findFocus() instanceof EditText)
-			{
-				userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
-			}
-		}
+		saveUserName();
 		
 		// Store the relevant information about the View for rebuilding
 		LayoutInfo groupsLayoutInfo = new LayoutInfo();
@@ -1279,6 +1286,18 @@ public class ScreenOneRework extends Activity
 		}
 	}
 	
+	
+	// TODO javadoc
+	private void saveUserName()
+	{
+		if (viewStack[HOME].findFocus() != null)
+		{
+			if (viewStack[HOME].findFocus() instanceof EditText)
+			{
+				userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+			}
+		}
+	}
 	/*---------- END UNCATEGORIZED METHODS ----------*/
 }
 
