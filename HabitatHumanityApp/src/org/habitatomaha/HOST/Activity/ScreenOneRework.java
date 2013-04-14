@@ -144,9 +144,12 @@ public class ScreenOneRework extends Activity
 		
 		if (currentView == HOME)
 		{
-			if ((EditText) viewStack[HOME].findFocus() != null)
+			if (viewStack[HOME].findFocus() != null)
 			{
-				userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+				if (viewStack[HOME].findFocus() instanceof EditText)
+				{
+					userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+				}
 			}
 		}
 		
@@ -265,6 +268,44 @@ public class ScreenOneRework extends Activity
 		}
 	}
 	
+	
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		userName = savedInstanceState.getString("userName");
+		
+		
+		// Retrieve information about the Views
+		status[HOME] = (LayoutInfo) savedInstanceState.getSerializable("statusHome");
+		status[GROUPS] = (LayoutInfo) savedInstanceState.getSerializable("statusGroups");
+		status[TEMPLATES] = (LayoutInfo) savedInstanceState.getSerializable("statusTemplates");
+		status[FORMS] = (LayoutInfo) savedInstanceState.getSerializable("statusForms");	
+		
+		
+		// Rebuild each of the Views
+		navTitles = savedInstanceState.getStringArray("navTitles");
+		
+		viewStack[HOME] = buildHomeView();
+		viewStack[GROUPS] = buildGroupsView();
+		
+		if (status[TEMPLATES] != null)
+		{
+			viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
+		}
+		if (status[FORMS] != null)
+		{
+			viewStack[FORMS] = buildFormsView(status[FORMS].templateID, status[FORMS].groupName);
+		}
+		
+		
+		// Set View to the saved currentView
+		currentView = savedInstanceState.getInt("currentView");		
+		setContentView(viewStack[currentView]);
+	}
+	
 	/*---------- END OVERRIDE METHODS ----------*/
 	
 	
@@ -307,9 +348,12 @@ public class ScreenOneRework extends Activity
 		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
 		
 		// Store the userName from HOME
-		if ((EditText) viewStack[HOME].findFocus() != null)
+		if (viewStack[HOME].findFocus() != null)
 		{
-			userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+			if (viewStack[HOME].findFocus() instanceof EditText)
+			{
+				userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
+			}
 		}
 		
 		// Store the relevant information about the View for rebuilding
