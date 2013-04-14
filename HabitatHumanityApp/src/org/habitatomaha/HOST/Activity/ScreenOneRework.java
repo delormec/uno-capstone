@@ -316,6 +316,8 @@ public class ScreenOneRework extends Activity
 			// Set View to the saved currentView
 			currentView = pauseState.getInt("currentView");		
 			setContentView(viewStack[currentView]);
+			
+			pauseState = null;
 		}
 	}
 	
