@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import android.view.View;
+
 public class ErrorLogActivityTest {
 
 	@Test
-	public void test() {
+	public void testRemoveEntry() {
 		fail("Not yet implemented");
 	}
 

@@ -7,7 +7,17 @@ import org.junit.Test;
 public class SubmitFormActivityTest {
 
 	@Test
-	public void test() {
+	public void testUpload() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testDiscardConfirm() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testDiscard() {
 		fail("Not yet implemented");
 	}
 
