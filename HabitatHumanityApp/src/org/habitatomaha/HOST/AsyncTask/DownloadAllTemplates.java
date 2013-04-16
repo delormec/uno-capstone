@@ -1,5 +1,6 @@
 package org.habitatomaha.HOST.AsyncTask;
 
+import org.habitatomaha.HOST.Activity.ScreenOneRework;
 import org.habitatomaha.HOST.Activity.SelectFormActivity;
 import org.habitatomaha.HOST.Helper.XMLParser;
 import org.habitatomaha.HOST.Model.ChoiceQuestion;
@@ -58,6 +59,11 @@ public class DownloadAllTemplates extends AsyncTask {
 			// If this was called from SelectFormActivity, then populate the spinners with the newly retrieved templates
 			SelectFormActivity getMethods = (SelectFormActivity) callingContext;
 			getMethods.startPopulateSpinners();
+		}
+		if (callingContext instanceof ScreenOneRework)
+		{
+			ScreenOneRework getMethods = (ScreenOneRework) callingContext;
+			getMethods.setView(ScreenOneRework.GROUPS, getMethods.buildGroupsView());
 		}
 	}
 	

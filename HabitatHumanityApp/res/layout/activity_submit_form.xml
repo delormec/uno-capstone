@@ -31,30 +31,19 @@
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        
-	        android:layout_weight=".33"
+	        android:layout_weight=".50"
 	  
 		    android:textSize="20sp"
 	        android:onClick="upload"
 	        android:text="Upload" />
-  
-	
-	    <Button
-	        android:id="@+id/submit_save"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
 
-			android:layout_weight=".33"
-
-		    android:textSize="20sp"
-	        android:onClick="save"
-	        android:text="Save" />
 	
 	    <Button
 	        android:id="@+id/submit_discard"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 
-			android:layout_weight=".33"
+			android:layout_weight=".50"
 
 		    android:textSize="20sp"
 	        android:onClick="discardConfirm"

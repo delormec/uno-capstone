@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -33,11 +34,17 @@ public class SubmitFormActivity extends Activity
 	private static SubmitFormActivity currentInstance;	// The current instance of the Activity
 	
 	private Form form;	// The form object being processed by the activity	
+	private long formID;
+	
+	private OSTDataSource database;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		database = new OSTDataSource(this);
 		
 		// Set this instance and attempt to end any instance of DisplayQuestionActivity
 		currentInstance = this;	
@@ -46,9 +53,14 @@ public class SubmitFormActivity extends Activity
 			EditFormActivity.getInstance().finish();
 		}
 
+		
 		// Receive the form object
-		form = (Form) getIntent().getExtras().get("formObject");
-	
+		formID = getIntent().getExtras().getLong("formID");
+		database.open();
+		form = database.getFormById(formID);
+		database.close();
+		
+		
 		setContentView(R.layout.activity_submit_form);
 		
 		
@@ -179,19 +191,6 @@ public class SubmitFormActivity extends Activity
 	
 	
 	/**
-	 * This is just a placebo for people who don't know that the form is already saved.
-	 * 
-	 * @param view	The View that called this method
-	 */
-	public void save(View view)
-	{		
-		Toast.makeText(this, "Form saved", Toast.LENGTH_SHORT).show();	
-		return;
-	}
-	
-	
-	
-	/**
 	 * Confirms the user's intent discard before discarding the Form
 	 * 
 	 * @param view	The View that called this method
@@ -202,25 +201,26 @@ public class SubmitFormActivity extends Activity
 		adb.setTitle("Confirm Discard");
 		adb.setMessage("Are you sure you want to discard this form?");
 		adb.setCancelable(false);
-		adb.setPositiveButton("Discard", 
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-									public void onClick(DialogInterface dialog, int id)
-									{
-										discard();
-										getInstance().finish();
-										return;
-									}
-								});
-		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
+		adb.setPositiveButton("Discard", 	new DialogInterface.OnClickListener()
+											{
+												@Override
+												public void onClick(DialogInterface dialog, int id)
+												{
+													discard();
+													getInstance().finish();
+													return;
+												}
+											}
+										);
+		adb.setNegativeButton("Keep", 	new DialogInterface.OnClickListener()
 										{
 											@Override
 											public void onClick(DialogInterface dialog, int id)
 											{
 												return;
 											}
-										});
+										}
+									);
 		
 		AlertDialog alertDialog = adb.create();
 		alertDialog.show();
@@ -237,6 +237,7 @@ public class SubmitFormActivity extends Activity
 	{
 		OSTDataSource database = new OSTDataSource(this);
 		database.open();
+		Log.v("ryan_debug", String.format("Removing form %d", form.meta.form_id));
 		database.removeFormById(form.meta.form_id);
 		database.close();
 		
@@ -244,7 +245,6 @@ public class SubmitFormActivity extends Activity
 		form = null;
 		
 		findViewById(R.id.submit_upload).setVisibility(View.GONE);
-		findViewById(R.id.submit_save).setVisibility(View.GONE);
 		findViewById(R.id.submit_discard).setVisibility(View.GONE);
 		findViewById(R.id.navbar_edit_button).setVisibility(View.GONE);
 		

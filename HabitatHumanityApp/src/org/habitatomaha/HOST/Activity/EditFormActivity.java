@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -52,6 +53,9 @@ public class EditFormActivity extends Activity
 	private Toast toast; 				// The Toast object used for any Toasts
 	private OSTDataSource database; 	// The interface for interacting with the SQLite Database
 	
+	private String storedAnswer;
+	
+	private long formID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -69,23 +73,31 @@ public class EditFormActivity extends Activity
 		// Set up database object for future use
 		database = new OSTDataSource(this);
 			
-		
+		database.open();
 		// This is the initial call to the Activity
 		if (savedInstanceState == null)
 		{
+			
 			// Receive the form object and question number
-			form = (Form) getIntent().getExtras().get("formObject");
+			formID =  getIntent().getExtras().getLong("formID");
 			questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
 			
+			Log.v("ryan_debug", String.format("Received formID %d in Screen 2", formID));
+			
+			form = database.getFormById(formID);			
 		}	
 		// This is the activity restoring itself (from something like a screen rotation)
 		else
 		{
-			form = (Form) savedInstanceState.getSerializable("formObject");
+			formID = savedInstanceState.getLong("formID");
 			questionNumber = savedInstanceState.getInt("questionNumber");
+			
+			form = database.getFormById(formID);
 		}
+		database.close();
 		
 		
+		Log.v("ryan_debug", String.format("Received form %d in Screen 2", form.meta.form_id));
 		
 		
 		if (questionNumber == null)
@@ -142,7 +154,7 @@ public class EditFormActivity extends Activity
 			else
 			{
 				// This block should ideally never be entered
-				// Getting here ,means that one of the Questions in the Form was null.
+				// Getting here means that one of the Questions in the Form was null.
 				// This is probably not a user-caused error. It indicates a problem in the code.
 				ErrorLog.log(getInstance(), new Error("Model Error", "Received a null question in EditFormActivity", Severity.Normal));
 				this.finish();
@@ -160,12 +172,12 @@ public class EditFormActivity extends Activity
 	
 	
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState)
+	protected void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		super.onSaveInstanceState(savedInstanceState);
 		
 		saveAnswerToForm();
-		savedInstanceState.putSerializable("formObject", form);
+		savedInstanceState.putLong("formID", formID);
 		savedInstanceState.putInt("questionNumber", questionNumber);
 	}
 	
@@ -252,6 +264,18 @@ public class EditFormActivity extends Activity
 				toast = Toast.makeText(this, "Unknown question type", Toast.LENGTH_SHORT);
 				toast.show();
 				this.prevQuestion(null);
+			}
+			
+			
+			
+			// Store the answer in memory
+			if (question.Answer != null && question.Answer.compareTo("") != 0)
+			{
+				storedAnswer = question.Answer;
+			}
+			else
+			{
+				storedAnswer = null;
 			}
 		}
 	}
@@ -863,7 +887,16 @@ public class EditFormActivity extends Activity
 	public void saveFormToDatabase()
 	{
 		database.open();
-		database.updateForm(form);
+		
+		// Avoid the database write if nothing changed
+		if (storedAnswer != null && form.questions.get(questionNumber).Answer != null)
+		{
+			if (storedAnswer.compareToIgnoreCase(form.questions.get(questionNumber).Answer) != 0)
+			{
+				database.updateForm(form);
+			}
+		}
+		
 		database.close();
 	}
 	
@@ -931,7 +964,7 @@ public class EditFormActivity extends Activity
 		
 		Intent intent = new Intent(this, SubmitFormActivity.class);
 		
-		intent.putExtra("formObject", form);
+		intent.putExtra("formID", formID);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		
 		startActivity(intent);
