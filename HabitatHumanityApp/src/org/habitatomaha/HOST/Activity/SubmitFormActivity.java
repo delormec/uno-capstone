@@ -274,7 +274,7 @@ public class SubmitFormActivity extends Activity
 	{
 		Intent intent = new Intent(this, EditFormActivity.class);
 		
-		intent.putExtra("formObject", form);
+		intent.putExtra("formID", formID);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		
 		startActivity(intent);
