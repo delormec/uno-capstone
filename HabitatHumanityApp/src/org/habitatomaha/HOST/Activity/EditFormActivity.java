@@ -889,7 +889,11 @@ public class EditFormActivity extends Activity
 		database.open();
 		
 		// Avoid the database write if nothing changed
-		if (storedAnswer != null && form.questions.get(questionNumber).Answer != null)
+		if (storedAnswer == null && form.questions.get(questionNumber).Answer != null)
+		{
+				database.updateForm(form);
+		}
+		else if (storedAnswer != null && form.questions.get(questionNumber).Answer != null)
 		{
 			if (storedAnswer.compareToIgnoreCase(form.questions.get(questionNumber).Answer) != 0)
 			{
