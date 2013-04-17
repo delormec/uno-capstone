@@ -120,6 +120,35 @@ public class SharePointDataSource {
     	}
     
     
+    	
+    	// If filledBy has a field name
+    	if (form.meta.filledByFieldName == null || form.meta.filledByFieldName.compareTo("") == 0)
+    	{}
+    	else
+    	{
+    		// If filledBy is not null/empty
+    		if (form.meta.filledBy != null && form.meta.filledBy.compareTo("") != 0)
+    		{
+    			fields.add(JSONObject.quote(form.meta.filledByFieldName) + ":" + JSONObject.quote(form.meta.filledBy));
+    		}
+    	}
+    	
+    	
+    	// If filledDate has a field name
+    	if (form.meta.filledDateFieldName == null || form.meta.filledDateFieldName.compareTo("") == 0)
+    	{}
+    	else
+    	{
+    		// If filledDate is not null/empty
+    		if (form.meta.filledDate != null && form.meta.filledDate.compareTo("") != 0)
+    		{
+    			fields.add(JSONObject.quote(form.meta.filledDateFieldName) + ":" + JSONObject.quote(form.meta.filledDate));
+    		}
+    	}
+    	
+    	
+    	
+    	
     
     	StringEntity myEntity = null;
     	

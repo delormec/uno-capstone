@@ -76,13 +76,10 @@ public class EditFormActivity extends Activity
 		database.open();
 		// This is the initial call to the Activity
 		if (savedInstanceState == null)
-		{
-			
+		{		
 			// Receive the form object and question number
 			formID =  getIntent().getExtras().getLong("formID");
 			questionNumber = (Integer) getIntent().getExtras().get("questionNumber");
-			
-			Log.v("ryan_debug", String.format("Received formID %d in Screen 2", formID));
 			
 			form = database.getFormById(formID);			
 		}	
@@ -95,9 +92,7 @@ public class EditFormActivity extends Activity
 			form = database.getFormById(formID);
 		}
 		database.close();
-		
-		
-		Log.v("ryan_debug", String.format("Received form %d in Screen 2", form.meta.form_id));
+
 		
 		
 		if (questionNumber == null)

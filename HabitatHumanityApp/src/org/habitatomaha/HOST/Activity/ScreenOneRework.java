@@ -1,6 +1,7 @@
 package org.habitatomaha.HOST.Activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -785,11 +786,15 @@ public class ScreenOneRework extends Activity
 														long formID = database.addForm(template);						
 														Form form = database.getFormById(formID);
 														form.meta.form_id = formID;
-					
+														
+														
+														// Store filledDate and filledBy
+														Calendar cal = Calendar.getInstance();
+														form.meta.filledDate = String.format("%d/%d/%d", cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR));
+														form.meta.filledBy = userName;
+														
+														
 														database.updateForm(form);
-														
-														
-														Log.v("ryan_debug", String.format("Created form %d in Screen 1", formID));
 														
 														// Pass the new Form to the EditFormActivity
 														Intent intent = new Intent(getInstance(), EditFormActivity.class);
@@ -963,7 +968,6 @@ public class ScreenOneRework extends Activity
 												public void onClick(View view)
 												{
 													database.open();
-													Log.v("ryan_debug", String.format("Passing form %d to Screen 2", formData.getValue()));
 													
 													// Pass the form to the EditFormActivity
 													Intent intent = new Intent(getInstance(), EditFormActivity.class);
@@ -972,6 +976,7 @@ public class ScreenOneRework extends Activity
 													intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 																
 													startActivity(intent);
+													
 													database.close();
 												}
 											}					

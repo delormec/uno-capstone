@@ -237,7 +237,6 @@ public class SubmitFormActivity extends Activity
 	{
 		OSTDataSource database = new OSTDataSource(this);
 		database.open();
-		Log.v("ryan_debug", String.format("Removing form %d", form.meta.form_id));
 		database.removeFormById(form.meta.form_id);
 		database.close();
 		
