@@ -29,6 +29,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ import android.widget.ScrollView;
 
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 @SuppressLint("NewApi")
 public class ScreenOneRework extends Activity
@@ -63,7 +65,7 @@ public class ScreenOneRework extends Activity
 	private UploadAllForms uploadTask;			// For managing "UploadAllForms"
 	
 	
-	private Bundle pauseState;
+	private Bundle pauseState;					// For recovering in onResume()
 	
 
 	/*---------- BEGIN OVERRIDE METHODS ----------*/
@@ -406,90 +408,6 @@ public class ScreenOneRework extends Activity
 	
 	/*---------- BEGIN VIEW BUILDER METHODS ----------*/
 	
-	
-	/**
-	 * Builds the home View of this Activity
-	 * 
-	 * @return	The View of the home layout of this Activity
-	 */
-	private View buildHomeView()
-	{
-		RelativeLayout.LayoutParams params;
-		
-		//Pre-declare layout Views/IDs for RelativeLayout
-		TextView nameViewTitle = new TextView(this);
-		nameViewTitle.setId(1);
-		
-		EditText nameView = new EditText(this);
-		nameView.setId(2);
-		
-		Button beginButton = new Button(this);
-		beginButton.setId(3);
-		
-		
-		
-		
-		// Begin layout
-		RelativeLayout layout = new RelativeLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-		
-		
-		// Text above EditText for entering user name			
-		nameViewTitle.setText("Current User:");
-		nameViewTitle.setTextSize(30);			
-		
-		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		nameViewTitle.setLayoutParams(params);
-			
-		
-		
-		// EditText for entering user name
-		if (userName != null)
-		{
-			nameView.setText(userName);
-		}
-		else
-		{
-			nameView.setText("");
-		}
-				
-		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.BELOW, nameViewTitle.getId());
-		nameView.setLayoutParams(params);
-				
-		
-		
-		// Begin Button
-		beginButton.setText("Begin");
-		beginButton.setTextSize(30);
-		beginButton.setOnClickListener(	new View.OnClickListener()
-										{
-											public void onClick(View view)
-											{
-												Utility.hideSoftKeyboard(getInstance());
-												displayTemplateGroups();											
-											}
-										}					
-									);
-		
-		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.BELOW, nameView.getId());
-		beginButton.setLayoutParams(params);
-	
-		
-		
-		
-		// Add the Views to the Layout in vertical order
-		layout.addView(nameViewTitle);
-		layout.addView(nameView);
-		layout.addView(beginButton);
-		
-		return layout;
-	}
-	
-	
-	
 	/**
 	 * Builds a View of all the template groups
 	 * 
@@ -525,7 +443,7 @@ public class ScreenOneRework extends Activity
 		
 			
 		
-		signInView.setOrientation(LinearLayout.HORIZONTAL);
+		signInView.setOrientation(LinearLayout.VERTICAL);
 		
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -574,9 +492,9 @@ public class ScreenOneRework extends Activity
 		// Display the "sign in" View
 		else
 		{
-			TextView nameText = new TextView(this);
-			nameText.setText("Not signed in   ");
-			nameText.setTextSize(20);
+			//TextView nameText = new TextView(this);
+			//nameText.setText("Not signed in   ");
+			//nameText.setTextSize(20);
 			
 			Button signInButton = new Button(this);
 			signInButton.setText("Sign in");
@@ -590,7 +508,7 @@ public class ScreenOneRework extends Activity
 												}
 											);
 			
-			signInView.addView(nameText);
+			//signInView.addView(nameText);
 			signInView.addView(signInButton);
 		}
 		
@@ -611,7 +529,7 @@ public class ScreenOneRework extends Activity
 			LinearLayout groupView = new LinearLayout(this);
 			
 			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-			linParams.setMargins(25, 25, 25, 25);
+			linParams.setMargins(25, 20, 25, 0);
 			groupView.setLayoutParams(linParams);
 			
 			groupView.setBackgroundColor(Color.parseColor("#CCCCCC"));
@@ -634,7 +552,8 @@ public class ScreenOneRework extends Activity
 			// "All Templates" Group
 			if (entry.compareToIgnoreCase("all templates") == 0)
 			{
-				groupName.setText("<All Templates>");
+				groupName.setText("View All Templates");
+				groupName.setGravity(Gravity.CENTER_HORIZONTAL);
 				
 				groupView.setOnClickListener(	new View.OnClickListener()
 													{
@@ -645,6 +564,31 @@ public class ScreenOneRework extends Activity
 														}
 													}
 												);
+				
+				
+				// "-OR-"
+				TextView orView = new TextView(this);
+				orView.setText("-OR-");
+				orView.setTextSize(20);
+				orView.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				// "Choose a Template Group"
+				TextView chooseView = new TextView(this);
+				chooseView.setText("Choose a Template Group");
+				chooseView.setTextSize(20);
+				chooseView.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				
+				// Add the views and continue to next iteration
+				groupView.addView(Utility.lineBreakView(this));
+				groupView.addView(groupName);
+				groupView.addView(Utility.lineBreakView(this));
+				
+				layoutOfGroups.addView(groupView);
+				layoutOfGroups.addView(orView);
+				layoutOfGroups.addView(chooseView);
+				
+				continue;
 			}
 			// Normal Template Group
 			else
@@ -675,9 +619,9 @@ public class ScreenOneRework extends Activity
 		
 				
 		// Navigation text
-		navText.setText(titles[0]);
-		navText.setTextSize(30);
-		navText.setPadding(0, 35, 0, 0);
+		//navText.setText(titles[0]);
+		//navText.setTextSize(30);
+		//navText.setPadding(0, 35, 0, 0);
 		
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		relParams.addRule(RelativeLayout.BELOW, signInView.getId());
@@ -686,7 +630,7 @@ public class ScreenOneRework extends Activity
 		
 		// Put the layout of groupViews into a scrollView
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		relParams.addRule(RelativeLayout.BELOW, signInView.getId());
 		scrollView.setLayoutParams(relParams);
 	
 		scrollView.addView(layoutOfGroups);
@@ -695,10 +639,11 @@ public class ScreenOneRework extends Activity
 		// Put it all in one wrapping layout
 		RelativeLayout wholeLayout = new RelativeLayout(this);		
 		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
 		wholeLayout.setPadding(25, 25, 25, 0);
 		
 		wholeLayout.addView(signInView);
-		wholeLayout.addView(navText);
+		//wholeLayout.addView(navText);
 		wholeLayout.addView(scrollView);		
 		
 		return wholeLayout;
@@ -724,7 +669,7 @@ public class ScreenOneRework extends Activity
 			
 			// Add "All Forms" to the beginning of list
 			List<SpinnerData> allFormInfo = database.getAllFormInfo();
-			SpinnerData allForms = new SpinnerData(String.format("All Existing Forms (%d)", allFormInfo.size()), ALL_GROUPS_ALL_FORMS);
+			SpinnerData allForms = new SpinnerData(String.format("All Created Forms (%d)", allFormInfo.size()), ALL_GROUPS_ALL_FORMS);
 			templateList.add(0, allForms);
 		}
 		else
@@ -759,18 +704,13 @@ public class ScreenOneRework extends Activity
 		
 		
 		
-		// TODO Separate "all forms" from other forms
-		// TODO Button margins
-		
-		
-		
 		// Create a View for each template
 		for (final SpinnerData templateData : templateList)
 		{			
 			LinearLayout templateView = new LinearLayout(this);
 			
 			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-			linParams.setMargins(25, 25, 25, 25);
+			linParams.setMargins(25, 10, 25, 10);
 			templateView.setLayoutParams(linParams);
 			
 			templateView.setBackgroundColor(Color.parseColor("#CCCCCC"));
@@ -924,6 +864,7 @@ public class ScreenOneRework extends Activity
 		// Put it all in one wrapping layout
 		RelativeLayout wholeLayout = new RelativeLayout(this);		
 		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
 
 		wholeLayout.addView(navText);
 		wholeLayout.addView(scrollView);	
@@ -992,7 +933,7 @@ public class ScreenOneRework extends Activity
 			LinearLayout formView = new LinearLayout(this);
 			
 			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-			linParams.setMargins(25, 25, 25, 25);
+			linParams.setMargins(25, 20, 25, 0);
 			formView.setLayoutParams(linParams);
 			
 			formView.setBackgroundColor(Color.parseColor("#CCCCCC"));
@@ -1064,18 +1005,18 @@ public class ScreenOneRework extends Activity
 											}					
 										);
 
-			
-			// Horizontal Rule
-			View lineBreak = Utility.lineBreakView(this);
-			
+
 			
 			// Add the Views in vertical order
+			formView.addView(Utility.lineBreakView(this));
 			formView.addView(formName);
+			
 			buttons.addView(editButton);
 			buttons.addView(discardButton);
 			buttons.addView(uploadButton);
+			
 			formView.addView(buttons);
-			formView.addView(lineBreak);
+			formView.addView(Utility.lineBreakView(this));
 			
 			layoutOfForms.addView(formView);
 		}
@@ -1101,6 +1042,7 @@ public class ScreenOneRework extends Activity
 		// Put it all in one wrapping layout
 		RelativeLayout wholeLayout = new RelativeLayout(this);		
 		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
 
 		wholeLayout.addView(navText);
 		wholeLayout.addView(scrollView);	
@@ -1395,31 +1337,6 @@ public class ScreenOneRework extends Activity
 		return this;
 	}
 	
-	
-	
-	/**
-	 * Builds the navString for the top of the View
-	 * 
-	 * @param pieces	The number of pieces (1 - 3)
-	 * @return			The navString made from navTitles[]
-	 */
-	
-/* TODO Probably useless method
-	private String navString(int pieces)
-	{
-		switch (pieces)
-		{
-			case 1:
-				return String.format("%s", title[0]);
-			case 2:
-				return String.format("%s >\n\t%s", title[0], title[1]);
-			case 3:
-				return String.format("%s >\n\t%s >\n\t\t%s", title[0], title[1], title[2]);
-			default:
-				return "";
-		}
-	}
-*/
 	/*---------- END UNCATEGORIZED METHODS ----------*/
 }
 
