@@ -19,31 +19,32 @@ import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
 import android.annotation.SuppressLint;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
+
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+
 import android.graphics.Color;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
+
+
 
 @SuppressLint("NewApi")
 public class ScreenOneRework extends Activity
@@ -179,8 +180,6 @@ public class ScreenOneRework extends Activity
 				currentView = TEMPLATES;
 				break;
 		}
-		
-		invalidateOptionsMenu();
 	}
 	
 	
@@ -189,29 +188,6 @@ public class ScreenOneRework extends Activity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-		return true;
-	}
-	
-	
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		if (currentView == GROUPS)
-		{
-			menu.getItem(0).setEnabled(true);
-			menu.getItem(1).setEnabled(true);
-			menu.getItem(2).setEnabled(true);
-			menu.getItem(3).setEnabled(true);
-		}
-		else
-		{
-			menu.getItem(0).setEnabled(false);
-			menu.getItem(1).setEnabled(false);
-			menu.getItem(2).setEnabled(false);
-			menu.getItem(3).setEnabled(false);
-		}
-		
 		return true;
 	}
 	
@@ -338,8 +314,6 @@ public class ScreenOneRework extends Activity
 		viewStack[GROUPS] = groupsView;
 		setContentView(viewStack[GROUPS]);
 		currentView = GROUPS;
-		
-		invalidateOptionsMenu();
 	}
 	
 		
@@ -363,9 +337,7 @@ public class ScreenOneRework extends Activity
 		// Set View
 		viewStack[TEMPLATES] = templatesView;
 		setContentView(viewStack[TEMPLATES]);
-		currentView = TEMPLATES;
-		
-		invalidateOptionsMenu();
+		currentView = TEMPLATES;	
 	}
 
 	
@@ -392,8 +364,6 @@ public class ScreenOneRework extends Activity
 		viewStack[FORMS] = formsView;
 		setContentView(viewStack[FORMS]);
 		currentView = FORMS;
-		
-		invalidateOptionsMenu();
 	}
 	
 	/*---------- END DISPLAY METHODS ----------*/
@@ -438,12 +408,9 @@ public class ScreenOneRework extends Activity
 		RelativeLayout.LayoutParams relParams;
 		LinearLayout.LayoutParams linParams;
 
-		
-		// TODO All groups View separate from other groups
-		// TODO Button margins
-		
 			
 		
+		// Sign-in View
 		signInView.setOrientation(LinearLayout.VERTICAL);
 		
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -453,7 +420,7 @@ public class ScreenOneRework extends Activity
 
 		
 		
-		// Display the userName/Login View
+		// Display the userName/sign-in View
 		if (userName != null && userName.compareTo("") != 0)
 		{				
 			TextView nameText = new TextView(this);
@@ -490,7 +457,7 @@ public class ScreenOneRework extends Activity
 			signInView.addView(changeButton);
 			signInView.addView(logoutButton);
 		}
-		// Display the "sign in" View
+		// Display the sign-in View
 		else
 		{
 			//TextView nameText = new TextView(this);
@@ -659,7 +626,7 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @return	The View of the templates with group groupName
 	 */
-	private View buildTemplatesView(final String groupName)
+	public View buildTemplatesView(final String groupName)
 	{
 		List<SpinnerData> templateList;
 		
@@ -887,7 +854,7 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @return	A View of the Forms for templateID/templateGroup
 	 */
-	private View buildFormsView(int templateID, String templateGroup)	 
+	public View buildFormsView(int templateID, String templateGroup)	 
 	{
 		List<SpinnerData> formList = new ArrayList<SpinnerData>();
 		
@@ -925,10 +892,6 @@ public class ScreenOneRework extends Activity
 		LinearLayout layoutOfForms = new LinearLayout(this);
 		layoutOfForms.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 		layoutOfForms.setOrientation(LinearLayout.VERTICAL);
-		
-		
-		
-		// TODO Button margins
 		
 		
 		
@@ -1005,7 +968,7 @@ public class ScreenOneRework extends Activity
 											{
 												public void onClick(View view)
 												{
-													upload(formData.getValue());
+													upload(view, formData.getValue());
 												}
 											}					
 										);
@@ -1085,13 +1048,7 @@ public class ScreenOneRework extends Activity
 									@Override
 									public void onClick(DialogInterface dialog, int id)
 									{
-										discard(formID);
-										
-										// Remove the view of the form
-										View buttons = (LinearLayout) view.getParent();
-										View formView = (LinearLayout) buttons.getParent();										
-										((LinearLayout) formView.getParent()).removeView(formView);
-										
+										discard(view, formID);								
 										return;
 									}
 								});
@@ -1117,11 +1074,21 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @param formID	The ID of the form to remove
 	 */
-	private void discard(long formID)
+	private void discard(View view, long formID)
 	{
 		database.open();
 		database.removeFormById(formID);
 		database.close();
+		
+		
+		// Remove the view of the form
+		if (view != null)
+		{
+			View buttons = (LinearLayout) view.getParent();
+			View formView = (LinearLayout) buttons.getParent();										
+			((LinearLayout) formView.getParent()).removeView(formView);
+		}
+		
 		
 		Toast.makeText(this, "Form removed from device", Toast.LENGTH_SHORT).show();	
 		return;
@@ -1134,7 +1101,7 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @param view The View that called this method
 	 */
-	public void upload(final long formID)
+	public void upload(final View view, final long formID)
 	{
 		//If there is no connectivity, display a popup and return
 		if (!Utility.isNetworkAvailable(this))
@@ -1172,7 +1139,7 @@ public class ScreenOneRework extends Activity
 											//response of 0 == success
 											if (response[0].compareTo("0") == 0)
 											{
-												discard(formID);
+												discard(view, formID);
 											}
 											else
 											{
@@ -1295,7 +1262,11 @@ public class ScreenOneRework extends Activity
 	
 	/*---------- BEGIN UNCATEGORIZED METHODS ----------*/
 	
-	// TODO javadoc
+	/**
+	 * Sets up the Builder for an editText Alert (used to sign in to app)
+	 * 
+	 * @return	The Builder for a sign-in editText Alert
+	 */
 	private AlertDialog.Builder createSignInAlert()
 	{
 		// Set up the sign-in EditText Alert
@@ -1322,7 +1293,12 @@ public class ScreenOneRework extends Activity
 	
 	
 	
-	// TODO javadoc
+	/**
+	 * Sets the content view of the Activity to the provided View
+	 * 
+	 * @param viewSlot	Which View in the Activity to set (0-2)
+	 * @param view	The View to set
+	 */
 	public void setView(int viewSlot, View view)
 	{
 		viewStack[viewSlot] = view;

@@ -60,6 +60,7 @@ public class DownloadAllTemplates extends AsyncTask {
 			SelectFormActivity getMethods = (SelectFormActivity) callingContext;
 			getMethods.startPopulateSpinners();
 		}
+		
 		if (callingContext instanceof ScreenOneRework)
 		{
 			ScreenOneRework getMethods = (ScreenOneRework) callingContext;

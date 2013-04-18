@@ -449,7 +449,7 @@ public class EditFormActivity extends Activity
 			{
 				ErrorLog.log(this, new Error("Question Error", String.format("Location:\nQuestion %d in template: %s\n\nChoiceQuestions should not have both 'multiple select' and 'other' enabled in the admin tool", questionNumber + 1, form.meta.name), Severity.Normal));
 				
-				// TODO Possibly old code. Keep for now
+				// TODO Possibly old code ("other" on multiple select). Keep for now.
 				/*
 				checkBox = new CheckBox(this);
 				checkBox.setText("Other");
