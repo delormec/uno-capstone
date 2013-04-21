@@ -1,5 +1,6 @@
 package org.habitatomaha.HOST.Activity;
 
+import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 
@@ -127,12 +128,13 @@ public class EditFormActivityTest extends ActivityInstrumentationTestCase2 {
 	
 	
 		// State management for Pause and Idle
-	 @UiThreadTest									// needed for running on a UI Thread
-	 public void testStatePause() {  
+	// @UiThreadTest									// needed for running on a UI Thread
+	@Test 
+	public void testStatePause() {  
 	 
 		 // get the current instrumentation. needed to call onPause and onResume
 		 //
-		 /*Instrumentation mInstr = this.getInstrumentation();*/
+		// Instrumentation mInstr = this.getInstrumentation();
 		 
 		 //Set the spinner selection to a test value:
 		 //
