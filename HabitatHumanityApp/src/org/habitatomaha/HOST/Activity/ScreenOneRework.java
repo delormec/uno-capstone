@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
+
 public class ScreenOneRework extends Activity
 {
 	private static final int ALL_GROUPS_ALL_FORMS = -1111;

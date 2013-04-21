@@ -2,13 +2,17 @@ package org.habitatomaha.HOST.Model;
 
 import java.io.Serializable;
 
-// A class for logging errors that occur during the running of the app
+/**
+ * A class for logging errors that occur during application runtime.
+ */
 public class Error implements Serializable
 {
 	private static final long serialVersionUID = 6996105422714197425L;
 
 
-	// Indicates level of severity of an error
+	/**
+	 * An enumeration that documents the severity of an error.
+	 */
 	public enum Severity 
 	{
 		Critical, 
@@ -17,14 +21,17 @@ public class Error implements Serializable
 	};
 	
 	
-	public String errorText;	// What the error is
-	public Severity severity;	// How big of a deal this error is
-	public String moreInfo;		// Extra info about the error(How to avoid this error in the future, etc.)
-	
-	public String timeStamp;	// timeStamp is set by ErrorLog when the Error is logged.
+	public String errorText;	/**< The actual error message */ 
+	public Severity severity;	/**< The severity of the error message, how big a deal it is. */
+	public String moreInfo;		/**< Any additional information about the error, (How to avoid, etc.) */	
+	public String timeStamp;	/**< The time when the Error is logged. */
 
 	
-	// Constructor
+	/**
+	 * A constructor.
+	 * Instantiates an Error object given an ErrorText string. 
+	 * @param errorText - Error Message displayed in the Error.
+	 */
 	public Error(String errorText)
 	{
 		this.errorText = errorText;
@@ -33,7 +40,12 @@ public class Error implements Serializable
 		this.timeStamp = "";
 	}
 	
-	// Constructor
+	/**
+	 * A constructor.
+	 * Instantiates an Error object given an ErrorText string and additional information string.
+	 * @param errorText - Error Message displayed in the Error.
+	 * @param moreInfo - Any additional information about the error, (How to avoid, etc.) 
+	 */
 	public Error(String errorText, String moreInfo)
 	{
 		this.errorText = errorText;
@@ -42,7 +54,12 @@ public class Error implements Serializable
 		this.timeStamp = "";
 	}
 	
-	// Constructor
+	/** 
+	 * A constructor.
+	 * Instantiates an Error object given an ErrorText string and Severity designation.
+	 * @param errorText - Error Message displayed in the Error.
+	 * @param severity - Designated severity of the Error.
+	 */
 	public Error(String errorText, Severity severity)
 	{
 		this.errorText = errorText;
@@ -51,7 +68,13 @@ public class Error implements Serializable
 		this.timeStamp = "";
 	}
 	
-	// Constructor
+	/**
+	 * A constructor.
+	 * Instantiates an Error object given an ErrorText String, additional information string, and Severity designation.
+	 * @param errorText - Error Message displayed in the Error.
+	 * @param moreInfo - Any additional information about the error, (How to avoid, etc.)
+	 * @param severity - Designated severity of the Error.
+	 */
 	public Error(String errorText, String moreInfo, Severity severity)
 	{
 		this.errorText = errorText;
@@ -62,6 +85,10 @@ public class Error implements Serializable
 	
 	
 	@Override
+	/**
+	 * This method determines whether an object (typically an Error) is equal to the current Error.
+	 * @param other - Object being compared to current Error
+	 */
 	public boolean equals(Object other)
 	{
 		if (other == null)	return false;
