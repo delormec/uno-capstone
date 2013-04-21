@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 //<<<<<<< HEAD
@@ -60,8 +61,12 @@ public class AdminDataSource {
         
         localContext = new BasicHttpContext();
         
+        httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000);
+        //httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 15000);
+        
         HttpGet httpget = new HttpGet(list_name);
         httpget.setHeader("Accept", "application/xml");
+
         //ok here we're trying to get something
         HttpResponse response1 = null;
 		try {
@@ -94,7 +99,7 @@ public class AdminDataSource {
 		}
 	
         //error if we got here
-		ErrorLog.log(callingContext, new Error("Template Download Error", "Potential bad port number.", Severity.Critical));
+		ErrorLog.log(callingContext, new Error("Template Download Error", "Potential bad port number or domain.", Severity.Critical));
 		return null;
 	}
 
