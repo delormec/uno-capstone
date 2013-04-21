@@ -22,10 +22,11 @@ public class SharePointDataSourceTest {
 		String user_name = " ";
 		String domain = " ";
 		String list_name = " ";
+		String port = " ";
 		Form form = new Form();
 		//Given
 		//When
-		SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
+		SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain, port);
 		//Then
 		assert(true);
 	}

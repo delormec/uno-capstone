@@ -34,17 +34,6 @@ import org.json.JSONObject;
  * @author Cody
  */
 public class SharePointDataSource {
-	
-	/*
-	public SharePointDataSource()
-	{
-		URL = "habitat.taic.net";
-		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
-		user_name = "CDelorme";
-		password = "CDelorme463";
-		domain = "xtranet";
-	}*/
-	
 	/**
 	 * Uploads a given form to an OData endpoint using windows Authentication. <br/>
 	 * Will likely not work if Windows authentication is not enabled on the server.
@@ -56,7 +45,7 @@ public class SharePointDataSource {
 	 * @param domain Windows domain.
 	 * @return
 	 */
-	public static String[] uploadFormToSharePoint(Form form, String URL, String list_name, String user_name, String password, String domain)
+	public static String[] uploadFormToSharePoint(Form form, String URL, String list_name, String user_name, String password, String domain, String port)
 	{
 		HttpContext localContext;
 		
@@ -65,7 +54,7 @@ public class SharePointDataSource {
         NTCredentials creds = new NTCredentials(user_name, password, domain, domain);
         httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
 
-        HttpHost target = new HttpHost(URL, 80, "http");
+        HttpHost target = new HttpHost(URL, Integer.parseInt(port), "http");
         localContext = new BasicHttpContext();
         
     	HttpPost httppost = new HttpPost(list_name);

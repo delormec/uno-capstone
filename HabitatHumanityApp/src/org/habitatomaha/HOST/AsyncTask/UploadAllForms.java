@@ -102,6 +102,7 @@ public class UploadAllForms extends AsyncTask
 		String user_name;
 		String password;
 		String domain;
+		String port;
 		
 		//Get SharedPreferences manager.
 		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
@@ -131,9 +132,10 @@ public class UploadAllForms extends AsyncTask
 			
 			URL = form.meta.url;
 			list_name = form.meta.listname;
+			port = form.meta.port;
 			
 			// Attempt the upload
-			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
+			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain, port);
 			
 			if (response[0].compareTo("0") == 0)
 			{
