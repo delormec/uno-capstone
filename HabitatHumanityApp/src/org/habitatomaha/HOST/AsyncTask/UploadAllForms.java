@@ -3,6 +3,7 @@ package org.habitatomaha.HOST.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.habitatomaha.HOST.Activity.ScreenOneRework;
 import org.habitatomaha.HOST.Model.Error;
 import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
@@ -52,6 +53,13 @@ public class UploadAllForms extends AsyncTask
 		progressDialog.dismiss();
 		
 		Toast.makeText(callingContext, toastString, Toast.LENGTH_LONG).show();
+		
+		
+		if (callingContext instanceof ScreenOneRework)
+		{
+			ScreenOneRework getMethods = (ScreenOneRework) callingContext;
+			getMethods.setView(ScreenOneRework.GROUPS, getMethods.buildGroupsView());
+		}
 	}
 	
 	
@@ -94,22 +102,15 @@ public class UploadAllForms extends AsyncTask
 		String user_name;
 		String password;
 		String domain;
+		String port;
 		
 		//Get SharedPreferences manager.
 		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
-		
-		//TODO Preferences that are needed to connect to the SharePoint site.
-		
-		//Form preferences
-		URL = "habitat.taic.net";
-		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
-		domain = "xtranet";
-		
+			
 		//User (app) preferences
 		user_name = settings.getString("sharepoint_username","");
 		password = settings.getString("sharepoint_password","");
 		domain = settings.getString("sharepoint_domain", "");
-		
 		
 		database.open();	
 		
@@ -129,12 +130,12 @@ public class UploadAllForms extends AsyncTask
 			formID = formDataList.get(x).getValue();
 			form = database.getFormById(formID);
 			
-			//TODO Uncomment these when implemented. 
-			//URL = form.meta.url;
-			//list_name = form.meta.listname;
+			URL = form.meta.url;
+			list_name = form.meta.listname;
+			port = form.meta.port;
 			
 			// Attempt the upload
-			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
+			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain, port);
 			
 			if (response[0].compareTo("0") == 0)
 			{

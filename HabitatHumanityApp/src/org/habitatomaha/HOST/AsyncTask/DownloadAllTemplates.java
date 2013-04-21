@@ -1,5 +1,6 @@
 package org.habitatomaha.HOST.AsyncTask;
 
+import org.habitatomaha.HOST.Activity.ScreenOneRework;
 import org.habitatomaha.HOST.Activity.SelectFormActivity;
 import org.habitatomaha.HOST.Helper.XMLParser;
 import org.habitatomaha.HOST.Model.ChoiceQuestion;
@@ -59,6 +60,12 @@ public class DownloadAllTemplates extends AsyncTask {
 			SelectFormActivity getMethods = (SelectFormActivity) callingContext;
 			getMethods.startPopulateSpinners();
 		}
+		
+		if (callingContext instanceof ScreenOneRework)
+		{
+			ScreenOneRework getMethods = (ScreenOneRework) callingContext;
+			getMethods.setView(ScreenOneRework.GROUPS, getMethods.buildGroupsView());
+		}
 	}
 	
 	
@@ -108,11 +115,20 @@ public class DownloadAllTemplates extends AsyncTask {
 		
 		Log.v("Downloadtask", "Here is port " + port);
 		//AdminDataSource aDS = new AdminDataSource();
-		AdminDataSource aDS = new AdminDataSource(URL, list_name, port);
+		AdminDataSource aDS = new AdminDataSource((android.content.Context)params[0], URL, list_name, port);
 		OSTDataSource oDS = new OSTDataSource((android.content.Context)params[0]);
 		oDS.open();
 		
-		TemplateIdList tl = XMLParser.getTemplateList(aDS.getAllTemplates());
+		String XMLResult = aDS.getAllTemplates();
+		
+		//if null was returned then we had some type of error when trying to download ids
+		if (XMLResult == null)
+		{
+			oDS.close();
+			return null;
+		}
+		
+		TemplateIdList tl = XMLParser.getTemplateList(XMLResult);
 		
 		//if this is 0, then there are no templates and we should notify the user and exit
 		if (tl == null)
@@ -133,18 +149,17 @@ public class DownloadAllTemplates extends AsyncTask {
 			//TODO -- fix this in the admin tool side
 			try
 			{
-			xml=xml.replaceAll("\\\\n", "").replaceAll("\\\\t", "").replaceAll("\\\\\"", "\"");
+				xml=xml.replaceAll("\\\\n", "").replaceAll("\\\\t", "").replaceAll("\\\\\"", "\"");
 
-			//remove quotes from front and back -- odd as fuck
-			xml = xml.substring(1, xml.length()); // This has the potential to throw a String Index out of Bounds Error
+				//remove quotes from front and back -- odd as fuck
+				xml = xml.substring(1, xml.length()); // This has the potential to throw a String Index out of Bounds Error
 			
-			//TODO - replace class names
-			xml = xml.replaceAll("TextQuestion", TextQuestion.class.getName()).replaceAll("LikertScaleQuestion", LikertScaleQuestion.class.getName()).replaceAll("ChoiceQuestion", ChoiceQuestion.class.getName());
+				//TODO - replace class names
+				xml = xml.replaceAll("TextQuestion", TextQuestion.class.getName()).replaceAll("LikertScaleQuestion", LikertScaleQuestion.class.getName()).replaceAll("ChoiceQuestion", ChoiceQuestion.class.getName());
 			
-			Form form = XMLParser.getForm(xml);
+				Form form = XMLParser.getForm(xml);
 			
-			oDS.addTemplate(form);
-			//Log.v("OSTtest", oDS.getAllTemplateInfo().toString());
+				oDS.addTemplate(form);
 			}
 			catch(Exception e)
 			{
@@ -157,7 +172,6 @@ public class DownloadAllTemplates extends AsyncTask {
 		}
 	
 		oDS.close();
-		//Log.v("cody_test",tl.ids.toString());
 		return null;
 	}
 }

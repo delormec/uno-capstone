@@ -684,7 +684,7 @@ public class SelectFormActivity extends Activity {
 				// Pass the form to the EditFormActivity
 				Intent intent = new Intent(this, EditFormActivity.class);
 				
-				intent.putExtra("formObject", form);	
+				intent.putExtra("formID", formID);	
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 							
 				startActivity(intent);
@@ -732,7 +732,7 @@ public class SelectFormActivity extends Activity {
 					// Send the form to SubmitFormActivity
 					Intent intent = new Intent(this, SubmitFormActivity.class);
 					
-					intent.putExtra("formObject", form);
+					intent.putExtra("formID", formID);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					
 					startActivity(intent);

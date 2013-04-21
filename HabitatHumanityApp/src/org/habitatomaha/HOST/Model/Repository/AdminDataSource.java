@@ -16,6 +16,10 @@ import org.apache.http.protocol.HttpContext;
 //<<<<<<< HEAD
 //=======
 //>>>>>>> XML Parser Helper Classes
+import org.habitatomaha.HOST.Model.Error;
+import org.habitatomaha.HOST.Model.Error.Severity;
+
+import android.content.Context;
 
 public class AdminDataSource {
 	
@@ -27,61 +31,60 @@ public class AdminDataSource {
 	private HttpHost target;
 	private HttpContext localContext;
 	
-	public AdminDataSource()
-	{
-		URL = "wende.sytes.net";
-		list_name = "/api/ApiForm";
-		port = 5432;
-	}
+	public Context callingContext;
 	
-	public AdminDataSource(String URL, String list_name, int port)
+	public AdminDataSource(Context callingContext, String URL, String list_name, int port)
 	{
 		this.URL = URL;
 		this.list_name = list_name;
 		this.port = port;
+		this.callingContext = callingContext;
+		
+		//if the list name doesn't end with a / then add one
+		if (list_name.substring(list_name.length() - 1).compareTo("/") != 0)
+		{
+			this.list_name = this.list_name + "/";
+		}
 	}
 	
-	
-	//sets up data connection, returns 0 if successful -1 if failed
+	/** 
+	 * Connect to admin tool and download a list of all the template_id's that are available for download. <br>
+	 * This list gets passed to XMLParser which turns them into a List.
+	 * @return Returns XML from Admin Tool if successful, otherwise returns a null string (error).
+	 */
 	public String getAllTemplates()
 	{
         httpclient = new DefaultHttpClient();
-        //httpclient.getAuthSchemes().register("ntlm", new NTLMSchemeFactory());
-        //NTCredentials creds = new NTCredentials(user_name,password, domain, domain);
-        //httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
 
-        //TODO, this port will change
         target = new HttpHost(URL, port, "http");
         
         localContext = new BasicHttpContext();
         
-        HttpGet httpget = new HttpGet("/api/ApiForm");
+        HttpGet httpget = new HttpGet(list_name);
         httpget.setHeader("Accept", "application/xml");
         //ok here we're trying to get something
         HttpResponse response1 = null;
 		try {
 			response1 = httpclient.execute(target, httpget, localContext);
 			
+			//read the response
+			HttpEntity entity1 = response1.getEntity();
+	        BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
+	        StringBuilder results = new StringBuilder();
+	        results.append(reader.readLine());
 			
-			//something broke if this isn't 200
-			if (response1.getStatusLine().getStatusCode() != 200)
-			{
-			   //return -1;	
+			//success, return good data
+			if (response1.getStatusLine().getStatusCode() == 200)
+			{		
+				return results.toString();
 			}
 			
-			//response1.getEntity().consumeContent();
+			//failure, log it and return empty string signifying error
+			ErrorLog.log(callingContext, new Error("Template Download Error", results.toString(), Severity.Critical));
+
+			//error
+			return null;
 			
-			//this would read the contents of the response
-				HttpEntity entity1 = response1.getEntity();
-	        	BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
-	        	StringBuilder results = new StringBuilder();
-	        	String line;
-	        	results.append(reader.readLine());
-	        	//while ((line = reader.readLine()) != null) {
-	        	//	results.append(line + '\n');
-	        	//}
-				//Log.v("cody_test", results.toString());		
-				return results.toString();
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,45 +93,49 @@ public class AdminDataSource {
 			e.printStackTrace();
 		}
 	
-        //everything was good, return goodness
-		return "";
+        //error if we got here
+		ErrorLog.log(callingContext, new Error("Template Download Error", "Potential bad port number.", Severity.Critical));
+		return null;
 	}
 
+	/**
+	 * Connect to Admin Tool and download the serialized XML that represents a template.
+	 * @param id template_id we want to download
+	 * @return Returns XML from Admin Tool if successful, otherwise returns a null string (error).
+	 */
 	public String getTemplateXMLByID(String id) {
         httpclient = new DefaultHttpClient();
 
         //TODO, this port will change
-        target = new HttpHost(URL, 5432, "http");
+        target = new HttpHost(URL, port, "http");
         
         localContext = new BasicHttpContext();
         
-        HttpGet httpget = new HttpGet("/api/ApiForm/"+id);
-        //httpget.setHeader("Accept", "application/xml");
-        //ok here we're trying to get something
+        HttpGet httpget = new HttpGet(list_name + id);
+
         HttpResponse response1 = null;
+        
 		try {
 			response1 = httpclient.execute(target, httpget, localContext);
 			
+			//read the response
+			HttpEntity entity1 = response1.getEntity();
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
+        	StringBuilder results = new StringBuilder();
+        	results.append(reader.readLine());
 			
-			//something broke if this isn't 200
-			if (response1.getStatusLine().getStatusCode() != 200)
+			//success, return the XML we found
+			if (response1.getStatusLine().getStatusCode() == 200)
 			{
-			   //return -1;	
+				return results.toString();	
 			}
 			
-			//response1.getEntity().consumeContent();
-			
-			//this would read the contents of the response
-				HttpEntity entity1 = response1.getEntity();
-	        	BufferedReader reader = new BufferedReader(new InputStreamReader(entity1.getContent(), Charset.forName("UTF-8")));
-	        	StringBuilder results = new StringBuilder();
-	        	String line;
-	        	results.append(reader.readLine());
-	        	//while ((line = reader.readLine()) != null) {
-	        	//	results.append(line + '\n');
-	        	//}
-				//Log.v("cody_test", results.toString());		
-				return results.toString();
+			//failure, log it and return empty string signifying error
+			ErrorLog.log(callingContext, new Error("Template Download Error", results.toString(), Severity.Critical));
+
+			//error
+			return null;
+
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -136,8 +143,10 @@ public class AdminDataSource {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-        //everything was good, return goodness
-		return "";
+		
+        //failure
+		//failure, log it and return empty string signifying error (i found this happens with a bad port
+		ErrorLog.log(callingContext, new Error("Template Download Error", "Potential bad port number.", Severity.Critical));
+		return null;
 	}
 }

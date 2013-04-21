@@ -26,27 +26,22 @@ public class UploadForm extends AsyncTask{
 		String user_name;
 		String password;
 		String domain;
+		String port;
 		
 		//Get SharedPreferences manager.
 		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
-		
-		//TODO Preferences that are needed to connect to the SharePoint site.
-		
-		//Form preferences
-		URL = "habitat.taic.net";
-		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
-		
-		//Form form = (Form)params[0];
-		//TODO Uncomment these when implemented. 
-		//URL = form.meta.url;
-		//list_name = form.meta.listname;
+			
+		Form form = (Form)params[0];
+		URL = form.meta.url;
+		list_name = form.meta.listname;
+		port = form.meta.port;
 		
 		//User (app) preferences
 		user_name = settings.getString("sharepoint_username","");
 		password = settings.getString("sharepoint_password","");
 		domain = settings.getString("sharepoint_domain", "");
 
-		return SharePointDataSource.uploadFormToSharePoint((Form)params[0], URL, list_name, user_name, password, domain);
+		return SharePointDataSource.uploadFormToSharePoint((Form)params[0], URL, list_name, user_name, password, domain, port);
 	
 		//this.notifyAll();
 	}

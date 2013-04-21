@@ -1,6 +1,7 @@
 package org.habitatomaha.HOST.Activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -18,25 +19,32 @@ import org.habitatomaha.HOST.Model.Repository.ErrorLog;
 import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
 import android.annotation.SuppressLint;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.graphics.Color;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 @SuppressLint("NewApi")
 
@@ -44,33 +52,29 @@ public class ScreenOneRework extends Activity
 {
 	private static final int ALL_GROUPS_ALL_FORMS = -1111;
 	private static final int ONE_GROUP_ALL_FORMS = -111;
-	private static final int HOME = 0;
-	private static final int GROUPS = 1;
-	private static final int TEMPLATES = 2;
-	private static final int FORMS = 3;
+	public static final int GROUPS = 0;
+	public static final int TEMPLATES = 1;
+	public static final int FORMS = 2;
 	
 	
 	private static String userName;						// The name of the current user
 	private OSTDataSource database;						// An accessor for the SQLite database
 	private int currentView;							// Indicated the current view
-	private View[] viewStack = new View[4];
-	private String[] navTitles = new String[4];			// For the navigation String at the top		
-	private LayoutInfo[] status = new LayoutInfo[4];	// For recovery states
+	private View[] viewStack = new View[3];
+	private String[] titles = new String[3];			// For the navigation String at the top		
+	private LayoutInfo[] status = new LayoutInfo[3];	// For recovery states
 	
 	private DownloadAllTemplates downloadTask;	// For managing "DownloadAllTemplates"
 	private UploadAllForms uploadTask;			// For managing "UploadAllForms"
 	
 	
-	private Bundle pauseState;
-	
-	
-	
+	private Bundle pauseState;					// For recovering in onResume()
 	
 
 	/*---------- BEGIN OVERRIDE METHODS ----------*/
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState)
+	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		
@@ -102,16 +106,14 @@ public class ScreenOneRework extends Activity
 			
 	
 			// Retrieve information about the Views
-			status[HOME] = (LayoutInfo) savedInstanceState.getSerializable("statusHome");
 			status[GROUPS] = (LayoutInfo) savedInstanceState.getSerializable("statusGroups");
 			status[TEMPLATES] = (LayoutInfo) savedInstanceState.getSerializable("statusTemplates");
 			status[FORMS] = (LayoutInfo) savedInstanceState.getSerializable("statusForms");	
 			
 			
 			// Rebuild each of the Views
-			navTitles = savedInstanceState.getStringArray("navTitles");
+			titles = savedInstanceState.getStringArray("titles");
 			
-			viewStack[HOME] = buildHomeView();
 			viewStack[GROUPS] = buildGroupsView();
 			
 			if (status[TEMPLATES] != null)
@@ -131,26 +133,23 @@ public class ScreenOneRework extends Activity
 		// New instance of Activity
 		else
 		{	
-			navTitles[0] = "Template groups";
+			titles[0] = "Template Groups";
 					
-			displayHome();		
+			displayTemplateGroups();		
 		}
 	}
 	
 	
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState)
+	protected void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		super.onSaveInstanceState(savedInstanceState);
-		
-		saveUserName();
-		
+
 		savedInstanceState.putString("userName", userName);
-		savedInstanceState.putStringArray("navTitles", navTitles);
+		savedInstanceState.putStringArray("titles", titles);
 		
 		savedInstanceState.putInt("currentView", currentView);
 		
-		savedInstanceState.putSerializable("statusHome", status[HOME]);
 		savedInstanceState.putSerializable("statusGroups", status[GROUPS]);
 		savedInstanceState.putSerializable("statusTemplates", status[TEMPLATES]);
 		savedInstanceState.putSerializable("statusForms", status[FORMS]);			
@@ -162,16 +161,10 @@ public class ScreenOneRework extends Activity
 	public void onBackPressed()
 	{
 		switch (currentView)
-		{
-			case HOME:
-				this.finish();
-				break;
-				
+		{		
 			case GROUPS:
 				// Go back to home
-				viewStack[HOME] = buildHomeView();
-				setContentView(viewStack[HOME]);
-				currentView = HOME;
+				this.finish();
 				break;
 				
 			case TEMPLATES:
@@ -188,8 +181,6 @@ public class ScreenOneRework extends Activity
 				currentView = TEMPLATES;
 				break;
 		}
-		
-		invalidateOptionsMenu();
 	}
 	
 	
@@ -198,29 +189,6 @@ public class ScreenOneRework extends Activity
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-		return true;
-	}
-	
-	
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		if (currentView == HOME)
-		{
-			menu.getItem(0).setEnabled(true);
-			menu.getItem(1).setEnabled(true);
-			menu.getItem(2).setEnabled(true);
-			menu.getItem(3).setEnabled(true);
-		}
-		else
-		{
-			menu.getItem(0).setEnabled(false);
-			menu.getItem(1).setEnabled(false);
-			menu.getItem(2).setEnabled(false);
-			menu.getItem(3).setEnabled(false);
-		}
-		
 		return true;
 	}
 	
@@ -269,17 +237,17 @@ public class ScreenOneRework extends Activity
 		
 		pauseState = new Bundle();
 		
-		saveUserName();
 		pauseState.putString("userName", userName);
 		
-		pauseState.putSerializable("statusHome", status[HOME]);
 		pauseState.putSerializable("statusGroups", status[GROUPS]);
 		pauseState.putSerializable("statusTemplates", status[TEMPLATES]);
 		pauseState.putSerializable("statusForms", status[FORMS]);
 		
-		pauseState.putStringArray("navTitles", navTitles);
+		pauseState.putStringArray("titles", titles);
 		pauseState.putInt("currentView", currentView);
 	}
+	
+	
 	
 	@Override
 	protected void onResume()
@@ -292,16 +260,14 @@ public class ScreenOneRework extends Activity
 			
 			
 			// Retrieve information about the Views
-			status[HOME] = (LayoutInfo) pauseState.getSerializable("statusHome");
 			status[GROUPS] = (LayoutInfo) pauseState.getSerializable("statusGroups");
 			status[TEMPLATES] = (LayoutInfo) pauseState.getSerializable("statusTemplates");
 			status[FORMS] = (LayoutInfo) pauseState.getSerializable("statusForms");	
 			
 			
 			// Rebuild each of the Views
-			navTitles = pauseState.getStringArray("navTitles");
+			titles = pauseState.getStringArray("titles");
 			
-			viewStack[HOME] = buildHomeView();
 			viewStack[GROUPS] = buildGroupsView();
 			
 			if (status[TEMPLATES] != null)
@@ -334,49 +300,21 @@ public class ScreenOneRework extends Activity
 	/*---------- BEGIN DISPLAY METHODS ----------*/
 	
 	/**
-	 * Displays the home View for the Activity
-	 */
-	private void displayHome()
-	{
-		// Build View
-		RelativeLayout homeView = (RelativeLayout) buildHomeView();
-		
-		// Store relevant info about the View for rebuilding
-		LayoutInfo homeLayoutInfo = new LayoutInfo();
-		status[HOME] = homeLayoutInfo;
-
-		// Set View
-		viewStack[HOME] = homeView;
-		setContentView(viewStack[HOME]);
-		currentView = HOME;
-		
-		invalidateOptionsMenu();
-	}
-	
-	
-	
-	/**
-	 * Displays all the template groups
+	 * Displays all the template groups and the sign-in
 	 */
 	private void displayTemplateGroups()
 	{
 		// Build View
 		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
 		
-		// Store the userName from HOME
-		saveUserName();
-		
 		// Store the relevant information about the View for rebuilding
 		LayoutInfo groupsLayoutInfo = new LayoutInfo();
-		
 		status[GROUPS] = groupsLayoutInfo;
 				
 		// Set View
 		viewStack[GROUPS] = groupsView;
 		setContentView(viewStack[GROUPS]);
 		currentView = GROUPS;
-		
-		invalidateOptionsMenu();
 	}
 	
 		
@@ -400,9 +338,7 @@ public class ScreenOneRework extends Activity
 		// Set View
 		viewStack[TEMPLATES] = templatesView;
 		setContentView(viewStack[TEMPLATES]);
-		currentView = TEMPLATES;
-		
-		invalidateOptionsMenu();
+		currentView = TEMPLATES;	
 	}
 
 	
@@ -429,8 +365,6 @@ public class ScreenOneRework extends Activity
 		viewStack[FORMS] = formsView;
 		setContentView(viewStack[FORMS]);
 		currentView = FORMS;
-		
-		invalidateOptionsMenu();
 	}
 	
 	/*---------- END DISPLAY METHODS ----------*/
@@ -446,188 +380,239 @@ public class ScreenOneRework extends Activity
 	
 	/*---------- BEGIN VIEW BUILDER METHODS ----------*/
 	
-	
-	/**
-	 * Builds the home View of this Activity
-	 * 
-	 * @return	The View of the home layout of this Activity
-	 */
-	private View buildHomeView()
-	{
-		RelativeLayout.LayoutParams params;
-		
-		//Pre-declare layout Views/IDs for RelativeLayout
-		TextView nameViewTitle = new TextView(this);
-		nameViewTitle.setId(1);
-		
-		EditText nameView = new EditText(this);
-		nameView.setId(2);
-		
-		Button beginButton = new Button(this);
-		beginButton.setId(3);
-		
-		
-		
-		
-		// Begin layout
-		RelativeLayout layout = new RelativeLayout(this);
-		layout.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-		
-		
-		// Text above EditText for entering user name			
-		nameViewTitle.setText("Current User:");
-		nameViewTitle.setTextSize(30);			
-		
-		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		nameViewTitle.setLayoutParams(params);
-			
-		
-		
-		// EditText for entering user name
-		if (userName != null)
-		{
-			nameView.setText(userName);
-		}
-		else
-		{
-			nameView.setText("");
-		}
-				
-		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.BELOW, nameViewTitle.getId());
-		nameView.setLayoutParams(params);
-				
-		
-		
-		// Begin Button
-		beginButton.setText("Begin");
-		beginButton.setTextSize(30);
-		beginButton.setOnClickListener(	new View.OnClickListener()
-										{
-											public void onClick(View view)
-											{
-												Utility.hideSoftKeyboard(getInstance());
-												displayTemplateGroups();											
-											}
-										}					
-									);
-		
-		params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.BELOW, nameView.getId());
-		beginButton.setLayoutParams(params);
-	
-		
-		
-		
-		// Add the Views to the Layout in vertical order
-		layout.addView(nameViewTitle);
-		layout.addView(nameView);
-		layout.addView(beginButton);
-		
-		return layout;
-	}
-	
-	
-	
 	/**
 	 * Builds a View of all the template groups
 	 * 
 	 * @return	The View of the template groups layout
 	 */
-	private View buildGroupsView()
-	{	
+	public View buildGroupsView()
+	{		
 		// Get the template information
 		List<String> templateGroupList = new ArrayList<String>();
 		
 		database.open();
-		templateGroupList = database.getAllTemplateGroups();
+		templateGroupList = database.getAllTemplateGroups();		
+		templateGroupList.add(0, "All Templates");
 		database.close();
 		
-		// Add "All Groups" to beginning of list
-		templateGroupList.add(0, "All Groups");
-		
-	
 		
 		// Pre-declare the Views/IDs for RelativeLayout
 		TextView navText = new TextView(this);
-		navText.setId(GROUPS);
+		navText.setId(1);
 		
 		ScrollView scrollView = new ScrollView(this);
 		scrollView.setId(2);
 		
-		RelativeLayout.LayoutParams relParams;
+		LinearLayout signInView = new LinearLayout(this);
+		signInView.setId(3);
 		
+		RelativeLayout.LayoutParams relParams;
+		LinearLayout.LayoutParams linParams;
+
 			
 		
-		// Begin the layout
+		// Sign-in View
+		signInView.setOrientation(LinearLayout.VERTICAL);
+		
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		
+		signInView.setLayoutParams(relParams);
+
+		
+		
+		// Display the userName/sign-in View
+		if (userName != null && userName.compareTo("") != 0)
+		{				
+			TextView nameText = new TextView(this);
+			nameText.setText(String.format("Signed in as: %s   ", userName));
+			nameText.setTextSize(20);
+			
+			// Change name button
+			Button changeButton = new Button(this);
+			changeButton.setText("Change");
+			changeButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{				
+														AlertDialog.Builder signInAlert = createSignInAlert();
+														signInAlert.show();
+													}
+												}
+											);
+			
+			// Logout button
+			Button logoutButton = new Button(this);
+			logoutButton.setText("Log out");
+			logoutButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{				
+														userName = null;
+														setView(GROUPS, buildGroupsView());
+													}
+												}
+											);
+			
+			signInView.addView(nameText);
+			signInView.addView(changeButton);
+			signInView.addView(logoutButton);
+		}
+		// Display the sign-in View
+		else
+		{
+			//TextView nameText = new TextView(this);
+			//nameText.setText("Not signed in   ");
+			//nameText.setTextSize(20);
+			
+			Button signInButton = new Button(this);
+			signInButton.setText("Sign in");
+			signInButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{			
+														AlertDialog.Builder signInAlert = createSignInAlert();
+														signInAlert.show();
+													}
+												}
+											);
+			
+			//signInView.addView(nameText);
+			signInView.addView(signInButton);
+		}
+		
+		
+		
+		
+		
+		// Begin the groups layout
 		LinearLayout layoutOfGroups = new LinearLayout(this);
-		layoutOfGroups.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layoutOfGroups.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		layoutOfGroups.setOrientation(LinearLayout.VERTICAL);
+		
+		
 		
 		// Create a view for each template group
 		for (final String entry : templateGroupList)
-		{
+		{	
 			LinearLayout groupView = new LinearLayout(this);
-			groupView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			groupView.setPadding(25, 25, 25, 0);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 20, 25, 0);
+			groupView.setLayoutParams(linParams);
+			
+			groupView.setBackgroundColor(Color.parseColor("#CCCCCC"));
 			groupView.setOrientation(LinearLayout.VERTICAL);
-			groupView.setOnClickListener(	new View.OnClickListener()
-											{
-												public void onClick(View view)
-												{
-													navTitles[1] = String.format("%s templates", entry);
-													displayGroupTemplates(entry);
-												}
-											}					
-										);
+			
+			
 			
 			
 			// Group name
 			TextView groupName = new TextView(this);
-			groupName.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			groupName.setText(entry);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 0, 0, 0);
+			groupName.setLayoutParams(linParams);
+			
 			groupName.setTextSize(35);
 			groupName.setTextColor(Color.parseColor("#0099CC"));
 			
 			
-			
-			// Horizontal rule
-			View lineBreak = Utility.lineBreakView(this);
-			
+			// "All Templates" Group
+			if (entry.compareToIgnoreCase("all templates") == 0)
+			{
+				groupName.setText("View All Templates");
+				groupName.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				groupView.setOnClickListener(	new View.OnClickListener()
+													{
+														public void onClick(View view)
+														{
+															titles[1] = String.format("All Groups' Templates");
+															displayGroupTemplates("all templates");
+														}
+													}
+												);
+				
+				
+				// "-OR-"
+				TextView orView = new TextView(this);
+				orView.setText("-OR-");
+				orView.setTextSize(20);
+				orView.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				// "Choose a Template Group"
+				TextView chooseView = new TextView(this);
+				chooseView.setText("Choose a Template Group");
+				chooseView.setTextSize(20);
+				chooseView.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				
+				// Add the views and continue to next iteration
+				groupView.addView(Utility.lineBreakView(this));
+				groupView.addView(groupName);
+				groupView.addView(Utility.lineBreakView(this));
+				
+				layoutOfGroups.addView(groupView);
+				layoutOfGroups.addView(orView);
+				layoutOfGroups.addView(chooseView);
+				
+				continue;
+			}
+			// Normal Template Group
+			else
+			{
+				groupName.setText(entry);
+				
+				groupView.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														titles[1] = String.format("%s templates", entry);
+														displayGroupTemplates(entry);
+													}
+												}					
+											);
+			}
+
 			
 			// Add the Views in vertical order
+			groupView.addView(Utility.lineBreakView(this));
 			groupView.addView(groupName);
-			groupView.addView(lineBreak);
+			groupView.addView(Utility.lineBreakView(this));
 			
 			
-			layoutOfGroups.addView(groupView);		
+			layoutOfGroups.addView(groupView);	
 		}
 		
 		
 				
 		// Navigation text
-		navText.setText(navString(1));
-		navText.setTextSize(30);
+		//navText.setText(titles[0]);
+		//navText.setTextSize(30);
+		//navText.setPadding(0, 35, 0, 0);
 		
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		relParams.addRule(RelativeLayout.BELOW, signInView.getId());
 		navText.setLayoutParams(relParams);
 
 		
 		// Put the layout of groupViews into a scrollView
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		relParams.addRule(RelativeLayout.BELOW, signInView.getId());
 		scrollView.setLayoutParams(relParams);
-		
+	
 		scrollView.addView(layoutOfGroups);
 		
 		
 		// Put it all in one wrapping layout
 		RelativeLayout wholeLayout = new RelativeLayout(this);		
 		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
+		wholeLayout.setPadding(25, 25, 25, 0);
 		
-		wholeLayout.addView(navText);
+		wholeLayout.addView(signInView);
+		//wholeLayout.addView(navText);
 		wholeLayout.addView(scrollView);		
 		
 		return wholeLayout;
@@ -642,15 +627,18 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @return	The View of the templates with group groupName
 	 */
-	private View buildTemplatesView(final String groupName)
+	public View buildTemplatesView(final String groupName)
 	{
 		List<SpinnerData> templateList;
+		
 		database.open();
-		if (groupName.compareToIgnoreCase("all groups") == 0)
+		if (groupName.compareToIgnoreCase("all templates") == 0)
 		{
 			templateList = database.getAllTemplateInfo();
 			
-			SpinnerData allForms = new SpinnerData("All Forms", ALL_GROUPS_ALL_FORMS);
+			// Add "All Forms" to the beginning of list
+			List<SpinnerData> allFormInfo = database.getAllFormInfo();
+			SpinnerData allForms = new SpinnerData(String.format("All Created Forms (%d)", allFormInfo.size()), ALL_GROUPS_ALL_FORMS);
 			templateList.add(0, allForms);
 		}
 		else
@@ -659,14 +647,12 @@ public class ScreenOneRework extends Activity
 			templateList = database.getAllTemplateInfoByGroup(groupName);
 			
 			// Add "All Forms" to beginning of list
-			SpinnerData allForms = new SpinnerData("All " + groupName + " Forms", ONE_GROUP_ALL_FORMS);
+			List<SpinnerData> templateForms = database.getAllFormInfoByTemplateGroup(groupName);
+			SpinnerData allForms = new SpinnerData(String.format("All %s Forms (%d)", groupName, templateForms.size()), ONE_GROUP_ALL_FORMS);
 			templateList.add(0, allForms);
 		}
 		database.close();
 
-		
-		
-		
 		
 		
 		// Pre-declare the Views/IDs for RelativeLayout
@@ -677,7 +663,7 @@ public class ScreenOneRework extends Activity
 		scrollView.setId(2);
 		
 		RelativeLayout.LayoutParams relParams;
-
+		LinearLayout.LayoutParams linParams;
 		
 		
 		// Begin the layout
@@ -686,22 +672,38 @@ public class ScreenOneRework extends Activity
 		layoutOfTemplates.setOrientation(LinearLayout.VERTICAL);
 		
 		
+		
 		// Create a View for each template
 		for (final SpinnerData templateData : templateList)
 		{			
 			LinearLayout templateView = new LinearLayout(this);
-			templateView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			templateView.setPadding(25, 25, 25, 0);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 10, 25, 10);
+			templateView.setLayoutParams(linParams);
+			
+			templateView.setBackgroundColor(Color.parseColor("#CCCCCC"));
 			templateView.setOrientation(LinearLayout.VERTICAL);
 			
+
+
 			
 			// Template name
 			TextView templateName = new TextView(this);
-			templateName.setText(templateData.getSpinnerText());
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 0, 0, 0);
+			templateName.setLayoutParams(linParams);
+			
 			templateName.setTextSize(35);
+			templateName.setTextColor(Color.parseColor("#0099CC"));
+			
+			templateName.setText(templateData.getSpinnerText());
+			
+			
 
 			
-			
+			// "Create New" and "Edit Existing"
 			LinearLayout buttons = new LinearLayout(this);
 			// No buttons if "all forms"
 			if (templateData.getValue() == ONE_GROUP_ALL_FORMS)
@@ -710,7 +712,7 @@ public class ScreenOneRework extends Activity
 													{
 														public void onClick(View view)
 														{
-															navTitles[2] = "All forms";
+															titles[2] = String.format("All %s forms", groupName);
 															displayTemplateForms(ONE_GROUP_ALL_FORMS, groupName);
 														}
 													}					
@@ -723,7 +725,7 @@ public class ScreenOneRework extends Activity
 													{
 														public void onClick(View view)
 														{
-															navTitles[2] = "All forms";
+															titles[2] = "All Groups' Forms";
 															displayTemplateForms(ALL_GROUPS_ALL_FORMS, null);														
 														}
 													}					
@@ -740,7 +742,7 @@ public class ScreenOneRework extends Activity
 				// New button
 				Button newButton = new Button(this);
 				newButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-				newButton.setText("Create new");
+				newButton.setText("Create New");
 				newButton.setOnClickListener(	new View.OnClickListener()
 												{
 													public void onClick(View view)
@@ -754,10 +756,18 @@ public class ScreenOneRework extends Activity
 														form.meta.form_id = formID;
 														
 														
+														// Store filledDate and filledBy
+														Calendar cal = Calendar.getInstance();
+														form.meta.filledDate = String.format("%d/%d/%d", cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR));
+														form.meta.filledBy = userName;
+														
+														
+														database.updateForm(form);
+														
 														// Pass the new Form to the EditFormActivity
 														Intent intent = new Intent(getInstance(), EditFormActivity.class);
 														
-														intent.putExtra("formObject", form);	
+														intent.putExtra("formID", formID);	
 														intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 																	
 														startActivity(intent);
@@ -771,12 +781,11 @@ public class ScreenOneRework extends Activity
 				// Edit button
 				Button editButton = new Button(this);
 				editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-				editButton.setText("Edit existing");
 				editButton.setOnClickListener(	new View.OnClickListener()
 												{
 													public void onClick(View view)
 													{
-														navTitles[2] = templateData.getSpinnerText();
+														titles[2] = String.format("%s Forms", templateData.getSpinnerText());
 														displayTemplateForms(templateData.getValue(), null);
 													}
 												}					
@@ -790,19 +799,18 @@ public class ScreenOneRework extends Activity
 				database.close();
 				if (template_formInfo.size() > 0)
 				{
+					editButton.setText(String.format("Edit Existing (%d)", template_formInfo.size()));
 					buttons.addView(editButton);
 				}
 			}
-		
-			
-			// Horizontal rule
-			View lineBreak = Utility.lineBreakView(this);			
+		 			
 			
 			
 			// Add Views in vertical order
+			templateView.addView(Utility.lineBreakView(this));
 			templateView.addView(templateName);				
 			templateView.addView(buttons);
-			templateView.addView(lineBreak);
+			templateView.addView(Utility.lineBreakView(this));
 						
 			layoutOfTemplates.addView(templateView);	
 		}
@@ -810,7 +818,7 @@ public class ScreenOneRework extends Activity
 
 		
 		// Navigation text
-		navText.setText(navString(TEMPLATES));
+		navText.setText(titles[1]);
 		navText.setTextSize(30);
 
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -829,6 +837,7 @@ public class ScreenOneRework extends Activity
 		// Put it all in one wrapping layout
 		RelativeLayout wholeLayout = new RelativeLayout(this);		
 		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
 
 		wholeLayout.addView(navText);
 		wholeLayout.addView(scrollView);	
@@ -846,7 +855,7 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @return	A View of the Forms for templateID/templateGroup
 	 */
-	private View buildFormsView(int templateID, String templateGroup)	 
+	public View buildFormsView(int templateID, String templateGroup)	 
 	{
 		List<SpinnerData> formList = new ArrayList<SpinnerData>();
 		
@@ -876,6 +885,7 @@ public class ScreenOneRework extends Activity
 		scrollView.setId(2);
 
 		RelativeLayout.LayoutParams relParams;
+		LinearLayout.LayoutParams linParams;
 		
 		
 		
@@ -890,8 +900,12 @@ public class ScreenOneRework extends Activity
 		for (final SpinnerData formData : formList)
 		{
 			LinearLayout formView = new LinearLayout(this);
-			formView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			formView.setPadding(25, 25, 25, 0);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 20, 25, 0);
+			formView.setLayoutParams(linParams);
+			
+			formView.setBackgroundColor(Color.parseColor("#CCCCCC"));
 			formView.setOrientation(LinearLayout.VERTICAL);
 			
 			
@@ -899,6 +913,7 @@ public class ScreenOneRework extends Activity
 			TextView formName = new TextView(this);
 			formName.setText(formData.getSpinnerText());
 			formName.setTextSize(35);
+			formName.setTextColor(Color.parseColor("#0099CC"));
 			
 			
 			// Begin "buttons view"
@@ -911,20 +926,21 @@ public class ScreenOneRework extends Activity
 			Button editButton = new Button(this);
 			editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 			editButton.setText("Edit");
+			
 			editButton.setOnClickListener(	new View.OnClickListener()
 											{
 												public void onClick(View view)
 												{
 													database.open();
-													Form form = database.getFormById(formData.getValue());
 													
 													// Pass the form to the EditFormActivity
 													Intent intent = new Intent(getInstance(), EditFormActivity.class);
 													
-													intent.putExtra("formObject", form);	
+													intent.putExtra("formID", (long) formData.getValue());	
 													intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 																
 													startActivity(intent);
+													
 													database.close();
 												}
 											}					
@@ -953,30 +969,30 @@ public class ScreenOneRework extends Activity
 											{
 												public void onClick(View view)
 												{
-													upload(formData.getValue());
+													upload(view, formData.getValue());
 												}
 											}					
 										);
 
-			
-			// Horizontal Rule
-			View lineBreak = Utility.lineBreakView(this);
-			
+
 			
 			// Add the Views in vertical order
+			formView.addView(Utility.lineBreakView(this));
 			formView.addView(formName);
+			
 			buttons.addView(editButton);
 			buttons.addView(discardButton);
 			buttons.addView(uploadButton);
+			
 			formView.addView(buttons);
-			formView.addView(lineBreak);
+			formView.addView(Utility.lineBreakView(this));
 			
 			layoutOfForms.addView(formView);
 		}
 			
 		
 		// Navigation text
-		navText.setText(navString(FORMS));
+		navText.setText(titles[2]);
 		navText.setTextSize(30);
 
 		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -995,6 +1011,7 @@ public class ScreenOneRework extends Activity
 		// Put it all in one wrapping layout
 		RelativeLayout wholeLayout = new RelativeLayout(this);		
 		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
 
 		wholeLayout.addView(navText);
 		wholeLayout.addView(scrollView);	
@@ -1032,13 +1049,7 @@ public class ScreenOneRework extends Activity
 									@Override
 									public void onClick(DialogInterface dialog, int id)
 									{
-										discard(formID);
-										
-										// Remove the view of the form
-										View buttons = (LinearLayout) view.getParent();
-										View formView = (LinearLayout) buttons.getParent();										
-										((LinearLayout) formView.getParent()).removeView(formView);
-										
+										discard(view, formID);								
 										return;
 									}
 								});
@@ -1064,11 +1075,21 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @param formID	The ID of the form to remove
 	 */
-	private void discard(long formID)
+	private void discard(View view, long formID)
 	{
 		database.open();
 		database.removeFormById(formID);
 		database.close();
+		
+		
+		// Remove the view of the form
+		if (view != null)
+		{
+			View buttons = (LinearLayout) view.getParent();
+			View formView = (LinearLayout) buttons.getParent();										
+			((LinearLayout) formView.getParent()).removeView(formView);
+		}
+		
 		
 		Toast.makeText(this, "Form removed from device", Toast.LENGTH_SHORT).show();	
 		return;
@@ -1081,7 +1102,7 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @param view The View that called this method
 	 */
-	public void upload(final long formID)
+	public void upload(final View view, final long formID)
 	{
 		//If there is no connectivity, display a popup and return
 		if (!Utility.isNetworkAvailable(this))
@@ -1119,7 +1140,7 @@ public class ScreenOneRework extends Activity
 											//response of 0 == success
 											if (response[0].compareTo("0") == 0)
 											{
-												discard(formID);
+												discard(view, formID);
 											}
 											else
 											{
@@ -1165,20 +1186,6 @@ public class ScreenOneRework extends Activity
 	
 	
 	/*---------- BEGIN MENU BUTTON METHODS ----------*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*---------- BEGIN MENU BUTTON IMPLEMENTATIONS ----------*/
 	
 	/**
 	 * Opens the ErrorLog for display (launches new Activity)
@@ -1257,6 +1264,52 @@ public class ScreenOneRework extends Activity
 	/*---------- BEGIN UNCATEGORIZED METHODS ----------*/
 	
 	/**
+	 * Sets up the Builder for an editText Alert (used to sign in to app)
+	 * 
+	 * @return	The Builder for a sign-in editText Alert
+	 */
+	private AlertDialog.Builder createSignInAlert()
+	{
+		// Set up the sign-in EditText Alert
+		AlertDialog.Builder signInAlertBuilder = new AlertDialog.Builder(this);
+		
+		signInAlertBuilder.setTitle("Sign in");
+		signInAlertBuilder.setMessage("Enter your name:");
+		
+		final EditText nameEdit = new EditText(this);
+						
+		signInAlertBuilder.setView(nameEdit);
+		signInAlertBuilder.setPositiveButton("Sign in", new DialogInterface.OnClickListener()
+												{
+													public void onClick(DialogInterface dialog, int button)
+													{
+														// Reset the view to reflect the sign-in change
+														userName = nameEdit.getText().toString();
+														setView(GROUPS, buildGroupsView());															
+													}
+												}
+											);
+		return signInAlertBuilder;
+	}
+	
+	
+	
+	/**
+	 * Sets the content view of the Activity to the provided View
+	 * 
+	 * @param viewSlot	Which View in the Activity to set (0-2)
+	 * @param view	The View to set
+	 */
+	public void setView(int viewSlot, View view)
+	{
+		viewStack[viewSlot] = view;
+		setContentView(viewStack[viewSlot]);
+		currentView = viewSlot;
+	}
+	
+	
+	
+	/**
 	 * Returns the context of this activity
 	 * 
 	 * @return	This
@@ -1266,41 +1319,6 @@ public class ScreenOneRework extends Activity
 		return this;
 	}
 	
-	
-	
-	/**
-	 * Builds the navString for the top of the View
-	 * 
-	 * @param pieces	The number of pieces (1 - 3)
-	 * @return			The navString made from navTitles[]
-	 */
-	private String navString(int pieces)
-	{
-		switch (pieces)
-		{
-			case 1:
-				return String.format("%s", navTitles[0]);
-			case 2:
-				return String.format("%s >\n\t%s", navTitles[0], navTitles[1]);
-			case 3:
-				return String.format("%s >\n\t%s >\n\t\t%s", navTitles[0], navTitles[1], navTitles[2]);
-			default:
-				return "";
-		}
-	}
-	
-	
-	// TODO javadoc
-	private void saveUserName()
-	{
-		if (viewStack[HOME].findFocus() != null)
-		{
-			if (viewStack[HOME].findFocus() instanceof EditText)
-			{
-				userName = ((EditText) viewStack[HOME].findFocus()).getText().toString();
-			}
-		}
-	}
 	/*---------- END UNCATEGORIZED METHODS ----------*/
 }
 

@@ -24,7 +24,7 @@ public final class R {
         public static final int RelativeLayout1=0x7f0a0015;
         public static final int answerText=0x7f0a000e;
         public static final int dateText=0x7f0a000f;
-        public static final int download_forms=0x7f0a0023;
+        public static final int download_forms=0x7f0a0022;
         public static final int formLabel=0x7f0a001c;
         public static final int formMenu=0x7f0a0019;
         public static final int formProgressBar=0x7f0a0003;
@@ -33,9 +33,9 @@ public final class R {
         public static final int include1=0x7f0a001a;
         public static final int likertHigh=0x7f0a0014;
         public static final int likertLow=0x7f0a0010;
-        public static final int menu_settings=0x7f0a0022;
+        public static final int menu_settings=0x7f0a0021;
         public static final int multipleSelectChoices=0x7f0a0011;
-        public static final int navbar=0x7f0a0021;
+        public static final int navbar=0x7f0a0020;
         public static final int navbar_edit_button=0x7f0a0006;
         public static final int navbar_home_button=0x7f0a0005;
         public static final int navbar_submit_button=0x7f0a0007;
@@ -50,9 +50,8 @@ public final class R {
         public static final int question_navigation=0x7f0a0000;
         public static final int question_subLayout_1=0x7f0a0009;
         public static final int spacing_medium=0x7f0a000d;
-        public static final int submit_discard=0x7f0a0020;
+        public static final int submit_discard=0x7f0a001f;
         public static final int submit_info=0x7f0a001d;
-        public static final int submit_save=0x7f0a001f;
         public static final int submit_upload=0x7f0a001e;
         public static final int templateLabel=0x7f0a001b;
         public static final int templateMenu=0x7f0a0016;
