@@ -105,19 +105,11 @@ public class UploadAllForms extends AsyncTask
 		
 		//Get SharedPreferences manager.
 		settings = PreferenceManager.getDefaultSharedPreferences(callingContext);
-		
-		//TODO Preferences that are needed to connect to the SharePoint site.
-		
-		//Form preferences
-		URL = "habitat.taic.net";
-		list_name = "/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTest";
-		domain = "xtranet";
-		
+			
 		//User (app) preferences
 		user_name = settings.getString("sharepoint_username","");
 		password = settings.getString("sharepoint_password","");
 		domain = settings.getString("sharepoint_domain", "");
-		
 		
 		database.open();	
 		
@@ -137,9 +129,8 @@ public class UploadAllForms extends AsyncTask
 			formID = formDataList.get(x).getValue();
 			form = database.getFormById(formID);
 			
-			//TODO Uncomment these when implemented. 
-			//URL = form.meta.url;
-			//list_name = form.meta.listname;
+			URL = form.meta.url;
+			list_name = form.meta.listname;
 			
 			// Attempt the upload
 			response = SharePointDataSource.uploadFormToSharePoint(form, URL, list_name, user_name, password, domain);
