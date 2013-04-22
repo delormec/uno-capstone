@@ -50,8 +50,8 @@
         
         
         <activity
-            android:name="org.habitatomaha.HOST.Activity.ScreenOneRework"
-            android:label="Screen One Rework" >
+            android:name="org.habitatomaha.HOST.Activity.SelectFormActivityOld"
+            android:label="OldNav" >
         </activity>
     </application>
 

@@ -3,7 +3,7 @@ package org.habitatomaha.HOST.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.habitatomaha.HOST.Activity.ScreenOneRework;
+import org.habitatomaha.HOST.Activity.SelectFormActivity;
 import org.habitatomaha.HOST.Model.Error;
 import org.habitatomaha.HOST.Model.Error.Severity;
 import org.habitatomaha.HOST.Model.Form;
@@ -55,9 +55,9 @@ public class UploadAllForms extends AsyncTask
 		Toast.makeText(callingContext, toastString, Toast.LENGTH_LONG).show();
 		
 		
-		if (callingContext instanceof ScreenOneRework)
+		if (callingContext instanceof SelectFormActivity)
 		{
-			ScreenOneRework getMethods = (ScreenOneRework) callingContext;
+			SelectFormActivity getMethods = (SelectFormActivity) callingContext;
 			getMethods.displayTemplateGroups();
 		}
 	}

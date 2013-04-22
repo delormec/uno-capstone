@@ -1,96 +1,90 @@
 package org.habitatomaha.HOST.Activity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import org.habitatomaha.HOST.AsyncTask.DownloadAllTemplates;
-import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
-import org.habitatomaha.HOST.Helper.Utility;
-import org.habitatomaha.HOST.Model.Form;
-import org.habitatomaha.HOST.Model.SpinnerData;
-import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import org.habitatomaha.HOST.R;
+import org.habitatomaha.HOST.AsyncTask.DownloadAllTemplates;
+import org.habitatomaha.HOST.AsyncTask.UploadAllForms;
+import org.habitatomaha.HOST.AsyncTask.UploadForm;
+import org.habitatomaha.HOST.Helper.Utility;
+import org.habitatomaha.HOST.Model.Error;
+import org.habitatomaha.HOST.Model.Form;
+import org.habitatomaha.HOST.Model.LayoutInfo;
+import org.habitatomaha.HOST.Model.SpinnerData;
+import org.habitatomaha.HOST.Model.Error.Severity;
+import org.habitatomaha.HOST.Model.Repository.ErrorLog;
+import org.habitatomaha.HOST.Model.Repository.OSTDataSource;
 
+import android.annotation.SuppressLint;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+
+import android.graphics.Color;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
+
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectFormActivity extends Activity {
-	
-	private Spinner templateSpinner, templateGroupSpinner, formSpinner;
-	private int templ_id;
-	private String templ_grp;
-	private static final String TAG="MainMenu";
-	private int groupPos, templatePos, formPos = 0;
-	private boolean screenOrientChanged = false;
-	private boolean secondTime = false;
-	public static final String PREFS_NAME = "pref_sharepoint";
-	
-	private DownloadAllTemplates downloadTask;
-	private UploadAllForms uploadTask;
-	
-	void showToast(CharSequence msg){
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-	}
-	@SuppressWarnings("deprecation")
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_menu);
-		
-		if(savedInstanceState == null){
-			startPopulateSpinners();
-		}
-		else{
-			
-			if(savedInstanceState.containsKey("groupPos")){
-				groupPos = savedInstanceState.getInt("groupPos");
-				Log.v(TAG, "Template group position: " + groupPos);
-				//templateGroupSpinner.setSelection(groupPos);
-			}
-			if(savedInstanceState.containsKey("templatePos"	)){
-				templatePos = savedInstanceState.getInt("templatePos");
-				Log.v(TAG,"Template position: " + templatePos);
-				//templateSpinner.performClick();
-				//templateSpinner.setSelection(templatePos);
-			}
-			if(savedInstanceState.containsKey("formPos")){
 
-				formPos = savedInstanceState.getInt("formPos");
-				Log.v(TAG,"Form position: " + formPos);
-				//formSpinner.setSelection(formPos);
-			}
-			
-			screenOrientChanged = true;
-			//templateGroupSpinner.setSelection(groupPos);
-			//templateSpinner.setSelection(templatePos);
-			//formSpinner.setSelection(formPos);
-		}
+
+@SuppressLint("NewApi")
+
+public class SelectFormActivity extends Activity
+{
+	private static final int ALL_GROUPS_ALL_FORMS = -1111;
+	private static final int ONE_GROUP_ALL_FORMS = -111;
+	public static final int GROUPS = 0;
+	public static final int TEMPLATES = 1;
+	public static final int FORMS = 2;
+	
+	
+	private static String userName;						// The name of the current user
+	private OSTDataSource database;						// An accessor for the SQLite database
+	private int currentView;							// Indicated the current view
+	private View[] viewStack = new View[3];
+	private String[] titles = new String[3];			// For the navigation String at the top		
+	private LayoutInfo[] status = new LayoutInfo[3];	// For recovery states
+	
+	private DownloadAllTemplates downloadTask;	// For managing "DownloadAllTemplates"
+	private UploadAllForms uploadTask;			// For managing "UploadAllForms"
+	
+	
+	private Bundle pauseState;					// For recovering in onResume()
+	
+
+	/*---------- BEGIN OVERRIDE METHODS ----------*/
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
 		
-		((Button) findViewById(R.id.navbar_home_button)).setBackgroundColor(Color.parseColor("#66CCFF"));
-		((Button) findViewById(R.id.navbar_edit_button)).setBackgroundColor(Color.parseColor("#888888"));
-		((Button) findViewById(R.id.navbar_submit_button)).setBackgroundColor(Color.parseColor("#888888"));
 		
-		startPopulateSpinners();
+		database = new OSTDataSource(this);		
 		
-		
-		// Retrieve the task info
+		// Restore the task info
 		AsyncTask task = (AsyncTask) getLastNonConfigurationInstance();
 		if (task != null)
 		{
@@ -106,24 +100,100 @@ public class SelectFormActivity extends Activity {
 				uploadTask.rebuild(this);
 			}
 		}
+		
+		
+		// Restore Activity
+		if (savedInstanceState != null)
+		{	
+			userName = savedInstanceState.getString("userName");
+			
+	
+			// Retrieve information about the Views
+			status[GROUPS] = (LayoutInfo) savedInstanceState.getSerializable("statusGroups");
+			status[TEMPLATES] = (LayoutInfo) savedInstanceState.getSerializable("statusTemplates");
+			status[FORMS] = (LayoutInfo) savedInstanceState.getSerializable("statusForms");	
+			
+			
+			// Rebuild each of the Views
+			titles = savedInstanceState.getStringArray("titles");
+			
+			viewStack[GROUPS] = buildGroupsView();
+			
+			if (status[TEMPLATES] != null)
+			{
+				viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
+			}
+			if (status[FORMS] != null)
+			{
+				viewStack[FORMS] = buildFormsView(status[FORMS].templateID, status[FORMS].groupName);
+			}
+			
+			
+			// Set View to the saved currentView
+			currentView = savedInstanceState.getInt("currentView");		
+			setContentView(viewStack[currentView]);
+		}
+		// New instance of Activity
+		else
+		{	
+			titles[0] = "Template Groups";
+					
+			displayTemplateGroups();		
+		}
 	}
+	
 	
 	@Override
-	public void onSaveInstanceState(Bundle savedInstanceState)
+	protected void onSaveInstanceState(Bundle savedInstanceState)
 	{
 		super.onSaveInstanceState(savedInstanceState);
+
+		savedInstanceState.putString("userName", userName);
+		savedInstanceState.putStringArray("titles", titles);
 		
+		savedInstanceState.putInt("currentView", currentView);
 		
-		int groupPos = templateGroupSpinner.getSelectedItemPosition();
-		int templatePos = templateSpinner.getSelectedItemPosition();
-		int formPos = formSpinner.getSelectedItemPosition();
-		
-		savedInstanceState.putInt("groupPos", groupPos);
-		savedInstanceState.putInt("templatePos", templatePos);
-		savedInstanceState.putInt("formPos", formPos);
-		
+		savedInstanceState.putSerializable("statusGroups", status[GROUPS]);
+		savedInstanceState.putSerializable("statusTemplates", status[TEMPLATES]);
+		savedInstanceState.putSerializable("statusForms", status[FORMS]);			
 	}
 	
+	
+	
+	@Override
+	public void onBackPressed()
+	{
+		switch (currentView)
+		{		
+			case GROUPS:
+				// Go back to home
+				this.finish();
+				break;
+				
+			case TEMPLATES:
+				// Go back to groups
+				viewStack[GROUPS] = buildGroupsView();
+				setContentView(viewStack[GROUPS]);
+				currentView = GROUPS;
+				break;
+				
+			case FORMS:
+				// Go back to templates
+				viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
+				setContentView(viewStack[TEMPLATES]);
+				currentView = TEMPLATES;
+				break;
+		}
+	}
+	
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+		return true;
+	}
 	
 	
 	
@@ -163,292 +233,1008 @@ public class SelectFormActivity extends Activity {
 	
 	
 	
-	
-	/** Populates the first spinner with a list of template groups.
-	 *  Sets a listener to the spinner to handle input selections.
-	 */
-	public void populateTemplateGroupSpinner() {
-		templateGroupSpinner = (Spinner)findViewById(R.id.typeMenu);
-		List<String> templateGroupList = new ArrayList<String>();
-		
-		// Connect to the database and get a list of all of the templates corresponding to the group.
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		templateGroupList = ostDS.getAllTemplateGroups();
-		ostDS.close();
-		
-		// Add a blank entry into the beginning of the templateList
-		templateGroupList.add(0, "All Groups");
-		
-		// Fill the drop down boxes with the templates.
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, templateGroupList);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		templateGroupSpinner.setAdapter(dataAdapter);
-		
-		if(screenOrientChanged){
-			templateGroupSpinner.setSelection(groupPos);
-			Log.v(TAG, "Template group changed to " + groupPos);
-		}
-
-	}
-	
-	/** Adds a listener to the first spinner handling any changes to the selected item in the spinner.
-	 *  Populates template spinner based on the selection.
-	 */
-	public void addTemplateGroupSpinnerListener() {
-		templateGroupSpinner = (Spinner)findViewById(R.id.typeMenu);
-		templateGroupSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
-				
-				if(!secondTime){
-					String templateGroup = parent.getItemAtPosition(pos).toString();
-					
-					if(pos == 0) //If selection is "AllGroups", populate templateSpinner with all templates.
-					{
-						populateTemplateSpinner();
-						templ_grp = "";
-					}
-					else // Populate templateSpinner with filtered results by template group.
-					{
-						populateTemplateSpinner(templateGroup);
-						templ_grp = templateGroup;
-					}
-				
-					addTemplateSpinnerListener();
-					
-				}
-				secondTime = false;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				
-			}
-			
-		});
-	}
-	
-	/**
-	 * Refreshes spinners when you return to this activity from any other activity.
-	 * This seems to work as I intended.
-	 */
 	@Override
-	public void onResume()
+	protected void onPause()
+	{
+		super.onPause();
+		
+		pauseState = new Bundle();
+		
+		pauseState.putString("userName", userName);
+		
+		pauseState.putSerializable("statusGroups", status[GROUPS]);
+		pauseState.putSerializable("statusTemplates", status[TEMPLATES]);
+		pauseState.putSerializable("statusForms", status[FORMS]);
+		
+		pauseState.putStringArray("titles", titles);
+		pauseState.putInt("currentView", currentView);
+	}
+	
+	
+	
+	@Override
+	protected void onResume()
 	{
 		super.onResume();
-		startPopulateSpinners();
-	
-	}
-	
-	/** Populates the second spinner with a list of all templates..
-	 *  Sets a listener on the spinner to handle user selections.
-	 */
-	public void populateTemplateSpinner(){
-		templateSpinner = (Spinner)findViewById(R.id.templateMenu);
-		List<SpinnerData> templateList = new ArrayList<SpinnerData>();
 		
-		// Connect to the database and get a list of all of the template groups.
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		templateList = ostDS.getAllTemplateInfo();
-		ostDS.close();
-		
-		// Add a "All Forms" selection.
-		SpinnerData allForms = new SpinnerData("All Forms", -1);
-		templateList.add(0,allForms);
-
-		
-		// Fill the drop down boxes with the template groups.
-		ArrayAdapter<SpinnerData> dataAdapter = new ArrayAdapter<SpinnerData>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		templateSpinner.setAdapter(dataAdapter);
-		
-		Log.v(TAG, "TEMPLATE SPINNER BEFORE = " + templateSpinner.getSelectedItemPosition());
-		
-		if(screenOrientChanged){
-			templateSpinner.setSelection(templatePos);
-			Log.v(TAG, "Template spinner changed to "+ templatePos);
-		}
-		
-		Log.v(TAG, "TEMPLATE SPINNER AFTER = " + templateSpinner.getSelectedItemPosition());
-	}
-	
-	/** Populates the second spinner with a list of templates filtered by templateGroup.
-	 *  Sets a listener on the second spinner to handle user selection.
-	 * @param templateGroup
-	 */
-	public void populateTemplateSpinner(String templateGroup) {
-		
-		templateSpinner = (Spinner)findViewById(R.id.templateMenu);
-		List<SpinnerData> templateList = new ArrayList<SpinnerData>();
-		
-		// Connect to the database and get a list of all of the template groups.
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		templateList = ostDS.getAllTemplateInfoByGroup(templateGroup);
-		ostDS.close();
-		
-		SpinnerData allForms = new SpinnerData("All " + templateGroup + " Forms", -1);
-		templateList.add(0,allForms);
-		
-		// Fill the drop down boxes with the template groups.
-		ArrayAdapter<SpinnerData> dataAdapter = new ArrayAdapter<SpinnerData>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		templateSpinner.setAdapter(dataAdapter);
-		
-		Log.v(TAG, "TEMPLATE SPINNER BEFORE = " + templateSpinner.getSelectedItemPosition());
-		
-		if(screenOrientChanged){
-			templateSpinner.setSelection(templatePos);
-			Log.v(TAG, "Template spinner changed to " + templatePos);
-		}
-		
-		Log.v(TAG, "TEMPLATE SPINNER AFTER = " + templateSpinner.getSelectedItemPosition());
-	}
-	
-	/** Adds a listener to the second spinner handling any changes to the selected item in the spinner.
-	 *  Populates form spinner based on the selection.
-	 */
-	public void addTemplateSpinnerListener() {
-		templateSpinner = (Spinner)findViewById(R.id.templateMenu);
-		templateSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
-				if(!secondTime){
-						//String template = parent.getItemAtPosition(pos).toString();
-						SpinnerData template = (SpinnerData) parent.getItemAtPosition(pos);
-						templ_id = template.getValue();
-						
-						if(templ_id == -1) //If All ... Forms is selected, populate "all" forms
-						{
-							populateFormSpinner();
-						}
-						else //Populate forms based on the template id.
-						{
-							populateFormSpinner(template.getValue());
-						}
-						addFormSpinnerListener();
-					}
+		if (pauseState != null)
+		{
+			userName = pauseState.getString("userName");
+			
+			
+			// Retrieve information about the Views
+			status[GROUPS] = (LayoutInfo) pauseState.getSerializable("statusGroups");
+			status[TEMPLATES] = (LayoutInfo) pauseState.getSerializable("statusTemplates");
+			status[FORMS] = (LayoutInfo) pauseState.getSerializable("statusForms");	
+			
+			
+			// Rebuild each of the Views
+			titles = pauseState.getStringArray("titles");
+			
+			viewStack[GROUPS] = buildGroupsView();
+			
+			if (status[TEMPLATES] != null)
+			{
+				viewStack[TEMPLATES] = buildTemplatesView(status[TEMPLATES].groupName);
 			}
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
+			if (status[FORMS] != null)
+			{
+				viewStack[FORMS] = buildFormsView(status[FORMS].templateID, status[FORMS].groupName);
 			}
 			
-		});
-		
+			
+			// Set View to the saved currentView
+			currentView = pauseState.getInt("currentView");		
+			setContentView(viewStack[currentView]);
+			
+			pauseState = null;
+		}
 	}
 	
-	/** Populates the third spinner with either all forms or filtered on template group.
-	 *  Adds a listener to spinner to handle user selections.
+	/*---------- END OVERRIDE METHODS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN DISPLAY METHODS ----------*/
+	
+	/**
+	 * Displays all the template groups and the sign-in
 	 */
-	public void populateFormSpinner() {
-		formSpinner = (Spinner)findViewById(R.id.formMenu);
+	public void displayTemplateGroups()
+	{
+		// Build View
+		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
+		
+		// Store the relevant information about the View for rebuilding
+		LayoutInfo groupsLayoutInfo = new LayoutInfo();
+		status[GROUPS] = groupsLayoutInfo;
+				
+		// Set View
+		viewStack[GROUPS] = groupsView;
+		setContentView(viewStack[GROUPS]);
+		currentView = GROUPS;
+	}
+	
+		
+	
+	/**
+	 * Displays all templates for a group
+	 * 
+	 * @param groupName	The name of the group of templates to display
+	 */
+	public void displayGroupTemplates(final String groupName)
+	{
+		// Build View
+		RelativeLayout templatesView = (RelativeLayout) buildTemplatesView(groupName);
+		
+		// Store the relevant information about the View for rebuilding
+		LayoutInfo templatesLayoutInfo = new LayoutInfo();
+		templatesLayoutInfo.groupName = groupName;
+		
+		status[TEMPLATES] = templatesLayoutInfo;
+		
+		// Set View
+		viewStack[TEMPLATES] = templatesView;
+		setContentView(viewStack[TEMPLATES]);
+		currentView = TEMPLATES;	
+	}
+
+	
+
+	/**
+	 * Displays all the forms for a given template
+	 * 
+	 * @param templateID	The ID of the template whose forms to display
+	 * @param templateGroup	The name of the template group
+	 */
+	public void displayTemplateForms(int templateID, String templateGroup)
+	{	
+		// Build the View
+		RelativeLayout formsView = (RelativeLayout) buildFormsView(templateID, templateGroup);
+		
+		// Store the relevant information about the View for rebuilding
+		LayoutInfo formsLayoutInfo = new LayoutInfo();
+		formsLayoutInfo.templateID = templateID;
+		formsLayoutInfo.groupName = templateGroup;
+		
+		status[FORMS] = formsLayoutInfo;
+		
+		// Set the View
+		viewStack[FORMS] = formsView;
+		setContentView(viewStack[FORMS]);
+		currentView = FORMS;
+	}
+	
+	/*---------- END DISPLAY METHODS ----------*/
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN VIEW BUILDER METHODS ----------*/
+	
+	/**
+	 * Builds a View of all the template groups
+	 * 
+	 * @return	The View of the template groups layout
+	 */
+	public View buildGroupsView()
+	{		
+		// Get the template information
+		List<String> templateGroupList = new ArrayList<String>();
+		
+		database.open();
+		templateGroupList = database.getAllTemplateGroups();		
+		templateGroupList.add(0, "All Templates");
+		database.close();
+		
+		
+		// Pre-declare the Views/IDs for RelativeLayout
+		TextView navText = new TextView(this);
+		navText.setId(1);
+		
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.setId(2);
+		
+		LinearLayout signInView = new LinearLayout(this);
+		signInView.setId(3);
+		
+		RelativeLayout.LayoutParams relParams;
+		LinearLayout.LayoutParams linParams;
+
+			
+		
+		// Sign-in View
+		signInView.setOrientation(LinearLayout.VERTICAL);
+		
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		
+		signInView.setLayoutParams(relParams);
+
+		
+		
+		// Display the userName/sign-in View
+		if (userName != null && userName.compareTo("") != 0)
+		{				
+			TextView nameText = new TextView(this);
+			nameText.setText(String.format("Signed in as: %s   ", userName));
+			nameText.setTextSize(20);
+			
+			// Change name button
+			Button changeButton = new Button(this);
+			changeButton.setText("Change");
+			changeButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{				
+														AlertDialog.Builder signInAlert = createSignInAlert();
+														signInAlert.show();
+													}
+												}
+											);
+			
+			// Logout button
+			Button logoutButton = new Button(this);
+			logoutButton.setText("Log out");
+			logoutButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{				
+														userName = null;
+														displayTemplateGroups();
+													}
+												}
+											);
+			
+			signInView.addView(nameText);
+			signInView.addView(changeButton);
+			signInView.addView(logoutButton);
+		}
+		// Display the sign-in View
+		else
+		{
+			//TextView nameText = new TextView(this);
+			//nameText.setText("Not signed in   ");
+			//nameText.setTextSize(20);
+			
+			Button signInButton = new Button(this);
+			signInButton.setText("Sign in");
+			signInButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{			
+														AlertDialog.Builder signInAlert = createSignInAlert();
+														signInAlert.show();
+													}
+												}
+											);
+			
+			//signInView.addView(nameText);
+			signInView.addView(signInButton);
+		}
+		
+		
+		
+		
+		
+		// Begin the groups layout
+		LinearLayout layoutOfGroups = new LinearLayout(this);
+		layoutOfGroups.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		layoutOfGroups.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		
+		// Create a view for each template group
+		for (final String entry : templateGroupList)
+		{	
+			LinearLayout groupView = new LinearLayout(this);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 20, 25, 0);
+			groupView.setLayoutParams(linParams);
+			
+			groupView.setBackgroundColor(Color.parseColor("#CCCCCC"));
+			groupView.setOrientation(LinearLayout.VERTICAL);
+			
+			
+			
+			
+			// Group name
+			TextView groupName = new TextView(this);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 0, 0, 0);
+			groupName.setLayoutParams(linParams);
+			
+			groupName.setTextSize(35);
+			groupName.setTextColor(Color.parseColor("#0099CC"));
+			
+			
+			// "All Templates" Group
+			if (entry.compareToIgnoreCase("all templates") == 0)
+			{
+				groupName.setText("View All Templates");
+				groupName.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				groupView.setOnClickListener(	new View.OnClickListener()
+													{
+														public void onClick(View view)
+														{
+															titles[1] = String.format("All Groups' Templates");
+															displayGroupTemplates("all templates");
+														}
+													}
+												);
+				
+				
+				// "-OR-"
+				TextView orView = new TextView(this);
+				orView.setText("-OR-");
+				orView.setTextSize(20);
+				orView.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				// "Choose a Template Group"
+				TextView chooseView = new TextView(this);
+				chooseView.setText("Choose a Template Group");
+				chooseView.setTextSize(20);
+				chooseView.setGravity(Gravity.CENTER_HORIZONTAL);
+				
+				
+				// Add the views and continue to next iteration
+				groupView.addView(Utility.lineBreakView(this));
+				groupView.addView(groupName);
+				groupView.addView(Utility.lineBreakView(this));
+				
+				layoutOfGroups.addView(groupView);
+				layoutOfGroups.addView(orView);
+				layoutOfGroups.addView(chooseView);
+				
+				continue;
+			}
+			// Normal Template Group
+			else
+			{
+				groupName.setText(entry);
+				
+				groupView.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														titles[1] = String.format("%s templates", entry);
+														displayGroupTemplates(entry);
+													}
+												}					
+											);
+			}
+
+			
+			// Add the Views in vertical order
+			groupView.addView(Utility.lineBreakView(this));
+			groupView.addView(groupName);
+			groupView.addView(Utility.lineBreakView(this));
+			
+			
+			layoutOfGroups.addView(groupView);	
+		}
+		
+		
+				
+		// Navigation text
+		//navText.setText(titles[0]);
+		//navText.setTextSize(30);
+		//navText.setPadding(0, 35, 0, 0);
+		
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, signInView.getId());
+		navText.setLayoutParams(relParams);
+
+		
+		// Put the layout of groupViews into a scrollView
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, signInView.getId());
+		scrollView.setLayoutParams(relParams);
+	
+		scrollView.addView(layoutOfGroups);
+		
+		
+		// Put it all in one wrapping layout
+		RelativeLayout wholeLayout = new RelativeLayout(this);		
+		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
+		wholeLayout.setPadding(25, 25, 25, 0);
+		
+		wholeLayout.addView(signInView);
+		//wholeLayout.addView(navText);
+		wholeLayout.addView(scrollView);		
+		
+		return wholeLayout;
+	}
+	
+	
+	
+	/**
+	 * Builds the View of templates with given group name
+	 * 
+	 * @param groupName	The name of the group
+	 * 
+	 * @return	The View of the templates with group groupName
+	 */
+	public View buildTemplatesView(final String groupName)
+	{
+		List<SpinnerData> templateList;
+		
+		database.open();
+		if (groupName.compareToIgnoreCase("all templates") == 0)
+		{
+			templateList = database.getAllTemplateInfo();
+			
+			// Add "All Forms" to the beginning of list
+			List<SpinnerData> allFormInfo = database.getAllFormInfo();
+			SpinnerData allForms = new SpinnerData(String.format("All Created Forms (%d)", allFormInfo.size()), ALL_GROUPS_ALL_FORMS);
+			templateList.add(0, allForms);
+		}
+		else
+		{
+			// Get the templates from the group
+			templateList = database.getAllTemplateInfoByGroup(groupName);
+			
+			// Add "All Forms" to beginning of list
+			List<SpinnerData> templateForms = database.getAllFormInfoByTemplateGroup(groupName);
+			SpinnerData allForms = new SpinnerData(String.format("All %s Forms (%d)", groupName, templateForms.size()), ONE_GROUP_ALL_FORMS);
+			templateList.add(0, allForms);
+		}
+		database.close();
+
+		
+		
+		// Pre-declare the Views/IDs for RelativeLayout
+		TextView navText = new TextView(this);
+		navText.setId(1);
+		
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.setId(2);
+		
+		RelativeLayout.LayoutParams relParams;
+		LinearLayout.LayoutParams linParams;
+		
+		
+		// Begin the layout
+		LinearLayout layoutOfTemplates = new LinearLayout(this);
+		layoutOfTemplates.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layoutOfTemplates.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		
+		// Create a View for each template
+		for (final SpinnerData templateData : templateList)
+		{			
+			LinearLayout templateView = new LinearLayout(this);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 10, 25, 10);
+			templateView.setLayoutParams(linParams);
+			
+			templateView.setBackgroundColor(Color.parseColor("#CCCCCC"));
+			templateView.setOrientation(LinearLayout.VERTICAL);
+			
+
+
+			
+			// Template name
+			TextView templateName = new TextView(this);
+			
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 0, 0, 0);
+			templateName.setLayoutParams(linParams);
+			
+			templateName.setTextSize(35);
+			templateName.setTextColor(Color.parseColor("#0099CC"));
+			
+			templateName.setText(templateData.getSpinnerText());
+			
+			
+
+			
+			// "Create New" and "Edit Existing"
+			LinearLayout buttons = new LinearLayout(this);
+			// No buttons if "all forms"
+			if (templateData.getValue() == ONE_GROUP_ALL_FORMS)
+			{
+				templateView.setOnClickListener(	new View.OnClickListener()
+													{
+														public void onClick(View view)
+														{
+															titles[2] = String.format("All %s forms", groupName);
+															displayTemplateForms(ONE_GROUP_ALL_FORMS, groupName);
+														}
+													}					
+												);
+				templateName.setTextColor(Color.parseColor("#0099CC"));
+			}
+			else if (templateData.getValue() == ALL_GROUPS_ALL_FORMS)
+			{
+				templateView.setOnClickListener(	new View.OnClickListener()
+													{
+														public void onClick(View view)
+														{
+															titles[2] = "All Groups' Forms";
+															displayTemplateForms(ALL_GROUPS_ALL_FORMS, null);														
+														}
+													}					
+												);
+				templateName.setTextColor(Color.parseColor("#0099CC"));
+			}
+			else
+			{
+				// Begin "buttons view"				
+				buttons.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+				buttons.setOrientation(LinearLayout.HORIZONTAL);
+				
+	
+				// New button
+				Button newButton = new Button(this);
+				newButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+				newButton.setText("Create New");
+				newButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														database.open();
+														
+														// Create a new Form from the template
+														Form template = database.getTemplateById(templateData.getValue());
+														long formID = database.addForm(template);						
+														Form form = database.getFormById(formID);
+														form.meta.form_id = formID;
+														
+														
+														// Store filledDate and filledBy
+														Calendar cal = Calendar.getInstance();
+														
+														if (form.meta.filledDateFieldType.compareToIgnoreCase("date") == 0)
+														{
+															form.meta.filledDate = String.format("%d/%d/%d", cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR));
+														}
+														else
+														{
+															SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.US);
+															form.meta.filledDate = sdf.format(cal.getTime());						
+														}
+														
+														form.meta.filledBy = userName;
+														
+														
+														database.updateForm(form);
+														
+														// Pass the new Form to the EditFormActivity
+														Intent intent = new Intent(getInstance(), EditFormActivity.class);
+														
+														intent.putExtra("formID", formID);	
+														intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+																	
+														startActivity(intent);
+														
+														database.close();
+													}
+												}					
+											);
+				
+				
+				// Edit button
+				Button editButton = new Button(this);
+				editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+				editButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														titles[2] = String.format("%s Forms", templateData.getSpinnerText());
+														displayTemplateForms(templateData.getValue(), null);
+													}
+												}					
+											);
+				
+				// Add the button views
+				buttons.addView(newButton);
+
+				database.open();
+				List<SpinnerData> template_formInfo = database.getAllFormInfoByTemplateId(templateData.getValue());
+				database.close();
+				if (template_formInfo.size() > 0)
+				{
+					editButton.setText(String.format("Edit Existing (%d)", template_formInfo.size()));
+					buttons.addView(editButton);
+				}
+			}
+		 			
+			
+			
+			// Add Views in vertical order
+			templateView.addView(Utility.lineBreakView(this));
+			templateView.addView(templateName);				
+			templateView.addView(buttons);
+			templateView.addView(Utility.lineBreakView(this));
+						
+			layoutOfTemplates.addView(templateView);	
+		}
+		
+
+		
+		// Navigation text
+		navText.setText(titles[1]);
+		navText.setTextSize(30);
+
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		navText.setLayoutParams(relParams);
+
+
+		// Put the layout of groupViews into a scrollView
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		scrollView.setLayoutParams(relParams);
+
+		scrollView.addView(layoutOfTemplates);
+
+
+		// Put it all in one wrapping layout
+		RelativeLayout wholeLayout = new RelativeLayout(this);		
+		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
+
+		wholeLayout.addView(navText);
+		wholeLayout.addView(scrollView);	
+
+		return wholeLayout;
+	}
+	
+	
+	
+	/**
+	 * Builds a View of the Forms with given templateID/templateGroup
+	 * 
+	 * @param templateID	The ID of the template
+	 * @param templateGroup	The group of the template
+	 * 
+	 * @return	A View of the Forms for templateID/templateGroup
+	 */
+	public View buildFormsView(int templateID, String templateGroup)	 
+	{
 		List<SpinnerData> formList = new ArrayList<SpinnerData>();
 		
-		// Connect to the database and get a list of all of the forms corresponding to the selected template.
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		if( templ_grp == "") // If there is no template group selected, get all Forms.
+		// Get the forms from the template
+		database.open();
+		if (templateID == ONE_GROUP_ALL_FORMS)
 		{
-			formList = ostDS.getAllFormInfo();
+			formList = database.getAllFormInfoByTemplateGroup(templateGroup);
 		}
-		else // Filter groups based on selected template group.
+		else if (templateID == ALL_GROUPS_ALL_FORMS)
 		{
-			formList = ostDS.getAllFormInfoByTemplateGroup(templ_grp);
+			formList = database.getAllFormInfo();
 		}
-		ostDS.close();
-		
-		//Should not have an option to create a new form because no template is selected
-		
-		// Fill the drop down boxes with completed forms.
-		ArrayAdapter<SpinnerData> dataAdapter = new ArrayAdapter<SpinnerData>(this, android.R.layout.simple_spinner_dropdown_item, formList);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		formSpinner.setAdapter(dataAdapter);
-		
-		Log.v(TAG, "FORM SPINNER BEFORE = " + formSpinner.getSelectedItemPosition());
-		
-		if(screenOrientChanged){
-			formSpinner.setSelection(formPos);
-			Log.v(TAG, "Form spinner changed to " + formPos);
-			screenOrientChanged = false;
-			secondTime = true;
+		else
+		{
+			formList = database.getAllFormInfoByTemplateId(templateID);
 		}
+		database.close();
 		
-		Log.v(TAG, "FORM SPINNER AFTER = " + formSpinner.getSelectedItemPosition());
-
 		
-	}
-	/** Populates the form spinner based on the selected template_id.
-	 *  Adds a listener to the forms spinner.
-	 * @param template_id
-	 */
-	public void populateFormSpinner(int template_id) {
-		formSpinner = (Spinner)findViewById(R.id.formMenu);
-		List<SpinnerData> templateList = new ArrayList<SpinnerData>();
 		
-		// Connect to the database and get a list of all of the forms corresponding to the selected template.
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		templateList = ostDS.getAllFormInfoByTemplateId(template_id);
-		ostDS.close();
+		// Pre-declare the Views/IDs for RelativeLayout
+		TextView navText = new TextView(this);
+		navText.setId(1);
+
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.setId(2);
+
+		RelativeLayout.LayoutParams relParams;
+		LinearLayout.LayoutParams linParams;
 		
-		//Add option to create new form.
-		SpinnerData createNew = new SpinnerData("Create new form...", -1);
-		templateList.add(0,createNew);
-
-		// Fill the drop down boxes with completed forms.
-		ArrayAdapter<SpinnerData> dataAdapter = new ArrayAdapter<SpinnerData>(this, android.R.layout.simple_spinner_dropdown_item, templateList);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		formSpinner.setAdapter(dataAdapter);
 		
-		Log.v(TAG, "FORM SPINNER BEFORE = " + formSpinner.getSelectedItemPosition());
 		
-		if(screenOrientChanged){
-			formSpinner.setSelection(formPos);
-			Log.v(TAG, "Form spinner changed to " + formPos);
-			screenOrientChanged = false;
-			secondTime = true;
-		}
-
-		Log.v(TAG, "FORM SPINNER AFTER = " + formSpinner.getSelectedItemPosition());
+		// Begin the layout
+		LinearLayout layoutOfForms = new LinearLayout(this);
+		layoutOfForms.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+		layoutOfForms.setOrientation(LinearLayout.VERTICAL);
 		
-		//SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-		String sUser = settings.getString("sharepoint_username", "blah");
 		
-
-
-	}
-
-	/** Adds a listener to the third spinner handling any changes to the selected item in the spinner.
-	 *  Will pass the selected form value to the next screen.
-	 */
-	public void addFormSpinnerListener() {
-		formSpinner = (Spinner)findViewById(R.id.formMenu);
-		formSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
-					
-					String form = parent.getItemAtPosition(pos).toString();	
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-			}
+		
+		// Create a layout for each form
+		for (final SpinnerData formData : formList)
+		{
+			LinearLayout formView = new LinearLayout(this);
 			
-		});
-	}
+			linParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			linParams.setMargins(25, 20, 25, 0);
+			formView.setLayoutParams(linParams);
+			
+			formView.setBackgroundColor(Color.parseColor("#CCCCCC"));
+			formView.setOrientation(LinearLayout.VERTICAL);
+			
+			
+			// Form name
+			TextView formName = new TextView(this);
+			formName.setText(formData.getSpinnerText());
+			formName.setTextSize(35);
+			formName.setTextColor(Color.parseColor("#0099CC"));
+			
+			
+			// Begin "buttons view"
+			LinearLayout buttons = new LinearLayout(this);		
+			buttons.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			buttons.setOrientation(LinearLayout.HORIZONTAL);
+			
+			
+			// Edit button
+			Button editButton = new Button(this);
+			editButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+			editButton.setText("Edit");
+			
+			editButton.setOnClickListener(	new View.OnClickListener()
+											{
+												public void onClick(View view)
+												{
+													database.open();
+													
+													// Pass the form to the EditFormActivity
+													Intent intent = new Intent(getInstance(), EditFormActivity.class);
+													
+													intent.putExtra("formID", (long) formData.getValue());	
+													intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+																
+													startActivity(intent);
+													
+													database.close();
+												}
+											}					
+										);
+			
+			
+			// Discard button
+			Button discardButton = new Button(this);
+			discardButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+			discardButton.setText("Discard");
+			discardButton.setOnClickListener(	new View.OnClickListener()
+												{
+													public void onClick(View view)
+													{
+														discardConfirm(view, formData.getValue());
+													}
+												}					
+											);
+			
+			
+			// Upload button
+			Button uploadButton = new Button(this);
+			uploadButton.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+			uploadButton.setText("Upload");
+			uploadButton.setOnClickListener(new View.OnClickListener()
+											{
+												public void onClick(View view)
+												{
+													upload(view, formData.getValue());
+												}
+											}					
+										);
 
+
+			
+			// Add the Views in vertical order
+			formView.addView(Utility.lineBreakView(this));
+			formView.addView(formName);
+			
+			buttons.addView(editButton);
+			buttons.addView(discardButton);
+			buttons.addView(uploadButton);
+			
+			formView.addView(buttons);
+			formView.addView(Utility.lineBreakView(this));
+			
+			layoutOfForms.addView(formView);
+		}
+			
+		
+		// Navigation text
+		navText.setText(titles[2]);
+		navText.setTextSize(30);
+
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		navText.setLayoutParams(relParams);
+
+
+		// Put the layout of groupViews into a scrollView
+		relParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		relParams.addRule(RelativeLayout.BELOW, navText.getId());
+		scrollView.setLayoutParams(relParams);
+
+		scrollView.addView(layoutOfForms);
+
+
+		// Put it all in one wrapping layout
+		RelativeLayout wholeLayout = new RelativeLayout(this);		
+		wholeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		wholeLayout.setBackgroundColor(Color.parseColor("#EEEEEE"));
+
+		wholeLayout.addView(navText);
+		wholeLayout.addView(scrollView);	
+
+		return wholeLayout;
+	}
+	
+	/*---------- END VIEW BUILDER METHODS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN METHODS THAT IMPLEMENT VARIOUS BUTTONS ----------*/
+	
+	/**
+	 * Confirms the user's intent discard before discarding the Form
+	 * 
+	 * @param view	The View that called this method
+	 */
+	private void discardConfirm(final View view, final int formID)
+	{
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Confirm Discard");
+		adb.setMessage("Are you sure you want to discard this form?");
+		adb.setCancelable(false);
+		adb.setPositiveButton("Discard", 
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog, int id)
+									{
+										discard(view, formID);								
+										return;
+									}
+								});
+		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
+										{
+											@Override
+											public void onClick(DialogInterface dialog, int id)
+											{
+												return;
+											}
+										});
+		
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
+		
+		return;
+	}
+		
+	
+	
+	/**
+	 * Removes a Form from the database
+	 * 
+	 * @param formID	The ID of the form to remove
+	 */
+	private void discard(View view, long formID)
+	{
+		database.open();
+		database.removeFormById(formID);
+		database.close();
+		
+		
+		// Remove the view of the form
+		if (view != null)
+		{
+			View buttons = (LinearLayout) view.getParent();
+			View formView = (LinearLayout) buttons.getParent();										
+			((LinearLayout) formView.getParent()).removeView(formView);
+		}
+		
+		
+		Toast.makeText(this, "Form removed from device", Toast.LENGTH_SHORT).show();	
+		return;
+	}
+	
+	
+
+	/**
+	 * Attempts to upload the Form to SharePoint.
+	 * 
+	 * @param view The View that called this method
+	 */
+	public void upload(final View view, final long formID)
+	{
+		//If there is no connectivity, display a popup and return
+		if (!Utility.isNetworkAvailable(this))
+		{
+			Utility.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
+		AlertDialog.Builder adb = new AlertDialog.Builder(this);
+		adb.setTitle("Confirm Upload");
+		adb.setMessage("If the upload is successful, the form will be removed from your device.");
+		adb.setCancelable(false);
+		adb.setPositiveButton("Upload", 
+								new DialogInterface.OnClickListener()
+								{
+									@Override
+									public void onClick(DialogInterface dialog, int id)
+									{
+										//Had to suppress this warning, not sure what the deal is
+										@SuppressWarnings("unchecked")
+										AsyncTask<Form, Void, String[]> task = new UploadForm(getInstance());
+										
+										database.open();
+										Form form = database.getFormById(formID);
+										database.close();
+												
+										//Start the task
+										task.execute(form);
+										try {
+											//Wait for the task to finish and get its response
+											String[] response = task.get();											
+											Toast.makeText(getInstance(), response[1], Toast.LENGTH_LONG).show();
+
+											//response of -1 == error
+											//response of 0 == success
+											if (response[0].compareTo("0") == 0)
+											{
+												discard(view, formID);
+											}
+											else
+											{
+												// Log the upload error
+												ErrorLog.log(getInstance(), new Error("Form Upload Error", response[1], Severity.Minor));
+											}
+											
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} catch (ExecutionException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										
+										return;
+									}
+								});
+		adb.setNegativeButton("Wait", new DialogInterface.OnClickListener()
+										{
+											@Override
+											public void onClick(DialogInterface dialog, int id)
+											{
+												return;
+											}
+										});
+		
+		AlertDialog alertDialog = adb.create();
+		alertDialog.show();
+		
+		return;
+	}
+	
+	/*---------- END METHODS THAT IMPLEMENT VARIOUS BUTTONS ----------*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*---------- BEGIN MENU BUTTON METHODS ----------*/
+	
+	/**
+	 * Opens the ErrorLog for display (launches new Activity)
+	 * 
+	 * @param item	The MenuItem that called this method
+	 */
+	public void openErrorLog(MenuItem item)
+	{
+		Intent intent = new Intent(this, ErrorLogActivity.class);
+		startActivity(intent);
+	}
+		
+	
+	
+	/**
+	 * Begins the Download Task
+	 * 
+	 * @param item	The MenuItem that called this method
+	 */
+	@SuppressWarnings("unchecked")
+	public void startFormDownload(MenuItem item)
+	{
+		//If there is no connectivity, display a popup and return
+		if (!Utility.isNetworkAvailable(this))
+		{
+			Utility.displayNetworkUnavailableDialog(this);
+			return;
+		}
+		
+		
+		downloadTask = new DownloadAllTemplates(this);
+		downloadTask.execute(this);
+	}
+	
+	
+	
 	/**
 	 * Called from the menu. <br>
 	 * Launches the task that attempts to upload all forms on the device to SharePoint
@@ -470,282 +1256,69 @@ public class SelectFormActivity extends Activity {
 	
 	
 	
-	@SuppressWarnings("unchecked")
-	public void startFormDownload(MenuItem item)
-	{
-		//If there is no connectivity, display a popup and return
-		if (!Utility.isNetworkAvailable(this))
-		{
-			Utility.displayNetworkUnavailableDialog(this);
-			return;
-		}
-		
-		
-		downloadTask = new DownloadAllTemplates(this);
-		downloadTask.execute(this);
-	}
-	
-	
-	
-	/** Begins population of spinners.
+	/**
+	 * Opens the Settings Activity
 	 * 
+	 * @param item	The MenuItem that called this method
 	 */
-	public void startPopulateSpinners()
-	{
-		populateTemplateGroupSpinner();
-		addTemplateGroupSpinnerListener();
-	}
-	
-	
-	
-	/** Begins population of spinners.
-	 * From button click.
-	 * @param view
-	 */
-	public void startPopulateSpinners(View view)
-	{
-		populateTemplateGroupSpinner();
-		addTemplateGroupSpinnerListener();
-	}
-	
-	
-	
 	public void openSettingsActivity(MenuItem item){
 		Intent intent = new Intent(this, SettingsActivity.class);
 		startActivity(intent);
 	}
 	
-	
-	
-	/*
-	/** Creates a dummy form with the selected template.
-	 *  Works for the most part, errors on templates further down the list.
-	 * @param view
-	 
-	public void createNewForm(View view)
-	{
-		OSTDataSource ostDS = new OSTDataSource(this);
-		ostDS.open();
-		if(templ_id > -1)
-		{	
-			Form f;
-			try
-			{
-				f = ostDS.getTemplateById(templ_id);
-
-				//Set key field.
-				f.questions.get(0).Answer="key"+cntr;
-				cntr++;
-
-				ostDS.addForm(f);
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			
-		}
-		else{
-			showToast("Template id is -1");
-		}
-		ostDS.close();
-		
-		if( templ_id == -1){
-			populateFormSpinner(templ_id);
-		}
-	}
-	*/
+	/*---------- END MENU BUTTON METHODS ----------*/
 	
 	
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-		return true;
-	}
 	
 	
 	
-	/*
-	public boolean onOptionItemSelected(MenuItem item){
-		super.onOptionsItemSelected(item);
-		
-		switch( item.getItemId()){
-		case R.id.download_forms:
-			showToast("Selected Download Forms");
-			//startFormDownload();
-			return true;
-		case R.id.menu_settings:
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			return true;
-		default: 
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	*/
 	
-	
+	/*---------- BEGIN UNCATEGORIZED METHODS ----------*/
 	
 	/**
-	 * Opens the ErrorLog for display (launches new Activity)
+	 * Sets up the Builder for an editText Alert (used to sign in to app)
 	 * 
-	 * @param item	The menu item that called this method
+	 * @return	The Builder for a sign-in editText Alert
 	 */
-	public void openErrorLog(MenuItem item)
+	private AlertDialog.Builder createSignInAlert()
 	{
-		Intent intent = new Intent(this, ErrorLogActivity.class);
-		startActivity(intent);
-	}
-	
-	
-	public void newScreen(View view)
-	{
-		Intent intent = new Intent(this, ScreenOneRework.class);
-		startActivity(intent);
-	}
-	
-	
-	// The following navigate methods are for the implementation of the navbar layout
-	public void navigateHome(View view)
-	{	
-		Intent intent = new Intent(this, SelectFormActivity.class);
-		startActivity(intent);
-		this.finish();
-	}
-	
-	/**
-	 * Attempts to send the selected form to DisplayQuestionActivity. <br>
-	 * Creates a new form to send if "new form" is selected. <br>
-	 * Does nothing if no template or form is selected.
-	 * 
-	 * @param view The View that called this method
-	 */
-	public void navigateEdit(View view)
-	{
-		long formID;
-		long templateID;
-		Form form;
+		// Set up the sign-in EditText Alert
+		AlertDialog.Builder signInAlertBuilder = new AlertDialog.Builder(this);
 		
-		if (formSpinner != null)
-		{
-			if (formSpinner.getSelectedItem() != null)
-			{
-			
-				SpinnerData templateData = (SpinnerData) templateSpinner.getSelectedItem();
-				SpinnerData formData = (SpinnerData) formSpinner.getSelectedItem();
-			
-				formID = formData.getValue();
-				templateID = templateData.getValue();
-				
-				OSTDataSource database = new OSTDataSource(this);
-				database.open();
-			
-				
-				
-				if (formID == -1)
-				{
-					if (templateID != -1)
-					{
-						// Start a new form from the template
-						Form template = database.getTemplateById(templateID);
+		signInAlertBuilder.setTitle("Sign in");
+		signInAlertBuilder.setMessage("Enter your name:");
+		
+		final EditText nameEdit = new EditText(this);
 						
-						// Don't create an instance of an empty template in the database
-						if (template.questions.size() == 0)
-						{
-							Toast.makeText(this, "Template contains no questions.", Toast.LENGTH_SHORT).show();
-							return;
-						}
-						
-						formID = database.addForm(template);
-				
-						form = database.getFormById(formID);
-						form.meta.form_id = formID;
-					}
-					else
-					{
-						Toast.makeText(this, "No template or form selected", Toast.LENGTH_SHORT).show();
-						return;
-					}
-				}
-				else
-				{
-					form = database.getFormById(formID);
-					form.meta.form_id = formID;	
-				}
-
-				database.close();
-				
-				
-				
-				
-				
-				// Pass the form to the EditFormActivity
-				Intent intent = new Intent(this, EditFormActivity.class);
-				
-				intent.putExtra("formID", formID);	
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-							
-				startActivity(intent);
-			}
-			else
-			{
-				Toast.makeText(this, "No template or form selected", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			Toast.makeText(this, "No template or form selected", Toast.LENGTH_SHORT).show();
-		}
+		signInAlertBuilder.setView(nameEdit);
+		signInAlertBuilder.setPositiveButton("Sign in", new DialogInterface.OnClickListener()
+												{
+													public void onClick(DialogInterface dialog, int button)
+													{
+														// Reset the view to reflect the sign-in change
+														userName = nameEdit.getText().toString();
+														displayTemplateGroups();															
+													}
+												}
+											);
+		return signInAlertBuilder;
 	}
 	
+	
+	
 	/**
-	 * Attempts to send the selected form to SubmitFormActivity. <br>
-	 * Does nothing if no form is selected.
+	 * Returns the context of this activity
 	 * 
-	 * @param view The View that called this method
+	 * @return	This
 	 */
-	public void navigateSubmit(View view)
+	public SelectFormActivity getInstance()
 	{
-		Form form;
-		long formID;
-		
-		if (formSpinner != null)
-		{
-			if (formSpinner.getSelectedItem() != null)
-			{
-				SpinnerData formData = (SpinnerData) formSpinner.getSelectedItem();		
-				formID = formData.getValue();
-			
-				if (formID == -1)
-				{}
-				else
-				{
-					// Get the form from the database
-					OSTDataSource database = new OSTDataSource(this);
-					database.open();
-					form = database.getFormById(formID);
-					form.meta.form_id = formID;	
-					database.close();
-				
-					// Send the form to SubmitFormActivity
-					Intent intent = new Intent(this, SubmitFormActivity.class);
-					
-					intent.putExtra("formID", formID);
-					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					
-					startActivity(intent);
-				}
-			}
-			else
-			{
-				Toast.makeText(this, "No form selected", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			Toast.makeText(this, "No form selected", Toast.LENGTH_SHORT).show();
-		}
+		return this;
 	}
+	
+	/*---------- END UNCATEGORIZED METHODS ----------*/
 }
+
+
+
