@@ -1,8 +1,10 @@
 package org.habitatomaha.HOST.Activity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import org.habitatomaha.HOST.R;
@@ -31,6 +33,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -758,7 +761,17 @@ public class ScreenOneRework extends Activity
 														
 														// Store filledDate and filledBy
 														Calendar cal = Calendar.getInstance();
-														form.meta.filledDate = String.format("%d/%d/%d", cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR));
+														
+														if (form.meta.filledDateFieldType.compareToIgnoreCase("date") == 0)
+														{
+															form.meta.filledDate = String.format("%d/%d/%d", cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR));
+														}
+														else
+														{
+															SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.US);
+															form.meta.filledDate = sdf.format(cal.getTime());						
+														}
+														
 														form.meta.filledBy = userName;
 														
 														
