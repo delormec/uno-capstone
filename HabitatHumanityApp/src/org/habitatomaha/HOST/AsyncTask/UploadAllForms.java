@@ -58,7 +58,7 @@ public class UploadAllForms extends AsyncTask
 		if (callingContext instanceof ScreenOneRework)
 		{
 			ScreenOneRework getMethods = (ScreenOneRework) callingContext;
-			getMethods.setView(ScreenOneRework.GROUPS, getMethods.buildGroupsView());
+			getMethods.displayTemplateGroups();
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class UploadAllForms extends AsyncTask
 		this.callingContext = context;
 		
 		progressDialog = new ProgressDialog(callingContext);
-		progressDialog.setMessage("Downloading form templates...");
+		progressDialog.setMessage("Uploading forms...");
 		progressDialog.show();
 	}
 	

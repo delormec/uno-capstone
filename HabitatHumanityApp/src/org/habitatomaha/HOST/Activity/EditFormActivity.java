@@ -420,6 +420,14 @@ public class EditFormActivity extends Activity
 				{
 					if (option.compareTo("") != 0)
 					{
+						// Check if the option has a semicolon
+						if (option.contains(";"))
+						{
+							ErrorLog.log(this, new Error("Question Error", "Answer choices of \"multiple select\" ChoiceQuestions cannot contain a semicolon.", Severity.Critical));
+						}
+						
+						
+						
 						// Add the CheckBox
 						checkBox = new CheckBox(this);
 						checkBox.setText(option);

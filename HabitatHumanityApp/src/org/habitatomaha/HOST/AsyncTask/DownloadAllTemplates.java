@@ -64,7 +64,7 @@ public class DownloadAllTemplates extends AsyncTask {
 		if (callingContext instanceof ScreenOneRework)
 		{
 			ScreenOneRework getMethods = (ScreenOneRework) callingContext;
-			getMethods.setView(ScreenOneRework.GROUPS, getMethods.buildGroupsView());
+			getMethods.displayTemplateGroups();
 		}
 	}
 	

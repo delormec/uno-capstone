@@ -302,7 +302,7 @@ public class ScreenOneRework extends Activity
 	/**
 	 * Displays all the template groups and the sign-in
 	 */
-	private void displayTemplateGroups()
+	public void displayTemplateGroups()
 	{
 		// Build View
 		RelativeLayout groupsView = (RelativeLayout) buildGroupsView();
@@ -324,7 +324,7 @@ public class ScreenOneRework extends Activity
 	 * 
 	 * @param groupName	The name of the group of templates to display
 	 */
-	private void displayGroupTemplates(final String groupName)
+	public void displayGroupTemplates(final String groupName)
 	{
 		// Build View
 		RelativeLayout templatesView = (RelativeLayout) buildTemplatesView(groupName);
@@ -349,7 +349,7 @@ public class ScreenOneRework extends Activity
 	 * @param templateID	The ID of the template whose forms to display
 	 * @param templateGroup	The name of the template group
 	 */
-	private void displayTemplateForms(int templateID, String templateGroup)
+	public void displayTemplateForms(int templateID, String templateGroup)
 	{	
 		// Build the View
 		RelativeLayout formsView = (RelativeLayout) buildFormsView(templateID, templateGroup);
@@ -449,7 +449,7 @@ public class ScreenOneRework extends Activity
 													public void onClick(View view)
 													{				
 														userName = null;
-														setView(GROUPS, buildGroupsView());
+														displayTemplateGroups();
 													}
 												}
 											);
@@ -1285,26 +1285,11 @@ public class ScreenOneRework extends Activity
 													{
 														// Reset the view to reflect the sign-in change
 														userName = nameEdit.getText().toString();
-														setView(GROUPS, buildGroupsView());															
+														displayTemplateGroups();															
 													}
 												}
 											);
 		return signInAlertBuilder;
-	}
-	
-	
-	
-	/**
-	 * Sets the content view of the Activity to the provided View
-	 * 
-	 * @param viewSlot	Which View in the Activity to set (0-2)
-	 * @param view	The View to set
-	 */
-	public void setView(int viewSlot, View view)
-	{
-		viewStack[viewSlot] = view;
-		setContentView(viewStack[viewSlot]);
-		currentView = viewSlot;
 	}
 	
 	
