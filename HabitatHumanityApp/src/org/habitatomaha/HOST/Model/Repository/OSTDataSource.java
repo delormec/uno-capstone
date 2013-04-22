@@ -99,6 +99,9 @@ public class OSTDataSource {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace(); // found by monkey added by scott
 		}
 
 		return database.insert("Forms", null, values);
@@ -305,6 +308,9 @@ public class OSTDataSource {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch ( Exception e)
+		{
+			e.printStackTrace(); // found by monkey - added by scott
 		}
 
 		cursor.close();

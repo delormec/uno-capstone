@@ -2,84 +2,73 @@ package org.habitatomaha.HOST.Activity;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.ActivityUnitTestCase;
-import android.test.InstrumentationTestCase;
 import android.test.UiThreadTest;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
 
 import org.habitatomaha.HOST.Activity.EditFormActivity;
 import org.junit.Test;
 
 
-public class EditFormActivityTest extends ActivityUnitTestCase {
+public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 	
-	//Activity mActivity;
-	View answerField;
+	Activity mActivity;
+	View formLabel;
+	View groupLabel;
+	View layout;
 	
 	// Constructor. is required
-	public EditFormActivityTest() {
-	    super(EditFormActivity.class);
-	    //"org.habitatomaha.HOST.Activity.EditFormActivity", 
-	    
+	public SelectFormActivityTest() {
+	    super("org.habitatomaha.HOST.Activity.SelectFormActivity", SelectFormActivity.class);
 	  } // end of SpinnerActivityTest constructor definition
 
-	
-	  @MediumTest
-	    public void testLifeCycleCreate() {
-		  // First create the intent
-		  	Intent ourIntent = new Intent(Intent.ACTION_MAIN);
-		  	ourIntent.putExtra("formID", 1);
-		  	
-		  // create our new activity
-		    EditFormActivity mActivity = (EditFormActivity) startActivity(ourIntent, null, null);
-		    
-		    
-		    
-		    
-	        getInstrumentation().callActivityOnStart(mActivity);
-	        getInstrumentation().callActivityOnResume(mActivity);
-	        mActivity.finish();
-	        //GoodByeActivity gActivity = launchActivity("package.goodbye", GoodByeActivity.class, null);
-	        //gActivity.finish();
-	    }
-	
-	
-	
-	
 	// Setup function. Is required. -> Ran once before each test method.
 	@Override
 	  protected void setUp() throws Exception {
 	    super.setUp();
-	   
-	    //setActivityInitialTouchMode(false);
 
-	   // getContext();//startActivity(new Intent(Intent.ACTION_MAIN), null, null);// getActivity();
+	    setActivityInitialTouchMode(false);
+
+	    
+	  // Sample code given by the Android Testing Website
+	    mActivity = getActivity();
+
+	   groupLabel =  mActivity.findViewById(org.habitatomaha.HOST.R.id.groupLabel);
+	   formLabel =  mActivity.findViewById(org.habitatomaha.HOST.R.id.formLabel);
+	   layout = mActivity.findViewById(org.habitatomaha.HOST.R.id.RelativeLayout1);
+	   
+	   /* mSpinner =
+	      (Spinner) mActivity.findViewById(
+	        com.android.example.spinner.R.id.Spinner01
+	      );
+
+	      mPlanetData = mSpinner.getAdapter();*/
 	    
 	    
-	    //answerField = mActivity.findViewById(org.habitatomaha.HOST.R.id.answerText);
 
 	  } // end of setUp() method definition
 	
-	//Initial State Test
+	//Initial State Test - what should be true when the app is ran for the first time
 	@Test
 	public void testPreConditions() {
-		//assert(answerField != null);
-		//assert(answerField.hasFocus());
 		
-
+		// The first condition of the Activity Test
 		// Checks the initial state of the Activity for valid state
-
-		assert(true);
+	    /*assertTrue(mSpinner.getOnItemSelectedListener() != null);
+	    assertTrue(mPlanetData != null);
+	    assertEquals(mPlanetData.getCount(),ADAPTER_COUNT);*/
+		
+		assert(groupLabel == null);
+		assert(formLabel == null);
 	  } // end of testPreConditions() method definition
 	
 	
 	//UI Test
 	@Test
 	public void exampleActivityTestNOTUSED() {
-
+		//layout.findViewById()
+	
+		
 		// Attempt to gain focus of the Object - Example
 		//
 	   /* mActivity.runOnUiThread(
@@ -126,6 +115,8 @@ public class EditFormActivityTest extends ActivityUnitTestCase {
 	//State Management Test
 	@Test
 	public void testStateDestroy() {
+		
+		
 		
 		//set the spinner selection to a test value: 
 		//

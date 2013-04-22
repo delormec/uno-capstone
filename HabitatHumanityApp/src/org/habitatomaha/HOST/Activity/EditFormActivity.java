@@ -1051,6 +1051,19 @@ public class EditFormActivity extends Activity
 			presetDate = String.format("%d/%d/%d", month + 1, day, year);
 		}
 	}
+	
+	//Getters and Setters
+	
+	public long getFormID()
+	{
+		return formID;
+	}
+	
+	public void setFormID(long formID)
+	{
+		formID = this.formID;
+	}
+	
 }
 
 
