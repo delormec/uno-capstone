@@ -16,64 +16,83 @@ import org.junit.Test;
 
 public class EditFormActivityTest extends ActivityUnitTestCase {
 	
-	//Activity mActivity;
-	View answerField;
+
+	View answerField; // The Text field where our answer is input
+	EditFormActivity mActivity; // The actual activity
 	
-	// Constructor. is required
+
+	/**
+	 * a Constructor is needed for Android based Unit tests and Activity tests
+	 * 
+	 */
 	public EditFormActivityTest() {
 	    super(EditFormActivity.class);
-	    //"org.habitatomaha.HOST.Activity.EditFormActivity", 
-	    
-	  } // end of SpinnerActivityTest constructor definition
+	  } 
 
 	
+	/**
+	 *  A Setup function is required in order to initialize android components before a test is ran.
+	 * 
+	 */
+	@Override
+	  protected void setUp() throws Exception {
+		  super.setUp();
+		    
+		  Intent ourIntent = new Intent(Intent.ACTION_MAIN);
+		  ourIntent.putExtra("formID", 1);	// need a form or else onCreate will fail.
+		  	
+		  mActivity = (EditFormActivity) startActivity(ourIntent, null, null);// create our new activity
+		    
+		  answerField = mActivity.findViewById(org.habitatomaha.HOST.R.id.answerText);
+
+	  } 
+		
+		
+		/**
+		 *  A Tear Down method is necessary to end the test and reset android components
+		 * 
+		 */
+		@Override
+		protected void tearDown() throws Exception{
+			
+			mActivity.finish();
+			super.tearDown();
+		}
+		
+		
+		
+		/**
+		 * Test the lifecycle of the activity to ensure that the activity can be
+		 * Stopped/Started/Restarted/Paused/closed without an error.
+		 * 
+		 */
 	  @MediumTest
 	    public void testLifeCycleCreate() {
-		  // First create the intent
-		  	Intent ourIntent = new Intent(Intent.ACTION_MAIN);
-		  	ourIntent.putExtra("formID", 1);
 		  	
-		  // create our new activity
-		    EditFormActivity mActivity = (EditFormActivity) startActivity(ourIntent, null, null);
-		    
-		    
-		    
-		    
 	        getInstrumentation().callActivityOnStart(mActivity);
+	        getInstrumentation().callActivityOnPause(mActivity);
 	        getInstrumentation().callActivityOnResume(mActivity);
-	        mActivity.finish();
-	        //GoodByeActivity gActivity = launchActivity("package.goodbye", GoodByeActivity.class, null);
-	        //gActivity.finish();
+	        getInstrumentation().callActivityOnRestart(mActivity);
+	        getInstrumentation().callActivityOnDestroy(mActivity);
+	        
 	    }
 	
 	
 	
-	
-	// Setup function. Is required. -> Ran once before each test method.
-	@Override
-	  protected void setUp() throws Exception {
-	    super.setUp();
-	   
-	    //setActivityInitialTouchMode(false);
-
-	   // getContext();//startActivity(new Intent(Intent.ACTION_MAIN), null, null);// getActivity();
-	    
-	    
-	    //answerField = mActivity.findViewById(org.habitatomaha.HOST.R.id.answerText);
-
-	  } // end of setUp() method definition
-	
-	//Initial State Test
+	/**
+	 * Initial state test for the Answer text field. 
+	 * 
+	 * It cannot be null (properly initialized), it's text value cannot be null (proper answer)
+	 * and should have the focus on the screen.
+	 */
 	@Test
 	public void testPreConditions() {
-		//assert(answerField != null);
-		//assert(answerField.hasFocus());
 		
-
-		// Checks the initial state of the Activity for valid state
-
-		assert(true);
-	  } // end of testPreConditions() method definition
+		assert(answerField != null);
+		assert(answerField.toString() != null);
+		assert(answerField.hasFocus());
+		
+	  }
 	
 	
 	//UI Test
@@ -149,7 +168,7 @@ public class EditFormActivityTest extends ActivityUnitTestCase {
 		
 		assert(true);
 		
-	  } // end of testStateDestroy() method definition
+	  } 
 
 	
 	
@@ -194,6 +213,6 @@ public class EditFormActivityTest extends ActivityUnitTestCase {
 		 /*	 assertEquals(TEST_STATE_PAUSE_POSITION,currentPosition);
 		     assertEquals(TEST_STATE_PAUSE_SELECTION,currentSelection);*/
 		 assert(true);
-		   } // end of testStatePause() method definition
+		   } 
 	
 }

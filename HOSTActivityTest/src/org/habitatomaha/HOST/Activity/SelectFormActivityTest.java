@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
+import android.test.suitebuilder.annotation.MediumTest;
+import android.view.KeyEvent;
 import android.view.View;
 
 import org.habitatomaha.HOST.Activity.EditFormActivity;
@@ -17,12 +19,19 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 	View groupLabel;
 	View layout;
 	
-	// Constructor. is required
+	/**
+	 * a Constructor is needed for Android based Unit tests and Activity tests
+	 * 
+	 */
 	public SelectFormActivityTest() {
 	    super("org.habitatomaha.HOST.Activity.SelectFormActivity", SelectFormActivity.class);
-	  } // end of SpinnerActivityTest constructor definition
+	  } 
 
-	// Setup function. Is required. -> Ran once before each test method.
+	
+	/**
+	 *  A Setup function is required in order to initialize android components before a test is ran.
+	 * 
+	 */
 	@Override
 	  protected void setUp() throws Exception {
 	    super.setUp();
@@ -31,8 +40,7 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 
 	    
 	  // Sample code given by the Android Testing Website
-	    mActivity = getActivity();
-
+	   mActivity = getActivity();
 	   groupLabel =  mActivity.findViewById(org.habitatomaha.HOST.R.id.groupLabel);
 	   formLabel =  mActivity.findViewById(org.habitatomaha.HOST.R.id.formLabel);
 	   layout = mActivity.findViewById(org.habitatomaha.HOST.R.id.RelativeLayout1);
@@ -43,25 +51,47 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 	      );
 
 	      mPlanetData = mSpinner.getAdapter();*/
-	    
-	    
-
-	  } // end of setUp() method definition
+	  }
 	
-	//Initial State Test - what should be true when the app is ran for the first time
+	/**Initial State Test - what should be true when the app is ran for the first time
+	 * 
+	 * 
+	 */
 	@Test
 	public void testPreConditions() {
-		
+		sendKeys("A B C D E F G");
+		mActivity.openOptionsMenu();
+		mActivity.closeOptionsMenu();
 		// The first condition of the Activity Test
 		// Checks the initial state of the Activity for valid state
 	    /*assertTrue(mSpinner.getOnItemSelectedListener() != null);
 	    assertTrue(mPlanetData != null);
 	    assertEquals(mPlanetData.getCount(),ADAPTER_COUNT);*/
-		
+
 		assert(groupLabel == null);
 		assert(formLabel == null);
 	  } // end of testPreConditions() method definition
 	
+	
+	
+	
+	/**
+	 * Test the lifecycle of the activity to ensure that the activity can be
+	 * Stopped/Started/Restarted/Paused/closed without an error.
+	 * 
+	 */
+
+  @MediumTest
+    public void testLifeCycleCreate() {
+	  	
+        getInstrumentation().callActivityOnStart(mActivity);
+        getInstrumentation().callActivityOnPause(mActivity);
+        //getInstrumentation().callActivityOnResume(mActivity);
+        getInstrumentation().callActivityOnRestart(mActivity);
+        //getInstrumentation().callActivityOnDestroy(mActivity);
+        
+    }
+
 	
 	//UI Test
 	@Test
@@ -85,16 +115,17 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 		
 		// Submit Instructions to the focused object - Example
 		//
-		/*
-		 * this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
-    		for (int i = 1; i <= TEST_POSITION; i++) 
-    		{
-      		this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
-    		} // end of for loop
+		
+		 this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+    		
+		 int TEST_POSITION = 8;
+    		
+		for (int i = 1; i <= TEST_POSITION ; i++) 
+		{
+			this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
+		} 
 
-    	this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);*/
-		
-		
+    	this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
 		
 		// Lastly check to see that we have selected the item we wanted to select from the test. - Example
 		// assert that we got the correct value
@@ -112,7 +143,10 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 		assert(true);
 	}
 	
-	//State Management Test
+	/**State Management Test - test if the activity keeps its values after being closed
+	 * 
+	 * 
+	 */
 	@Test
 	public void testStateDestroy() {
 		
@@ -125,8 +159,8 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 		
 		//Terminate the activity and restart it
 		//
-		/*mActivity.finish();
-    	mActivity = this.getActivity();*/
+		mActivity.finish(); 
+    	mActivity = this.getActivity();
 		
 		// Get the current condition from the Activity
 		//
@@ -140,19 +174,22 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 		
 		assert(true);
 		
-	  } // end of testStateDestroy() method definition
+	  }
 
 	
 	
 	
-		// State management for Pause and Idle
-	// @UiThreadTest									// needed for running on a UI Thread
-	@Test 
+	/** State management for Pause and Idle states of the Android OS.
+	 * 
+	 * These tests are required to run off of a UI thread due to interaction with the
+	 * instrumentation
+	 */
+	 @UiThreadTest			
 	public void testStatePause() {  
 	 
 		 // get the current instrumentation. needed to call onPause and onResume
 		 //
-		// Instrumentation mInstr = this.getInstrumentation();
+		Instrumentation mInstr = this.getInstrumentation();
 		 
 		 //Set the spinner selection to a test value:
 		 //
@@ -161,7 +198,7 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 
 		//	Use instrumentation to call the Activity's onPause():
 
-		/*    mInstr.callActivityOnPause(mActivity);*/
+		   mInstr.callActivityOnPause(mActivity);
 
 		//	Under test, the activity is waiting for input. The invocation of callActivityOnPause(android.app.Activity) performs a call directly to the activity's onPause() instead of manipulating the activity's UI to force it into a paused state.
 		//  Force the spinner to a different selection:
@@ -172,7 +209,7 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 		//	This ensures that resuming the activity actually restores the spinner's state rather than simply leaving it as it was.
 		//	Use instrumentation to call the Activity's onResume():
 
-		/*    mInstr.callActivityOnResume(mActivity);*/
+		    mInstr.callActivityOnResume(mActivity);
 		 
 		// Invoking callActivityOnResume(android.app.Activity) affects the activity in a way similar to callActivityOnPause. The activity's onResume() method is invoked instead of manipulating the activity's UI to force it to resume.
 		// Get the current state of the spinner:
@@ -185,6 +222,6 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 		 /*	 assertEquals(TEST_STATE_PAUSE_POSITION,currentPosition);
 		     assertEquals(TEST_STATE_PAUSE_SELECTION,currentSelection);*/
 		 assert(true);
-		   } // end of testStatePause() method definition
+		   } 
 	
 }
