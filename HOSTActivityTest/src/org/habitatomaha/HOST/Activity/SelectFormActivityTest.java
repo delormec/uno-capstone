@@ -80,7 +80,6 @@ public class SelectFormActivityTest extends ActivityInstrumentationTestCase2 {
 	 * Stopped/Started/Restarted/Paused/closed without an error.
 	 * 
 	 */
-
   @MediumTest
     public void testLifeCycleCreate() {
 	  	

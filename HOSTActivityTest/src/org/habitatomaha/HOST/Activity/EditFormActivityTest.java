@@ -39,7 +39,7 @@ public class EditFormActivityTest extends ActivityUnitTestCase {
 		  super.setUp();
 		    
 		  Intent ourIntent = new Intent(Intent.ACTION_MAIN);
-		  ourIntent.putExtra("formID", 1);	// need a form or else onCreate will fail.
+		  ourIntent.putExtra("formID", 1);	// need a form or else onCreate will fail. - needs to point to a form
 		  	
 		  mActivity = (EditFormActivity) startActivity(ourIntent, null, null);// create our new activity
 		    

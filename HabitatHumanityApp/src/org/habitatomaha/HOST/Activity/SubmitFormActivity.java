@@ -282,4 +282,14 @@ public class SubmitFormActivity extends Activity
 	{
 		return;
 	}
+	
+	public Form getForm()
+	{
+		return form;
+	}
+	
+	public void setForm(Form form)
+	{
+		form = this.form;
+	}
 }
