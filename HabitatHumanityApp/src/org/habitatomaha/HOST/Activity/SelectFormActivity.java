@@ -1065,7 +1065,8 @@ public class SelectFormActivity extends Activity
 										discard(view, formID);								
 										return;
 									}
-								});
+								}
+							);
 		adb.setNegativeButton("Keep", new DialogInterface.OnClickListener()
 										{
 											@Override
@@ -1073,7 +1074,8 @@ public class SelectFormActivity extends Activity
 											{
 												return;
 											}
-										});
+										}
+									);
 		
 		AlertDialog alertDialog = adb.create();
 		alertDialog.show();
@@ -1171,7 +1173,8 @@ public class SelectFormActivity extends Activity
 										
 										return;
 									}
-								});
+								}
+							);
 		adb.setNegativeButton("Wait", new DialogInterface.OnClickListener()
 										{
 											@Override
@@ -1179,7 +1182,8 @@ public class SelectFormActivity extends Activity
 											{
 												return;
 											}
-										});
+										}
+									);
 		
 		AlertDialog alertDialog = adb.create();
 		alertDialog.show();
@@ -1225,12 +1229,41 @@ public class SelectFormActivity extends Activity
 		if (!Utility.isNetworkAvailable(this))
 		{
 			Utility.displayNetworkUnavailableDialog(this);
-			return;
+		}
+		else
+		{
+			AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			adb.setTitle("Confirm Download");
+			adb.setMessage("If you download new templates, all existing forms will be removed from the device. Are you sure you want to download templates?");
+			adb.setCancelable(false);
+			adb.setPositiveButton("Download", 
+									new DialogInterface.OnClickListener()
+									{
+										@Override
+										public void onClick(DialogInterface dialog, int id)
+										{
+											downloadTask = new DownloadAllTemplates(getInstance());
+											downloadTask.execute(getInstance());								
+											return;
+										}
+									}
+								);
+			adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+											{
+												@Override
+												public void onClick(DialogInterface dialog, int id)
+												{
+													return;
+												}
+											}
+										);
+			
+			AlertDialog alertDialog = adb.create();
+			alertDialog.show();
 		}
 		
 		
-		downloadTask = new DownloadAllTemplates(this);
-		downloadTask.execute(this);
+		
 	}
 	
 	
