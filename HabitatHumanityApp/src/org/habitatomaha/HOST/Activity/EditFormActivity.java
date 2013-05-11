@@ -433,8 +433,8 @@ public class EditFormActivity extends Activity
 						checkBox.setText(option);
 						
 						// Button style
-						checkBox.setTextSize(20);
-						
+						checkBox.setTextSize(30);
+						checkBox.setPadding(0, 10, 0, 10);
 						multipleSelectChoices.addView(checkBox);
 						
 						// Select pre-existing answer(s) (by simulating the button press)
@@ -544,8 +544,8 @@ public class EditFormActivity extends Activity
 						button.setText(option);
 						
 						// Button style
-						button.setTextSize(20);
-						
+						button.setTextSize(30);
+						button.setPadding(0, 10, 0, 10);
 						buttons.addView(button);
 					
 						// Select pre-existing answer (by simulating the button press)
@@ -567,8 +567,8 @@ public class EditFormActivity extends Activity
 				button.setText("Other");
 				
 				// Button style
-				button.setTextSize(20);
-				
+				button.setTextSize(30);
+				button.setPadding(0, 10, 0, 10);
 				button.setOnCheckedChangeListener(
 					new OnCheckedChangeListener()
 					{

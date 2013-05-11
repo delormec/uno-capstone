@@ -1260,10 +1260,7 @@ public class SelectFormActivity extends Activity
 			
 			AlertDialog alertDialog = adb.create();
 			alertDialog.show();
-		}
-		
-		
-		
+		}		
 	}
 	
 	
@@ -1282,9 +1279,37 @@ public class SelectFormActivity extends Activity
 			Utility.displayNetworkUnavailableDialog(this);
 			return;
 		}
-		
-		uploadTask = new UploadAllForms(this);
-		uploadTask.execute();
+		else
+		{
+			AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			adb.setTitle("Confirm Batch Upload");
+			adb.setMessage("Each form that is successfully uploaded will be removed from the device. Continue?");
+			adb.setCancelable(false);
+			adb.setPositiveButton("Upload All", 
+									new DialogInterface.OnClickListener()
+									{
+										@Override
+										public void onClick(DialogInterface dialog, int id)
+										{
+											uploadTask = new UploadAllForms(getInstance());
+											uploadTask.execute();							
+											return;
+										}
+									}
+								);
+			adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+											{
+												@Override
+												public void onClick(DialogInterface dialog, int id)
+												{
+													return;
+												}
+											}
+										);
+			
+			AlertDialog alertDialog = adb.create();
+			alertDialog.show();
+		}
 	}
 	
 	
