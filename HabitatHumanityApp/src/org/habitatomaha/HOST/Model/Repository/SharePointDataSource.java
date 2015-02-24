@@ -54,7 +54,29 @@ public class SharePointDataSource {
         NTCredentials creds = new NTCredentials(user_name, password, domain, domain);
         httpclient.getCredentialsProvider().setCredentials(AuthScope.ANY, creds);
 
-        HttpHost target = new HttpHost(URL, Integer.parseInt(port), "http");
+        String scheme = "http";
+        
+        //Remove https:// from the URL and set the scheme
+        if (URL.startsWith("https://"))
+        {
+        	URL = URL.substring(8);
+        	scheme = "https";
+        }
+        
+        //Remove http:// from the URL and set the scheme
+        if (URL.startsWith("http://"))
+        {
+        	URL = URL.substring(7);
+        	scheme = "http";
+        }
+        
+        //If port is equal to 443, then it should be https scheme
+        if (port.compareTo(String.valueOf(443)) == 0)
+        {
+        	scheme = "https";
+        }
+        
+        HttpHost target = new HttpHost(URL, Integer.parseInt(port), scheme);
         localContext = new BasicHttpContext();
         
     	HttpPost httppost = new HttpPost(list_name);
@@ -80,11 +102,11 @@ public class SharePointDataSource {
     					//"REJECTION_REASON":[{"__metadata": {"uri": "http://habitat.taic.net/omaha/unotestsite/_vti_bin/listdata.svc/ConstructionAtlasTestREJECTION_REASON('No utilities')"}}]
     					for (String answer : answers)
     					{
-    						//append http if it doesn't contain it
-    						if(!URL.contains("http://"))
-    							joined_fields = joined_fields + "{\"__metadata\": {\"uri\": \"" + "http://" + URL + list_name + q.FieldName + "('" + answer + "')\"}},";
+    						//append https or http to the URL
+    						if(scheme.compareTo("https") == 0)
+    							joined_fields = joined_fields + "{\"__metadata\": {\"uri\": \"" + "https://" + URL + list_name + q.FieldName + "('" + answer + "')\"}},";
     						else
-    							joined_fields = joined_fields + "{\"__metadata\": {\"uri\": \"" + URL + list_name + q.FieldName + "('" + answer + "')\"}},";
+    							joined_fields = joined_fields + "{\"__metadata\": {\"uri\": \"" + "http://" + URL + list_name + q.FieldName + "('" + answer + "')\"}},";
     					}
     
     					//remove the last comma, god i hate java -- why the fuck is there no join command
@@ -108,8 +130,6 @@ public class SharePointDataSource {
     		//else, do nothing, we won't enter blank answers
     	}
     
-    
-    	
     	// If filledBy has a field name
     	if (form.meta.filledByFieldName == null || form.meta.filledByFieldName.compareTo("") == 0)
     	{}
@@ -122,7 +142,6 @@ public class SharePointDataSource {
     		}
     	}
     	
-    	
     	// If filledDate has a field name
     	if (form.meta.filledDateFieldName == null || form.meta.filledDateFieldName.compareTo("") == 0)
     	{}
@@ -133,11 +152,7 @@ public class SharePointDataSource {
     		{
     			fields.add(JSONObject.quote(form.meta.filledDateFieldName) + ":" + JSONObject.quote(form.meta.filledDate));
     		}
-    	}
-    	
-    	
-    	
-    	
+    	}   	
     
     	StringEntity myEntity = null;
     	
@@ -169,8 +184,6 @@ public class SharePointDataSource {
         HttpResponse response1 = null;
 		try {
 			response1 = httpclient.execute(target, httppost, localContext);
-			
-
 
 			//this is where we could print the response if we wanted 
 			HttpEntity entity1 = response1.getEntity();
